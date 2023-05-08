@@ -43,6 +43,9 @@ sudo xattr -dr com.apple.quarantine /Applications/Sourcetree
 sudo xattr -dr com.apple.quarantine /Applications/Telegram
 sudo xattr -dr com.apple.quarantine /Applications/Visual\ Studio\ Code
 
+#SDKMAN 설치
+curl -s "https://get.sdkman.io" | bash
+
 # install font
 cp -a ./fonts/. ~/Library/Fonts
 
