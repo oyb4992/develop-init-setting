@@ -17,8 +17,10 @@ cask "appcleaner"
 cask "bettertouchtool"
 cask "cheatsheet"
 cask "coconutbattery"
+cask "dash"
 cask "dbeaver-community"
 cask "deepl"
+cask "docker"
 cask "fig"
 cask "gemini"
 cask "google-chrome"
@@ -27,9 +29,12 @@ cask "iina"
 cask "iterm2"
 cask "itsycal"
 cask "jetbrains-toolbox"
+cask "karabiner-elements"
 cask "keka"
 cask "keyboard-cleaner"
-cask "microsoft-edge"
+cask "latest"
+cask "medis"
+cask "monitorcontrol"
 cask "notion"
 cask "onedrive"
 cask "onyx"
@@ -46,7 +51,6 @@ mas "Dropover", id: 1355679052
 mas "Friendly Streaming", id: 553245401
 mas "G App Launcher", id: 1543803459
 mas "iBar", id: 6443843900
-mas "iRightMouse", id: 1497428978
 mas "iRightMouse Lite", id: 1552554632
 mas "Irvue", id: 1039633667
 mas "iShot", id: 1485844094

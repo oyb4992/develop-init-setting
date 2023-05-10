@@ -19,8 +19,10 @@ sudo xattr -dr com.apple.quarantine /Applications/AppCleaner
 sudo xattr -dr com.apple.quarantine /Applications/BetterTouchTool
 sudo xattr -dr com.apple.quarantine /Applications/CheatSheet
 sudo xattr -dr com.apple.quarantine /Applications/coconutBattery
+sudo xattr -dr com.apple.quarantine /Applications/Dash
 sudo xattr -dr com.apple.quarantine /Applications/DBeaver
 sudo xattr -dr com.apple.quarantine /Applications/DeepL
+sudo xattr -dr com.apple.quarantine /Applications/Docker
 sudo xattr -dr com.apple.quarantine /Applications/Fig
 sudo xattr -dr com.apple.quarantine /Applications/Gemini\ 2
 sudo xattr -dr com.apple.quarantine /Applications/Google\ Chrome
@@ -29,9 +31,12 @@ sudo xattr -dr com.apple.quarantine /Applications/IINA
 sudo xattr -dr com.apple.quarantine /Applications/iTerm
 sudo xattr -dr com.apple.quarantine /Applications/Itsycal
 sudo xattr -dr com.apple.quarantine /Applications/JetBrains\ Toolbox
+sudo xattr -dr com.apple.quarantine /Applications/Karabiner-Elements
 sudo xattr -dr com.apple.quarantine /Applications/Keka
 sudo xattr -dr com.apple.quarantine /Applications/Keyboard\ Cleaner
-sudo xattr -dr com.apple.quarantine /Applications/Microsoft\ Edge
+sudo xattr -dr com.apple.quarantine /Applications/Latest
+sudo xattr -dr com.apple.quarantine /Applications/Medis
+sudo xattr -dr com.apple.quarantine /Applications/MonitorControl
 sudo xattr -dr com.apple.quarantine /Applications/Notion
 sudo xattr -dr com.apple.quarantine /Applications/OneDrive
 sudo xattr -dr com.apple.quarantine /Applications/OnyX
