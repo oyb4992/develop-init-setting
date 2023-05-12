@@ -76,6 +76,7 @@ cat<<: >/Users/Shared/keymap.plist
 sudo mv /Users/Shared/keymap.plist /Library/LaunchAgents
 #4
 launchctl load /Library/LaunchAgents/keymap.plist
+#키보드-단축키-입력 소스-입력 메뉴에서 다음 소스 선택 단축키를 우측 커맨드로 변경
 #우측 커맨드 한영키 전환 - 끝
 
 #우측 커맨드 한영 원상복구
