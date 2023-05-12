@@ -62,5 +62,26 @@ chmod 755 ./zsh/install.sh
 chmod 755 ./iterm2/install.sh
 ./iterm2/install.sh
 
+#우측 커맨드 한영키 전환 - 시작
+#참고1: https://www.youtube.com/watch?v=Z8tzpHW3ApA
+#참고2: https://www.notion.so/ee35e655235d41ecb259ff2f27ccb962
+#1
+printf '%s\n' '#!/bin/sh' \ 'hidutil property --set '"'"'{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x7000000E7,"HIDKeyboardModifierMappingDst":0x70000006D}]}'"'" \ >/Users/Shared/keymap
+chmod 755 /Users/Shared/keymap
+#2
+cat<<: >/Users/Shared/keymap.plist
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "[http://www.apple.com/DTDs/PropertyList-1.0.dtd](http://www.apple.com/DTDs/PropertyList-1.0.dtd)"><plist version="1.0"><dict><key>Label</key><string>keymap</string><key>ProgramArguments</key><array><string>/Users/Shared/keymap</string></array><key>RunAtLoad</key><true/></dict></plist>
+:
+#3
+sudo mv /Users/Shared/keymap.plist /Library/LaunchAgents
+#4
+launchctl load /Library/LaunchAgents/keymap.plist
+#우측 커맨드 한영키 전환 - 끝
+
+#우측 커맨드 한영 원상복구
+# launchctl remove keymap
+# rm /Users/Shared/keymap
+# sudo rm /Library/LaunchAgents/keymap.plist
+
 # 설치 성공 완료 메세지 노출
 printf '\n install success! \n'
