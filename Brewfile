@@ -13,7 +13,6 @@ brew "git-flow"
 brew "mas"
 brew "neofetch"
 brew "neovim"
-#brew "nvm" - asdf로 대체
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 cask "appcleaner"
