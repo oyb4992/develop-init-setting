@@ -53,7 +53,7 @@ mas "com.alice.mac.GetPlainText", id: 508368068
 mas "Dropover",                   id: 1355679052
 mas "Friendly Streaming",         id: 553245401
 mas "iBar",                       id: 6443843900
-mas "iRightMouse",                id: 1497428978
+mas "iRightMouse Lite",           id: 1552554632
 mas "Irvue",                      id: 1039633667
 mas "iShot",                      id: 1485844094
 mas "Keynote",                    id: 409183694
