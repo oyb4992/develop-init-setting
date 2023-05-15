@@ -18,6 +18,10 @@ chmod 755 ./zsh/install.sh
 chmod 755 ./iterm2/install.sh
 ./iterm2/install.sh
 
+# copy karabiner configuration
+chmod 755 ./karabiner/install.sh
+./karabiner/install.sh
+
 # install font
 cp -a ./fonts/. ~/Library/Fonts
 
