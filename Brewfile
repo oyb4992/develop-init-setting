@@ -13,6 +13,7 @@ brew "neofetch"
 brew "neovim"
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
+brew "lsd"
 cask "appcleaner"
 cask "bettertouchtool" #앱스토에서 better snap tool 깔아서 라이센스 복구 후 사용
 cask "cheatsheet"
