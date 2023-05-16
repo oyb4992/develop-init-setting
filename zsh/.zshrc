@@ -72,7 +72,13 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(
+  git 
+  autojump
+  zsh-syntax-highlighting
+  zsh-autosuggestions
+  asdf
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -104,12 +110,7 @@ source $ZSH/oh-my-zsh.sh
 alias python="/usr/bin/python3"
 alias ls='lsd'
 alias ll='ls -alhF'
-plugins=( 
-  autojump
-  zsh-syntax-highlighting
-  zsh-autosuggestions
-  asdf
-)
+
 source /opt/homebrew/Cellar/autojump/22.5.3_3/share/autojump/autojump.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
