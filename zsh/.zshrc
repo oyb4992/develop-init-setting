@@ -1,5 +1,12 @@
 # Fig pre block. Keep at the top of this file.
 [[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -72,13 +79,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(
-  git 
-  autojump
-  zsh-syntax-highlighting
-  zsh-autosuggestions
-  asdf
-)
+plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -87,7 +88,7 @@ source $ZSH/oh-my-zsh.sh
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -110,12 +111,18 @@ source $ZSH/oh-my-zsh.sh
 alias python="/usr/bin/python3"
 alias ls='lsd'
 alias ll='ls -alhF'
-
+plugins=( 
+  autojump
+  zsh-syntax-highlighting
+  zsh-autosuggestions
+  asdf
+)
 source /opt/homebrew/Cellar/autojump/22.5.3_3/share/autojump/autojump.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 #asdf
 source /opt/homebrew/opt/asdf/libexec/asdf.sh
+
 export PATH=/opt/homebrew/bin:$PATH
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
