@@ -66,16 +66,16 @@ sudo xattr -dr com.apple.quarantine /Applications/Sourcetree
 sudo xattr -dr com.apple.quarantine /Applications/Telegram
 sudo xattr -dr com.apple.quarantine /Applications/Visual\ Studio\ Code
 
-
+# Karabiner Hyper키로 대체
 # #우측 커맨드 한영키 전환 - 시작
 # #참고1: https://www.youtube.com/watch?v=Z8tzpHW3ApA
 # #참고2: https://www.notion.so/ee35e655235d41ecb259ff2f27ccb962
 # #1
-# printf '%s\n' '#!/bin/sh' \ 'hidutil property --set '"'"'{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x7000000E7,"HIDKeyboardModifierMappingDst":0x70000006D}]}'"'" \ >/Users/Shared/keymap
+# printf '%s\n' '#!/bin/sh' \ 'hidutil property --set '"'"'{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x7000000E7,"HIDKeyboardModifierMappingDst":0x70000006C}]}'"'" \ >/Users/Shared/keymap
 # chmod 755 /Users/Shared/keymap
 # #2
 # cat<<: >/Users/Shared/keymap.plist
-# <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "[http://www.apple.com/DTDs/PropertyList-1.0.dtd](http://www.apple.com/DTDs/PropertyList-1.0.dtd)"><plist version="1.0"><dict><key>Label</key><string>keymap</string><key>ProgramArguments</key><array><string>/Users/Shared/keymap</string></array><key>RunAtLoad</key><true/></dict></plist>
+# <?xml version="1.0" encoding="UT~-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "[http://www.apple.com/DTDs/PropertyList-1.0.dtd](http://www.apple.com/DTDs/PropertyList-1.0.dtd)"><plist version="1.0"><dict><key>Label</key><string>keymap</string><key>ProgramArguments</key><array><string>/Users/Shared/keymap</string></array><key>RunAtLoad</key><true/></dict></plist>
 # :
 # #3
 # sudo mv /Users/Shared/keymap.plist /Library/LaunchAgents
