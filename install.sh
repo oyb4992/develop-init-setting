@@ -22,6 +22,10 @@ chmod 755 ./iterm2/install.sh
 chmod 755 ./karabiner/install.sh
 ./karabiner/install.sh
 
+# copy hoemrow.app
+chmod 755 ./homerow/install.sh
+./homerow/install.sh
+
 # install font
 cp -a ./fonts/. ~/Library/Fonts
 
