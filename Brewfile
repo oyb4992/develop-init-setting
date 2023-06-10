@@ -17,13 +17,12 @@ brew "lsd"
 cask "appcleaner"
 cask "bettertouchtool" #앱스토에서 better snap tool 깔아서 라이센스 복구 후 사용
 cask "cheatsheet"
-cask "coconutbattery"
 cask "dash"
 cask "dbeaver-community"
 cask "deepl"
 cask "docker"
 cask "fig"
-# cask "gemini" #개인맥북엔 필요
+cask "github"
 cask "google-chrome"
 cask "google-drive"
 cask "iina"
@@ -38,12 +37,10 @@ cask "medis"
 cask "betterdisplay"
 cask "notion"
 cask "onedrive"
-cask "onyx"
 cask "popclip"
 cask "postman"
 cask "raycast"
 cask "slack"
-cask "sourcetree"
 # cask "telegram" #개인맥북엔 필요
 cask "visual-studio-code"
 #mas "CloudMounter",               id: 1130254674 #개인맥북엔 필요
@@ -55,6 +52,5 @@ mas "iRightMouse Lite",           id: 1552554632
 mas "Irvue",                      id: 1039633667
 mas "iShot",                      id: 1485844094
 mas "RunCat",                     id: 1429033973
-#mas "ScanTexter",                 id: 1635954549 #개인맥북엔 필요
 #mas "네이버 MYBOX",               id: 975815190 #개인맥북엔 필요
 mas "카카오톡",                   id: 869223134
