@@ -67,3 +67,4 @@ mas "UpNote",                     id: 1398373917
 #mas "네이버 MYBOX",               id: 975815190 #개인맥북엔 필요
 mas "KakaoTalk",                  id: 869223134
 mas "우리말 맞춤법 검사기" ,      id: 1238750814
+mas "GrabIt",                     id: 450166997
