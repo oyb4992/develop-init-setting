@@ -22,9 +22,9 @@ chmod 755 ./iterm2/install.sh
 chmod 755 ./karabiner/install.sh
 ./karabiner/install.sh
 
-# copy hoemrow.app
-chmod 755 ./homerow/install.sh
-./homerow/install.sh
+# # copy hoemrow.app
+# chmod 755 ./homerow/install.sh
+# ./homerow/install.sh
 
 # install font
 cp -a ./fonts/. ~/Library/Fonts
@@ -40,13 +40,9 @@ brew bundle --file=./Brewfile
 sudo xattr -dr com.apple.quarantine /Applications/AppCleaner
 sudo xattr -dr com.apple.quarantine /Applications/BetterTouchTool
 sudo xattr -dr com.apple.quarantine /Applications/CheatSheet
-sudo xattr -dr com.apple.quarantine /Applications/coconutBattery
 sudo xattr -dr com.apple.quarantine /Applications/Dash
 sudo xattr -dr com.apple.quarantine /Applications/DBeaver
 sudo xattr -dr com.apple.quarantine /Applications/DeepL
-sudo xattr -dr com.apple.quarantine /Applications/Docker
-sudo xattr -dr com.apple.quarantine /Applications/Fig
-sudo xattr -dr com.apple.quarantine /Applications/Gemini\ 2
 sudo xattr -dr com.apple.quarantine /Applications/Google\ Chrome
 sudo xattr -dr com.apple.quarantine /Applications/Google\ Drive
 sudo xattr -dr com.apple.quarantine /Applications/IINA
@@ -57,18 +53,15 @@ sudo xattr -dr com.apple.quarantine /Applications/Karabiner-Elements
 sudo xattr -dr com.apple.quarantine /Applications/Keka
 sudo xattr -dr com.apple.quarantine /Applications/Keyboard\ Cleaner
 sudo xattr -dr com.apple.quarantine /Applications/Latest
-sudo xattr -dr com.apple.quarantine /Applications/Medis
-sudo xattr -dr com.apple.quarantine /Applications/MonitorControl
-sudo xattr -dr com.apple.quarantine /Applications/Notion
 sudo xattr -dr com.apple.quarantine /Applications/OneDrive
-sudo xattr -dr com.apple.quarantine /Applications/OnyX
 sudo xattr -dr com.apple.quarantine /Applications/PopClip
 sudo xattr -dr com.apple.quarantine /Applications/Postman
 sudo xattr -dr com.apple.quarantine /Applications/Raycast
 sudo xattr -dr com.apple.quarantine /Applications/Slack
-sudo xattr -dr com.apple.quarantine /Applications/Sourcetree
-sudo xattr -dr com.apple.quarantine /Applications/Telegram
+# sudo xattr -dr com.apple.quarantine /Applications/Telegram #개인맥북엔 필요
 sudo xattr -dr com.apple.quarantine /Applications/Visual\ Studio\ Code
+sudo xattr -dr com.apple.quarantine /Applications/GitHub\ Desktop
+sudo xattr -dr com.apple.quarantine /Applications/BetterDisplay
 
 # Karabiner Hyper키로 대체
 # #우측 커맨드 한영키 전환 - 시작
