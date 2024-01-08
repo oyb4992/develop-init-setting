@@ -19,7 +19,7 @@ brew "lsd"
 brew "mas"
 brew "neofetch"
 brew "neovim"
-brew "nvm"
+# brew "nvm" #asdf로 대체
 brew "radare2"
 brew "scrcpy"
 brew "thefuck"

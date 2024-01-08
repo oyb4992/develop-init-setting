@@ -1,5 +1,3 @@
-# Fig pre block. Keep at the top of this file.
-[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -119,6 +117,7 @@ plugins=(
   zsh-syntax-highlighting
   zsh-autosuggestions
   asdf
+  fzf
 )
 source /opt/homebrew/Cellar/autojump/22.5.3_3/share/autojump/autojump.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -134,5 +133,14 @@ export PATH=/opt/homebrew/bin:$PATH
 #Run neofetch
 neofetch
 
-# Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+function fzf-view()
+{
+    fzf --preview '[[ $(file --mime {}) =~ binary ]] &&
+                  echo {} is a binary file ||
+                  (highlight -O ansi -l {} ||
+                  coderay {} ||
+                  rougify {} ||
+                  cat {}) 2> /dev/null | head -500'
+}
