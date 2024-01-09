@@ -55,7 +55,7 @@ sudo xattr -dr com.apple.quarantine /Applications/Slack
 # sudo xattr -dr com.apple.quarantine /Applications/Telegram #개인맥북엔 필요
 sudo xattr -dr com.apple.quarantine /Applications/Visual\ Studio\ Code
 sudo xattr -dr com.apple.quarantine /Applications/GitHub\ Desktop
-sudo xattr -dr com.apple.quarantine /Applications/BetterDisplay
+sudo xattr -dr com.apple.quarantine /Applications/MonitorControl
 
 # 설치 성공 완료 메세지 노출
 printf '\n install success! \n'
