@@ -38,7 +38,7 @@ cask "github"
 cask "google-chrome"
 cask "google-drive"
 cask "iina"
-cask "intellij-idea-ce"
+# cask "intellij-idea-ce" #jetbrains-toolbox를 통한 설치
 cask "iterm2"
 cask "itsycal"
 cask "jetbrains-toolbox"
@@ -52,13 +52,13 @@ cask "popclip"
 cask "postman"
 cask "raycast"
 cask "slack"
-# cask "telegram"
+# cask "telegram" #개인맥북엔 필요
 cask "visual-studio-code"
 #mas "CloudMounter",               id: 1130254674 #개인맥북엔 필요
 mas "com.alice.mac.GetPlainText", id: 508368068
 mas "Dropover",                   id: 1355679052
 #mas "Friendly Streaming",         id: 553245401 #개인맥북엔 필요
-mas "iBar",                       id: 6443843900
+# mas "iBar",                       id: 6443843900 #개인맥북엔 필요
 mas "iRightMouse Lite",           id: 1552554632
 mas "iShot",                      id: 1485844094
 mas "RunCat",                     id: 1429033973
