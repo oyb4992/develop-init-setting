@@ -21,6 +21,7 @@ brew "neofetch"
 brew "neovim"
 # brew "nvm" #asdf로 대체
 brew "radare2"
+# 안드로이드 미러링
 brew "scrcpy"
 brew "thefuck"
 brew "wget"
