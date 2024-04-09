@@ -1,3 +1,8 @@
+# homeBrew
+export PATH=/opt/homebrew/bin:$PATH
+# #Run neofetch
+neofetch --iterm2 --source ~/.config/neofetch/images/parrot.jpeg
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -81,7 +86,6 @@ plugins=(
   git
   macos
   )
-
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -117,7 +121,6 @@ plugins=(
   zsh-syntax-highlighting
   zsh-autosuggestions
   asdf
-  fzf
 )
 source /opt/homebrew/Cellar/autojump/22.5.3_3/share/autojump/autojump.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -126,22 +129,9 @@ source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/opt/asdf/libexec/asdf.sh
 . ~/.asdf/plugins/java/set-java-home.zsh
 
-export PATH=/opt/homebrew/bin:$PATH
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/Users/mz01-ohyunbok/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-#Run neofetch
-neofetch
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-function fzf-view()
-{
-    fzf --preview '[[ $(file --mime {}) =~ binary ]] &&
-                  echo {} is a binary file ||
-                  (highlight -O ansi -l {} ||
-                  coderay {} ||
-                  rougify {} ||
-                  cat {}) 2> /dev/null | head -500'
-}
