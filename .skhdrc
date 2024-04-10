@@ -137,8 +137,8 @@ hyper - k  : yabai -m window --grid 2:2:1:1:1:1
 # ctrl + alt - 3  : yabai -m display --focus 3
 
 # send window to monitor and follow focus
-hyper - b  : yabai -m window --display prev; yabai -m display --focus prev
-hyper - n  : yabai -m window --display next; yabai -m display --focus next
+hyper - b  : yabai -m window --display prev; yabai -m display --focus prev; yabai -m window --grid 1:1:0:0:1:1
+hyper - n  : yabai -m window --display next; yabai -m display --focus next; yabai -m window --grid 1:1:0:0:1:1
 # ctrl + cmd - 1  : yabai -m window --display 1; yabai -m display --focus 1
 
 # move floating window

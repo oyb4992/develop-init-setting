@@ -3,10 +3,15 @@ yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 sudo yabai --load-sa
 osascript -e 'tell application id "tracesOf.Uebersicht" to refresh'
 
+# set focus follows mouse mode (default: off, options: off, autoraise, autofocus)
+# set mouse follows focus mode (default: off)
+#global
 yabai -m config external_bar all:28:0 \
         top_padding 6 \
+        layout float \
         mouse_modifier shift \
         mouse_action1 move \
         mouse_action2 resize \
-        focus_follows_mouse autofocus \
         mouse_follows_focus on
+# space 1
+yabai -m config --space 1 layout bsp
