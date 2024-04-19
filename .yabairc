@@ -32,4 +32,5 @@ yabai -m config                                 \
         mouse_action1                move           \
         mouse_action2                resize         \
         mouse_drop_action            swap
-yabai -m rule --add app="^(카카오톡|Slack|iTerm2|DeepL|Finder|Mail|Latest|Raycast|시스템 설정|활성 상태 보기)$" manage=off #특정앱 BSP 관리 제외
+# yabai -m rule --add app="^(카카오톡|Slack|iTerm2|DeepL|Finder|Mail|Latest|Raycast|시스템 설정|활성 상태 보기)$" manage=off #특정앱 BSP 관리 제외
+yabai -m rule --add app!="^(Arc|Obsidian|DBeaver|Visual Studio Code|IntelliJ IDEA Community Edition)$" manage=off #특정앱만 BSP 관리
