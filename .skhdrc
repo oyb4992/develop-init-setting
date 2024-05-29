@@ -70,22 +70,15 @@
 #
 #               an EOL character signifies the end of the bind.
 
-# ############################################################### #
-# THE FOLLOWING SECTION CONTAIN SIMPLE MAPPINGS DEMONSTRATING HOW #
-# TO INTERACT WITH THE YABAI WM. THESE ARE SUPPOSED TO BE USED AS #
-# A REFERENCE ONLY, WHEN MAKING YOUR OWN CONFIGURATION..          #
-# ############################################################### #
-# define a mode named "default". A mode named "default" will NOT be shown by simple-bar.
-#:: default : ~/.config/ubersicht/widgets/simple-bar/lib/scripts/yabai-set-mode.sh default
-
-# # define a mode named "tree" that will be colored blue
-#:: tree : ~/.config/ubersicht/widgets/simple-bar/lib/scripts/yabai-set-mode.sh tree blue
-
-# # define a mode called "binding" (in skhd) that will display in simple-bar as "binds"
-#:: binding : ~/.config/ubersicht/widgets/simple-bar/lib/scripts/yabai-set-mode.sh binds green
+# fast focus desktop
+hyper - f : yabai -m display --focus recent
+# cmd + alt - 1 : yabai -m space --focus 1
 
 # focus window
-# alt - h : yabai -m window --focus west
+# hyper - left : yabai -m window --focus west
+# hyper - right : yabai -m window --focus east
+# hyper - up : yabai -m window --focus north
+# hyper - down : yabai -m window --focus south
 
 # swap managed window
 # shift + alt - h : yabai -m window --swap north
@@ -122,24 +115,29 @@ ctrl + alt  - c   : yabai -m window --grid 4:4:1:1:2:2
 
 # next monitor
 # make floating window fill screen
-ctrl + alt + cmd - return : yabai -m window --display next --grid 1:1:0:0:1:1; yabai -m display --focus next
-ctrl + alt + cmd - 0x2A : yabai -m window --display prev --grid 1:1:0:0:1:1; yabai -m display --focus prev 
-
+ctrl + alt + cmd - return : yabai -m window --display recent --grid 1:1:0:0:1:1; yabai -m display --focus recent
 
 # make floating window fill left-half of screen
-ctrl + alt + cmd - left : yabai -m window --display prev --grid 1:2:1:0:1:1; yabai -m display --focus prev
+ctrl + alt + cmd - left : yabai -m window --display recent --grid 1:2:0:0:1:1; yabai -m display --focus recent
 # make floating window fill right-half of screen
-ctrl + alt + cmd - right : yabai -m window --display next --grid 1:2:0:0:1:1; yabai -m display --focus next
+ctrl + alt + cmd - right : yabai -m window --display recent --grid 1:2:1:0:1:1; yabai -m display --focus recent
+
+# make floating window fill left-top-1/4 of screen
+ctrl + alt + cmd - u   : yabai -m window --display recent --grid 2:2:0:0:1:1; yabai -m display --focus recent
+# make floating window fill right-top-1/4 of screen
+ctrl + alt + cmd - i  : yabai -m window --display recent --grid 2:2:1:0:1:1; yabai -m display --focus recent
+# make floating window fill left-bottom-1/4 of screen
+ctrl + alt + cmd - j  : yabai -m window --display recent --grid 2:2:0:1:1:1; yabai -m display --focus recent
+# make floating window fill right-bottom-1/4 of screen
+ctrl + alt + cmd - k  : yabai -m window --display recent --grid 2:2:1:1:1:1; yabai -m display --focus recent
+# make floating window fill center-1/4 of screen
+ctrl + alt + cmd - c   : yabai -m window --display recent --grid 4:4:1:1:2:2; yabai -m display --focus recent
 
 # create desktop, move window and follow focus - uses jq for parsing json (brew install jq)
 # ctrl + cmd - n : yabai -m space --create && \
 #                   index="$(yabai -m query --spaces --display | jq 'map(select(."is-native-fullscreen" == false))[-1].index')" && \
 #                   yabai -m window --space "${index}" && \
 #                   yabai -m space --focus "${index}"
-
-# fast focus desktop
-# cmd + alt - x : yabai -m space --focus recent
-# cmd + alt - 1 : yabai -m space --focus 1
 
 # send window to desktop and follow focus
 #hyper - l : yabai -m window --space next; yabai -m space --focus next
@@ -159,11 +157,11 @@ ctrl + alt + cmd - right : yabai -m window --display next --grid 1:2:0:0:1:1; ya
 # shift + ctrl - a : yabai -m window --move rel:-20:0
 # shift + ctrl - s : yabai -m window --move rel:0:20
 
-# increase window size
+# # increase window size
 # shift + alt - a : yabai -m window --resize left:-20:0
 # shift + alt - w : yabai -m window --resize top:0:-20
 
-# decrease window size
+# # decrease window size
 # shift + cmd - s : yabai -m window --resize bottom:0:-20
 # shift + cmd - w : yabai -m window --resize top:0:20
 
@@ -182,3 +180,15 @@ ctrl + alt + cmd - right : yabai -m window --display next --grid 1:2:0:0:1:1; ya
 
 # toggle sticky(+float), picture-in-picture
 # alt - p : yabai -m window --toggle sticky --toggle pip
+
+#open App
+hyper - a : open /Applications/Arc.app
+hyper - k : open /Applications/KakaoTalk.app
+hyper - s : open /Applications/Slack.app
+hyper - j : open "/Applications/JetBrains Toolbox.app"
+hyper - v : open "/Applications/Visual Studio Code.app"
+hyper - c : open /Applications/Cursor.app
+hyper - d : open /Applications/DBeaver.app
+hyper - t : open /Applications/iTerm.app
+hyper - o : open /Applications/Obsidian.app
+hyper - 0x32 : open .
