@@ -1,36 +1,35 @@
 #!/usr/bin/env sh
-yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 sudo yabai --load-sa
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 
-osascript -e 'tell application id "tracesOf.Uebersicht" to refresh'
-# set focus follows mouse mode (default: off, options: off, autoraise, autofocus)
-# set mouse follows focus mode (default: off)
-#global
-yabai -m config                                 \
-        external_bar                 all:33:0       \
+yabai -m config                                     \
+        external_bar                 off            \
         menubar_opacity              1.0            \
         mouse_follows_focus          on             \
-        focus_follows_mouse          on             \
+        focus_follows_mouse          off            \
         display_arrangement_order    default        \
         window_origin_display        default        \
         window_placement             second_child   \
         window_zoom_persist          on             \
-        window_shadow                on             \
+        window_shadow                off            \
         window_animation_duration    0.0            \
         window_animation_easing      ease_out_circ  \
         window_opacity_duration      0.0            \
         active_window_opacity        1.0            \
         normal_window_opacity        0.90           \
         window_opacity               off            \
-        window_gap                   02             \
-        insert_feedback_color        0xffd75f5f     \
+        window_gap                   2              \
+        window_border                on             \
+        window_border_width          2              \
+        active_window_border_color   0xE0808080     \
+        normal_window_border_color   0x00010101     \
+        insert_feedback_color        0xE02d74da     \
         split_ratio                  0.50           \
         split_type                   auto           \
         auto_balance                 off            \
         layout                       bsp            \
-        mouse_modifier               fn             \
+        mouse_modifier               ctrl           \
         mouse_action1                move           \
         mouse_action2                resize         \
         mouse_drop_action            swap
-# yabai -m rule --add app="^(카카오톡|Slack|iTerm2|DeepL|Finder|Mail|Latest|Raycast|시스템 설정|활성 상태 보기)$" manage=off #특정앱 BSP 관리 제외
-yabai -m rule --add app!="^(Arc|Obsidian|Code|IntelliJ IDEA|DBeaver Community)$" manage=off #특정앱만 BSP 관리
+yabai -m rule --add app!="^(Arc|Obsidian|Code|IntelliJ IDEA|Cursor)$" manage=off #특정앱만 BSP 관리
