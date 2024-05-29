@@ -28,7 +28,7 @@ yabai -m config                                     \
         split_type                   auto           \
         auto_balance                 off            \
         layout                       bsp            \
-        mouse_modifier               ctrl           \
+        mouse_modifier               shift          \
         mouse_action1                move           \
         mouse_action2                resize         \
         mouse_drop_action            swap

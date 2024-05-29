@@ -93,12 +93,13 @@ ctrl + cmd - up : yabai -m window --focus north
 ctrl + cmd - down : yabai -m window --focus south
 
 # # increase window size
-# alt + cmd - right : yabai -m window --resize left:-20:0
-# alt + cmd - down : yabai -m window --resize top:0:-20
+# alt + cmd - right : yabai -m window --resize left:-50:0; yabai -m window --resize right:-50:0
+# ctrl + alt - l : yabai -m window --resize left:-50:0
+# ctrl + alt - k : yabai -m window --resize top:0:-50
 
 # # decrease window size
-# alt + cmd - left : yabai -m window --resize right:20:0
-# alt + cmd - up : yabai -m window --resize bottom:0:20
+# ctrl + alt - h : yabai -m window --resize left:50:0
+# ctrl + alt - j : yabai -m window --resize top:0:50
 
 # swap managed window
 # shift + alt - h : yabai -m window --swap north
