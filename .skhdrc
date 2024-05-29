@@ -69,16 +69,36 @@
 #               prepend '\' at the end of the previous line.
 #
 #               an EOL character signifies the end of the bind.
+#open App
+hyper - a : open /Applications/Arc.app
+hyper - k : open /Applications/KakaoTalk.app
+hyper - s : open /Applications/Slack.app
+hyper - j : open "/Applications/JetBrains Toolbox.app"
+hyper - v : open "/Applications/Visual Studio Code.app"
+hyper - c : open /Applications/Cursor.app
+hyper - d : open /Applications/DBeaver.app
+hyper - t : open /Applications/iTerm.app
+hyper - o : open /Applications/Obsidian.app
+hyper - 0x32 : open . #open finder
+hyper - p : osascript -e 'tell application "PopClip" to appear' #open PopClip
 
 # fast focus desktop
-hyper - f : yabai -m display --focus recent
+ctrl + cmd - f : yabai -m display --focus recent
 # cmd + alt - 1 : yabai -m space --focus 1
 
 # focus window
-# hyper - left : yabai -m window --focus west
-# hyper - right : yabai -m window --focus east
-# hyper - up : yabai -m window --focus north
-# hyper - down : yabai -m window --focus south
+ctrl + cmd - left : yabai -m window --focus west
+ctrl + cmd - right : yabai -m window --focus east
+ctrl + cmd - up : yabai -m window --focus north
+ctrl + cmd - down : yabai -m window --focus south
+
+# # increase window size
+# alt + cmd - right : yabai -m window --resize left:-20:0
+# alt + cmd - down : yabai -m window --resize top:0:-20
+
+# # decrease window size
+# alt + cmd - left : yabai -m window --resize right:20:0
+# alt + cmd - up : yabai -m window --resize bottom:0:20
 
 # swap managed window
 # shift + alt - h : yabai -m window --swap north
@@ -157,14 +177,6 @@ ctrl + alt + cmd - c   : yabai -m window --display recent --grid 4:4:1:1:2:2; ya
 # shift + ctrl - a : yabai -m window --move rel:-20:0
 # shift + ctrl - s : yabai -m window --move rel:0:20
 
-# # increase window size
-# shift + alt - a : yabai -m window --resize left:-20:0
-# shift + alt - w : yabai -m window --resize top:0:-20
-
-# # decrease window size
-# shift + cmd - s : yabai -m window --resize bottom:0:-20
-# shift + cmd - w : yabai -m window --resize top:0:20
-
 # set insertion point in focused container
 # ctrl + alt - h : yabai -m window --insert west
 
@@ -180,15 +192,3 @@ ctrl + alt + cmd - c   : yabai -m window --display recent --grid 4:4:1:1:2:2; ya
 
 # toggle sticky(+float), picture-in-picture
 # alt - p : yabai -m window --toggle sticky --toggle pip
-
-#open App
-hyper - a : open /Applications/Arc.app
-hyper - k : open /Applications/KakaoTalk.app
-hyper - s : open /Applications/Slack.app
-hyper - j : open "/Applications/JetBrains Toolbox.app"
-hyper - v : open "/Applications/Visual Studio Code.app"
-hyper - c : open /Applications/Cursor.app
-hyper - d : open /Applications/DBeaver.app
-hyper - t : open /Applications/iTerm.app
-hyper - o : open /Applications/Obsidian.app
-hyper - 0x32 : open .
