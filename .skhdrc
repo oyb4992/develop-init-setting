@@ -79,8 +79,11 @@ hyper - c : open /Applications/Cursor.app
 hyper - d : open /Applications/DBeaver.app
 hyper - t : open /Applications/iTerm.app
 hyper - o : open /Applications/Obsidian.app
-hyper - 0x32 : open . #open finder
+hyper - 0x32 : open ~ #open finder
 hyper - p : osascript -e 'tell application "PopClip" to appear' #open PopClip
+
+# Float / Unfloat window: 창 관리 토글
+ctrl + cmd - space : yabai -m window --toggle float;yabai -m window --toggle border
 
 # fast focus desktop
 ctrl + cmd - f : yabai -m display --focus recent
