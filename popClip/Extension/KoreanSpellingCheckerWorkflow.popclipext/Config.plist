@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Version</key>
+	<integer>1</integer>
+	<key>Extension Name</key>
+	<string>한국어 맞춤법 검사</string>
+	<key>Extension Description</key>
+	<dict>
+		<key>en</key>
+		<string>Check Korean spelling for the selected text.</string>
+		<key>ko</key>
+		<string>선택한 글의 한국어 맞춤법 검사.</string>
+	</dict>
+	<key>Extension Identifier</key>
+	<string>kr.or.appletree.popclip.extension.koreanspellingcheckerworkflow</string>
+	<key>Actions</key>
+	<array>
+		<dict>
+			<key>Service Name</key>
+			<string>✔ 선택한 글의 한국어 맞춤법 검사하기</string>
+			<key>Title</key>
+			<string>맞춤법</string>
+		</dict>
+	</array>
+</dict>
+</plist>

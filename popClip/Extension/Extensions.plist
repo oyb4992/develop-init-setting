@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Installed Extensions</key>
+	<array>
+		<dict>
+			<key>Enabled</key>
+			<true/>
+			<key>Extension Identifier</key>
+			<string>com.pilotmoon.popclip.extension.SearchNaver</string>
+			<key>Extension Name</key>
+			<string>Naver</string>
+			<key>Package Name</key>
+			<string>Naver.popclipext</string>
+		</dict>
+		<dict>
+			<key>Enabled</key>
+			<true/>
+			<key>Extension Identifier</key>
+			<string>com.pilotmoon.popclip.extension.sort</string>
+			<key>Extension Name</key>
+			<string>Sort</string>
+			<key>Package Name</key>
+			<string>@41mamt.com.pilotmoon.popclip.extension.sort.popclipext</string>
+		</dict>
+		<dict>
+			<key>Enabled</key>
+			<true/>
+			<key>Extension Identifier</key>
+			<string>com.pilotmoon.popclip.extension.pasteplain</string>
+			<key>Extension Name</key>
+			<string>붙이기 =</string>
+			<key>Package Name</key>
+			<string>PasteAndMatch.popclipext</string>
+		</dict>
+		<dict>
+			<key>Enabled</key>
+			<true/>
+			<key>Extension Identifier</key>
+			<string>kr.or.appletree.popclip.extension.koreanspellingcheckerworkflow</string>
+			<key>Extension Name</key>
+			<string>한국어 맞춤법 검사</string>
+			<key>Package Name</key>
+			<string>KoreanSpellingCheckerWorkflow.popclipext</string>
+		</dict>
+		<dict>
+			<key>Enabled</key>
+			<true/>
+			<key>Extension Identifier</key>
+			<string>com.pilotmoon.popclip.extension.join-lines</string>
+			<key>Extension Name</key>
+			<string>Join Lines</string>
+			<key>Package Name</key>
+			<string>@01vjf6.com.pilotmoon.popclip.extension.join-lines.popclipext</string>
+		</dict>
+		<dict>
+			<key>Enabled</key>
+			<true/>
+			<key>Extension Identifier</key>
+			<string>com.pilotmoon.popclip.extension.reverse</string>
+			<key>Extension Name</key>
+			<string>Reverse</string>
+			<key>Package Name</key>
+			<string>@gt0c91.com.pilotmoon.popclip.extension.reverse.popclipext</string>
+		</dict>
+		<dict>
+			<key>Enabled</key>
+			<true/>
+			<key>Extension Identifier</key>
+			<string>com.pilotmoon.popclip.extension.comma-list</string>
+			<key>Extension Name</key>
+			<string>Comma List</string>
+			<key>Package Name</key>
+			<string>@yfcs28.com.pilotmoon.popclip.extension.comma-list.popclipext</string>
+		</dict>
+		<dict>
+			<key>Enabled</key>
+			<true/>
+			<key>Extension Identifier</key>
+			<string>com.pilotmoon.popclip.extension.google-search</string>
+			<key>Extension Name</key>
+			<string>Google</string>
+			<key>Package Name</key>
+			<string>GoogleSearch.popclipext</string>
+		</dict>
+		<dict>
+			<key>Enabled</key>
+			<true/>
+			<key>Extension Identifier</key>
+			<string>com.pilotmoon.popclip.extension.dropiver</string>
+			<key>Extension Name</key>
+			<string>Dropover</string>
+			<key>Package Name</key>
+			<string>@zme7a4.com.pilotmoon.popclip.extension.dropiver.popclipext</string>
+		</dict>
+		<dict>
+			<key>Enabled</key>
+			<true/>
+			<key>Extension Identifier</key>
+			<string>com.pilotmoon.popclip.extension.code-case</string>
+			<key>Extension Name</key>
+			<string>Coding Cases</string>
+			<key>Package Name</key>
+			<string>CodeCase.popclipext</string>
+		</dict>
+		<dict>
+			<key>Enabled</key>
+			<true/>
+			<key>Extension Identifier</key>
+			<string>com.pilotmoon.popclip.extension.remove-spaces</string>
+			<key>Extension Name</key>
+			<string>Remove Spaces</string>
+			<key>Package Name</key>
+			<string>RemoveSpaces.popclipext</string>
+		</dict>
+	</array>
+	<key>Version</key>
+	<integer>1</integer>
+</dict>
+</plist>
