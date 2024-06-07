@@ -73,7 +73,8 @@
 hyper - a : open /Applications/Arc.app
 hyper - k : open /Applications/KakaoTalk.app
 hyper - s : open /Applications/Slack.app
-hyper - j : open "/Applications/JetBrains Toolbox.app"
+# hyper - j : open "/Applications/JetBrains Toolbox.app"
+hyper - i : open ~"/Applications/IntelliJ IDEA Community Edition.app"
 hyper - v : open "/Applications/Visual Studio Code.app"
 hyper - c : open /Applications/Cursor.app
 hyper - d : open /Applications/DBeaver.app
