@@ -79,6 +79,7 @@ hyper - c : open /Applications/Cursor.app
 hyper - d : open /Applications/DBeaver.app
 hyper - t : open /Applications/iTerm.app
 hyper - o : open /Applications/Obsidian.app
+hyper - b : open /Applications/Boop.app
 hyper - 0x32 : open ~ #open finder
 hyper - p : osascript -e 'tell application "PopClip" to appear' #open PopClip
 
