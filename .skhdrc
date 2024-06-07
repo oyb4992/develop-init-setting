@@ -106,10 +106,17 @@ ctrl + cmd - down : yabai -m window --focus south
 # ctrl + alt - j : yabai -m window --resize top:0:50
 
 # swap managed window
-# shift + alt - h : yabai -m window --swap north
+# shift + ctrl - left : yabai -m window --swap west
+# shift + ctrl - right : yabai -m window --swap east
+# shift + ctrl - up : yabai -m window --swap north
+# shift + ctrl - down : yabai -m window --swap south
 
 # move managed window
 # shift + cmd - h : yabai -m window --warp east
+shift + ctrl - left : yabai -m window --warp west
+shift + ctrl - right : yabai -m window --warp east
+shift + ctrl - up : yabai -m window --warp north
+shift + ctrl - down : yabai -m window --warp south
 
 # balance size of window
 hyper - 0 : yabai -m space --balance
