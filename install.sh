@@ -34,28 +34,35 @@ brew bundle --file=./Brewfile
 
 # cask로 다운로드시 웹에서 다운로드한 것과 동일하기 때문에 실행을 하면 Security 문제로 실행되지 않음
 # cask로 설치한 애플리케이션을 바로 실행하기 위해 다운로드 된 파일에 대한 격리 속성 제거 작업 명령어
-sudo xattr -dr com.apple.quarantine /Applications/AppCleaner
-sudo xattr -dr com.apple.quarantine /Applications/BetterTouchTool
-sudo xattr -dr com.apple.quarantine /Applications/DBeaver
-sudo xattr -dr com.apple.quarantine /Applications/DeepL
-sudo xattr -dr com.apple.quarantine /Applications/Google\ Chrome
-sudo xattr -dr com.apple.quarantine /Applications/Google\ Drive
-sudo xattr -dr com.apple.quarantine /Applications/IINA
-sudo xattr -dr com.apple.quarantine /Applications/iTerm
-sudo xattr -dr com.apple.quarantine /Applications/Itsycal
-sudo xattr -dr com.apple.quarantine /Applications/JetBrains\ Toolbox
-sudo xattr -dr com.apple.quarantine /Applications/Karabiner-Elements
-sudo xattr -dr com.apple.quarantine /Applications/Keka
-sudo xattr -dr com.apple.quarantine /Applications/Latest
-sudo xattr -dr com.apple.quarantine /Applications/OneDrive
-sudo xattr -dr com.apple.quarantine /Applications/PopClip
-sudo xattr -dr com.apple.quarantine /Applications/Postman
-sudo xattr -dr com.apple.quarantine /Applications/Raycast
-sudo xattr -dr com.apple.quarantine /Applications/Slack
+sudo xattr -dr com.apple.quarantine /Applications/AppCleaner.app
+sudo xattr -dr com.apple.quarantine /Applications/BetterTouchTool.app
+sudo xattr -dr com.apple.quarantine /Applications/BetterDisplay.app
+sudo xattr -dr com.apple.quarantine /Applications/Boop.app
+sudo xattr -dr com.apple.quarantine /Applications/DBeaver.app
+sudo xattr -dr com.apple.quarantine /Applications/ChatGPT.app
+sudo xattr -dr com.apple.quarantine /Applications/Cursor.app
+sudo xattr -dr com.apple.quarantine /Applications/DeepL.app
+sudo xattr -dr com.apple.quarantine /Applications/Google\ Chrome.app
+sudo xattr -dr com.apple.quarantine /Applications/Google\ Drive.app
+sudo xattr -dr com.apple.quarantine /Applications/IINA.app
+sudo xattr -dr com.apple.quarantine /Applications/iTerm.app
+sudo xattr -dr com.apple.quarantine /Applications/Itsycal.app
+sudo xattr -dr com.apple.quarantine /Applications/JetBrains\ Toolbox.app
+sudo xattr -dr com.apple.quarantine /Applications/Karabiner-Elements.app
+sudo xattr -dr com.apple.quarantine /Applications/Keka.app
+sudo xattr -dr com.apple.quarantine /Applications/Latest.app
+sudo xattr -dr com.apple.quarantine /Applications/Obsidian.app
+sudo xattr -dr com.apple.quarantine /Applications/OneDrive.app
+sudo xattr -dr com.apple.quarantine /Applications/OpenLens.app
+sudo xattr -dr com.apple.quarantine /Applications/PopClip.app
+sudo xattr -dr com.apple.quarantine /Applications/Postman.app
+sudo xattr -dr com.apple.quarantine /Applications/Rancher\ Desktop.app
+sudo xattr -dr com.apple.quarantine /Applications/Raycast.app
+sudo xattr -dr com.apple.quarantine /Applications/Slack.app
 # sudo xattr -dr com.apple.quarantine /Applications/Telegram #개인맥북엔 필요
-sudo xattr -dr com.apple.quarantine /Applications/Visual\ Studio\ Code
-sudo xattr -dr com.apple.quarantine /Applications/GitHub\ Desktop
-sudo xattr -dr com.apple.quarantine /Applications/MonitorControl
+sudo xattr -dr com.apple.quarantine /Applications/Visual\ Studio\ Code.app
+sudo xattr -dr com.apple.quarantine /Applications/GitHub\ Desktop.app
+
 
 # 설치 성공 완료 메세지 노출
 printf '\n install success! \n'
