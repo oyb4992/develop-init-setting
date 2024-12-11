@@ -11,7 +11,7 @@ yabai -m config                                     \
         window_origin_display        default        \
         window_placement             second_child   \
         window_zoom_persist          on             \
-        window_shadow                off            \
+        window_shadow                on             \
         window_animation_duration    0.0            \
         window_animation_easing      ease_out_circ  \
         window_opacity_duration      0.0            \
@@ -32,4 +32,5 @@ yabai -m config                                     \
         mouse_action1                move           \
         mouse_action2                resize         \
         mouse_drop_action            swap
-yabai -m rule --add app!="^(Arc|Obsidian|Code|IntelliJ IDEA|Cursor)$" manage=off #특정앱만 BSP 관리
+# yabai -m rule --add app!="^(Arc|Obsidian|Code|IntelliJ IDEA|Cursor)$" manage=off #특정앱만 BSP 관리
+yabai -m rule --add app="^(카카오톡)$" manage=off #특정앱만 BSP 관리

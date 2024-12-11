@@ -74,18 +74,23 @@ hyper - a : open /Applications/Arc.app
 hyper - k : open /Applications/KakaoTalk.app
 hyper - s : open /Applications/Slack.app
 # hyper - j : open "/Applications/JetBrains Toolbox.app"
-hyper - i : open ~"/Applications/IntelliJ IDEA Community Edition.app"
-hyper - v : open "/Applications/Visual Studio Code.app"
+hyper - i : open ~"/Applications/IntelliJ IDEA Ultimate.app"
+# hyper - v : open "/Applications/Visual Studio Code.app"
 hyper - c : open /Applications/Cursor.app
-hyper - d : open /Applications/DBeaver.app
+hyper - l : open ~"/Applications/LobeChat.app"
+# hyper - d : open /Applications/DBeaver.app
 hyper - t : open /Applications/iTerm.app
 hyper - o : open /Applications/Obsidian.app
 hyper - b : open /Applications/Boop.app
 hyper - 0x32 : open ~ #open finder
 hyper - p : osascript -e 'tell application "PopClip" to appear' #open PopClip
+hyper - h : open /Applications/HTTPie.app
 
 # Float / Unfloat window: 창 관리 토글
 ctrl + cmd - space : yabai -m window --toggle float;yabai -m window --toggle border
+
+# yabai restart
+ctrl + cmd - r : yabai --restart-service
 
 # fast focus desktop
 ctrl + cmd - f : yabai -m display --focus recent
@@ -98,19 +103,20 @@ ctrl + cmd - up : yabai -m window --focus north
 ctrl + cmd - down : yabai -m window --focus south
 
 # # increase window size
-# alt + cmd - right : yabai -m window --resize left:-50:0; yabai -m window --resize right:-50:0
+alt + cmd - right : yabai -m window --resize left:-50:0; yabai -m window --resize right:-50:0
 # ctrl + alt - l : yabai -m window --resize left:-50:0
 # ctrl + alt - k : yabai -m window --resize top:0:-50
 
 # # decrease window size
+alt + cmd - left : yabai -m window --resize left:50:0; yabai -m window --resize right:50:0
 # ctrl + alt - h : yabai -m window --resize left:50:0
 # ctrl + alt - j : yabai -m window --resize top:0:50
 
 # swap managed window
-# shift + ctrl - left : yabai -m window --swap west
-# shift + ctrl - right : yabai -m window --swap east
-# shift + ctrl - up : yabai -m window --swap north
-# shift + ctrl - down : yabai -m window --swap south
+shift + ctrl - left : yabai -m window --swap west
+shift + ctrl - right : yabai -m window --swap east
+shift + ctrl - up : yabai -m window --swap north
+shift + ctrl - down : yabai -m window --swap south
 
 # move managed window
 # shift + cmd - h : yabai -m window --warp east
