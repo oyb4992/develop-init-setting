@@ -90,7 +90,7 @@ hyper - h : open /Applications/HTTPie.app
 ctrl + cmd - space : yabai -m window --toggle float;yabai -m window --toggle border
 
 # yabai restart
-ctrl + cmd - r : yabai --restart-service
+ctrl + cmd - r : yabai --restart-service; skhd --reload
 
 # fast focus desktop
 ctrl + cmd - f : yabai -m display --focus recent
@@ -102,13 +102,13 @@ ctrl + cmd - right : yabai -m window --focus east
 ctrl + cmd - up : yabai -m window --focus north
 ctrl + cmd - down : yabai -m window --focus south
 
-# # increase window size
-alt + cmd - right : yabai -m window --resize left:-50:0; yabai -m window --resize right:-50:0
+# increase window size
+alt + cmd - right : yabai -m window --resize left:50:0; yabai -m window --resize right:50:0
 # ctrl + alt - l : yabai -m window --resize left:-50:0
 # ctrl + alt - k : yabai -m window --resize top:0:-50
 
-# # decrease window size
-alt + cmd - left : yabai -m window --resize left:50:0; yabai -m window --resize right:50:0
+# decrease window size
+alt + cmd - left : yabai -m window --resize left:-50:0; yabai -m window --resize right:-50:0
 # ctrl + alt - h : yabai -m window --resize left:50:0
 # ctrl + alt - j : yabai -m window --resize top:0:50
 
