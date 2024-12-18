@@ -113,6 +113,7 @@ alt-shift-cmd-ctrl-h = 'exec-and-forget open /Applications/HTTPie.app'
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout
 alt-slash = 'layout tiles horizontal vertical'
 alt-comma = 'layout accordion horizontal vertical'
+alt-shift-space = 'layout floating tiling'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#focus
 alt-h = 'focus left'
@@ -144,6 +145,7 @@ alt-8 = 'workspace 8'
 alt-9 = 'workspace 9'
 alt-a = 'workspace A' #for AI
 alt-b = 'workspace B' #for Browser
+alt-d = 'workspace D' #for Document
 alt-e = 'workspace E' #for Finder
 alt-i = 'workspace I' #for IDE
 alt-n = 'workspace N' #for Notes
@@ -232,4 +234,12 @@ run = 'layout floating'
 
 [[on-window-detected]]
 if.app-id = 'com.okatbest.boop'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.tinyspeck.slackmacgap'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.ActivityMonitor'
 run = 'layout floating'
