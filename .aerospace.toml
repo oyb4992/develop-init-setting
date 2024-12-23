@@ -12,7 +12,7 @@ after-login-command = []
 after-startup-command = [
     # JankyBorders has a built-in detection of already running process,
     # so it won't be run twice on AeroSpace restart
-    'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0'
+    'exec-and-forget borders active_color=0xff00ff00 inactive_color=0xff494d64 width=5.0 hidpi=on ax_focus=on'
 ]
 
 # Start AeroSpace at login
@@ -150,6 +150,7 @@ alt-e = 'workspace E' #for Finder
 alt-i = 'workspace I' #for IDE
 alt-n = 'workspace N' #for Notes
 alt-t = 'workspace T' # for Terminal
+alt-w = 'workspace W' # for Windows
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
 alt-shift-1 = 'move-node-to-workspace --focus-follows-window 1'
@@ -163,10 +164,12 @@ alt-shift-8 = 'move-node-to-workspace --focus-follows-window 8'
 alt-shift-9 = 'move-node-to-workspace --focus-follows-window 9'
 alt-shift-a = 'move-node-to-workspace --focus-follows-window A'
 alt-shift-b = 'move-node-to-workspace --focus-follows-window B'
+alt-shift-d = 'move-node-to-workspace --focus-follows-window D'
 alt-shift-e = 'move-node-to-workspace --focus-follows-window E'
 alt-shift-i = 'move-node-to-workspace --focus-follows-window I'
 alt-shift-n = 'move-node-to-workspace --focus-follows-window N'
 alt-shift-t = 'move-node-to-workspace --focus-follows-window T'
+alt-shift-w = 'move-node-to-workspace --focus-follows-window W'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 alt-tab = 'workspace-back-and-forth'
@@ -229,6 +232,10 @@ if.app-id = 'md.obsidian'
 run = 'move-node-to-workspace N'
 
 [[on-window-detected]]
+if.app-id = 'com.microsoft.Excel'
+run = 'move-node-to-workspace D'
+
+[[on-window-detected]]
 if.app-id = 'com.kakao.KakaoTalkMac'
 run = 'layout floating'
 
@@ -243,3 +250,7 @@ run = 'layout floating'
 [[on-window-detected]]
 if.app-id = 'com.apple.ActivityMonitor'
 run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.utmapp.UTM'
+run = 'move-node-to-workspace W'
