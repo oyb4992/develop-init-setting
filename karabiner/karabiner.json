@@ -415,6 +415,35 @@
                                 "type": "basic"
                             }
                         ]
+                    },
+                    {
+                        "description": "Convert to en when ESC",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.apple\\.Terminal$",
+                                            "^com\\.googlecode\\.iterm2$",
+                                            "^co\\.zeit\\.hyperterm$",
+                                            "^co\\.zeit\\.hyper$",
+                                            "^io\\.alacritty$",
+                                            "^com\\.jetbrains\\.goland$",
+                                            "^com\\.jetbrains\\.intellij$",
+                                            "^com\\.jetbrains\\.webstorm$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "escape",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [{ "key_code": "escape" }],
+                                "to_after_key_up": [{ "select_input_source": { "language": "en" } }],
+                                "type": "basic"
+                            }
+                        ]
                     }
                 ]
             },
