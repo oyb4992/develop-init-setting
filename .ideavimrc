@@ -1,61 +1,57 @@
 " ~/.idea-lazy.vim
 
-" LazyVim mappings for Jetbrains IDEs
+" Jetbrains IDE용 LazyVim 매핑
 
-" Required plugins. https://plugins.jetbrains.com/bundles/7-ideavim-bundle
+" 필수 플러그인. https://plugins.jetbrains.com/bundles/7-ideavim-bundle
 "  IDEAVim
 "  Which-Key
 "  IdeaVim-Sneak
 
-" To install, add this to the top of your ~/.ideavimrc:
+" 설치하려면 ~/.ideavimrc 상단에 다음을 추가하세요:
 " source ~/.idea-lazy.vim
 
-" This file is hosted at:
+" 이 파일은 다음 위치에 호스팅됩니다:
 " https://gist.github.com/mikeslattery/d2f2562e5bbaa7ef036cf9f5a13deff5
 
-" Beginners, run this to learn basic maps:
+" 초보자는 기본 매핑을 배우려면 다음을 실행하세요:
 " nvim --clean +Tutor
 
-" Useful Jetbrains Tool Windows' Maps:
-" <esc>       Return to editor
-" <S-esc>     Hide the tool window
-" <F12>       Go to the tool window
-" <C-S-quote> Toggle Maximize/Restore the tool window
-" <C-M-y>     Reload files.  Useful after making edits in Neovim or CL
-" <M-left>    Previous Tab
-" <M-right>   Next Tab
-" <C-F4>      Close Tab
-" <M-3>       Activate Find Tool Window
-" <M-6>       Activate Problems View Tool Window
-" <c-s-a>     Find Action
+" 유용한 Jetbrains 도구 창 매핑:
+" <esc>       편집기로 돌아가기
+" <S-esc>     도구 창 숨기기
+" <F12>       도구 창으로 이동
+" <C-S-quote> 도구 창 최대화/복원 토글
+" <C-M-y>     파일 다시 로드. Neovim 또는 CL에서 편집한 후 유용합니다.
+" <M-left>    이전 탭
+" <M-right>   다음 탭
+" <C-F4>      탭 닫기
+" <M-3>       찾기 도구 창 활성화
+" <M-6>       문제 보기 도구 창 활성화
+" <c-s-a>     액션 찾기
 
-" LazyVim's Java extra: https://www.lazyvim.org/extras/lang/java
+" LazyVim의 Java 추가 기능: https://www.lazyvim.org/extras/lang/java
 
-
-" LazyVim default settings
+" LazyVim 기본 설정
 " https://www.lazyvim.org/configuration/general
 
-let mapleader=" "
-let maplocalleader="\\"
-
-" Confirm to save changes before exiting modified buffer
+" 변경 사항을 저장하기 전에 저장 확인
 set formatoptions=jcroqlnt
-" Print line number
+" 줄 번호 표시
 set number
-" Relative line numbers
+" 상대 줄 번호
 set relativenumber
-" Lines of context
+" 문맥 줄 수
 set scrolloff=4
-" Round indent
+" 반올림 들여쓰기
 set shiftround
-" Columns of context
+" 문맥 열 수
 set sidescrolloff=8
-" which-key says to set this high, or set notimeout
+" which-key에서는 높게 설정하거나 notimeout을 설정하라고 합니다.
 set notimeout
-" Disable line wrap
+" 줄 바꿈 비활성화
 set nowrap
 
-" Neovim settings that differ from Vim
+" Vim과 다른 Neovim 설정
 " https://neovim.io/doc/user/diff.html
 " https://github.com/mikeslattery/nvim-defaults.vim/blob/main/plugin/.vimrc
 
@@ -64,451 +60,450 @@ set formatoptions=tcqj
 set listchars=tab:>\ ,trail:-,nbsp:+
 set shortmess=filnxtToOF
 
-" Enable plugin behavior
+" 플러그인 동작 활성화
 
 " https://github.com/JetBrains/ideavim/wiki/IdeaVim-Plugins
 " https://www.lazyvim.org/plugins
 
-" gcc and gc<action> mappings.
+" gcc 및 gc<action> 매핑.
 Plug 'tpope/vim-commentary'
-" s action, such as cs"' (replace " with '), ds" (unquote)
+" s 액션, 예: cs"' ("를 '로 바꾸기), ds" (따옴표 제거)
 Plug 'tpope/vim-surround'
-" similar to flash.nvim
+" flash.nvim과 유사
 Plug 'justinmk/vim-sneak'
-" Enable the whichkey plugin, available on Jetbrains marketplace
+" Jetbrains 마켓플레이스에서 사용 가능한 whichkey 플러그인 활성화
 set which-key
-" Extended matching.  A Neovim default plugin.
+" 확장 매칭. Neovim 기본 플러그인.
 set matchit
 
-" Key maps
+" 키 매핑
 
 " https://www.lazyvim.org/configuration/keymaps
 
-" To track Action-IDs
+" 액션 ID를 추적하려면
 " :action VimFindActionIdAction
 
-" General Keymaps
+" 일반 키 매핑
 
-" Go to Left Window
+" 왼쪽 창으로 이동
 nmap <C-h> <C-w>h
-" Go to Lower Window
+" 아래쪽 창으로 이동
 nmap <C-j> <C-w>j
-" Go to Upper Window
+" 위쪽 창으로 이동
 nmap <C-k> <C-w>k
-" Go to Right Window
+" 오른쪽 창으로 이동
 nmap <C-l> <C-w>l
-" Increase Window Height
+" 창 높이 늘리기
 nmap <C-Up> <Action>(IncrementWindowHeight)
-" Decrease Window Height
+" 창 높이 줄이기
 nmap <C-Down> <Action>(DecrementWindowHeight)
-" Decrease Window Width
+" 창 너비 줄이기
 nmap <C-Left> <Action>(DecrementWindowWidth)
-" Increase Window Width
+" 창 너비 늘리기
 nmap <C-Right> <Action>(IncrementWindowWidth)
-" Move Down
+" 아래로 이동
 nmap <A-j> <Action>(MoveLineDown)
 imap <A-j> <Esc><Action>(MoveLineDown)i
-" Move Up
+" 위로 이동
 nmap <A-k> <Action>(MoveLineUp)
 imap <A-k> <Esc><Action>(MoveLineUp)i
-" Prev Buffer
+" 이전 버퍼
 nmap <S-h> <Action>(PreviousTab)
-" Next Buffer
+" 다음 버퍼
 nmap <S-l> <Action>(NextTab)
-" Prev Buffer (alternative)
+" 이전 버퍼 (대안)
 nmap [b <Action>(PreviousTab)
-" Next Buffer (alternative)
+" 다음 버퍼 (대안)
 nmap ]b <Action>(NextTab)
-" Switch to Other Buffer
+" 다른 버퍼로 전환
 nnoremap <leader>bb <C-^>
-" Switch to Other Buffer (alternative)
+" 다른 버퍼로 전환 (대안)
 nnoremap <leader>` <C-^>
-" Delete Buffer
+" 버퍼 삭제
 nmap <leader>bd <Action>(CloseContent)
-" Delete Buffer and Window
+" 버퍼 및 창 삭제
 nmap <leader>bD <Action>(CloseContent)
-" Delete Other Buffers
+" 다른 버퍼 삭제
 nmap <leader>bo <Action>(CloseAllEditorsButActive)
-" Escape and Clear hlsearch
+" Escape 및 hlsearch 지우기
 nmap <esc> :nohlsearch<CR>
 nmap <leader>ur :nohlsearch<CR>
 " Keywordprg
 nmap <leader>K :help<space><C-r><C-w><CR>
-" Add Comment Below
+" 아래에 주석 추가
 nmap gco o<c-o>gcc
-" Add Comment Above
+" 위에 주석 추가
 nmap gcO O<c-o>gcc
 " Lazy
 nmap <leader>l <Action>(WelcomeScreen.Plugins)
-" New File
+" 새 파일
 nmap <leader>fn Action(NewElementSamePlace)
-" Location List
+" 위치 목록
 nmap <leader>xl <Action>(ActivateProblemsViewToolWindow)
-" Quickfix List
+" 빠른 수정 목록
 nmap <leader>xq <Action>(ActivateProblemsViewToolWindow)
-" Previous Quickfix
+" 이전 빠른 수정
 nmap [q <Action>(GotoPreviousError)
-" Next Quickfix
+" 다음 빠른 수정
 nmap ]q <Action>(GotoNextError)
-" Format
+" 포맷
 nmap <leader>cf <Action>(Format)
 vmap <leader>cf <Action>(Format)
-" Line Diagnostics
+" 줄 진단
 nmap <leader>cd <Action>(ActivateProblemsViewToolWindow)
-" Next Diagnostic
+" 다음 진단
 nmap ]d <Action>(GotoNextError)
-" Prev Diagnostic
+" 이전 진단
 nmap [d <Action>(GotoPreviousError)
-" Next Error
+" 다음 오류
 nmap ]e <Action>(GotoNextError)
-" Prev Error
+" 이전 오류
 nmap [e <Action>(GotoPreviousError)
-" Next Warning
+" 다음 경고
 nmap ]w <Action>(GotoNextError)
-" Prev Warning
+" 이전 경고
 nmap [w <Action>(GotoPreviousError)
-" Toggle Auto Format (Global)
-nmap <leader>ub :echo 'There is no equivalent mapping for Toggle Auto Format.'<cr>
-" Toggle Auto Format (Buffer)
-nmap <leader>uB :echo 'There is no equivalent mapping for Toggle Auto Format.'<cr>
-" Toggle Spelling
+" 자동 포맷 토글 (전역)
+nmap <leader>ub :echo '자동 포맷 토글에 해당하는 매핑이 없습니다.'<cr>
+" 자동 포맷 토글 (버퍼)
+nmap <leader>uB :echo '자동 포맷 토글에 해당하는 매핑이 없습니다.'<cr>
+" 맞춤법 검사 토글
 nmap <leader>us :setlocal spell!<CR>
-" Toggle Wrap
+" 줄 바꿈 토글
 nmap <leader>uw :setlocal wrap!<CR>
-" Toggle Relative Number
+" 상대 줄 번호 토글
 nmap <leader>uL :set relativenumber!<CR>
-" Toggle Diagnostics
+" 진단 토글
 nmap <leader>ud <Action>(ActivateProblemsViewToolWindow)
-" Toggle Line Numbers
+" 줄 번호 토글
 nmap <leader>ul :set number!<CR>
-" Toggle conceallevel
-nmap <leader>uc :echo 'There is no equivalent mapping for Toggle Conceallevel.'<cr>
-" Toggle Treesitter Highlight
-nmap <leader>uT :echo 'There is no equivalent mapping for Toggle Treesitter Highlight.'<cr>
-" Toggle Background
+" conceallevel 토글
+nmap <leader>uc :echo 'Conceallevel 토글에 해당하는 매핑이 없습니다.'<cr>
+" Treesitter 강조 토글
+nmap <leader>uT :echo 'Treesitter 강조 토글에 해당하는 매핑이 없습니다.'<cr>
+" 배경 토글
 nmap <leader>ub <Action>(QuickChangeScheme)
-" Toggle Inlay Hints
-nmap <leader>uh :echo 'There is no equivalent mapping for Toggle Inlay Hints.'<cr>
-" Lazygit (Root Dir)
+" 인레이 힌트 토글
+nmap <leader>uh :echo '인레이 힌트 토글에 해당하는 매핑이 없습니다.'<cr>
+" Lazygit (루트 디렉토리)
 nmap <leader>gg <Action>(ActivateCommitToolWindow)
-" Lazygit (cwd)
+" Lazygit (현재 작업 디렉토리)
 nmap <leader>gG <Action>(ActivateCommitToolWindow)
-" Git Blame Line
+" Git Blame 줄
 nmap <leader>gb <Action>(Annotate)
 " Git Browse
 nmap <leader>gB <Action>(Vcs.Show.Log)
-" Lazygit Current File History
+" Lazygit 현재 파일 기록
 nmap <leader>gf <Action>(Vcs.ShowTabbedFileHistory)
-" Lazygit Log
+" Lazygit 로그
 nmap <leader>gl <Action>(Vcs.Show.Log)
-" Lazygit Log (cwd)
+" Lazygit 로그 (현재 작업 디렉토리)
 nmap <leader>gL <Action>(Vcs.Show.Log)
-" Quit All
+" 모두 종료
 nmap <leader>qq <Action>(Exit)
-" Inspect Pos
+" 위치 검사
 nmap <leader>ui <Actrion>(ActivateStructureToolWindow)
-" Inspect Tree
+" 트리 검사
 nmap <leader>uI <Action>(ActivateStructureToolWindow)
-" LazyVim Changelog
+" LazyVim 변경 로그
 nmap <leader>L <Action>(WhatsNewAction)
-" Terminal (Root Dir)
+" 터미널 (루트 디렉토리)
 nmap <leader>ft <Action>(ActivateTerminalToolWindow)
-" Terminal (cwd)
+" 터미널 (현재 작업 디렉토리)
 nmap <leader>fT <Action>(ActivateTerminalToolWindow)
-" Terminal (Root Dir)
+" 터미널 (루트 디렉토리)
 nmap <C-/> <Action>(ActivateTerminalToolWindow)
-" nmap <C-_> 'There is no equivalent mapping for <c-_>.'<cr>
-" Hide Terminal - terminal mode maps not possible
-" Split Window Below.  :split<cr> doesn't work.
+" nmap <C-_> ' <c-_>에 해당하는 매핑이 없습니다.'<cr>
+" 터미널 숨기기 - 터미널 모드 매핑 불가능
+" 아래에 창 분할. :split<cr>은 작동하지 않습니다.
 nmap <leader>- <c-w>s
-" Split Window Right
+" 오른쪽에 창 분할
 nmap <leader><bar> <c-w>v
-" Delete Window
+" 창 삭제
 nmap <leader>wd <Action>(CloseContent)
-" Toggle Maximize
+" 최대화 토글
 nmap <leader>wm <Action>(ToggleDistractionFreeMode)
 
-" Tabs are treated as saved layouts
+" 탭은 저장된 레이아웃으로 처리됩니다.
 
-" Last Tab
+" 마지막 탭
 nmap <leader><tab>l <Action>(StoreDefaultLayout)<Action>(ChangeToolWindowLayout)
-" Close Other Tabs
+" 다른 탭 닫기
 nmap <leader><tab>o :<cr>
-" First Tab
+" 첫 번째 탭
 nmap <leader><tab>f <Action>(StoreDefaultLayout)<Action>(ChangeToolWindowLayout)
-" New Tab
+" 새 탭
 nmap <leader><tab>f <Action>(StoreDefaultLayout)<Action>(StoreNewLayout)
-" Next Tab
+" 다음 탭
 nmap <leader><tab>] <Action>(StoreDefaultLayout)<Action>(ChangeToolWindowLayout)
-" Previous Tab
+" 이전 탭
 nmap <leader><tab>[ <Action>(StoreDefaultLayout)<Action>(ChangeToolWindowLayout)
-" Close Tab
+" 탭 닫기
 nmap <leader><tab>f <Action>(StoreDefaultLayout)<Action>(ChangeToolWindowLayout)
 
-" LSP Keymaps
+" LSP 키 매핑
 
-" Lsp Info
-nmap <leader>cc :echo 'There is no equivalent mapping for Lsp Info.'<cr>
-" Goto Definition
+" Lsp 정보
+nmap <leader>cc :echo 'Lsp 정보에 해당하는 매핑이 없습니다.'<cr>
+" 정의로 이동
 nmap gd <Action>(GotoDeclaration)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" References
+" 참조
 nmap gr <Action>(FindUsages)
-" Goto Implementation
+" 구현으로 이동
 nmap gI <Action>(GotoImplementation)
-" Goto Type Definition
+" 타입 정의로 이동
 nmap gy <Action>(GotoTypeDeclaration)
-" Goto Declaration
+" 선언으로 이동
 nmap gD <Action>(GotoDeclaration)
-" Signature Help
+" 시그니처 도움말
 nmap gK <Action>(ParameterInfo)
-" Signature Help in Insert Mode
+" 삽입 모드에서 시그니처 도움말
 imap <C-k> <C-o><Action>(ParameterInfo)
-" Code Action
+" 코드 액션
 nmap <leader>ca <Action>(RefactoringMenu)
 vmap <leader>ca <Action>(RefactoringMenu)
-" Run Codelens
-nmap <leader>cc :echo 'There is no equivalent mapping for Run Codelens.'<cr>
-" Refresh & Display Codelens
-nmap <leader>cC :echo 'There is no equivalent mapping for Refresh & Display Codelens.'<cr>
-" Rename File
+" Codelens 실행
+nmap <leader>cc :echo 'Codelens 실행에 해당하는 매핑이 없습니다.'<cr>
+" Codelens 새로 고침 및 표시
+nmap <leader>cC :echo 'Codelens 새로 고침 및 표시에 해당하는 매핑이 없습니다.'<cr>
+" 파일 이름 바꾸기
 nmap <leader>cR <Action>(RenameFile)
-" Rename
+" 이름 바꾸기
 nmap <leader>cr <Action>(RenameElement)
-" Source Action
+" 소스 액션
 nmap <leader>cA <Action>(ShowIntentionActions)
-" Next Reference
+" 다음 참조
 nmap ]] <Action>(GotoNextError)
-" Prev Reference
+" 이전 참조
 nmap [[ <Action>(GotoPreviousError)
-" Next Reference (alternative)
+" 다음 참조 (대안)
 nmap <a-n> <Action>(GotoNextError)
-" Prev Reference (alternative)
+" 이전 참조 (대안)
 nmap <a-p> <Action>(GotoPreviousError)
 
 " Bufferline
 
-" Delete buffers to the left
+" 왼쪽 버퍼 삭제
 nmap <leader>bl <Action>(CloseAllToTheLeft)
-" Toggle pin
+" 핀 토글
 nmap <leader>bp <Action>(PinActiveTabToggle)
-" Delete Non-Pinned Buffers
+" 고정되지 않은 버퍼 삭제
 nmap <leader>bP <Action>(CloseAllUnpinnedEditors)
-" Delete buffers to the right
+" 오른쪽 버퍼 삭제
 nmap <leader>br <Action>(CloseAllToTheRight)
 
-" Neo-tree Keymaps
+" Neo-tree 키 매핑
 
-" Buffer Explorer
+" 버퍼 탐색기
 nmap <leader>be <Action>(ActivateProjectToolWindow)
-" Explorer NeoTree (Root Dir)
+" 탐색기 NeoTree (루트 디렉토리)
 nmap <leader>e <Action>(FileStructurePopup)
-" Explorer NeoTree (cwd)
+" 탐색기 NeoTree (현재 작업 디렉토리)
 nmap <leader>E <Action>(SelectInProjectView)
-" Explorer NeoTree (Root Dir) (alternative)
+" 탐색기 NeoTree (루트 디렉토리) (대안)
 nmap <leader>fe <Action>(ActivateProjectToolWindow)
-" Explorer NeoTree (cwd) (alternative)
+" 탐색기 NeoTree (현재 작업 디렉토리) (대안)
 nmap <leader>fE <Action>(ActivateProjectToolWindow)
-" Git Explorer
+" Git 탐색기
 nmap <leader>ge <Action>(ActivateVersionControlToolWindow)
 
-" Notifications (noice, snacks)
+" 알림 (noice, snacks)
 
 nmap <leader>snd <Action>(ClearAllNotifications)
 nmap <leader>un <Action>(ClearAllNotifications)
 
-" Telescope Keymaps
+" Telescope 키 매핑
 
-" Find Files (Root Dir)
+" 파일 찾기 (루트 디렉토리)
 nmap <leader><space> <Action>(GotoFile)
-" Switch Buffer
+" 버퍼 전환
 nmap <leader>, <Action>(Switcher)
-" Grep (Root Dir)
+" Grep (루트 디렉토리)
 nmap <leader>/ <Action>(FindInPath)
-" Command History
+" 명령 기록
 nmap <leader>: :history<cr>
-" Buffers
+" 버퍼
 nmap <leader>fb <Action>(Switcher)
-" Find Config File
+" 구성 파일 찾기
 nmap <leader>fc <Action>(GotoFile)
-" Find Files (Root Dir) (alternative)
+" 파일 찾기 (루트 디렉토리) (대안)
 nmap <leader>ff <Action>(GotoFile)
-" Find Files (cwd)
+" 파일 찾기 (현재 작업 디렉토리)
 nmap <leader>fF <Action>(GotoFile)
-" Find Files (git-files)
+" 파일 찾기 (git-files)
 nmap <leader>fg <Action>(GotoFile)
-" Recent
+" 최근
 nmap <leader>fr <Action>(RecentFiles)
-" Recent (cwd)
+" 최근 (현재 작업 디렉토리)
 nmap <leader>fR <Action>(RecentFiles)
-" Commits
+" 커밋
 nmap <leader>gc <Action>(Vcs.Show.Log)
-" Status
+" 상태
 nmap <leader>gs <Action>(Vcs.Show.Log)
-" Registers
+" 레지스터
 nmap <leader>s" :registers<cr>
-" Auto Commands
-nmap <leader>sa :echo 'There is no equivalent mapping.'<cr>
-" Buffer
+" 자동 명령
+nmap <leader>sa :echo '해당하는 매핑이 없습니다.'<cr>
+" 버퍼
 nmap <leader>sb <Action>(Switcher)
-" Command History (alternative)
+" 명령 기록 (대안)
 nmap <leader>sc :history<cr>
-" Commands
+" 명령
 nmap <leader>sC <Action>(GotoAction)
-" Document Diagnostics
+" 문서 진단
 nmap <leader>sd <Action>(ActivateProblemsViewToolWindow)
-" Workspace Diagnostics
+" 작업 공간 진단
 nmap <leader>sD <Action>(ActivateProblemsViewToolWindow)
-" Grep (Root Dir) (alternative)
+" Grep (루트 디렉토리) (대안)
 nmap <leader>sg <Action>(FindInPath)
-" Grep (cwd)
+" Grep (현재 작업 디렉토리)
 nmap <leader>sG <Action>(FindInPath)
-" Help Pages
+" 도움말 페이지
 nmap <leader>sh <Action>(HelpTopics)
-" Search Highlight Groups
+" 강조 그룹 검색
 nmap <leader>sH <Action>(HighlightUsagesInFile)
-" Jumplist
+" 점프 목록
 nmap <leader>sj <Action>(RecentLocations)
-" Key Maps
+" 키 매핑
 nmap <leader>sk :map<cr>
-" Location List
+" 위치 목록
 nmap <leader>sl <Action>(ActivateProblemsViewToolWindow)
-" Jump to Mark
+" 마크로 점프
 nmap <leader>sm :marks<cr>
-" Man Pages
+" Man 페이지
 nmap <leader>sM <Action>(ShowDocumentation)
-" Options
+" 옵션
 nmap <leader>so <Action>(ShowSettings)
-" Quickfix List
+" 빠른 수정 목록
 nmap <leader>sq <Action>(ActivateProblemsViewToolWindow)
-" Resume
-nmap <leader>sR :echo 'Not yet implmented.'<cr>
-" Goto Symbol
+" 재개
+nmap <leader>sR :echo '아직 구현되지 않았습니다.'<cr>
+" 심볼로 이동
 nmap <leader>ss <Action>(GotoSymbol)
-" Goto Symbol (Workspace)
+" 심볼로 이동 (작업 공간)
 nmap <leader>sS <Action>(GotoSymbol)
-" Word (Root Dir)
+" 단어 (루트 디렉토리)
 nmap <leader>sw <Action>(FindWordAtCaret)
-" Word (cwd)
+" 단어 (현재 작업 디렉토리)
 nmap <leader>sW <Action>(FindWordAtCaret)
-" Selection (Root Dir)
+" 선택 (루트 디렉토리)
 vmap <leader>sw <Action>(FindWordAtCaret)
-" Selection (cwd)
+" 선택 (현재 작업 디렉토리)
 vmap <leader>sW <Action>(FindWordAtCaret)
-" Colorscheme with Preview
+" 미리보기로 색 구성표
 nmap <leader>uC <Action>(QuickChangeScheme)
 
+" DAP 키 매핑
 
-" DAP Keymaps
-
-" Run with Args
+" 인수로 실행
 nmap <leader>da <Action>(ChooseRunConfiguration)
-" Toggle Breakpoint
+" 중단점 토글
 nmap <leader>db <Action>(ToggleLineBreakpoint)
-" Breakpoint Condition
+" 중단점 조건
 nmap <leader>dB <Action>(AddConditionalBreakpoint)
-" Continue
+" 계속
 nmap <leader>dc <Action>(Resume)
-" Run to Cursor
+" 커서까지 실행
 nmap <leader>dC <Action>(ForceRunToCursor)
-" Go to Line (No Execute)
-nmap <leader>dg :echo 'Not yet implemented.'<cr>
-" Step Into
+" 줄로 이동 (실행 안 함)
+nmap <leader>dg :echo '아직 구현되지 않았습니다.'<cr>
+" 단계 안으로
 nmap <leader>di <Action>(StepInto)
-" Down
+" 아래로
 nmap <leader>dj <Action>(GotoNextError)
-" Up
+" 위로
 nmap <leader>dk <Action>(GotoPreviousError)
-" Run Last
+" 마지막 실행
 nmap <leader>dl <Action>(Debug)
-" Step Out
+" 단계 밖으로
 nmap <leader>do <Action>(StepOut)
-" Step Over
+" 단계 건너뛰기
 nmap <leader>dO <Action>(StepOver)
-" Pause
+" 일시 중지
 nmap <leader>dp <Action>(Pause)
-" Toggle REPL
+" REPL 토글
 nmap <leader>dr <Action>(JShell.Console)
-" Session
-nmap <leader>ds :echo 'Not yet implmented.'<cr>
-" Terminate
+" 세션
+nmap <leader>ds :echo '아직 구현되지 않았습니다.'<cr>
+" 종료
 nmap <leader>dt <Action>(Stop)
-" Widgets
-nmap <leader>dw :echo 'There is no equivalent mapping for Widgets.'<cr>
+" 위젯
+nmap <leader>dw :echo '위젯에 해당하는 매핑이 없습니다.'<cr>
 
-" Todo-comments Keymaps
+" Todo-comments 키 매핑
 
 " Todo
 nmap <leader>st oTODO<esc>gcc
 " Todo/Fix/Fixme
-nmap <leader>sT :echo 'Not yet implemented.'<cr>
+nmap <leader>sT :echo '아직 구현되지 않았습니다.'<cr>
 " Todo (Trouble)
-nmap <leader>xt :echo 'Not yet implemented.'<cr>
+nmap <leader>xt :echo '아직 구현되지 않았습니다.'<cr>
 " Todo/Fix/Fixme (Trouble)
-nmap <leader>xT :echo 'Not yet implemented.'<cr>
-" Previous Todo Comment
+nmap <leader>xT :echo '아직 구현되지 않았습니다.'<cr>
+" 이전 Todo 주석
 nmap [t ?TODO<cr>
-" Next Todo Comment
+" 다음 Todo 주석
 nmap ]t /TODO<cr>
 
-" DAP UI Keymaps
+" DAP UI 키 매핑
 
-" Eval
+" 평가
 nmap <leader>de <Action>(EvaluateExpression)
 vmap <leader>de <Action>(EvaluateExpression)
 " Dap UI
 nmap <leader>du <Action>(ActivateDebugToolWindow)
 
-" Neotest Keymaps
+" Neotest 키 매핑
 
-" Run Last
+" 마지막 실행
 nmap <leader>tl <Action>(Run)
-" Show Output
-nmap <leader>to :echo 'Not yet implemented.'<cr>
-" Toggle Output Panel
-nmap <leader>tO :echo 'Not yet implemented.'<cr>
-" Run Nearest
+" 출력 표시
+nmap <leader>to :echo '아직 구현되지 않았습니다.'<cr>
+" 출력 패널 토글
+nmap <leader>tO :echo '아직 구현되지 않았습니다.'<cr>
+" 가장 가까운 실행
 nmap <leader>tr <Action>(RunClass)
-" Toggle Summary
+" 요약 토글
 nmap <leader>ts <Action>(ShowTestSummary)
-" Stop
+" 중지
 nmap <leader>tS <Action>(Stop)
-" Run File
+" 파일 실행
 nmap <leader>tt <Action>(RunClass)
-" Run All Test Files
+" 모든 테스트 파일 실행
 nmap <leader>tT <Action>(RunAllTests)
-" Toggle Watch
+" 감시 토글
 nmap <leader>tw <Action>(ToggleTestWatch)
 
 " nvim-dap
-" Debug Nearest
+" 가장 가까운 디버그
 nmap <leader>td <Action>(ChooseDebugConfiguration)
 
-" Neovim mappings
+" Neovim 매핑
 " https://neovim.io/doc/user/vim_diff.html#_default-mappings
 
 nnoremap Y y$
 inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
-" Q isn't exactly the same.
+" Q는 정확히 같지 않습니다.
 nnoremap Q @@
-" There are several more Neovim mappings that need to be ported.  See link.
+" 포팅해야 할 Neovim 매핑이 몇 가지 더 있습니다. 링크 참조.
 
-" Jetbrains conflicts
+" Jetbrains 충돌
 " https://github.com/JetBrains/ideavim/blob/master/doc/sethandler.md
-" None, yet.  Possible conflicts: ctrl -6befhjklorsvw
+" 아직 없음. 가능한 충돌: ctrl -6befhjklorsvw
 
-" Notes and Caveats:
-" Tabs map to JB saved layouts.
-" Not everything has been tested.
+" 참고 및 주의 사항:
+" 탭은 JB 저장 레이아웃에 매핑됩니다.
+" 모든 것이 테스트되지는 않았습니다.
 
-" TODOs:
-" Jetbrains conflicts
-" Improve Todo-comments
-" Convert to a github project
-" which-key labels
-" Test every map.  sidy-by-side.
-" Compare all which-key popups
-" Consider:
+" TODO:
+" Jetbrains 충돌
+" Todo-comments 개선
+" github 프로젝트로 변환
+" which-key 라벨
+" 모든 맵 테스트. 나란히.
+" 모든 which-key 팝업 비교
+" 고려 사항:
 "   flash, grub-far, noice, trouble, mini.diff, oversear, copilotchat,
 "   dial, outline, md preview, harpoon, octo
