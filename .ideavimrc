@@ -33,6 +33,8 @@
 
 " LazyVim 기본 설정
 " https://www.lazyvim.org/configuration/general
+let mapleader=" "
+let maplocalleader="\\"
 
 " 변경 사항을 저장하기 전에 저장 확인
 set formatoptions=jcroqlnt
