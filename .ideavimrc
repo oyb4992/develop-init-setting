@@ -1,0 +1,118 @@
+" .ideavimrc is a configuration file for IdeaVim plugin. It uses
+"   the same commands as the original .vimrc configuration.
+" You can find a list of commands here: https://jb.gg/h38q75
+" Find more examples here: https://jb.gg/share-ideavimrc
+
+"" -- Suggested options --
+" Show a few lines of context around the cursor. Note that this makes the
+" text scroll if you mouse-click near the start or end of the window.
+" Do incremental searching.
+set incsearch
+set hls
+set clipboard+=unnamed
+" 변경 사항을 저장하기 전에 저장 확인
+set formatoptions=jcroqlnt
+" 줄 번호 표시
+set number
+" 상대 줄 번호
+"set relativenumber
+" 문맥 줄 수
+set scrolloff=4
+" 반올림 들여쓰기
+"set shiftround
+" 문맥 열 수
+set sidescrolloff=8
+" which-key에서는 높게 설정하거나 notimeout을 설정하라고 합니다.
+set notimeout
+" 줄 바꿈 비활성화
+set nowrap
+set backspace=indent,eol,start
+set formatoptions=tcqj
+set listchars=tab:>\ ,trail:-,nbsp:+
+" Don't use Ex mode, use Q for formatting.
+map Q gq
+
+" --- Enable IdeaVim plugins https://jb.gg/ideavim-plugins
+let mapleader=" "
+
+" Highlight copied text
+Plug 'machakann/vim-highlightedyank'
+" Commentary plugin
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
+Plug 'easymotion/vim-easymotion'
+Plug 'preservim/nerdtree'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'vim-scripts/ReplaceWithRegister'
+set which-key
+set notimeout
+let g:WhichKey_FontSize = 14
+"" -- Map IDE actions to IdeaVim -- https://jb.gg/abva4t
+"" Map \r to the Reformat Code action
+map <leader>r <Action>(ReformatCode)
+map <Leader>m <Plug>(easymotion-prefix)
+map s <Plug>(easymotion-sn)
+
+" 탭은 저장된 레이아웃으로 처리됩니다.
+
+" 다른 탭 닫기 (현재 탭 제외)
+nmap <leader>to :action CloseAllEditorsButActive<CR>
+
+" 다음 탭으로 이동
+nmap <leader>t] <Action>(NextTab)
+
+" 이전 탭으로 이동
+nmap <leader>t[ <Action>(PreviousTab)
+
+" 파일 찾기 (루트 디렉토리)
+nmap <leader><space> <Action>(GotoFile)
+nmap <C-n> <Plug>NextWholeOccurrence
+xmap <C-n> <Plug>NextWholeOccurrence
+nmap g<C-n> <Plug>NextOccurrence
+xmap g<C-n> <Plug>NextOccurrence
+xmap <C-x> <Plug>SkipOccurrence
+xmap <C-p> <Plug>RemoveOccurrence
+nmap <leader><C-n> <Plug>AllWholeOccurrences
+xmap <leader><C-n> <Plug>AllWholeOccurrences
+nmap <leader>g<C-n> <Plug>AllOccurrences
+xmap <leader>g<C-n> <Plug>AllOccurrences
+" 디버그 실행
+nmap <leader>dl <Action>(Debug)
+" 중단점 토글
+nmap <leader>db <Action>(ToggleLineBreakpoint)
+" 탐색기 NeoTree (현재 작업 디렉토리)
+" Switcher
+nmap <leader>, <Action>(Switcher)
+" MerdTree 설정
+nmap <leader>e :NERDTree<CR>
+nmap <leader>E :NERDTreeFind<CR>
+" Git 탐색기
+nmap <leader>ge <Action>(ActivateVersionControlToolWindow)
+" 아래에 창 분할. :split<cr>은 작동하지 않습니다.
+nmap <leader>- <c-w>s
+" 오른쪽에 창 분할
+nmap <leader><bar> <c-w>v
+" 창 삭제
+nmap <leader>wd <Action>(CloseContent)
+" 최대화 토글
+nmap <leader>wm <Action>(ToggleDistractionFreeMode)
+
+" 일반 키 매핑
+
+" 왼쪽 창으로 이동
+nmap <C-h> <C-w>h
+" 아래쪽 창으로 이동
+"nmap <C-j> <C-w>j
+" 위쪽 창으로 이동
+"nmap <C-k> <C-w>k
+" 오른쪽 창으로 이동
+nmap <C-l> <C-w>l
+" 아래로 이동
+nmap <C-j> :action MoveLineDown<CR>
+imap <C-j> <Esc>:action MoveLineDown<CR>i
+" 위로 이동
+nmap <C-k> :action MoveLineUp<CR>
+imap <C-k> <Esc>:action MoveLineUp<CR>i
+
+" 레지스터
+nmap <leader>s :registers<cr>
