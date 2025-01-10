@@ -50,11 +50,20 @@ let g:WhichKey_FontSize = 14
 "" -- Map IDE actions to IdeaVim -- https://jb.gg/abva4t
 "" Map \r to the Reformat Code action
 map <leader>r <Action>(ReformatCode)
-map <Leader>m <Plug>(easymotion-prefix)
-map s <Plug>(easymotion-sn)
 
-" 탭은 저장된 레이아웃으로 처리됩니다.
+"-----------------------------------------------------------------------"
+" easymotion 설정
+"-----------------------------------------------------------------------"
+let g:EasyMotion_smartcase = 1
+let g:EasyMotion_do_mapping = 0
 
+" Gif config
+map <Leader>l <Plug>(easymotion-lineforward)
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+map <Leader>h <Plug>(easymotion-linebackward)
+map <Leader>a <Plug>(easymotion-jumptoanywhere)
+map <Leader>s <Plug>(easymotion-sn)
 " 다른 탭 닫기 (현재 탭 제외)
 nmap <leader>to :action CloseAllEditorsButActive<CR>
 
@@ -65,7 +74,7 @@ nmap <leader>t] <Action>(NextTab)
 nmap <leader>t[ <Action>(PreviousTab)
 
 " 파일 찾기 (루트 디렉토리)
-nmap <leader><space> <Action>(GotoFile)
+"nmap <leader>o <Action>(GotoFile)
 nmap <C-n> <Plug>NextWholeOccurrence
 xmap <C-n> <Plug>NextWholeOccurrence
 nmap g<C-n> <Plug>NextOccurrence
@@ -115,4 +124,4 @@ nmap <C-k> :action MoveLineUp<CR>
 imap <C-k> <Esc>:action MoveLineUp<CR>i
 
 " 레지스터
-nmap <leader>s :registers<cr>
+"nmap <leader> :registers<cr>
