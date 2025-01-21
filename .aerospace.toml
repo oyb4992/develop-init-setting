@@ -219,14 +219,14 @@ run = 'move-node-to-workspace I'
 
 [[on-window-detected]]
 if.app-id = 'io.httpie.desktop'
-run = 'move-node-to-workspace I'
+run = 'move-node-to-workspace T'
 
 [[on-window-detected]]
 if.app-id = 'com.apple.finder'
 run = 'move-node-to-workspace E'
 
 [[on-window-detected]]
-if.app-id = 'com.apple.Safari.WebApp.FFA81327-AAE6-440F-BC86-2ED1362C41CE'
+if.app-id = 'com.apple.Safari.WebApp.D1753E26-83B1-4E92-B835-1EE42BF21E60'
 run = 'move-node-to-workspace A'
 
 [[on-window-detected]]
@@ -242,12 +242,20 @@ if.app-id = 'com.kakao.KakaoTalkMac'
 run = 'layout floating'
 
 [[on-window-detected]]
+if.app-id = 'com.kakao.KakaoTalkMac'
+run = 'move-node-to-workspace M'
+
+[[on-window-detected]]
 if.app-id = 'com.okatbest.boop'
 run = 'layout floating'
 
 [[on-window-detected]]
 if.app-id = 'com.tinyspeck.slackmacgap'
 run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.tinyspeck.slackmacgap'
+run = 'move-node-to-workspace M'
 
 [[on-window-detected]]
 if.app-id = 'com.apple.ActivityMonitor'
