@@ -15,7 +15,7 @@ set formatoptions=jcroqlnt
 " 줄 번호 표시
 set number
 " 상대 줄 번호
-"set relativenumber
+set relativenumber
 " 문맥 줄 수
 set scrolloff=4
 " 반올림 들여쓰기
@@ -43,7 +43,7 @@ Plug 'tpope/vim-surround'
 Plug 'easymotion/vim-easymotion'
 Plug 'preservim/nerdtree'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'vim-scripts/ReplaceWithRegister'
+" Plug 'vim-scripts/ReplaceWithRegister'
 set which-key
 set notimeout
 let g:WhichKey_FontSize = 14
@@ -64,17 +64,17 @@ map <Leader>k <Plug>(easymotion-k)
 map <Leader>h <Plug>(easymotion-linebackward)
 map <Leader>a <Plug>(easymotion-jumptoanywhere)
 map <Leader>s <Plug>(easymotion-sn)
+" 창 삭제
+nmap <leader>td <Action>(CloseContent)
 " 다른 탭 닫기 (현재 탭 제외)
-nmap <leader>to :action CloseAllEditorsButActive<CR>
-
+nmap <leader>to <Action>(CloseAllEditorsButActive)
 " 다음 탭으로 이동
 nmap <leader>t] <Action>(NextTab)
-
 " 이전 탭으로 이동
 nmap <leader>t[ <Action>(PreviousTab)
+" 수정되지 않은 탭 닫기 매핑
+"nmap <leader>tu <Action>(CloseUnmodifiedTab)
 
-" 파일 찾기 (루트 디렉토리)
-"nmap <leader>o <Action>(GotoFile)
 nmap <C-n> <Plug>NextWholeOccurrence
 xmap <C-n> <Plug>NextWholeOccurrence
 nmap g<C-n> <Plug>NextOccurrence
@@ -95,16 +95,12 @@ nmap <leader>, <Action>(Switcher)
 " MerdTree 설정
 nmap <leader>e :NERDTree<CR>
 nmap <leader>E :NERDTreeFind<CR>
-" Git 탐색기
-nmap <leader>ge <Action>(ActivateVersionControlToolWindow)
 " 아래에 창 분할. :split<cr>은 작동하지 않습니다.
 nmap <leader>- <c-w>s
 " 오른쪽에 창 분할
 nmap <leader><bar> <c-w>v
-" 창 삭제
-nmap <leader>wd <Action>(CloseContent)
 " 최대화 토글
-nmap <leader>wm <Action>(ToggleDistractionFreeMode)
+nmap <leader>m <Action>(ToggleDistractionFreeMode)
 
 " 일반 키 매핑
 
@@ -124,4 +120,4 @@ nmap <C-k> :action MoveLineUp<CR>
 imap <C-k> <Esc>:action MoveLineUp<CR>i
 
 " 레지스터
-"nmap <leader> :registers<cr>
+"nmap <leader>x :registers<CR>
