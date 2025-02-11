@@ -1,5 +1,6 @@
 # homeBrew
 export PATH=/opt/homebrew/bin:$PATH
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 # #Run neofetch
 neofetch --iterm2 --source ~/.config/neofetch/images/parrot.jpeg
 
@@ -126,8 +127,8 @@ source /opt/homebrew/Cellar/autojump/22.5.3_3/share/autojump/autojump.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 #asdf
-source /opt/homebrew/opt/asdf/libexec/asdf.sh
-. ~/.asdf/plugins/java/set-java-home.zsh
+# source /opt/homebrew/opt/asdf/libexec/asdf.sh
+# . ~/.asdf/plugins/java/set-java-home.zsh
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="/Users/mz01-ohyunbok/.rd/bin:$PATH"
