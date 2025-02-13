@@ -176,7 +176,10 @@ alt-shift-cmd-ctrl-tab = 'focus-monitor --wrap-around next'
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 alt-tab = 'workspace-back-and-forth'
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
-alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+#alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+alt-shift-tab = ['move-workspace-to-monitor --wrap-around next', 
+'workspace-back-and-forth'  # 이전 작업 공간으로 복귀
+]
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
 alt-shift-semicolon = 'mode service'
@@ -239,23 +242,15 @@ run = 'move-node-to-workspace D'
 
 [[on-window-detected]]
 if.app-id = 'com.kakao.KakaoTalkMac'
-run = 'layout floating'
+run = ['layout floating', 'move-node-to-workspace M']
 
 [[on-window-detected]]
-if.app-id = 'com.kakao.KakaoTalkMac'
-run = 'move-node-to-workspace M'
+if.app-id = 'com.tinyspeck.slackmacgap'
+run = ['layout floating', 'move-node-to-workspace M']
 
 [[on-window-detected]]
 if.app-id = 'com.okatbest.boop'
 run = 'layout floating'
-
-[[on-window-detected]]
-if.app-id = 'com.tinyspeck.slackmacgap'
-run = 'layout floating'
-
-[[on-window-detected]]
-if.app-id = 'com.tinyspeck.slackmacgap'
-run = 'move-node-to-workspace M'
 
 [[on-window-detected]]
 if.app-id = 'com.apple.ActivityMonitor'
