@@ -31,6 +31,8 @@ set formatoptions=tcqj
 set listchars=tab:>\ ,trail:-,nbsp:+
 " Don't use Ex mode, use Q for formatting.
 map Q gq
+"레지스터 관련 플러그인 활성화
+set peekaboo
 
 " --- Enable IdeaVim plugins https://jb.gg/ideavim-plugins
 let mapleader=" "
@@ -86,7 +88,9 @@ xmap <leader><C-n> <Plug>AllWholeOccurrences
 nmap <leader>g<C-n> <Plug>AllOccurrences
 xmap <leader>g<C-n> <Plug>AllOccurrences
 " 디버그 실행
-nmap <leader>dl <Action>(Debug)
+nmap <leader>dd <Action>(Debug)
+" 디버그 종료
+nmap <leader>ds <Action>(Stop)
 " 중단점 토글
 nmap <leader>db <Action>(ToggleLineBreakpoint)
 " 탐색기 NeoTree (현재 작업 디렉토리)
