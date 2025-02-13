@@ -72,7 +72,7 @@ nmap <leader>t] <Action>(NextTab)
 " 이전 탭으로 이동
 nmap <leader>t[ <Action>(PreviousTab)
 " 수정되지 않은 탭 닫기 매핑
-"nmap <leader>tu <Action>(CloseUnmodifiedTab)
+"nmap <leader>tu <Action>(CloseAllUnmodifiedEditors)
 
 nmap <C-n> <Plug>NextWholeOccurrence
 xmap <C-n> <Plug>NextWholeOccurrence
