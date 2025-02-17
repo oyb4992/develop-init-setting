@@ -116,13 +116,13 @@ nmap <C-h> <C-w>h
 " 오른쪽 창으로 이동
 nmap <C-l> <C-w>l
 " 아래로 이동
-nmap <C-j> :action MoveLineDown<CR>
-imap <C-j> <Esc>:action MoveLineDown<CR>i
-vmap <C-j> :action MoveLineDown<CR>
+nmap <C-S-j> :action MoveLineDown<CR>
+imap <C-S-j> <Esc>:action MoveLineDown<CR>i
+vmap <C-S-j> :action MoveLineDown<CR>
 " 위로 이동
-nmap <C-k> :action MoveLineUp<CR>
-imap <C-k> <Esc>:action MoveLineUp<CR>i
-vmap <C-k> :action MoveLineUp<CR>
+nmap <C-S-k> :action MoveLineUp<CR>
+imap <C-S-k> <Esc>:action MoveLineUp<CR>i
+vmap <C-S-k> :action MoveLineUp<CR>
 
 " 레지스터
 "nmap <leader>x :registers<CR>
