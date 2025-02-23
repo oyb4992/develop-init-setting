@@ -32,6 +32,26 @@ set listchars=tab:>\ ,trail:-,nbsp:+
 " Don't use Ex mode, use Q for formatting.
 map Q gq
 
+" 자동 들여쓰기
+set autoindentset smartindentset tabstop=4set shiftwidth=4set expandtab
+" 커서 설정
+set cursorline 
+" 현재 라인 강조
+set guicursor=n-v-c-sm:block,o:hor,i-ci-ve:ver,r-cr:hor,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-Cursor-blinkwait175-blinkoff150-blinkon175
+" 검색 설정 (기존 설정 외 추가)
+set ignorecase 
+" 검색 시 대소문자 무시
+set smartcase " 검색 패턴에 대문자가 있으면 대소문자 구별
+" UI 개선
+set wildmenu 
+" Tab 자동 완성 향상
+set visualbell 
+" 벨 소리 대신 화면 깜빡임
+set ttyfast " 터미널 환경 최적화
+" 편집 기능 강화
+set formatoptions+=r " 주석 줄에 대해 자동 줄 바꿈 활성화
+set formatoptions+=o " 주석 삽입 시 현재 줄과 같은 주석 접두사 사용
+
 " --- Enable IdeaVim plugins https://jb.gg/ideavim-plugins
 let mapleader=" "
 
@@ -44,6 +64,8 @@ Plug 'easymotion/vim-easymotion'
 Plug 'preservim/nerdtree'
 Plug 'terryma/vim-multiple-cursors'
 " Plug 'vim-scripts/ReplaceWithRegister'
+"레지스터 관련 플러그인 활성화
+set peekaboo
 set which-key
 set notimeout
 let g:WhichKey_FontSize = 14
@@ -124,8 +146,16 @@ nmap <C-S-k> :action MoveLineUp<CR>
 imap <C-S-k> <Esc>:action MoveLineUp<CR>i
 vmap <C-S-k> :action MoveLineUp<CR>
 
+" 정의로 이동 (Go to Declaration)
+nmap <leader>gd <Action>(GotoDeclaration)
+" 구현체 찾기 (Go to Implementation(s))
+nmap <leader>gi <Action>(GotoImplementation)
+" 사용 위치 찾기 (Find Usages)
+nmap <leader>gu <Action>(FindUsages)
+" 타입 계층 구조 보기 (Type Hierarchy)
+nmap <leader>th <Action>(TypeHierarchy)
+" 메소드 계층 구조 보기 (Method Hierarchy)
+nmap <leader>mh <Action>(MethodHierarchy)
+
 " 레지스터
 "nmap <leader>x :registers<CR>
-
-"레지스터 관련 플러그인 활성화
-set peekaboo
