@@ -64,7 +64,8 @@ Plug 'easymotion/vim-easymotion'
 Plug 'preservim/nerdtree'
 Plug 'terryma/vim-multiple-cursors'
 " Plug 'vim-scripts/ReplaceWithRegister'
-"레지스터 관련 플러그인 활성화
+Plug 'dbakker/vim-paragraph-motion'
+"Plug 'michaeljsmith/vim-indent-object'
 set peekaboo
 set which-key
 set notimeout
@@ -128,7 +129,8 @@ nmap <leader><bar> <c-w>v
 nmap <leader>m <Action>(ToggleDistractionFreeMode)
 
 " 일반 키 매핑
-
+" Gradle Tool Window에서 선택한 태스크 실행
+nnoremap <leader>ge :action Gradle.ExecuteTask<CR>
 " 왼쪽 창으로 이동
 nmap <C-h> <C-w>h
 " 아래쪽 창으로 이동
