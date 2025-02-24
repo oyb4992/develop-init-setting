@@ -1,163 +1,135 @@
-" .ideavimrc is a configuration file for IdeaVim plugin. It uses
-"   the same commands as the original .vimrc configuration.
-" You can find a list of commands here: https://jb.gg/h38q75
-" Find more examples here: https://jb.gg/share-ideavimrc
+" .ideavimrc - IdeaVim 설정 파일
 
-"" -- Suggested options --
-" Show a few lines of context around the cursor. Note that this makes the
-" text scroll if you mouse-click near the start or end of the window.
-" Do incremental searching.
-set incsearch
-set hls
-set clipboard+=unnamed
-" 변경 사항을 저장하기 전에 저장 확인
-set formatoptions=jcroqlnt
-" 줄 번호 표시
-set number
-" 상대 줄 번호
-set relativenumber
-" 문맥 줄 수
-set scrolloff=4
-" 반올림 들여쓰기
-"set shiftround
-" 문맥 열 수
-set sidescrolloff=8
-" which-key에서는 높게 설정하거나 notimeout을 설정하라고 합니다.
-set notimeout
-" 줄 바꿈 비활성화
-set nowrap
-set backspace=indent,eol,start
-set formatoptions=tcqj
-set listchars=tab:>\ ,trail:-,nbsp:+
-" Don't use Ex mode, use Q for formatting.
-map Q gq
+" ** 1. 기본 설정 (Basic Settings) **
+" ----------------------------------
+set incsearch         " 점진적 검색 활성화
+set hls               " 검색어 하이라이트
+set clipboard+=unnamed " 시스템 클립보드 공유
+set number            " 줄 번호 표시
+set relativenumber    " 상대 줄 번호 표시
+set scrolloff=4       " 커서 주변 문맥 줄 수 (상하)
+set sidescrolloff=8   " 커서 주변 문맥 열 수 (좌우)
+set nowrap            " 줄 바꿈 비활성화
+set backspace=indent,eol,start " 백스페이스 동작 설정
+set formatoptions=tcqj " 텍스트 포맷 옵션
+set listchars=tab:>\ ,trail:-,nbsp:+ " 특수 문자 표시 설정
+map Q gq              " Ex 모드 비활성화, Q를 formatting으로 매핑
 
-" 자동 들여쓰기
-set autoindentset smartindentset tabstop=4set shiftwidth=4set expandtab
-" 커서 설정
-set cursorline 
-" 현재 라인 강조
-set guicursor=n-v-c-sm:block,o:hor,i-ci-ve:ver,r-cr:hor,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-Cursor-blinkwait175-blinkoff150-blinkon175
-" 검색 설정 (기존 설정 외 추가)
-set ignorecase 
-" 검색 시 대소문자 무시
-set smartcase " 검색 패턴에 대문자가 있으면 대소문자 구별
-" UI 개선
-set wildmenu 
-" Tab 자동 완성 향상
-set visualbell 
-" 벨 소리 대신 화면 깜빡임
-set ttyfast " 터미널 환경 최적화
-" 편집 기능 강화
-set formatoptions+=r " 주석 줄에 대해 자동 줄 바꿈 활성화
-set formatoptions+=o " 주석 삽입 시 현재 줄과 같은 주석 접두사 사용
+" ** 2. 들여쓰기 설정 (Indentation Settings) **
+" ----------------------------------
+set autoindent        " 자동 들여쓰기
+set smartindent       " 스마트 들여쓰기
+set tabstop=4         " 탭 너비: 4칸
+set shiftwidth=4      " 들여쓰기/내어쓰기 단위: 4칸
+set expandtab         " 탭을 스페이스로 치환
 
-" --- Enable IdeaVim plugins https://jb.gg/ideavim-plugins
-let mapleader=" "
+" ** 3. 검색 설정 (Search Settings) **
+" ----------------------------------
+set ignorecase        " 검색 시 대소문자 무시
+set smartcase         " 검색 패턴에 대문자 있을 때만 대소문자 구별
+set visualbell        " 시각적 벨 효과 (필요에 따라 변경 가능)
+set formatoptions+=r  " 주석 줄 자동 줄 바꿈
+set formatoptions+=o  " 주석 삽입 시 현재 줄과 동일 접두사 사용
 
-" Highlight copied text
-Plug 'machakann/vim-highlightedyank'
-" Commentary plugin
-Plug 'tpope/vim-commentary'
+" ** 4. IdeaVim 플러그인 활성화 (IdeaVim Plugins) **
+" ----------------------------------
+Plug 'machakann/vim-highlightedyank' " Highlight copied text
+Plug 'tpope/vim-commentary'      " Commentary plugin
 Plug 'tpope/vim-surround'
 Plug 'easymotion/vim-easymotion'
 Plug 'preservim/nerdtree'
 Plug 'terryma/vim-multiple-cursors'
 " Plug 'vim-scripts/ReplaceWithRegister'
-Plug 'dbakker/vim-paragraph-motion'
-"Plug 'michaeljsmith/vim-indent-object'
+" Plug 'dbakker/vim-paragraph-motion'
+" Plug 'michaeljsmith/vim-indent-object'
 set peekaboo
 set which-key
+
+" ** 5. WhichKey 설정 (WhichKey Settings) **
+" ----------------------------------
+" which-key에서는 높게 설정하거나 notimeout을 설정하라고 합니다.
 set notimeout
 let g:WhichKey_FontSize = 14
-"" -- Map IDE actions to IdeaVim -- https://jb.gg/abva4t
-map <leader>r <Action>(ReformatCode)
 
-"-----------------------------------------------------------------------"
-" easymotion 설정
-"-----------------------------------------------------------------------"
-let g:EasyMotion_smartcase = 1
-let g:EasyMotion_do_mapping = 0
+" ** 6.  Leader 키 설정 **
+" ----------------------------------
+let mapleader=" "
 
-" easymotion config
-map <Leader>l <Plug>(easymotion-lineforward)
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
-map <Leader>h <Plug>(easymotion-linebackward)
-map <Leader>a <Plug>(easymotion-jumptoanywhere)
-map <Leader>s <Plug>(easymotion-sn)
-" 창 삭제
-nmap <leader>td <Action>(CloseContent)
-" 모든 탭 닫기
-nmap <leader>ta <Action>(CloseAllEditors)
-" 다른 탭 닫기 (현재 탭 제외)
-nmap <leader>to <Action>(CloseAllEditorsButActive)
-" 다음 탭으로 이동
-nmap <leader>t] <Action>(NextTab)
-" 이전 탭으로 이동
-nmap <leader>t[ <Action>(PreviousTab)
-" 수정되지 않은 탭 닫기 매핑
-nmap <leader>tu <Action>(CloseAllUnmodifiedEditors)
+" ** 7.  IDE 액션 매핑 (IDE Action Mappings) **
+" ----------------------------------
+map <leader>r <Action>(ReformatCode)    " 코드 formatting
 
-nmap <C-n> <Plug>NextWholeOccurrence
+" 탭 관리
+nmap <leader>tx <Action>(CloseActiveTab)          " 현재 탭 닫기
+nmap <leader>ta <Action>(CloseAllEditors)           " 모든 탭 닫기
+nmap <leader>to <Action>(CloseAllEditorsButActive)  " 현재 탭 제외 모두 닫기
+nmap <leader>t] <Action>(NextTab)                 " 다음 탭으로 이동
+nmap <leader>t[ <Action>(PreviousTab)             " 이전 탭으로 이동
+nmap <leader>tu <Action>(CloseAllUnmodifiedEditors) " 수정 안 된 탭 모두 닫기
+
+" 디버깅
+nmap <leader>dd <Action>(Debug)                 " 디버그 실행
+nmap <leader>ds <Action>(Stop)                  " 디버그 중지
+nmap <leader>db <Action>(ToggleLineBreakpoint)   " 중단점 토글
+
+" 탐색 및 Search
+nmap <leader>, <Action>(Switcher)                " Switcher (파일/클래스/심볼 검색)
+nmap <leader>e :NERDTree<CR>                   " NERDTree 파일 탐색기 열기
+nmap <leader>E :NERDTreeFind<CR>               " 현재 파일 위치에서 NERDTree 열기
+nmap <C-n> <Plug>NextWholeOccurrence           " 다음 완전 일치 검색 결과
 xmap <C-n> <Plug>NextWholeOccurrence
-nmap g<C-n> <Plug>NextOccurrence
+nmap g<C-n> <Plug>NextOccurrence              " 다음 검색 결과
 xmap g<C-n> <Plug>NextOccurrence
-xmap <C-x> <Plug>SkipOccurrence
-xmap <C-p> <Plug>RemoveOccurrence
-nmap <leader><C-n> <Plug>AllWholeOccurrences
+xmap <C-x> <Plug>SkipOccurrence              " 검색 결과 스킵
+xmap <C-p> <Plug>RemoveOccurrence            " 검색 결과 제거
+nmap <leader><C-n> <Plug>AllWholeOccurrences     " 모든 완전 일치 검색 결과 선택
 xmap <leader><C-n> <Plug>AllWholeOccurrences
-nmap <leader>g<C-n> <Plug>AllOccurrences
+nmap <leader>g<C-n> <Plug>AllOccurrences        " 모든 검색 결과 선택
 xmap <leader>g<C-n> <Plug>AllOccurrences
-" 디버그 실행
-nmap <leader>dd <Action>(Debug)
-" 디버그 종료
-nmap <leader>ds <Action>(Stop)
-" 중단점 토글
-nmap <leader>db <Action>(ToggleLineBreakpoint)
-" 탐색기 NeoTree (현재 작업 디렉토리)
-" Switcher
-nmap <leader>, <Action>(Switcher)
-" MerdTree 설정
-nmap <leader>e :NERDTree<CR>
-nmap <leader>E :NERDTreeFind<CR>
-" 아래에 창 분할. :split<cr>은 작동하지 않습니다.
-nmap <leader>- <c-w>s
-" 오른쪽에 창 분할
-nmap <leader><bar> <c-w>v
-" 최대화 토글
-nmap <leader>m <Action>(ToggleDistractionFreeMode)
 
-" 일반 키 매핑
-" Gradle Tool Window에서 선택한 태스크 실행
-nnoremap <leader>ge :action Gradle.ExecuteTask<CR>
-" 왼쪽 창으로 이동
-nmap <C-h> <C-w>h
-" 아래쪽 창으로 이동
-"nmap <C-j> <C-w>j
-" 위쪽 창으로 이동
-"nmap <C-k> <C-w>k
-" 오른쪽 창으로 이동
-nmap <C-l> <C-w>l
-" 아래로 이동
-nmap <C-S-j> :action MoveLineDown<CR>
-imap <C-S-j> <Esc>:action MoveLineDown<CR>i
-vmap <C-S-j> :action MoveLineDown<CR>
-" 위로 이동
-nmap <C-S-k> :action MoveLineUp<CR>
-imap <C-S-k> <Esc>:action MoveLineUp<CR>i
-vmap <C-S-k> :action MoveLineUp<CR>
+" 창 분할 및 최대화
+nmap <leader>- <Action>(SplitHorizontally)       " 아래 창 분할
+nmap <leader><bar> <Action>(SplitVertically)     " 오른쪽 창 분할
+nmap <leader>m <Action>(ToggleDistractionFreeMode) " 최대화/일반 모드 전환
 
-" 정의로 이동 (Go to Declaration)
-nmap <leader>gd <Action>(GotoDeclaration)
-" 구현체 찾기 (Go to Implementation(s))
-nmap <leader>gi <Action>(GotoImplementation)
-" 사용 위치 찾기 (Find Usages)
-nmap <leader>gu <Action>(FindUsages)
-" 타입 계층 구조 보기 (Type Hierarchy)
-nmap <leader>th <Action>(TypeHierarchy)
-" 메소드 계층 구조 보기 (Method Hierarchy)
-nmap <leader>mh <Action>(MethodHierarchy)
+" 코드 탐색 (Go To...)
+nmap <leader>gd <Action>(GotoDeclaration)       " 정의로 이동
+nmap <leader>gi <Action>(GotoImplementation)   " 구현체 찾기
+nmap <leader>gu <Action>(FindUsages)           " 사용 위치 찾기
+nmap <leader>th <Action>(TypeHierarchy)         " 타입 계층 구조 보기
+nmap <leader>mh <Action>(MethodHierarchy)       " 메소드 계층 구조 보기
+nmap <leader>rn <Action>(RenameElement)         " 이름 바꾸기
 
-" 레지스터
-"nmap <leader>x :registers<CR>
+" Gradle
+nnoremap <leader>ge <Action>(Gradle.ExecuteTask) " Gradle Task 실행
+
+" ** 8. 일반 기능 키 매핑 (General Key Mappings) **
+" ----------------------------------
+" 창 이동
+nmap <C-h> <C-w>h         " 왼쪽 창으로 이동
+nmap <C-l> <C-w>l         " 오른쪽 창으로 이동
+
+" 줄 이동
+nmap <C-S-j> :action MoveLineDown<CR>   " 줄 아래로 이동 (Normal mode)
+imap <C-S-j> <Esc>:action MoveLineDown<CR>i " 줄 아래로 이동 (Insert mode)
+vmap <C-S-j> :action MoveLineDown<CR>   " 줄 아래로 이동 (Visual mode)
+nmap <C-S-k> :action MoveLineUp<CR>     " 줄 위로 이동 (Normal mode)
+imap <C-S-k> <Esc>:action MoveLineUp<CR>i   " 줄 위로 이동 (Insert mode)
+vmap <C-S-k> :action MoveLineUp<CR>     " 줄 위로 이동 (Visual mode)
+
+" ** 9. easymotion 설정 (EasyMotion Settings) **
+" ----------------------------------
+let g:EasyMotion_smartcase = 1   " Smartcase 활성화 (대소문자 구분)
+let g:EasyMotion_do_mapping = 0  " 기본 매핑 비활성화 (직접 매핑 사용)
+
+" easymotion 사용자 매핑
+map <Leader>l <Plug>(easymotion-lineforward)     " Leader + l : 라인 앞으로 이동
+map <Leader>j <Plug>(easymotion-j)             " Leader + j : 아래로 단어 이동
+map <Leader>k <Plug>(easymotion-k)             " Leader + k : 위로 단어 이동
+map <Leader>h <Plug>(easymotion-linebackward)    " Leader + h : 라인 뒤로 이동
+map <Leader>a <Plug>(easymotion-jumptoanywhere)  " Leader + a : 화면 어디든 이동
+map <Leader>s <Plug>(easymotion-sn)            " Leader + s : 화면 내 검색 이동
+
+" ** 10. 레지스터 확인 (Registers) **
+" ----------------------------------
+" nmap <leader>x :registers<CR>  " 레지스터 내용 확인 (필요시 활성화)
