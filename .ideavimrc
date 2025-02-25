@@ -42,7 +42,7 @@ Plug 'terryma/vim-multiple-cursors'
 " Plug 'vim-scripts/ReplaceWithRegister'
 " Plug 'dbakker/vim-paragraph-motion'
 " Plug 'michaeljsmith/vim-indent-object'
-set peekaboo
+" set peekaboo " 해당 원인 파악 전까진 주석 처리
 set which-key
 
 " ** 5. WhichKey 설정 (WhichKey Settings) **
@@ -58,6 +58,7 @@ let mapleader=" "
 " ** 7.  IDE 액션 매핑 (IDE Action Mappings) **
 " ----------------------------------
 map <leader>r <Action>(ReformatCode)    " 코드 formatting
+
 
 " 탭 관리
 nmap <leader>tx <Action>(CloseActiveTab)          " 현재 탭 닫기
@@ -132,4 +133,4 @@ map <Leader>s <Plug>(easymotion-sn)            " Leader + s : 화면 내 검색 
 
 " ** 10. 레지스터 확인 (Registers) **
 " ----------------------------------
-" nmap <leader>x :registers<CR>  " 레지스터 내용 확인 (필요시 활성화)
+nmap <leader>x :registers<CR>  " 레지스터 내용 확인 (필요시 활성화)
