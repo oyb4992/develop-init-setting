@@ -97,7 +97,7 @@ nmap <leader>tu <Action>(CloseAllUnmodifiedEditors)
 
 " 디버깅
 " 디버그 실행
-nmap <leader>dd <Action>(Debug)
+nmap <leader>dd <Action>(ChooseDebugConfiguration)
 " 디버그 중지
 nmap <leader>ds <Action>(Stop)
 " 중단점 토글
@@ -145,7 +145,7 @@ nmap <leader>gu <Action>(FindUsages)
 " 타입 계층 구조 보기
 nmap <leader>th <Action>(TypeHierarchy)
 " 메소드 계층 구조 보기
-nmap <leader>mh <Action>(MethodHierarchy)
+" nmap <leader>mh <Action>(MethodHierarchy)
 " 이름 바꾸기
 nmap <leader>rn <Action>(RenameElement)
 
