@@ -243,6 +243,14 @@ if.app-id = 'com.microsoft.Excel'
 run = 'move-node-to-workspace D'
 
 [[on-window-detected]]
+if.app-id = 'com.microsoft.Word'
+run = 'move-node-to-workspace D'
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.Powerpoint'
+run = 'move-node-to-workspace D'
+
+[[on-window-detected]]
 if.app-id = 'com.kakao.KakaoTalkMac'
 run = ['layout floating', 'move-node-to-workspace M']
 
