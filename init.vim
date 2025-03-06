@@ -7,7 +7,7 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" 플러그인 섹션
+" 플러그인 섹션. 최초 설정시 :PlugInstall로 플러그인 설치 필요.
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
   " IdeaVim에서 가져온 플러그인들
   Plug 'machakann/vim-highlightedyank'  " 복사한 텍스트 하이라이트
