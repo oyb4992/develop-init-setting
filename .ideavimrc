@@ -8,10 +8,6 @@ set incsearch
 set hls
 " 시스템 클립보드 공유
 set clipboard+=unnamed
-" 줄 번호 표시
-set number
-" 상대 줄 번호 표시
-set relativenumber
 " 하이브리드 라인 넘버 모드 (현재 줄은 절대 번호, 다른 줄은 상대 번호)
 set number relativenumber
 " IntelliJ의 스마트 조인 기능
@@ -19,7 +15,7 @@ set ideajoin
 " IntelliJ의 리팩토링 기능을 사용할 때 Vim 모드 유지
 set idearefactormode=keep
 " 커서 주변 문맥 줄 수 (상하)
-set scrolloff=4
+set scrolloff=8
 " 커서 주변 문맥 열 수 (좌우)
 set sidescrolloff=8
 " 줄 바꿈 비활성화
@@ -45,6 +41,8 @@ set tabstop=4
 set shiftwidth=4
 " 탭을 스페이스로 치환
 set expandtab
+" 소프트 탭 설정
+set softtabstop=4
 
 " ** 3. 검색 설정 (Search Settings) **
 " ----------------------------------
@@ -67,10 +65,10 @@ Plug 'tpope/vim-surround'
 Plug 'easymotion/vim-easymotion'
 Plug 'preservim/nerdtree'
 Plug 'terryma/vim-multiple-cursors'
-" Plug 'dbakker/vim-paragraph-motion'
-" Plug 'michaeljsmith/vim-indent-object'
 set peekaboo
 set which-key
+" f, F, t, T 명령어 강화
+set quickscope
 
 " ** 5. WhichKey 설정 (WhichKey Settings) **
 " ----------------------------------
@@ -181,26 +179,32 @@ imap <C-S-k> <Esc>:action MoveLineUp<CR>i
 " 줄 위로 이동 (Visual mode)
 vmap <C-S-k> :action MoveLineUp<CR>
 
-" ** 9. easymotion 설정 (EasyMotion Settings) **
+" ** 9. 플러그인 설정 **
 " ----------------------------------
+" vim-highlightedyank 설정
+let g:highlightedyank_highlight_duration = 200
+
+" QuickScope 설정
+" 이 키를 누를 때만 하이라이트 표시
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']  
+" 첫 번째 문자 하이라이트 색상
+let g:qs_primary_color = '#ff0000'   
+" 두 번째 문자 하이라이트 색상
+let g:qs_secondary_color = '#00ff00' 
+" 차이점 편집기에서 강조 표시 제거
+let g:qs_disable_for_diffs = 1
+
+" Easymotion 설정
 " Smartcase 활성화 (대소문자 구분)
 let g:EasyMotion_smartcase = 1 
 " 기본 매핑 비활성화 (직접 매핑 사용)
 let g:EasyMotion_do_mapping = 0 
-
-" easymotion 사용자 매핑
-" Leader + l : 라인 앞으로 이동
-map <Leader>l <Plug>(easymotion-lineforward)
-" Leader + j : 아래로 단어 이동
-map <Leader>j <Plug>(easymotion-j)
-" Leader + k : 위로 단어 이동
-map <Leader>k <Plug>(easymotion-k)
-" Leader + h : 라인 뒤로 이동
-map <Leader>h <Plug>(easymotion-linebackward)
-" Leader + a : 화면 어디든 이동
-map <Leader>a <Plug>(easymotion-jumptoanywhere)
-" Leader + s : 화면 내 검색 이동
-map <Leader>s <Plug>(easymotion-sn)
+map <leader>f <Plug>(easymotion-s)
+map <leader>F <Plug>(easymotion-s2)
+" 화면 내 줄 이동 
+map <Leader>L <Plug>(easymotion-bd-jk)
+" 화면 내 검색 이동
+map <Leader>/ <Plug>(easymotion-sn)
 
 " ** 10. 레지스터 확인 (Registers) **
 " ----------------------------------

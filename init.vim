@@ -13,6 +13,8 @@ call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
   Plug 'machakann/vim-highlightedyank'  " 복사한 텍스트 하이라이트
   Plug 'tpope/vim-commentary'           " 주석 처리 기능
   Plug 'tpope/vim-surround'             " 텍스트 둘러싸기 기능
+  Plug 'unblevable/quick-scope'         " f, F, t, T 명령어 강화
+  Plug 'phaazon/hop.nvim'               " 빠른 커서 이동 (EasyMotion/Leap 대체)
 call plug#end()
 
 " ** 1. 기본 설정 (Basic Settings) **
@@ -35,7 +37,7 @@ augroup numbertoggle
   autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 augroup END
 " 커서 주변 문맥 줄 수 (상하)
-set scrolloff=4
+set scrolloff=8
 " 커서 주변 문맥 열 수 (좌우)
 set sidescrolloff=8
 " 줄 바꿈 비활성화
@@ -138,7 +140,37 @@ xnoremap <C-n> <Cmd>call VSCodeCall('editor.action.addSelectionToNextFindMatch')
 nnoremap <leader><C-n> <Cmd>call VSCodeCall('editor.action.selectHighlights')<CR>
 xnoremap <leader><C-n> <Cmd>call VSCodeCall('editor.action.selectHighlights')<CR>
 
-" ** 8. 레지스터 확인 **
+" ** 8. 플러그인 설정 **
+" ----------------------------------
+" QuickScope 설정
+" 이 키를 누를 때만 하이라이트 표시
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+" 첫 번째 문자 하이라이트 색상 (VSCode 호환성 향상)
+highlight QuickScopePrimary guifg='#ff0000' gui=underline ctermfg=155 cterm=underline
+" 두 번째 문자 하이라이트 색상 (VSCode 호환성 향상)
+highlight QuickScopeSecondary guifg='#00ff00' gui=underline ctermfg=81 cterm=underline
+" 차이점 편집기에서 강조 표시 제거
+let g:qs_disable_for_diffs = 1
+
+" Hop 설정
+" Hop 초기화
+lua << EOF
+require('hop').setup({
+  keys = 'etovxqpdygfblzhckisuran',
+  jump_on_sole_occurrence = true,
+  case_insensitive = true,
+  multi_windows = false
+})
+EOF
+
+" 커스텀 키 매핑
+nnoremap <leader>f :HopChar1<CR>
+nnoremap <leader>F :HopChar2<CR>
+nnoremap <leader>L :HopLine<CR>
+" 정규식으로 검색
+nnoremap <leader>/ :HopPattern<CR>
+
+" ** 9. 레지스터 확인 **
 " ----------------------------------
 " 레지스터 내용 확인 (필요시 활성화)
-" nnoremap <leader>x :registers<CR>
+nnoremap <leader>x :registers<CR>
