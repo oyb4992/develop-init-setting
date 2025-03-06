@@ -1,5 +1,20 @@
 " init.vim - Neovim 설정 파일 for VSCode
 
+" vim-plug 플러그인 매니저 설정 (없는 경우 자동 설치)
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" 플러그인 섹션
+call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
+  " IdeaVim에서 가져온 플러그인들
+  Plug 'machakann/vim-highlightedyank'  " 복사한 텍스트 하이라이트
+  Plug 'tpope/vim-commentary'           " 주석 처리 기능
+  Plug 'tpope/vim-surround'             " 텍스트 둘러싸기 기능
+call plug#end()
+
 " ** 1. 기본 설정 (Basic Settings) **
 " ----------------------------------
 " 점진적 검색 활성화
@@ -12,6 +27,13 @@ set clipboard+=unnamed
 set number
 " 상대 줄 번호 표시
 set relativenumber
+" 하이브리드 라인 넘버 모드 (현재 줄은 절대 번호, 다른 줄은 상대 번호)
+set number relativenumber
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END
 " 커서 주변 문맥 줄 수 (상하)
 set scrolloff=4
 " 커서 주변 문맥 열 수 (좌우)
@@ -78,7 +100,7 @@ nnoremap <leader>db <Cmd>call VSCodeCall('editor.debug.action.toggleBreakpoint')
 " 탐색 및 Search
 nnoremap <leader>, <Cmd>call VSCodeCall('workbench.action.quickOpen')<CR>
 nnoremap <leader>e <Cmd>call VSCodeCall('workbench.view.explorer')<CR>
-nnoremap <leader>E <Cmd>call VSCodeCall('revealFileInOS')<CR>
+nnoremap <leader>E <Cmd>call VSCodeCall('workbench.files.action.showActiveFileInExplorer')<CR>
 
 " 창 분할 및 최대화
 nnoremap <leader>- <Cmd>call VSCodeCall('workbench.action.splitEditorDown')<CR>
@@ -100,13 +122,13 @@ nnoremap <C-l> <Cmd>call VSCodeCall('workbench.action.navigateRight')<CR>
 nnoremap <C-k> <Cmd>call VSCodeCall('workbench.action.navigateUp')<CR>
 nnoremap <C-j> <Cmd>call VSCodeCall('workbench.action.navigateDown')<CR>
 
-" 줄 이동
-nnoremap <C-S-j> <Cmd>call VSCodeCall('editor.action.moveLinesDownAction')<CR>
-inoremap <C-S-j> <Cmd>call VSCodeCall('editor.action.moveLinesDownAction')<CR>
-vnoremap <C-S-j> <Cmd>call VSCodeCall('editor.action.moveLinesDownAction')<CR>
-nnoremap <C-S-k> <Cmd>call VSCodeCall('editor.action.moveLinesUpAction')<CR>
-inoremap <C-S-k> <Cmd>call VSCodeCall('editor.action.moveLinesUpAction')<CR>
-vnoremap <C-S-k> <Cmd>call VSCodeCall('editor.action.moveLinesUpAction')<CR
+" 줄 이동: 키 충돌로 인해 leader키와 설정
+nnoremap <leader>j  <Cmd>call VSCodeCall('editor.action.moveLinesDownAction')<CR>
+inoremap <leader>j  <Cmd>call VSCodeCall('editor.action.moveLinesDownAction')<CR>
+vnoremap <leader>j  <Cmd>call VSCodeCall('editor.action.moveLinesDownAction')<CR>
+nnoremap <leader>k  <Cmd>call VSCodeCall('editor.action.moveLinesUpAction')<CR>
+inoremap <leader>k  <Cmd>call VSCodeCall('editor.action.moveLinesUpAction')<CR>
+vnoremap <leader>k  <Cmd>call VSCodeCall('editor.action.moveLinesUpAction')<CR>
 
 " ** 7. 추가 VSCode 통합 기능 **
 " ----------------------------------

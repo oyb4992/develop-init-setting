@@ -12,6 +12,12 @@ set clipboard+=unnamed
 set number
 " 상대 줄 번호 표시
 set relativenumber
+" 하이브리드 라인 넘버 모드 (현재 줄은 절대 번호, 다른 줄은 상대 번호)
+set number relativenumber
+" IntelliJ의 스마트 조인 기능
+set ideajoin
+" IntelliJ의 리팩토링 기능을 사용할 때 Vim 모드 유지
+set idearefactormode=keep
 " 커서 주변 문맥 줄 수 (상하)
 set scrolloff=4
 " 커서 주변 문맥 열 수 (좌우)
