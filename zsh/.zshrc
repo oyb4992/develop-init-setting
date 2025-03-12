@@ -1,6 +1,9 @@
-# homeBrew
-export PATH=/opt/homebrew/bin:$PATH
-export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+export HOMEBREW_PREFIX="/opt/homebrew"
+export PATH=$HOMEBREW_PREFIX/bin:$PATH
+export ASDF_DATA_DIR="/Users/oyunbog/.asdf"
+export PATH="$ASDF_DATA_DIR/shims:$PATH"
+export PATH="$PATH:/Users/oyunbog/.dotnet/tools"
+export DOTNET_ROOT="$HOMEBREW_PREFIX/Cellar/dotnet@8/8.0.13/libexec"
 # #Run neofetch
 neofetch --iterm2 --source ~/.config/neofetch/images/parrot.jpeg
 
@@ -120,15 +123,14 @@ alias ll='ls -alhF'
 plugins=( 
   autojump
   zsh-syntax-highlighting
-  zsh-autosuggestions
+  #zsh-autosuggestions
   asdf
+  fzf
 )
-source /opt/homebrew/Cellar/autojump/22.5.3_3/share/autojump/autojump.zsh
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-#asdf
-# source /opt/homebrew/opt/asdf/libexec/asdf.sh
-# . ~/.asdf/plugins/java/set-java-home.zsh
+source $HOMEBREW_PREFIX/Cellar/autojump/22.5.3_3/share/autojump/autojump.zsh
+source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+#source $HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="/Users/mz01-ohyunbok/.rd/bin:$PATH"
@@ -136,5 +138,13 @@ export PATH="/Users/mz01-ohyunbok/.rd/bin:$PATH"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+function fzf-view()
+{
+    fzf --preview '[[ $(file --mime {}) =~ binary ]] &&
+                  echo {} is a binary file ||
+                  (highlight -O ansi -l {} ||
+                  coderay {} ||
+                  rougify {} ||
+                  cat {}) 2> /dev/null | head -500'
+}
