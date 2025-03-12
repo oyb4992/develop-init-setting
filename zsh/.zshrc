@@ -1,3 +1,6 @@
+# Run neofetch
+neofetch --iterm2 --source ~/.config/neofetch/images/parrot.jpeg
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
@@ -42,9 +45,6 @@ source $HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 alias python="/usr/bin/python3"
 alias ls='lsd'
 alias ll='ls -alhF'
-
-# Run neofetch
-neofetch --iterm2 --source ~/.config/neofetch/images/parrot.jpeg
 
 # FZF configuration
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
