@@ -135,10 +135,10 @@ vnoremap <leader>k  <Cmd>call VSCodeCall('editor.action.moveLinesUpAction')<CR>
 " ** 7. 추가 VSCode 통합 기능 **
 " ----------------------------------
 " 다중 커서 기능 (VSCode 내장 기능 사용)
-nnoremap <C-n> <Cmd>call VSCodeCall('editor.action.addSelectionToNextFindMatch')<CR>
-xnoremap <C-n> <Cmd>call VSCodeCall('editor.action.addSelectionToNextFindMatch')<CR>
-nnoremap <leader><C-n> <Cmd>call VSCodeCall('editor.action.selectHighlights')<CR>
-xnoremap <leader><C-n> <Cmd>call VSCodeCall('editor.action.selectHighlights')<CR>
+nnoremap <leader>n <Cmd>call VSCodeCall('editor.action.addSelectionToNextFindMatch')<CR>
+xnoremap <leader>n <Cmd>call VSCodeCall('editor.action.addSelectionToNextFindMatch')<CR>
+nnoremap <leader>N <Cmd>call VSCodeCall('editor.action.selectHighlights')<CR>
+xnoremap <leader>N <Cmd>call VSCodeCall('editor.action.selectHighlights')<CR>
 
 " ** 8. 플러그인 설정 **
 " ----------------------------------
