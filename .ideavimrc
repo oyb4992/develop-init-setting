@@ -131,6 +131,9 @@ xmap <leader><C-n> <Plug>AllWholeOccurrences
 nmap <leader>g<C-n> <Plug>AllOccurrences
 xmap <leader>g<C-n> <Plug>AllOccurrences
 
+" Visual 모드에서도 Ctrl+F를 Find 액션
+vnoremap <C-F> :action Find<CR>
+
 " 창 분할 및 최대화
 " 아래 창 분할
 nmap <leader>- <Action>(SplitHorizontally)
