@@ -160,30 +160,41 @@ window_rules:
       - window_class: { equals: 'Windows.UI.Core.CoreWindow' }
       - window_class: { equals: 'ApplicationFrameWindow' }
         window_title: { regex: 'Settings|Microsoft Store' }
+      # 파일 탐색기 특수 창 무시 (파일 선택 대화상자, 속성 창 등)
+      - window_process: { equals: 'explorer' }
+        window_title: { regex: '열기|저장|다른 이름으로 저장|속성|Properties|Open|Save|Save As' }
+        
+      # 카카오톡 알림창 무시
+      - window_process: { equals: 'KakaoTalk' }
+        window_title: { regex: '알림|Notification|새 메시지|New message' }
+      
+      # 슬랙 알림창 무시
+      - window_process: { equals: 'Slack' }
+        window_title: { regex: 'Notification|알림|Slack Notification' }
 
-  - commands: ["set-floating"]
+  - commands: ["set-floating --centered"]
     match:
       - window_process: { equals: 'Taskmgr' }
-      # - window_process: { equals: "explorer" }
-      #   window_title: { regex: 'Properties|설정|속성|제어판' }
+      - window_process: { equals: "explorer" }
+        window_title: { regex: 'Properties|설정|속성|제어판' }
       - window_title: { regex: 'Settings|설정' }
 
   # Auto-assign windows to workspaces
-  - commands: ['move --workspace T']
+  - commands: ['move --workspace T', 'focus --workspace T']
     match:
       - window_process: { equals: 'WindowsTerminal' }
       - window_process: { equals: 'cmd' }
       - window_process: { equals: 'powershell' }
       - window_process: { equals: 'wt' }
       
-  - commands: ['move --workspace B']
+  - commands: ['move --workspace B', 'focus --workspace B']
     match:
       - window_process: { equals: 'chrome' }
       # - window_process: { equals: 'msedge' }
       - window_process: { equals: 'firefox' }
       - window_process: { equals: 'Arc' }
       
-  - commands: ['move --workspace I']
+  - commands: ['move --workspace I', 'focus --workspace I']
     match:
       - window_process: { equals: 'idea64' }
       - window_process: { equals: 'Code' }
@@ -191,25 +202,33 @@ window_rules:
       - window_process: { equals: 'Trae' }
       - window_process: { equals: 'eclipse' }  # Eclipse IDE 추가
       
-  - commands: ['move --workspace N']
+  - commands: ['move --workspace N', 'focus --workspace N']
     match:
       - window_process: { equals: 'Obsidian' }
       
-  # - commands: ['move --workspace E', 'set-floating']
-  #   match:
-  #     - window_process: { equals: 'explorer' }
+  - commands: ['move --workspace E', 'focus --workspace E']
+    match:
+      - window_process: { equals: 'explorer' }
+        window_title: { not_regex: '열기|저장|다른 이름으로 저장|속성|Properties|Open|Save|Save As' }
       
-  - commands: ['move --workspace D']
+  - commands: ['move --workspace D', 'focus --workspace D']
     match:
       - window_process: { equals: 'EXCEL' }
       - window_process: { equals: 'WINWORD' }
       - window_process: { equals: 'POWERPNT' }
 
-  # 모든 창을 플로팅으로 설정
-  - commands: ['move --workspace M', 'set-floating']
+  # 메신저 앱 규칙 (플로팅 모드로 설정하고 M 작업 공간으로 이동)
+  - commands: ['set-floating --centered', 'move --workspace M']
     match:
       - window_process: { equals: 'Slack' }
+        window_title: { not_regex: 'Notification|알림|Slack Notification' }
       - window_process: { equals: 'KakaoTalk' }
+        window_title: { not_regex: '알림|Notification|새 메시지|New message' }
+  # 지정되지 않은 모든 앱을 Z 작업 공간으로 이동
+  - commands: ['move --workspace Z', 'focus --workspace Z']
+    match:
+      # 이미 규칙이 있는 앱들은 제외
+      - window_process: { not_regex: 'zebar|WindowsTerminal|cmd|powershell|wt|chrome|firefox|Arc|idea64|Code|Cursor|Trae|eclipse|Obsidian|explorer|EXCEL|WINWORD|POWERPNT|Slack|KakaoTalk' }
 binding_modes:
   # When enabled, the focused window can be resized via arrow keys or HJKL.
   - name: 'resize'
@@ -228,21 +247,21 @@ binding_modes:
 
 keybindings:
   # Application launch shortcuts
-  - commands: ['shell-exec Arc', 'focus --workspace B']
+  - commands: ['shell-exec Arc']
     bindings: ['lalt+lwin+a']
-  - commands: ['shell-exec cmd /c "start "" "C:\Program Files (x86)\Kakao\KakaoTalk\KakaoTalk.exe"', 'focus --workspace M']
+  - commands: ['shell-exec cmd /c "start "" "C:\Program Files (x86)\Kakao\KakaoTalk\KakaoTalk.exe"']
     bindings: ['lalt+lwin+k']
-  - commands: ['shell-exec cmd /c "start "" "C:\Users\MZ02-OHYUNBOK\AppData\Local\Microsoft\WindowsApps\Slack.exe"', 'focus --workspace M']
+  - commands: ['shell-exec cmd /c "start "" "C:\Users\MZ02-OHYUNBOK\AppData\Local\Microsoft\WindowsApps\Slack.exe"']
     bindings: ['lalt+lwin+s']
-  - commands: ['shell-exec cmd /c "start "" "C:\Program Files (x86)\JetBrains\IntelliJ IDEA 2024.3.4.1\bin\idea64.exe""', 'focus --workspace I']
+  - commands: ['shell-exec cmd /c "start "" "C:\Program Files (x86)\JetBrains\IntelliJ IDEA 2024.3.4.1\bin\idea64.exe""']
     bindings: ['lalt+lwin+i']
   # - commands: ['shell-exec start Cursor']
   #   bindings: ['lalt+lwin+c']
-  - commands: ['shell-exec cmd /c "start "" "C:\Users\MZ02-OHYUNBOK\AppData\Local\Programs\Trae\Trae.exe"', 'focus --workspace I']
+  - commands: ['shell-exec cmd /c "start "" "C:\Users\MZ02-OHYUNBOK\AppData\Local\Programs\Trae\Trae.exe"']
     bindings: ['lalt+lwin+r']
-  - commands: ['shell-exec wt', 'focus --workspace T']
+  - commands: ['shell-exec wt']
     bindings: ['lalt+lwin+t']
-  - commands: ['shell-exec cmd /c "start "" "C:\Users\MZ02-OHYUNBOK\AppData\Local\Programs\Obsidian\Obsidian.exe"', 'focus --workspace N']
+  - commands: ['shell-exec cmd /c "start "" "C:\Users\MZ02-OHYUNBOK\AppData\Local\Programs\Obsidian\Obsidian.exe"']
     bindings: ['lalt+lwin+o']
 
   # Shift focus in a given direction.
@@ -299,7 +318,6 @@ keybindings:
   - commands: ['toggle-floating --centered']
     bindings: ['alt+shift+space']
 
-  # 위 설정과 기능상으로는 중복되는 것으로 보임.
   # Change the focused window to be tiling.
   # - commands: ['toggle-tiling']
   #   bindings: ['alt+x']
@@ -339,8 +357,6 @@ keybindings:
     bindings: ['alt+q']
 
   # Change focus to a workspace defined in `workspaces` config.
-  # - commands: ['focus --workspace A']
-  #   bindings: ['alt+a']
   - commands: ['focus --workspace B']
     bindings: ['alt+b']
   - commands: ['focus --workspace D']
