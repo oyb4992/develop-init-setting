@@ -59,15 +59,14 @@ set formatoptions+=o
 
 " ** 4. IdeaVim 플러그인 활성화 (IdeaVim Plugins) **
 " ----------------------------------
-Plug 'machakann/vim-highlightedyank'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-surround'
-Plug 'easymotion/vim-easymotion'
-Plug 'preservim/nerdtree'
-Plug 'terryma/vim-multiple-cursors'
+set highlightedyank
+set commentary
+set surround
+set easymotion
+set NERDTree
+set multiple-cursors
 set peekaboo
 set which-key
-" f, F, t, T 명령어 강화
 set quickscope
 
 " ** 5. WhichKey 설정 (WhichKey Settings) **
@@ -132,7 +131,7 @@ nmap <leader>g<C-n> <Plug>AllOccurrences
 xmap <leader>g<C-n> <Plug>AllOccurrences
 
 " Visual 모드에서도 Ctrl+F를 Find 액션
-vnoremap <C-F> :action Find<CR>
+vmap <C-F> <Action>(Find)
 
 " 창 분할 및 최대화
 " 아래 창 분할
@@ -154,11 +153,11 @@ nmap <leader>th <Action>(TypeHierarchy)
 " 메소드 계층 구조 보기
 " nmap <leader>mh <Action>(MethodHierarchy)
 " 이름 바꾸기
-nmap <leader>rn <Action>(RenameElement)
+" nmap <leader>rn <Action>(RenameElement)
 
 " Gradle
 " Gradle Task 실행
-nmap <leader>ge :action Gradle.ExecuteTask<CR>
+nmap <leader>ge <Action>(Gradle.ExecuteTask)
 
 " ** 8. 일반 기능 키 매핑 (General Key Mappings) **
 " ----------------------------------
@@ -170,17 +169,17 @@ nmap <C-l> <C-w>l
 
 " 줄 이동
 " 줄 아래로 이동 (Normal mode)
-nmap <C-S-j> :action MoveLineDown<CR>
+nmap <C-S-j> <Action>(MoveLineDown)
 " 줄 아래로 이동 (Insert mode)
-imap <C-S-j> <Esc>:action MoveLineDown<CR>i
+imap <C-S-j> <Esc><Action>(MoveLineDown)i
 " 줄 아래로 이동 (Visual mode)
-vmap <C-S-j> :action MoveLineDown<CR>
+vmap <C-S-j> <Action>(MoveLineDown)
 " 줄 위로 이동 (Normal mode)
-nmap <C-S-k> :action MoveLineUp<CR>
+nmap <C-S-k> <Action>(MoveLineUp)
 " 줄 위로 이동 (Insert mode)
-imap <C-S-k> <Esc>:action MoveLineUp<CR>i
+imap <C-S-k> <Esc><Action>(MoveLineUp)i
 " 줄 위로 이동 (Visual mode)
-vmap <C-S-k> :action MoveLineUp<CR>
+vmap <C-S-k> <Action>(MoveLineUp)
 
 " ** 9. 플러그인 설정 **
 " ----------------------------------
