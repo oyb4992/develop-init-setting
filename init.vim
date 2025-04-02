@@ -1,5 +1,7 @@
 " init.vim - Neovim 설정 파일 for VSCode
 
+" ** 1. 플러그인 관리 최적화 **
+" ----------------------------------
 " vim-plug 플러그인 매니저 설정 (없는 경우 자동 설치)
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
@@ -10,15 +12,92 @@ endif
 " 플러그인 섹션. 최초 설정시 :PlugInstall로 플러그인 설치 필요.
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
   " IdeaVim에서 가져온 플러그인들
-  Plug 'machakann/vim-highlightedyank'  " 복사한 텍스트 하이라이트
-  Plug 'tpope/vim-commentary'           " 주석 처리 기능
-  Plug 'tpope/vim-surround'             " 텍스트 둘러싸기 기능
-  Plug 'unblevable/quick-scope'         " f, F, t, T 명령어 강화
-  Plug 'phaazon/hop.nvim'               " 빠른 커서 이동 (EasyMotion/Leap 대체)
+  " 기능별 그룹화 제안
+  " 1. 코어 기능
+  Plug 'tpope/vim-surround'    " 텍스트 감싸기
+  Plug 'tpope/vim-commentary'  " 주석 처리
+  
+  " 2. 시각적 향상
+  Plug 'machakann/vim-highlightedyank'  " 복사 하이라이트
+  Plug 'unblevable/quick-scope'         " f/F/t/T 강조
+  
+  " 3. 이동 관련
+  Plug 'phaazon/hop.nvim'       " 점프 이동
+  
+  " 4. 검색 도구
+  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+  Plug 'junegunn/fzf.vim'
+  
+  " 5. VSCode 제외 플러그인
+  if !exists('g:vscode')
+    Plug 'liuchengxu/vim-which-key'  " 키 맵핑 도우미
+  endif
 call plug#end()
 
-" ** 1. 기본 설정 (Basic Settings) **
+" ** 2. 환경별 설정 그룹화 **
 " ----------------------------------
+let g:mapleader = "\<Space>"
+if exists('g:vscode')
+  " VSCode 전용 설정
+  let g:loaded_which_key = 1
+  source $HOME/.config/nvim/vscode-integration.vim
+else
+  " Native Neovim 설정
+" ** 3. Which-Key 완전 분리 **
+  nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
+  vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
+  
+  " which-key 그룹 정의
+  let g:which_key_map = {
+  \ 'r': 'Format document',
+  \ 't': {
+  \   'name': '+tabs',
+  \   'x': 'Close tab',
+  \   'a': 'Close all tabs',
+  \   'o': 'Close others',
+  \   ']': 'Next tab',
+  \   '[': 'Previous tab',
+  \   'u': 'Close unmodified'
+  \ },
+  \ 'd': {
+  \   'name': '+debug',
+  \   'd': 'Start debugging',
+  \   's': 'Stop debugging',
+  \   'b': 'Toggle breakpoint'
+  \ },
+  \ ',': 'Quick open',
+  \ 'e': 'Show explorer',
+  \ 'E': 'Reveal in explorer',
+  \ '-': 'Split down',
+  \ '<bar>': 'Split right',
+  \ 'm': 'Zen mode',
+  \ 'g': {
+  \   'name': '+goto',
+  \   'd': 'Go to definition',
+  \   'i': 'Go to implementation',
+  \   'u': 'Find references',
+  \   'h': 'Show call hierarchy'
+  \ },
+  \ 'n': 'Add next match',
+  \ 'N': 'Select all matches',
+  \ 'f': 'Hop char1',
+  \ 'F': 'Hop char2',
+  \ 'L': 'Hop line',
+  \ '/': 'Hop pattern',
+  \ 'x': 'Show registers'
+  \}
+  
+  autocmd VimEnter * silent! call which_key#register('<Space>', 'g:which_key_map')
+endif
+
+" ** 4. 기본 설정 (Basic Settings) **
+" ----------------------------------
+set lazyredraw     " 화면 리프레시 최적화
+set timeoutlen=300 " 키 입력 대기 시간 단축
+" Syntax highlighting
+syntax enable
+filetype plugin on
+filetype indent on
 " 점진적 검색 활성화
 set incsearch
 " 검색어 하이라이트
@@ -50,9 +129,6 @@ set formatoptions=tcqj
 set listchars=tab:>\ ,trail:-,nbsp:+
 " Ex 모드 비활성화, Q를 formatting으로 매핑
 map Q gq
-
-" ** 2. 들여쓰기 설정 (Indentation Settings) **
-" ----------------------------------
 " 자동 들여쓰기
 set autoindent
 " 스마트 들여쓰기
@@ -63,9 +139,8 @@ set tabstop=4
 set shiftwidth=4
 " 탭을 스페이스로 치환
 set expandtab
-
-" ** 3. 검색 설정 (Search Settings) **
-" ----------------------------------
+" 소프트 탭 설정 (IdeaVim과 동일하게)
+set softtabstop=4
 " 검색 시 대소문자 무시
 set ignorecase
 " 검색 패턴에 대문자 있을 때만 대소문자 구별
@@ -77,70 +152,7 @@ set formatoptions+=r
 " 주석 삽입 시 현재 줄과 동일 접두사 사용
 set formatoptions+=o
 
-" ** 4. Leader 키 설정 **
-" ----------------------------------
-let mapleader=" "
-
-" ** 5. VSCode Neovim 통합 키 매핑 **
-" ----------------------------------
-" 코드 formatting
-nnoremap <leader>r <Cmd>call VSCodeCall('editor.action.formatDocument')<CR>
-
-" 탭 관리
-nnoremap <leader>tx <Cmd>call VSCodeCall('workbench.action.closeActiveEditor')<CR>
-nnoremap <leader>ta <Cmd>call VSCodeCall('workbench.action.closeAllEditors')<CR>
-nnoremap <leader>to <Cmd>call VSCodeCall('workbench.action.closeOtherEditors')<CR>
-nnoremap <leader>t] <Cmd>call VSCodeCall('workbench.action.nextEditor')<CR>
-nnoremap <leader>t[ <Cmd>call VSCodeCall('workbench.action.previousEditor')<CR>
-nnoremap <leader>tu <Cmd>call VSCodeCall('workbench.action.closeUnmodifiedEditors')<CR>
-
-" 디버깅
-nnoremap <leader>dd <Cmd>call VSCodeCall('workbench.action.debug.start')<CR>
-nnoremap <leader>ds <Cmd>call VSCodeCall('workbench.action.debug.stop')<CR>
-nnoremap <leader>db <Cmd>call VSCodeCall('editor.debug.action.toggleBreakpoint')<CR>
-
-" 탐색 및 Search
-nnoremap <leader>, <Cmd>call VSCodeCall('workbench.action.quickOpen')<CR>
-nnoremap <leader>e <Cmd>call VSCodeCall('workbench.view.explorer')<CR>
-nnoremap <leader>E <Cmd>call VSCodeCall('workbench.files.action.showActiveFileInExplorer')<CR>
-
-" 창 분할 및 최대화
-nnoremap <leader>- <Cmd>call VSCodeCall('workbench.action.splitEditorDown')<CR>
-nnoremap <leader><bar> <Cmd>call VSCodeCall('workbench.action.splitEditorRight')<CR>
-nnoremap <leader>m <Cmd>call VSCodeCall('workbench.action.toggleZenMode')<CR>
-
-" 코드 탐색 (Go To...)
-nnoremap <leader>gd <Cmd>call VSCodeCall('editor.action.revealDefinition')<CR>
-nnoremap <leader>gi <Cmd>call VSCodeCall('editor.action.goToImplementation')<CR>
-nnoremap <leader>gu <Cmd>call VSCodeCall('editor.action.referenceSearch.trigger')<CR>
-nnoremap <leader>th <Cmd>call VSCodeCall('editor.showCallHierarchy')<CR>
-nnoremap <leader>rn <Cmd>call VSCodeCall('editor.action.rename')<CR>
-
-" ** 6. 일반 기능 키 매핑 (General Key Mappings) **
-" ----------------------------------
-" 창 이동
-nnoremap <C-h> <Cmd>call VSCodeCall('workbench.action.navigateLeft')<CR>
-nnoremap <C-l> <Cmd>call VSCodeCall('workbench.action.navigateRight')<CR>
-nnoremap <C-k> <Cmd>call VSCodeCall('workbench.action.navigateUp')<CR>
-nnoremap <C-j> <Cmd>call VSCodeCall('workbench.action.navigateDown')<CR>
-
-" 줄 이동: 키 충돌로 인해 leader키와 설정
-nnoremap <leader>j  <Cmd>call VSCodeCall('editor.action.moveLinesDownAction')<CR>
-inoremap <leader>j  <Cmd>call VSCodeCall('editor.action.moveLinesDownAction')<CR>
-vnoremap <leader>j  <Cmd>call VSCodeCall('editor.action.moveLinesDownAction')<CR>
-nnoremap <leader>k  <Cmd>call VSCodeCall('editor.action.moveLinesUpAction')<CR>
-inoremap <leader>k  <Cmd>call VSCodeCall('editor.action.moveLinesUpAction')<CR>
-vnoremap <leader>k  <Cmd>call VSCodeCall('editor.action.moveLinesUpAction')<CR>
-
-" ** 7. 추가 VSCode 통합 기능 **
-" ----------------------------------
-" 다중 커서 기능 (VSCode 내장 기능 사용)
-nnoremap <leader>n <Cmd>call VSCodeCall('editor.action.addSelectionToNextFindMatch')<CR>
-xnoremap <leader>n <Cmd>call VSCodeCall('editor.action.addSelectionToNextFindMatch')<CR>
-nnoremap <leader>N <Cmd>call VSCodeCall('editor.action.selectHighlights')<CR>
-xnoremap <leader>N <Cmd>call VSCodeCall('editor.action.selectHighlights')<CR>
-
-" ** 8. 플러그인 설정 **
+" ** 5. 플러그인 설정 **
 " ----------------------------------
 " QuickScope 설정
 " 이 키를 누를 때만 하이라이트 표시
@@ -159,9 +171,42 @@ require('hop').setup({
   keys = 'etovxqpdygfblzhckisuran',
   jump_on_sole_occurrence = true,
   case_insensitive = true,
-  multi_windows = false
+  multi_windows = false,
+  uppercase_labels = true, 
+  trace_target = true       
 })
 EOF
+
+" vim-highlightedyank 설정
+let g:highlightedyank_highlight_duration = 200
+
+" --- fzf 및 외부 도구 연동 설정 ---
+" fzf 레이아웃 설정 (선택 사항, 예: 팝업 창 사용)
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+
+" :Files 명령에 fd 사용 (숨김 파일 및 .gitignore 포함)
+" 실행 파일이 있는지 확인 후 설정
+if executable('fd')
+  let g:fzf_files_command = 'fd --type f --hidden --follow --exclude .git'
+endif
+
+" :Rg 또는 :Grep 명령에 ripgrep (rg) 사용
+" fzf.vim은 rg가 있으면 자동으로 :Rg 명령을 제공합니다.
+" 기본 Grep 명령도 rg를 사용하도록 설정 (선택 사항)
+if executable('rg')
+  set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
+  set grepformat=%f:%l:%c:%m
+endif
+
+" fzf 미리보기 창에 bat 사용 (구문 강조)
+" 실행 파일이 있는지 확인 후 설정
+if executable('bat')
+  " fzf.vim은 종종 자동으로 bat을 감지하지만, 명시적으로 설정할 수도 있습니다.
+  " :Rg 등 fzf.vim 명령의 미리보기 창에서 사용됩니다.
+  let g:fzf_preview_command = 'bat --style=numbers,changes --color=always {-1} --theme=OneHalfDark'
+  " 또는 FZF_DEFAULT_OPTS 환경 변수를 쉘 설정(.zshrc, .bashrc)에서 설정하는 방법도 있습니다:
+  " export FZF_DEFAULT_OPTS='--preview "bat --style=numbers,changes --color=always {}"'
+endif
 
 " 커스텀 키 매핑
 nnoremap <leader>f :HopChar1<CR>
@@ -170,7 +215,20 @@ nnoremap <leader>L :HopLine<CR>
 " 정규식으로 검색
 nnoremap <leader>/ :HopPattern<CR>
 
-" ** 9. 레지스터 확인 **
+" ** 6. 레지스터 확인 **
 " ----------------------------------
 " 레지스터 내용 확인 (필요시 활성화)
 nnoremap <leader>x :registers<CR>
+
+" --- fzf 키 매핑 ---
+" 파일 검색 (:Files 또는 fd를 사용하도록 설정된 명령)
+nnoremap <silent> <leader>p :Files<CR>
+" 열려있는 버퍼 검색
+nnoremap <silent> <leader>b :Buffers<CR>
+" 현재 디렉토리 내용 검색 (ripgrep 사용)
+nnoremap <silent> <leader>g :Rg<CR>
+" Vim 히스토리 검색
+nnoremap <silent> <leader>h :History<CR>
+" 현재 버퍼의 라인 검색
+nnoremap <silent> <leader>l :Lines<CR>
+" --------------------
