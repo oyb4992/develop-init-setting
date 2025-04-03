@@ -11,13 +11,16 @@ set clipboard+=ideaput,unnamed
 set number relativenumber
 set ideajoin
 set idearefactormode=keep
+set scrolljump=5
 set scrolloff=8
+set sidescroll=5
 set sidescrolloff=8
 set nowrap
 set backspace=indent,eol,start
 set showcmd
+set showmode
 set cursorline
-" 가상 공간 이동 허용 (선택 사항)
+" 커서를 줄 끝 다음 칸까지 이동 허용
 set virtualedit=onemore
 map Q gq
 
