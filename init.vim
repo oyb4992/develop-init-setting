@@ -40,7 +40,8 @@ let g:mapleader = "\<Space>"
 if exists('g:vscode')
   " VSCode 전용 설정
   let g:loaded_which_key = 1
-  source $HOME/.config/nvim/vscode-integration.vim
+  " source $HOME/.config/nvim/vscode-integration.vim "MAC OS인 경우
+  source %localappdata%/nvim/vscode-integration.vim "Windows OS인 경우
 else
   " Native Neovim 설정
 " ** 3. Which-Key 완전 분리 **
@@ -141,6 +142,9 @@ set shiftwidth=4
 set expandtab
 " 소프트 탭 설정 (IdeaVim과 동일하게)
 set softtabstop=4
+
+" ** 5. 검색 설정 (Search Settings) **
+" ----------------------------------
 " 검색 시 대소문자 무시
 set ignorecase
 " 검색 패턴에 대문자 있을 때만 대소문자 구별
@@ -152,8 +156,11 @@ set formatoptions+=r
 " 주석 삽입 시 현재 줄과 동일 접두사 사용
 set formatoptions+=o
 
-" ** 5. 플러그인 설정 **
+" ** 6. 플러그인 설정 **
 " ----------------------------------
+" vim-highlightedyank 설정 (IdeaVim과 동일하게)
+let g:highlightedyank_highlight_duration = 200
+
 " QuickScope 설정
 " 이 키를 누를 때만 하이라이트 표시
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
@@ -215,7 +222,7 @@ nnoremap <leader>L :HopLine<CR>
 " 정규식으로 검색
 nnoremap <leader>/ :HopPattern<CR>
 
-" ** 6. 레지스터 확인 **
+" ** 7. 레지스터 확인 **
 " ----------------------------------
 " 레지스터 내용 확인 (필요시 활성화)
 nnoremap <leader>x :registers<CR>
@@ -232,3 +239,18 @@ nnoremap <silent> <leader>h :History<CR>
 " 현재 버퍼의 라인 검색
 nnoremap <silent> <leader>l :Lines<CR>
 " --------------------
+" ** 8. 북마크 (마크) 설정 (Bookmark/Mark Settings) **
+" ----------------------------------
+" Vim의 마크 기능을 북마크처럼 사용합니다.
+"
+" 기본 사용법:
+"   m{a-z} : 현재 파일 내 위치 저장 (소문자 마크)
+"   m{A-Z} : 파일 경로 포함 위치 저장 (대문자/전역 마크)
+"   `{a-zA-Z}` : 저장된 정확한 위치(줄, 열)로 이동
+"   '{a-zA-Z} : 저장된 줄의 첫 글자로 이동
+"   :marks   : 저장된 마크 목록 보기
+"   :delmarks {marks} : 특정 마크 삭제 (예: :delmarks a b C)
+"   :delmarks a-z A-Z : 모든 마크 삭제
+
+" <leader>M : 마크 목록 보기 (View Marks)
+nnoremap <silent> <leader>M :marks<CR>

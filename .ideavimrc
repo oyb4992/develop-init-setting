@@ -1,17 +1,20 @@
+"==============================================================================
 " .ideavimrc - IdeaVim 설정 파일
+"==============================================================================
 
-" ** 1. 기본 설정 (Basic Settings) **
-" ----------------------------------
+"------------------------------------------------------------------------------
+" 1. 기본 설정 (Basic Settings)
+"------------------------------------------------------------------------------
 " 점진적 검색 활성화
 set incsearch
 " 검색어 하이라이트
 set hls
-" 시스템 클립보드 공유
-set clipboard+=unnamed
+" 시스템 클립보드와 선택 클립보드 모두 사용
+set clipboard+=ideaput,unnamed
 " 하이브리드 라인 넘버 모드 (현재 줄은 절대 번호, 다른 줄은 상대 번호)
 set number relativenumber
 " IntelliJ의 스마트 조인 기능
-set ideajoin
+set ideajoin=on
 " IntelliJ의 리팩토링 기능을 사용할 때 Vim 모드 유지
 set idearefactormode=keep
 " 커서 주변 문맥 줄 수 (상하)
@@ -22,15 +25,16 @@ set sidescrolloff=8
 set nowrap
 " 백스페이스 동작 설정
 set backspace=indent,eol,start
-" 텍스트 포맷 옵션
-set formatoptions=tcqj
-" 특수 문자 표시 설정
-set listchars=tab:>\ ,trail:-,nbsp:+
+" 명령어 표시
+set showcmd
+" 현재 줄을 강조
+set cursorline
 " Ex 모드 비활성화, Q를 formatting으로 매핑
 map Q gq
 
-" ** 2. 들여쓰기 설정 (Indentation Settings) **
-" ----------------------------------
+"------------------------------------------------------------------------------
+" 2. 들여쓰기 설정 (Indentation Settings)
+"------------------------------------------------------------------------------
 " 자동 들여쓰기
 set autoindent
 " 스마트 들여쓰기
@@ -44,21 +48,33 @@ set expandtab
 " 소프트 탭 설정
 set softtabstop=4
 
-" ** 3. 검색 설정 (Search Settings) **
-" ----------------------------------
+"------------------------------------------------------------------------------
+" 3. 검색 및 표시 설정 (Search & Display Settings)
+"------------------------------------------------------------------------------
 " 검색 시 대소문자 무시
 set ignorecase
 " 검색 패턴에 대문자 있을 때만 대소문자 구별
 set smartcase
-" 시각적 벨 효과 (필요에 따라 변경 가능)
+" 시각적 벨 효과
 set visualbell
+" 특수 문자 표시 설정
+set listchars=tab:»\ ,trail:·,nbsp:␣,extends:>,precedes:<
+" 특수 문자 표시 활성화
+set list
+
+"------------------------------------------------------------------------------
+" 4. 텍스트 포맷 설정 (Text Format Settings)
+"------------------------------------------------------------------------------
+" 기본 텍스트 포맷 옵션
+set formatoptions=tcqj
 " 주석 줄 자동 줄 바꿈
 set formatoptions+=r
 " 주석 삽입 시 현재 줄과 동일 접두사 사용
 set formatoptions+=o
 
-" ** 4. IdeaVim 플러그인 활성화 (IdeaVim Plugins) **
-" ----------------------------------
+"------------------------------------------------------------------------------
+" 5. IdeaVim 플러그인 활성화 (IdeaVim Plugins)
+"------------------------------------------------------------------------------
 set highlightedyank
 set commentary
 set surround
@@ -69,20 +85,29 @@ set peekaboo
 set which-key
 set quickscope
 
-" ** 5. WhichKey 설정 (WhichKey Settings) **
-" ----------------------------------
-" which-key에서는 높게 설정하거나 notimeout을 설정하라고 합니다.
+"------------------------------------------------------------------------------
+" 6. WhichKey 및 Leader 키 설정 (WhichKey & Leader Settings)
+"------------------------------------------------------------------------------
+" which-key 타임아웃 비활성화
 set notimeout
+" WhichKey 폰트 크기
 let g:WhichKey_FontSize = 14
-
-" ** 6.  Leader 키 설정 **
-" ----------------------------------
+" Leader 키를 스페이스로 설정
 let mapleader=" "
 
-" ** 7.  IDE 액션 매핑 (IDE Action Mappings) **
-" ----------------------------------
+"------------------------------------------------------------------------------
+" 7. IDE 액션 매핑 (IDE Action Mappings)
+"------------------------------------------------------------------------------
 " 코드 formatting
 map <leader>r <Action>(ReformatCode)
+
+" 클립보드 관련 매핑
+" Normal 모드: Ctrl+V를 비주얼 블록 모드 시작으로 매핑 (Vim 기본 동작 명시)
+nmap <C-v> <C-v>
+" Insert 모드: Ctrl+V를 시스템 클립보드 내용 붙여넣기로 매핑 (Vim 방식)
+imap <C-v> <C-r>+
+" Visual 모드: Ctrl+V를 시스템 클립보드 내용으로 선택 영역 교체 (Vim 방식)
+vmap <C-v> "+p
 
 " 탭 관리
 " 현재 탭 닫기
@@ -113,6 +138,10 @@ nmap <leader>, <Action>(Switcher)
 nmap <leader>e :NERDTree<CR>
 " 현재 파일 위치에서 NERDTree 열기
 nmap <leader>E :NERDTreeFind<CR>
+" Visual 모드에서도 Ctrl+F를 Find 액션
+vmap <C-F> <Action>(Find)
+
+" 다중 커서 관련 매핑
 " 다음 완전 일치 검색 결과
 nmap <C-n> <Plug>NextWholeOccurrence
 xmap <C-n> <Plug>NextWholeOccurrence
@@ -129,9 +158,6 @@ xmap <leader><C-n> <Plug>AllWholeOccurrences
 " 모든 검색 결과 선택
 nmap <leader>g<C-n> <Plug>AllOccurrences
 xmap <leader>g<C-n> <Plug>AllOccurrences
-
-" Visual 모드에서도 Ctrl+F를 Find 액션
-vmap <C-F> <Action>(Find)
 
 " 창 분할 및 최대화
 " 아래 창 분할
@@ -159,8 +185,9 @@ nmap <leader>th <Action>(TypeHierarchy)
 " Gradle Task 실행
 nmap <leader>ge <Action>(Gradle.ExecuteTask)
 
-" ** 8. 일반 기능 키 매핑 (General Key Mappings) **
-" ----------------------------------
+"------------------------------------------------------------------------------
+" 8. 일반 기능 키 매핑 (General Key Mappings)
+"------------------------------------------------------------------------------
 " 창 이동
 " 왼쪽 창으로 이동
 nmap <C-h> <C-w>h
@@ -181,34 +208,56 @@ imap <C-S-k> <Esc><Action>(MoveLineUp)i
 " 줄 위로 이동 (Visual mode)
 vmap <C-S-k> <Action>(MoveLineUp)
 
-" ** 9. 플러그인 설정 **
-" ----------------------------------
+"------------------------------------------------------------------------------
+" 9. 플러그인 설정 (Plugin Settings)
+"------------------------------------------------------------------------------
 " vim-highlightedyank 설정
 let g:highlightedyank_highlight_duration = 200
 
 " QuickScope 설정
 " 이 키를 누를 때만 하이라이트 표시
-let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']  
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 " 첫 번째 문자 하이라이트 색상
-let g:qs_primary_color = '#ff0000'   
+let g:qs_primary_color = '#ff0000'
 " 두 번째 문자 하이라이트 색상
-let g:qs_secondary_color = '#00ff00' 
+let g:qs_secondary_color = '#00ff00'
 " 차이점 편집기에서 강조 표시 제거
 let g:qs_disable_for_diffs = 1
 
 " Easymotion 설정
 " Smartcase 활성화 (대소문자 구분)
-let g:EasyMotion_smartcase = 1 
+let g:EasyMotion_smartcase = 1
 " 기본 매핑 비활성화 (직접 매핑 사용)
-let g:EasyMotion_do_mapping = 0 
+let g:EasyMotion_do_mapping = 0
 map <leader>f <Plug>(easymotion-s)
 map <leader>F <Plug>(easymotion-s2)
-" 화면 내 줄 이동 
+" 화면 내 줄 이동
 map <Leader>L <Plug>(easymotion-bd-jk)
 " 화면 내 검색 이동
 map <Leader>/ <Plug>(easymotion-sn)
 
-" ** 10. 레지스터 확인 (Registers) **
-" ----------------------------------
+"------------------------------------------------------------------------------
+" 10. 레지스터 및 마크 설정 (Registers & Marks)
+"------------------------------------------------------------------------------
 " 레지스터 내용 확인 (필요시 활성화)
-" nmap <leader>x :registers<CR>  
+" nmap <leader>x :registers<CR>
+
+" 북마크 (마크) 설정
+" Vim의 마크 기능을 북마크처럼 사용합니다.
+
+" 기본 사용법:
+"   m{a-z} : 현재 파일 내 위치 저장 (소문자 마크)
+"   m{A-Z} : 파일 경로 포함 위치 저장 (대문자/전역 마크)
+"   `{a-zA-Z}` : 저장된 정확한 위치(줄, 열)로 이동
+"   '{a-zA-Z} : 저장된 줄의 첫 글자로 이동
+"   :marks   : 저장된 마크 목록 보기
+"   :delmarks {marks} : 특정 마크 삭제 (예: :delmarks a b C)
+"   :delmarks a-z A-Z : 모든 마크 삭제
+
+" <leader>M : 마크 목록 보기 (View Marks)
+nmap <silent> <leader>M :marks<CR>
+
+" 참고: 마크 삭제는 :delmarks 명령어를 직접 사용하는 것이 일반적입니다.
+" (예: :delmarks a b C)
+" 단축키를 원한다면 아래 주석 해제 (주의: 모든 마크 삭제!)
+" nnoremap <silent> <leader>Md :delmarks a-z A-Z<CR>
