@@ -38,10 +38,14 @@ call plug#end()
 " ----------------------------------
 let g:mapleader = "\<Space>"
 if exists('g:vscode')
-  " VSCode 전용 설정
   let g:loaded_which_key = 1
-  " source $HOME/.config/nvim/vscode-integration.vim "MAC OS인 경우
-  source %localappdata%/nvim/vscode-integration.vim "Windows OS인 경우
+  if has('win32') || has('win64')
+    source $LOCALAPPDATA/nvim/vscode-integration.vim
+  elseif has('macunix')
+    source $HOME/.config/nvim/vscode-integration.vim
+  elseif has('unix') " Linux 등 다른 Unix 계열
+    source $HOME/.config/nvim/vscode-integration.vim " 또는 다른 경로
+  endif
 else
   " Native Neovim 설정
 " ** 3. Which-Key 완전 분리 **
