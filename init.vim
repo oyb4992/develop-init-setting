@@ -220,6 +220,10 @@ if executable('bat')
 endif
 
 " 커스텀 키 매핑
+nnoremap j gj
+nnoremap k gk
+nnoremap H ^
+nnoremap L $
 nnoremap <leader>f :HopChar1<CR>
 nnoremap <leader>F :HopChar2<CR>
 nnoremap <leader>L :HopLine<CR>
