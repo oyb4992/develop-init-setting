@@ -1,4 +1,4 @@
-#HotIf WinActive("ahk_exe Code.exe") or WinActive("ahk_exe Trae.exe") or WinActive("ahk_exe idea64.exe")
+#HotIf WinActive("ahk_exe Code.exe") or WinActive("ahk_exe Trae.exe") or WinActive("ahk_exe Cursor.exe") or WinActive("ahk_exe idea64.exe")
 
 $Esc::
 {
@@ -6,15 +6,8 @@ $Esc::
     if (IME_CHECK("A"))
     {
         Send "{vk15}"  ; 한/영 전환 키 보내기 (시스템에 따라 "{Hangul}" 시도)
-        Send "{Escape}" ; Escape 키 보내기
     }
-    ; 중요: 현재 구조에서는 영문 상태일 때 아무 작업도 하지 않습니다.
-    ; 만약 영문 상태에서도 Escape 키를 보내려면 아래 주석 처리된 Send 라인을 활성화하고,
-    ; 위의 Send "{Escape}" 라인을 if 블록 밖으로 이동하거나 삭제해야 합니다.
-    ; else
-    ; {
-    ;     Send "{Escape}"
-    ; }
+    Send "{Escape}" ; Escape 키 보내기
     return ; Hotkey 종료
 }
 
