@@ -1,5 +1,4 @@
-#HotIf WinActive("ahk_exe Code.exe") or WinActive("ahk_exe Trae.exe") or WinActive("ahk_exe Cursor.exe") or WinActive("ahk_exe idea64.exe")
-
+#HotIf WinActive("ahk_exe Code.exe") or WinActive("ahk_exe Trae.exe") or WinActive("ahk_exe Cursor.exe") or WinActive("ahk_exe idea64.exe") or WinActive("ahk_exe Obsidian.exe")
 $Esc::
 {
     ; 현재 활성 창("A")의 IME 상태 확인 (한글이면 0x1 반환)
