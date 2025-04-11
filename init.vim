@@ -224,6 +224,8 @@ nnoremap j gj
 nnoremap k gk
 nnoremap H ^
 nnoremap L $
+vnoremap H ^
+vnoremap L $
 nnoremap <leader>f :HopChar1<CR>
 nnoremap <leader>F :HopChar2<CR>
 nnoremap <leader>L :HopLine<CR>
