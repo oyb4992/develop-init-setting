@@ -79,6 +79,8 @@ nmap j gj
 nmap k gk
 nmap H ^
 nmap L $
+vmap H ^
+vmap L $
 
 " 클립보드 관련 매핑 (주석 처리 유지 - 필요시 해제)
 " nmap <C-v> <C-v>
