@@ -1,6 +1,14 @@
 #HotIf WinActive("ahk_exe Code.exe") or WinActive("ahk_exe Trae.exe") or WinActive("ahk_exe Cursor.exe") or WinActive("ahk_exe idea64.exe") or WinActive("ahk_exe Obsidian.exe")
 $Esc::
 {
+    ; --- Caps Lock 처리 (추가된 부분) ---
+    ; 현재 Caps Lock 상태가 켜져 있는지(토글 상태 On) 확인
+    if GetKeyState("CapsLock", "T")
+    {
+        ; 켜져 있다면 Caps Lock을 끈다
+        SetCapsLockState false ; 또는 SetCapsLockState "Off"
+    }
+
     ; 현재 활성 창("A")의 IME 상태 확인 (한글이면 0x1 반환)
     if (IME_CHECK("A"))
     {
