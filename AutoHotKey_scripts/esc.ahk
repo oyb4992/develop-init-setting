@@ -55,3 +55,12 @@ ImmGetDefaultIMEWnd(hWnd) {
     ; DllCall을 사용하여 ImmGetDefaultIMEWnd API 호출
     return DllCall("imm32\ImmGetDefaultIMEWnd", "Ptr", hWnd, "Ptr")
 }
+
+; --- Ctrl + h/j/k/l 를 방향키로 사용 ---
+; $ 접두사: Send 명령어가 이 Hotkey를 다시 트리거하는 것을 방지합니다.
+; ^ 기호: Ctrl 키를 의미합니다.
+
+$^!h::Send "{Left}"   ; Ctrl + h -> 왼쪽 방향키
+$^!j::Send "{Down}"   ; Ctrl + j -> 아래쪽 방향키
+$^!k::Send "{Up}"     ; Ctrl + k -> 위쪽 방향키
+$^!l::Send "{Right}"  ; Ctrl + l -> 오른쪽 방향키
