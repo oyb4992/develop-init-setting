@@ -128,8 +128,10 @@ nmap <leader>m <Action>(ToggleDistractionFreeMode)
 " 코드 탐색 (Go To...)
 nmap <leader>gd <Action>(GotoDeclaration)
 nmap <leader>gi <Action>(GotoImplementation)
-nmap <leader>gu <Action>(FindUsages)
+nmap <leader>gu <Action>(ShowUsages)
 nmap <leader>th <Action>(TypeHierarchy)
+" 현재 코드 블록 시작으로 이동
+nmap <leader>gm <Action>(EditorCodeBlockStart)
 " nmap <leader>mh <Action>(MethodHierarchy) " (주석 처리 유지 - 필요시 해제)
 " nmap <leader>rn <Action>(RenameElement)     " (주석 처리 유지 - 필요시 해제, Shift+F6 사용 가능)
 
