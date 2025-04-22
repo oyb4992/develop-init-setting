@@ -310,3 +310,12 @@ run = 'move-node-to-workspace B'    # 'B' 워크스페이스로 이동
 [[on-window-detected]]
 if.app-id = 'com.tdesktop.Telegram' # Telegram
 run = ['layout floating', 'move-node-to-workspace M'] # 플로팅 레이아웃으로 변경 후 'M' 워크스페이스로 이동
+
+# 특정 앱을 창 관리에서 제외 (플로팅으로 설정)
+[[on-window-detected]]
+if.app-id = 'com.trendmicro.TrendCleanerPro' # 여기에 제외할 앱의 ID를 입력하세요
+run = 'layout floating'       # 해당 앱의 창을 플로팅 모드로 설정
+
+[[on-window-detected]]
+if.app-id = 'com.linguee.DeepLCopyTranslator' # 여기에 제외할 앱의 ID를 입력하세요
+run = 'layout floating'       # 해당 앱의 창을 플로팅 모드로 설정
