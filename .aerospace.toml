@@ -131,25 +131,25 @@ alt-l = 'focus right' # 오른쪽 창으로 포커스 이동 (Alt + L)
 # 직접 창 크기 조절 단축키는 사용하지 않고, GlazeWM처럼 모드를 사용합니다.
 # alt-shift-minus = 'resize smart -50' # 창 크기 지능적으로 줄이기
 # alt-shift-equal = 'resize smart +50' # 창 크기 지능적으로 늘리기
-# alt-shift-0 = 'balance-sizes' # 창 크기 균형 맞추기 (GlazeWM에 직접 매핑되는 단축키 없음)
+alt-shift-0 = 'balance-sizes' # 창 크기 균형 맞추기 (GlazeWM에 직접 매핑되는 단축키 없음)
 
-# 크기 조절 모드를 활성화합니다. (Alt + Ctrl + R) - GlazeWM과 통일
-alt-ctrl-r = 'mode resize'
+# 크기 조절 모드를 활성화합니다. (Alt + Cmd + R) - GlazeWM과 통일
+alt-cmd-r = 'mode resize'
 
-# 창 스왑 모드를 활성화합니다. (Alt + Ctrl + W) - GlazeWM과 통일 (AeroSpace의 move 명령 사용)
-alt-ctrl-w = 'mode swap'
+# 창 스왑 모드를 활성화합니다. (Alt + Cmd + W) - GlazeWM과 통일
+alt-cmd-w = 'mode swap'
 
-# 포커스된 창을 전체 화면으로 변경. (Alt + Ctrl + F) - GlazeWM과 통일
-alt-ctrl-f = 'toggle-fullscreen'
+# 포커스된 창을 전체 화면으로 변경. (Alt + Ctrl + F) - GlazeWM과 통일 - 맥에선 불필요XX
+# alt-ctrl-f = 'fullscreen'
 
-# 포커스된 창 최소화. (Alt + Ctrl + G) - GlazeWM과 통일
-alt-ctrl-g = 'toggle-minimized'
+# 포커스된 창 최소화. (Alt + Ctrl + G) - GlazeWM과 통일 - 기본 명령어 cmd+M으로 대체
+# alt-ctrl-g = 'toggle-minimized'
 
 # 포커스된 창 닫기. (Alt + Ctrl + Q) - GlazeWM과 통일
 alt-ctrl-q = 'close'
 
 # AeroSpace 프로세스를 안전하게 종료합니다. (Alt + Shift + X) - GlazeWM과 통일
-alt-shift-x = 'quit'
+alt-shift-x = 'enable off'
 
 # 구성 파일 재평가. (Alt + Shift + R) - GlazeWM과 통일
 alt-shift-r = 'reload-config'
@@ -159,12 +159,12 @@ alt-shift-r = 'reload-config'
 alt-a = 'workspace A' # AI 관련
 alt-b = 'workspace B' # 브라우저
 alt-d = 'workspace D' # 문서 작업
-alt-f = 'workspace F' # 탐색기 (Finder) - 주의: Alt+F는 전체 화면과 중복됨. 아래에서 변경
+alt-f = 'workspace F' # 탐색기 (Finder)
 alt-i = 'workspace I' # IDE (개발 환경)
 alt-m = 'workspace M' # 메신저
 alt-n = 'workspace N' # 노트
 alt-t = 'workspace T' # 터미널
-alt-w = 'workspace W' # 윈도우 (가상 머신 등) - 주의: Alt+W는 스왑 모드와 중복됨. 아래에서 변경
+alt-w = 'workspace W' # 윈도우 (가상 머신 등)
 alt-z = 'workspace Z' # 기타
 
 # 참고: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
@@ -172,21 +172,12 @@ alt-z = 'workspace Z' # 기타
 alt-shift-a = 'move-node-to-workspace --focus-follows-window A'
 alt-shift-b = 'move-node-to-workspace --focus-follows-window B'
 alt-shift-d = 'move-node-to-workspace --focus-follows-window D'
-# alt-shift-f 는 위에서 F 워크스페이스 포커스로 사용. 창 이동은 다른 단축키 필요.
-# GlazeWM에서는 Alt+Shift+F가 F 워크스페이스로 이동+포커스. AeroSpace에서는 Alt+Shift+F를 F 워크스페이스 포커스로 사용하기로 함.
-# F 워크스페이스로 창 이동만 하려면 다른 단축키를 할당해야 함 (예: Alt+Ctrl+Shift+F).
-# 일관성을 위해 GlazeWM의 Alt+Shift+F를 F 워크스페이스 이동+포커스로 유지하고, AeroSpace에서도 동일하게 설정.
-# 대신 Alt+F (전체화면) 단축키는 유지. F 워크스페이스 포커스는 Alt+Shift+F로 통일.
-alt-shift-f = ['move-node-to-workspace --focus-follows-window F', 'workspace F'] # F 워크스페이스 이동+포커스로 통일
-
+alt-shift-f = 'move-node-to-workspace --focus-follows-window F'
 alt-shift-i = 'move-node-to-workspace --focus-follows-window I'
 alt-shift-m = 'move-node-to-workspace --focus-follows-window M'
 alt-shift-n = 'move-node-to-workspace --focus-follows-window N'
 alt-shift-t = 'move-node-to-workspace --focus-follows-window T'
-# alt-shift-w 는 위에서 W 워크스페이스 포커스로 사용. 창 이동은 다른 단축키 필요.
-# GlazeWM과 동일하게 W 워크스페이스 이동+포커스로 통일.
-alt-shift-w = ['move-node-to-workspace --focus-follows-window W', 'workspace W'] # W 워크스페이스 이동+포커스로 통일
-
+alt-shift-w = 'move-node-to-workspace --focus-follows-window W'
 alt-shift-z = 'move-node-to-workspace --focus-follows-window Z'
 
 # 멀티 모니터 설정을 위한 추가 단축키 (macOS 고유)
@@ -216,7 +207,7 @@ up = 'resize smart +50'
 j = 'resize smart -50' # 아래쪽으로 줄이기 (GlazeWM의 height -2%와 유사) - 방향 주의 (아래로 줄이면 창 아래쪽이 올라옴)
 down = 'resize smart -50'
 # 기본 키 바인딩으로 돌아가려면 Enter/Escape 키를 누르세요. (GlazeWM과 통일)
-escape = 'mode main'
+esc = 'mode main'
 enter = 'mode main'
 
 # 'swap' 바인딩 모드 선언 (Alt + W)
@@ -231,7 +222,7 @@ up = 'move up'
 j = 'move down'
 down = 'move down'
 # 기본 키 바인딩으로 돌아가려면 Enter/Escape 키를 누르세요. (GlazeWM과 통일)
-escape = 'mode main'
+esc = 'mode main'
 enter = 'mode main'
 
 # 'service' 바인딩 모드 선언. (macOS 고유 유틸리티 모드)
@@ -292,7 +283,11 @@ if.app-id = 'com.apple.finder' # Finder
 run = 'move-node-to-workspace F' # 'F' 워크스페이스로 이동 (GlazeWM과 통일)
 
 [[on-window-detected]]
-if.app-id = 'com.apple.Safari.WebApp.D1753E26-83B1-4E92-B835-1EE42BF21E60' # 특정 웹앱일 가능성 (예: LobeChat PWA?)
+if.app-id = 'com.apple.Safari.WebApp.FFA81327-AAE6-440F-BC86-2ED1362C41CE' # 특정 웹앱일 가능성 (예: LobeChat PWA?)
+run = 'move-node-to-workspace A' # 'A' 워크스페이스로 이동 (AI)
+
+[[on-window-detected]]
+if.app-id = 'ai.perplexity.mac' # Perplexity
 run = 'move-node-to-workspace A' # 'A' 워크스페이스로 이동 (AI)
 
 [[on-window-detected]]
@@ -344,8 +339,8 @@ if.app-id = 'com.vmware.fusion' # VMware Fusion (가상화)
 run = 'move-node-to-workspace W'  # 'W' 워크스페이스로 이동
 
 [[on-window-detected]]
-if.app-id = 'com.trae.app' # Trae? (번역기 앱 추정)
-run = 'move-node-to-workspace I' # 'I' 워크스페이스로 이동 (임시, 필요시 조정)
+if.app-id = 'com.trae.app' # Trae
+run = 'move-node-to-workspace I' # 'I' 워크스페이스로 이동
 
 [[on-window-detected]]
 if.app-id = 'com.google.Chrome' # Google Chrome
