@@ -41,14 +41,14 @@ gaps:
   scale_with_dpi: true
 
   # 인접한 창 사이의 갭.
-  inner_gap: '15px'
+  inner_gap: '5px'
 
   # 창과 화면 가장자리 사이의 갭.
   outer_gap:
-    top: '50px'
-    right: '15px'
-    bottom: '15px'
-    left: '15px'
+    top: '5px'
+    right: '5px'
+    bottom: '5px'
+    left: '5px'
 
 window_effects:
   # 포커스된 창에 적용할 시각 효과.
@@ -57,7 +57,7 @@ window_effects:
     # ** API 제한으로 인해 Windows 11 전용입니다.
     border:
       enabled: false
-      color: '#8dbcff'
+      color '#8dbcff'
 
     # 창 프레임에서 제목 표시줄을 제거합니다. 일부 애플리케이션에서 렌더링 문제가 발생할 수 있습니다.
     hide_title_bar:
@@ -328,13 +328,13 @@ keybindings:
   - commands: ['focus --direction down']
     bindings: ['alt+j']
 
-  # 창 스왑 모드를 활성화합니다. (Alt + Ctrl + W)
+  # 창 스왑 모드를 활성화합니다. (Alt + Win + W)
   - commands: ['wm-enable-binding-mode --name swap']
-    bindings: ['alt+ctrl+w']
+    bindings: ['alt+win+w']
 
-  # 크기 조정 모드를 활성화합니다. (Alt + Ctrl + R)
+  # 크기 조정 모드를 활성화합니다. (Alt + Win + R)
   - commands: ['wm-enable-binding-mode --name resize']
-    bindings: ['alt+ctrl+r']
+    bindings: ['alt+win+r']
 
   # alt+shift+p를 다시 누를 때까지 창 관리 및 다른 모든 키 바인딩을 비활성화합니다. (Alt + Shift + P)
   - commands: ['wm-toggle-pause']
@@ -439,8 +439,3 @@ keybindings:
   #   bindings: ['alt+shift+w']
   - commands: ['move --workspace Z', 'focus --workspace Z']
     bindings: ['alt+shift+z']
-
-  # Alt + F 와 Alt + W 단축키 중복 해결 제안:
-  # Alt + F는 전체 화면 토글로 통일. F 워크스페이스 포커스는 Alt + Shift + F (창 이동 단축키와 동일하게) 또는 Alt + Ctrl + F 등으로 변경
-  # Alt + W는 스왑 모드 진입으로 통일. W 워크스페이스 포커스는 Alt + Shift + W (창 이동 단축키와 동일하게) 또는 Alt + Ctrl + W 등으로 변경
-  # 여기서는 F, W 워크스페이스 포커스 단축키를 Alt + Shift + F/W 로 변경하여 중복을 피합니다.

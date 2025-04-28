@@ -111,8 +111,8 @@ alt-shift-cmd-ctrl-h = 'exec-and-forget open /Applications/HTTPie.app)'
 # alt-comma = 'layout accordion horizontal vertical' # 아코디언 레이아웃 (가로/세로 자동 전환) - GlazeWM에 직접 매핑되는 단축키 없음
 alt-shift-space = 'layout floating tiling' # 플로팅/타일링 레이아웃 전환 (Alt + Shift + Space)
 
-# 타일링 레이아웃으로 변경 (Alt + X) - GlazeWM과 통일
-alt-ctrl-x = 'layout tiling'
+# 타일 아코디언 레이아웃으로 변경 (Alt + Ctrl + X)
+alt-ctrl-x = 'layout tiles accordion'
 
 # 참고: https://nikitabobko.github.io/AeroSpace/commands#focus
 alt-h = 'focus left' # 왼쪽 창으로 포커스 이동 (Alt + H)
@@ -140,10 +140,10 @@ alt-cmd-r = 'mode resize'
 alt-cmd-w = 'mode swap'
 
 # 포커스된 창을 전체 화면으로 변경. (Alt + Ctrl + F) - GlazeWM과 통일 - 맥에선 불필요XX
-# alt-ctrl-f = 'fullscreen'
+alt-ctrl-f = 'macos-native-fullscreen'
 
-# 포커스된 창 최소화. (Alt + Ctrl + G) - GlazeWM과 통일 - 기본 명령어 cmd+M으로 대체
-# alt-ctrl-g = 'toggle-minimized'
+# 포커스된 창 최소화. (Alt + Ctrl + G) - GlazeWM과 통일
+alt-ctrl-g = 'macos-native-minimize'
 
 # 포커스된 창 닫기. (Alt + Ctrl + Q) - GlazeWM과 통일
 alt-ctrl-q = 'close'
