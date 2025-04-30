@@ -2,11 +2,11 @@
 general:
   # WM 시작 시 실행할 명령어. 스크립트 실행이나 다른 애플리케이션을 시작하는 데 유용합니다.
   # 예시: 아래 명령어는 Zebar를 실행합니다.
-  startup_commands: ['shell-exec zebar']
+  startup_commands: ["shell-exec zebar"]
 
   # WM 종료 직전에 실행할 명령어.
   # 예시: 아래 명령어는 Zebar를 종료합니다.
-  shutdown_commands: ['shell-exec taskkill /IM zebar.exe /F']
+  shutdown_commands: ["shell-exec taskkill /IM zebar.exe /F"]
 
   # WM 설정이 재로드된 후 실행할 명령어.
   config_reload_commands: []
@@ -24,12 +24,12 @@ general:
     # 커서 점프 트리거:
     # - 'monitor_focus': 모니터 간 포커스 변경 시 점프.
     # - 'window_focus': 창 간 포커스 변경 시 점프.
-    trigger: 'window_focus'
+    trigger: "window_focus"
 
   # 작업 공간 전환 시 창을 숨기는 방법.
   # - 'cloak': 권장. 애니메이션 없이 창을 숨깁니다.
   # - 'hide': 레거시 방식 (v3.5 이하). 짧은 애니메이션이 있지만 일부 앱에서 안정성 문제가 있습니다.
-  hide_method: 'cloak'
+  hide_method: "cloak"
 
   # 네이티브 Windows 작업 표시줄에 표시될 창에 영향을 줍니다. `hide_method: 'hide'`인 경우 효과가 없습니다.
   # - 'true': 모든 창 표시 (작업 공간에 관계없이).
@@ -41,14 +41,14 @@ gaps:
   scale_with_dpi: true
 
   # 인접한 창 사이의 갭.
-  inner_gap: '5px'
+  inner_gap: "5px"
 
   # 창과 화면 가장자리 사이의 갭.
   outer_gap:
-    top: '5px'
-    right: '5px'
-    bottom: '5px'
-    left: '5px'
+    top: "50px"
+    right: "5px"
+    bottom: "5px"
+    left: "5px"
 
 window_effects:
   # 포커스된 창에 적용할 시각 효과.
@@ -57,7 +57,7 @@ window_effects:
     # ** API 제한으로 인해 Windows 11 전용입니다.
     border:
       enabled: false
-      color '#8dbcff'
+      color: "#8dbcff"
 
     # 창 프레임에서 제목 표시줄을 제거합니다. 일부 애플리케이션에서 렌더링 문제가 발생할 수 있습니다.
     hide_title_bar:
@@ -68,33 +68,33 @@ window_effects:
     corner_style:
       enabled: false
       # 허용되는 값: 'square', 'rounded', 'small_rounded'.
-      style: 'square'
+      style: "square"
 
     # 창의 투명도를 변경합니다.
     transparency:
       enabled: false
       # 약간 투명한 창을 위해 '95%' 또는 '0.95'와 같이 사용할 수 있습니다.
       # '0' 또는 '0%'는 완전히 투명합니다 (따라서 포커스할 수 없습니다).
-      opacity: '100%'
+      opacity: "100%"
 
   # 포커스되지 않은 창에 적용할 시각 효과.
   other_windows:
     border:
       enabled: false
-      color: '#a1a1a1'
+      color: "#a1a1a1"
     hide_title_bar:
       enabled: false
     corner_style:
       enabled: false
-      style: 'square'
+      style: "square"
     transparency:
       enabled: true
-      opacity: '85%'
+      opacity: "85%"
 
 window_behavior:
   # 새 창이 생성될 때 가능한 경우 이 상태로 생성됩니다.
   # 허용되는 값: 'tiling', 'floating'.
-  initial_state: 'tiling'
+  initial_state: "tiling"
 
   # 새 창이 생성될 때 기본 옵션을 설정합니다. 또한 `set-floating`과 같은 상태 변경 명령이 플래그 없이 사용될 때 기본값을 변경합니다.
   state_defaults:
@@ -113,152 +113,158 @@ window_behavior:
       shown_on_top: false
 
 workspaces:
-  - name: 'A' # AI 관련
+  - name: "A" # AI 관련
     bind_to_monitor: 2 # 필요에 따라 모니터 번호 조정
-  - name: 'B' # 브라우저용
+  - name: "B" # 브라우저용
     display_name: "Browser"
     bind_to_monitor: 2
-  - name: 'D' # 문서용
+  - name: "D" # 문서용
     display_name: "Document"
     bind_to_monitor: 2
-  - name: 'F' # 탐색기용 (Finder)
+  - name: "F" # 탐색기용 (Finder)
     display_name: "File Explorer"
     bind_to_monitor: 2
-  - name: 'I' # IDE용
+  - name: "I" # IDE용
     display_name: "IDE"
     bind_to_monitor: 2
-  - name: 'M' # 메신저용
+  - name: "M" # 메신저용
     display_name: "Messenger"
     bind_to_monitor: 1
-  - name: 'N' # 노트용
+  - name: "N" # 노트용
     display_name: "Notes"
     bind_to_monitor: 2
-  - name: 'T' # 터미널용
+  - name: "T" # 터미널용
     display_name: "Terminal"
     bind_to_monitor: 1
   # - name: 'W' # 가상 머신 등 Windows 환경
   #   bind_to_monitor: 2 # 필요에 따라 모니터 번호 조정
-  - name: 'Z' # 기타
+  - name: "Z" # 기타
     bind_to_monitor: 2
 
 window_rules:
-  - commands: ['ignore']
+  - commands: ["ignore"]
     match:
       # 모든 Zebar 창 무시.
-      - window_process: { equals: 'zebar' }
+      - window_process: { equals: "zebar" }
 
       # 브라우저의 PIP (Picture-in-Picture) 창 무시.
-      - window_title: { regex: '[Pp]icture.in.[Pp]icture' }
-        window_class: { regex: 'Chrome_WidgetWin_1|MozillaDialogClass' }
+      - window_title: { regex: "[Pp]icture.in.[Pp]icture" }
+        window_class: { regex: "Chrome_WidgetWin_1|MozillaDialogClass" }
 
       # 다양한 타사 앱에 대한 무시 규칙.
-      - window_process: { equals: 'PowerToys' }
+      - window_process: { equals: "PowerToys" }
         window_class: { regex: 'HwndWrapper\[PowerToys\.PowerAccent.*?\]' }
-      - window_process: { equals: 'PowerToys' }
-        window_title: { regex: '.*? - Peek' }
-      - window_process: { equals: 'Lively' }
-        window_class: { regex: 'HwndWrapper' }
-      - window_title: { regex: '명령 도구 모음' }
+      - window_process: { equals: "PowerToys" }
+        window_title: { regex: ".*? - Peek" }
+      - window_process: { equals: "Lively" }
+        window_class: { regex: "HwndWrapper" }
+      - window_title: { regex: "명령 도구 모음" }
       # Windows 10 시스템 UI 요소 무시
-      - window_class: { equals: 'Windows.UI.Core.CoreWindow' }
-      - window_class: { equals: 'ApplicationFrameWindow' }
-        window_title: { regex: 'Settings|Microsoft Store' }
+      - window_class: { equals: "Windows.UI.Core.CoreWindow" }
+      - window_class: { equals: "ApplicationFrameWindow" }
+        window_title: { regex: "Settings|Microsoft Store" }
       # 파일 탐색기 특수 창 무시 (파일 선택 대화 상자, 속성 창 등)
-      - window_process: { equals: 'explorer' }
-        window_title: { regex: '열기|저장|다른 이름으로 저장|속성|Properties|Open|Save|Save As' }
+      - window_process: { equals: "explorer" }
+        window_title:
+          {
+            regex: "열기|저장|다른 이름으로 저장|속성|Properties|Open|Save|Save As",
+          }
 
       # 카카오톡 알림창 무시
-      - window_process: { equals: 'KakaoTalk' }
+      - window_process: { equals: "KakaoTalk" }
         # window_title: { regex: '알림|Notification|새 메시지|New message' }
 
       # 슬랙 알림창 무시
-      - window_process: { equals: 'Slack' }
-        window_title: { regex: 'Notification|알림|Slack Notification' }
+      - window_process: { equals: "Slack" }
+        window_title: { regex: "Notification|알림|Slack Notification" }
 
       # 기타 플로팅으로 처리할 창 무시 (필요시 추가)
-      - window_title: { regex: 'DevToys' } # DevToys 창
-      - window_title: { regex: '스티커 메모' } # 스티커 메모
+      - window_title: { regex: "DevToys" } # DevToys 창
+      - window_title: { regex: "스티커 메모" } # 스티커 메모
 
   # 플로팅으로 설정할 창 규칙 (무시 규칙에 없는 것 중 플로팅 필요한 것)
   - commands: ["set-floating"]
     match:
-      - window_process: { equals: 'Taskmgr' } # 작업 관리자
+      - window_process: { equals: "Taskmgr" } # 작업 관리자
       - window_process: { equals: "explorer" }
-        window_title: { regex: 'Properties|설정|속성|제어판' } # 탐색기 속성/제어판 등
-      - window_title: { regex: 'Settings|설정' } # Windows 설정 앱
-      - window_process: { equals: 'EXCEL' } # Excel (기본 플로팅)
-      - window_process: { equals: 'WINWORD' } # Word (기본 플로팅)
-      - window_process: { equals: 'POWERPNT' } # PowerPoint (기본 플로팅)
+        window_title: { regex: "Properties|설정|속성|제어판" } # 탐색기 속성/제어판 등
+      - window_title: { regex: "Settings|설정" } # Windows 설정 앱
+      - window_process: { equals: "EXCEL" } # Excel (기본 플로팅)
+      - window_process: { equals: "WINWORD" } # Word (기본 플로팅)
+      - window_process: { equals: "POWERPNT" } # PowerPoint (기본 플로팅)
       # 카카오톡/슬랙 본 창은 아래 워크스페이스 규칙에서 플로팅 설정
       # 기타 필요시 추가
 
   # 작업 공간에 창 자동 할당
-  - commands: ['move --workspace T', 'focus --workspace T']
+  - commands: ["move --workspace T", "focus --workspace T"]
     match:
-      - window_process: { equals: 'WindowsTerminal' }
-      - window_process: { equals: 'cmd' }
-      - window_process: { equals: 'powershell' }
-      - window_process: { equals: 'wt' }
+      - window_process: { equals: "WindowsTerminal" }
+      - window_process: { equals: "cmd" }
+      - window_process: { equals: "powershell" }
+      - window_process: { equals: "wt" }
       # HTTPie (AeroSpace 규칙 참고)
-      - window_process: { equals: 'HTTPie' } # 프로세스 이름 확인 필요
+      - window_process: { equals: "HTTPie" } # 프로세스 이름 확인 필요
 
-  - commands: ['move --workspace B', 'focus --workspace B']
+  - commands: ["move --workspace B", "focus --workspace B"]
     match:
-      - window_process: { equals: 'chrome' }
-      - window_process: { equals: 'msedge' } # Edge 추가
-      - window_process: { equals: 'zen' } # Zen Browser
+      - window_process: { equals: "chrome" }
+      - window_process: { equals: "msedge" } # Edge 추가
+      - window_process: { equals: "zen" } # Zen Browser
       #- window_process: { equals: 'Arc' } # Arc Browser (Windows 버전)
       # Safari (Windows 없음)
 
-  - commands: ['move --workspace I', 'focus --workspace I']
+  - commands: ["move --workspace I", "focus --workspace I"]
     match:
-      - window_process: { equals: 'idea64' } # IntelliJ
-      - window_process: { equals: 'Code' } # VS Code
-      - window_process: { equals: 'Cursor' } # Cursor
-      - window_process: { equals: 'Trae' } # Trae
-      - window_process: { equals: 'eclipse' }  # Eclipse IDE 추가
+      - window_process: { equals: "idea64" } # IntelliJ
+      - window_process: { equals: "Code" } # VS Code
+      - window_process: { equals: "Cursor" } # Cursor
+      - window_process: { equals: "Trae" } # Trae
+      - window_process: { equals: "eclipse" } # Eclipse IDE 추가
 
-  - commands: ['move --workspace N', 'focus --workspace N']
+  - commands: ["move --workspace N", "focus --workspace N"]
     match:
-      - window_process: { equals: 'Obsidian' }
+      - window_process: { equals: "Obsidian" }
 
-  - commands: ['move --workspace F', 'focus --workspace F'] # F로 통일 (Finder/File Explorer)
+  - commands: ["move --workspace F", "focus --workspace F"] # F로 통일 (Finder/File Explorer)
     match:
-      - window_process: { equals: 'explorer' }
-        window_title: { not_regex: '열기|저장|다른 이름으로 저장|속성|Properties|Open|Save|Save As' }
+      - window_process: { equals: "explorer" }
+        window_title:
+          {
+            not_regex: "열기|저장|다른 이름으로 저장|속성|Properties|Open|Save|Save As",
+          }
 
-  - commands: ['move --workspace D', 'focus --workspace D']
+  - commands: ["move --workspace D", "focus --workspace D"]
     match:
-      - window_process: { equals: 'EXCEL' } # Excel (타일링으로 사용 시)
-      - window_process: { equals: 'WINWORD' } # Word (타일링으로 사용 시)
-      - window_process: { equals: 'POWERPNT' } # PowerPoint (타일링으로 사용 시)
+      - window_process: { equals: "EXCEL" } # Excel (타일링으로 사용 시)
+      - window_process: { equals: "WINWORD" } # Word (타일링으로 사용 시)
+      - window_process: { equals: "POWERPNT" } # PowerPoint (타일링으로 사용 시)
       # 문서 앱을 기본 플로팅으로 사용하려면 위의 `set-floating` 규칙에 유지
 
   # 메신저 앱 규칙 (플로팅 모드로 설정하고 M 작업 공간으로 이동)
-  - commands: ['set-floating', 'move --workspace M']
+  - commands: ["set-floating", "move --workspace M"]
     match:
-      - window_process: { equals: 'Slack' }
-        window_title: { not_regex: 'Notification|알림|Slack Notification' }
-      - window_process: { equals: 'KakaoTalk' }
-        window_title: { not_regex: '알림|Notification|새 메시지|New message' }
-      - window_title: { regex: '카카오톡' } # 카카오톡 본 창
-      - window_title: { regex: '휴대폰과 연결'} # 휴대폰과 연결 앱
-      - window_title: { regex: 'SPORKY의 S22'} # 휴대폰과 연결 앱
-      - window_process: { equals: 'Telegram' } # 텔레그램 추가 (프로세스 이름 확인 필요)
-      - window_process: { equals: 'Mail' } # Windows Mail 앱 (프로세스 이름 확인 필요)
+      - window_process: { equals: "Slack" }
+        window_title: { not_regex: "Notification|알림|Slack Notification" }
+      - window_process: { equals: "KakaoTalk" }
+        window_title: { not_regex: "알림|Notification|새 메시지|New message" }
+      - window_title: { regex: "카카오톡" } # 카카오톡 본 창
+      - window_title: { regex: "휴대폰과 연결" } # 휴대폰과 연결 앱
+      - window_title: { regex: "SPORKY의 S22" } # 휴대폰과 연결 앱
+      - window_process: { equals: "Telegram" } # 텔레그램 추가 (프로세스 이름 확인 필요)
+      - window_process: { equals: "Mail" } # Windows Mail 앱 (프로세스 이름 확인 필요)
 
   # AI 관련 앱 규칙 (A 작업 공간으로 이동)
-  - commands: ['move --workspace A', 'focus --workspace A']
+  - commands: ["move --workspace A", "focus --workspace A"]
     match:
-      - window_title: { regex: 'LobeChat.*' } # LobeChat (프로세스 이름 확인 필요)
-      - window_process: { equals: 'Perplexity' }
+      - window_title: { regex: "LobeChat.*" } # LobeChat (프로세스 이름 확인 필요)
+      - window_process: { equals: "Perplexity" }
       # 기타 AI 관련 앱 프로세스 이름 추가
 
   # 가상 머신/Windows 환경 앱 규칙 (W 작업 공간으로 이동)
-  - commands: ['move --workspace W', 'focus --workspace W']
+  - commands: ["move --workspace W", "focus --workspace W"]
     match:
-      - window_process: { equals: 'UTM' } # UTM (Windows 없음)
-      - window_process: { equals: 'VMware' } # VMware (프로세스 이름 확인 필요)
+      - window_process: { equals: "UTM" } # UTM (Windows 없음)
+      - window_process: { equals: "VMware" } # VMware (프로세스 이름 확인 필요)
       # 기타 가상 머신/Windows 환경 앱 프로세스 이름 추가
 
   # 지정되지 않은 모든 앱을 Z 작업 공간으로 이동 (필요시 주석 해제)
@@ -269,34 +275,34 @@ window_rules:
 
 binding_modes:
   # 활성화되면 포커스된 창의 크기를 화살표 키 또는 HJKL 키로 조정할 수 있습니다. (Alt + R)
-  - name: 'resize'
+  - name: "resize"
     keybindings:
-      - commands: ['resize --width -2%']
-        bindings: ['h', 'left']
-      - commands: ['resize --width +2%']
-        bindings: ['l', 'right']
-      - commands: ['resize --height +2%']
-        bindings: ['k', 'up']
-      - commands: ['resize --height -2%']
-        bindings: ['j', 'down']
+      - commands: ["resize --width -2%"]
+        bindings: ["h", "left"]
+      - commands: ["resize --width +2%"]
+        bindings: ["l", "right"]
+      - commands: ["resize --height +2%"]
+        bindings: ["k", "up"]
+      - commands: ["resize --height -2%"]
+        bindings: ["j", "down"]
       # 기본 키 바인딩으로 돌아가려면 Enter/Escape 키를 누르세요.
-      - commands: ['wm-disable-binding-mode --name resize']
-        bindings: ['escape', 'enter']
+      - commands: ["wm-disable-binding-mode --name resize"]
+        bindings: ["escape", "enter"]
 
   # 활성화되면 포커스된 창을 화살표 키 또는 HJKL 키로 다른 창과 스왑할 수 있습니다. (Alt + W)
-  - name: 'swap'
+  - name: "swap"
     keybindings:
-      - commands: ['move --direction left']
-        bindings: ['h', 'left']
-      - commands: ['move --direction right']
-        bindings: ['l', 'right']
-      - commands: ['move --direction up']
-        bindings: ['k', 'up']
-      - commands: ['move --direction down']
-        bindings: ['j', 'down']
+      - commands: ["move --direction left"]
+        bindings: ["h", "left"]
+      - commands: ["move --direction right"]
+        bindings: ["l", "right"]
+      - commands: ["move --direction up"]
+        bindings: ["k", "up"]
+      - commands: ["move --direction down"]
+        bindings: ["j", "down"]
       # 기본 키 바인딩으로 돌아가려면 Enter/Escape 키를 누르세요.
-      - commands: ['wm-disable-binding-mode --name swap']
-        bindings: ['escape', 'enter']
+      - commands: ["wm-disable-binding-mode --name swap"]
+        bindings: ["escape", "enter"]
 keybindings:
   # 애플리케이션 실행 단축키: Alt + Win + [알파벳] 패턴 사용
   # 환경변수 PATH 설정 또는 전체 경로 필요.
@@ -319,123 +325,123 @@ keybindings:
   # 기타 앱 실행 단축키 필요시 추가
 
   # 주어진 방향으로 포커스 이동. (Alt + H/J/K/L)
-  - commands: ['focus --direction left']
-    bindings: ['alt+h']
-  - commands: ['focus --direction right']
-    bindings: ['alt+l']
-  - commands: ['focus --direction up']
-    bindings: ['alt+k']
-  - commands: ['focus --direction down']
-    bindings: ['alt+j']
+  - commands: ["focus --direction left"]
+    bindings: ["alt+h"]
+  - commands: ["focus --direction right"]
+    bindings: ["alt+l"]
+  - commands: ["focus --direction up"]
+    bindings: ["alt+k"]
+  - commands: ["focus --direction down"]
+    bindings: ["alt+j"]
 
   # 창 스왑 모드를 활성화합니다. (Alt + Win + W)
-  - commands: ['wm-enable-binding-mode --name swap']
-    bindings: ['alt+win+w']
+  - commands: ["wm-enable-binding-mode --name swap"]
+    bindings: ["alt+lwin+w"]
 
   # 크기 조정 모드를 활성화합니다. (Alt + Win + R)
-  - commands: ['wm-enable-binding-mode --name resize']
-    bindings: ['alt+win+r']
+  - commands: ["wm-enable-binding-mode --name resize"]
+    bindings: ["alt+lwin+r"]
 
   # alt+shift+p를 다시 누를 때까지 창 관리 및 다른 모든 키 바인딩을 비활성화합니다. (Alt + Shift + P)
-  - commands: ['wm-toggle-pause']
-    bindings: ['alt+shift+p']
+  - commands: ["wm-toggle-pause"]
+    bindings: ["alt+shift+p"]
 
   # 타일링 방향 변경. (Alt + V) - AeroSpace에 직접 매핑되는 기능 없음
-  - commands: ['toggle-tiling-direction']
-    bindings: ['alt+v'] # GlazeWM 고유 기능, 유지
+  - commands: ["toggle-tiling-direction"]
+    bindings: ["alt+v"] # GlazeWM 고유 기능, 유지
 
   # 포커스된 창을 플로팅으로 변경. (Alt + Shift + Space)
-  - commands: ['toggle-floating']
-    bindings: ['alt+shift+space']
+  - commands: ["toggle-floating"]
+    bindings: ["alt+shift+space"]
 
   # 포커스된 창을 타일링으로 변경. (Alt + Ctrl + X)
-  - commands: ['toggle-tiling']
-    bindings: ['alt+ctrl+x']
+  - commands: ["toggle-tiling"]
+    bindings: ["alt+ctrl+x"]
 
   # 포커스된 창을 전체 화면으로 변경. (Alt + Ctrl + F)
-  - commands: ['toggle-fullscreen']
-    bindings: ['alt+ctrl+f']
+  - commands: ["toggle-fullscreen"]
+    bindings: ["alt+ctrl+f"]
 
   # 포커스된 창 최소화. (Alt + Ctrl + G)
-  - commands: ['toggle-minimized']
-    bindings: ['alt+ctrl+g']
+  - commands: ["toggle-minimized"]
+    bindings: ["alt+ctrl+g"]
 
   # 포커스된 창 닫기. (Alt + Ctrl + Q)
-  - commands: ['close']
-    bindings: ['alt+ctrl+q']
+  - commands: ["close"]
+    bindings: ["alt+ctrl+q"]
 
   # GlazeWM 프로세스를 안전하게 종료합니다. (Alt + Shift + X)
-  - commands: ['wm-exit']
-    bindings: ['alt+shift+x']
+  - commands: ["wm-exit"]
+    bindings: ["alt+shift+x"]
 
   # 구성 파일 재평가. (Alt + Shift + R)
-  - commands: ['wm-reload-config']
-    bindings: ['alt+shift+r']
+  - commands: ["wm-reload-config"]
+    bindings: ["alt+shift+r"]
 
   # 모든 창 다시 그리기. (Alt + Shift + W) - AeroSpace에 직접 매핑되는 기능 없음
-  - commands: ['wm-redraw']
-    bindings: ['alt+shift+w'] # GlazeWM 고유 기능, 유지
+  - commands: ["wm-redraw"]
+    bindings: ["alt+shift+w"] # GlazeWM 고유 기능, 유지
 
   # `workspaces` 설정에 정의된 다음/이전 활성 작업 공간에 포커스합니다. (Alt + S/A) - AeroSpace에 직접 매핑되는 기능 없음
-  - commands: ['focus --next-active-workspace']
-    bindings: ['alt+s'] # GlazeWM 고유 기능, 유지
-  - commands: ['focus --prev-active-workspace']
-    bindings: ['alt+a'] # GlazeWM 고유 기능, 유지
+  - commands: ["focus --next-active-workspace"]
+    bindings: ["alt+s"] # GlazeWM 고유 기능, 유지
+  - commands: ["focus --prev-active-workspace"]
+    bindings: ["alt+a"] # GlazeWM 고유 기능, 유지
 
   # 마지막으로 포커스했던 작업 공간에 포커스합니다. (Alt + Q)
-  - commands: ['focus --recent-workspace']
-    bindings: ['alt+q']
+  - commands: ["focus --recent-workspace"]
+    bindings: ["alt+q"]
 
   # `workspaces` 설정에 정의된 작업 공간으로 포커스를 변경합니다. (Alt + [알파벳])
-  - commands: ['focus --workspace A']
-    bindings: ['alt+a']
-  - commands: ['focus --workspace B']
-    bindings: ['alt+b']
-  - commands: ['focus --workspace D']
-    bindings: ['alt+d']
-  - commands: ['focus --workspace F']
-    bindings: ['alt+f'] # 주의: Alt+F가 전체 화면 토글과 중복됨. 전체 화면 단축키를 변경하거나 F 워크스페이스 단축키를 변경해야 함. Alt+F는 전체 화면으로 통일하고, F 워크스페이스 단축키는 다른 것으로 변경 제안 (예: Alt+Shift+F)
-  - commands: ['focus --workspace I']
-    bindings: ['alt+i']
-  - commands: ['focus --workspace M']
-    bindings: ['alt+m']
-  - commands: ['focus --workspace N']
-    bindings: ['alt+n']
-  - commands: ['focus --workspace T']
-    bindings: ['alt+t']
+  - commands: ["focus --workspace A"]
+    bindings: ["alt+a"]
+  - commands: ["focus --workspace B"]
+    bindings: ["alt+b"]
+  - commands: ["focus --workspace D"]
+    bindings: ["alt+d"]
+  - commands: ["focus --workspace F"]
+    bindings: ["alt+f"] # 주의: Alt+F가 전체 화면 토글과 중복됨. 전체 화면 단축키를 변경하거나 F 워크스페이스 단축키를 변경해야 함. Alt+F는 전체 화면으로 통일하고, F 워크스페이스 단축키는 다른 것으로 변경 제안 (예: Alt+Shift+F)
+  - commands: ["focus --workspace I"]
+    bindings: ["alt+i"]
+  - commands: ["focus --workspace M"]
+    bindings: ["alt+m"]
+  - commands: ["focus --workspace N"]
+    bindings: ["alt+n"]
+  - commands: ["focus --workspace T"]
+    bindings: ["alt+t"]
   # - commands: ['focus --workspace W']
   #   bindings: ['alt+w'] # 주의: Alt+W가 스왑 모드와 중복됨. 스왑 모드 단축키를 변경하거나 W 워크스페이스 단축키를 변경해야 함. Alt+W는 스왑 모드로 통일하고, W 워크스페이스 단축키는 다른 것으로 변경 제안 (예: Alt+Shift+W)
-  - commands: ['focus --workspace Z']
-    bindings: ['alt+z']
+  - commands: ["focus --workspace Z"]
+    bindings: ["alt+z"]
 
   # 포커스된 창의 부모 작업 공간을 주어진 방향의 모니터로 이동합니다. (Alt + Shift + 방향키) - AeroSpace에 직접 매핑되는 기능 없음
-  - commands: ['move-workspace --direction left']
-    bindings: ['alt+shift+left'] # GlazeWM 고유 기능, 유지
-  - commands: ['move-workspace --direction right']
-    bindings: ['alt+shift+right'] # GlazeWM 고유 기능, 유지
-  - commands: ['move-workspace --direction up']
-    bindings: ['alt+shift+up'] # GlazeWM 고유 기능, 유지
-  - commands: ['move-workspace --direction down']
-    bindings: ['alt+shift+down'] # GlazeWM 고유 기능, 유지
+  - commands: ["move-workspace --direction left"]
+    bindings: ["alt+shift+left"] # GlazeWM 고유 기능, 유지
+  - commands: ["move-workspace --direction right"]
+    bindings: ["alt+shift+right"] # GlazeWM 고유 기능, 유지
+  - commands: ["move-workspace --direction up"]
+    bindings: ["alt+shift+up"] # GlazeWM 고유 기능, 유지
+  - commands: ["move-workspace --direction down"]
+    bindings: ["alt+shift+down"] # GlazeWM 고유 기능, 유지
 
   # 포커스된 창을 `workspaces` 설정에 정의된 작업 공간으로 이동합니다. (Alt + Shift + [알파벳])
-  - commands: ['move --workspace A', 'focus --workspace A']
-    bindings: ['alt+shift+a']
-  - commands: ['move --workspace B', 'focus --workspace B']
-    bindings: ['alt+shift+b']
-  - commands: ['move --workspace D', 'focus --workspace D']
-    bindings: ['alt+shift+d']
-  - commands: ['move --workspace F', 'focus --workspace F']
-    bindings: ['alt+shift+f']
-  - commands: ['move --workspace I', 'focus --workspace I']
-    bindings: ['alt+shift+i']
-  - commands: ['move --workspace M', 'focus --workspace M']
-    bindings: ['alt+shift+m']
-  - commands: ['move --workspace N', 'focus --workspace N']
-    bindings: ['alt+shift+n']
-  - commands: ['move --workspace T', 'focus --workspace T']
-    bindings: ['alt+shift+t']
+  - commands: ["move --workspace A", "focus --workspace A"]
+    bindings: ["alt+shift+a"]
+  - commands: ["move --workspace B", "focus --workspace B"]
+    bindings: ["alt+shift+b"]
+  - commands: ["move --workspace D", "focus --workspace D"]
+    bindings: ["alt+shift+d"]
+  - commands: ["move --workspace F", "focus --workspace F"]
+    bindings: ["alt+shift+f"]
+  - commands: ["move --workspace I", "focus --workspace I"]
+    bindings: ["alt+shift+i"]
+  - commands: ["move --workspace M", "focus --workspace M"]
+    bindings: ["alt+shift+m"]
+  - commands: ["move --workspace N", "focus --workspace N"]
+    bindings: ["alt+shift+n"]
+  - commands: ["move --workspace T", "focus --workspace T"]
+    bindings: ["alt+shift+t"]
   # - commands: ['move --workspace W', 'focus --workspace W']
   #   bindings: ['alt+shift+w']
-  - commands: ['move --workspace Z', 'focus --workspace Z']
-    bindings: ['alt+shift+z']
+  - commands: ["move --workspace Z", "focus --workspace Z"]
+    bindings: ["alt+shift+z"]
