@@ -359,6 +359,10 @@ run = 'layout floating'       # 해당 앱의 창을 플로팅 모드로 설정
 if.app-id = 'com.linguee.DeepLCopyTranslator' # 여기에 제외할 앱의 ID를 입력하세요
 run = 'layout floating'       # 해당 앱의 창을 플로팅 모드로 설정
 
+[[on-window-detected]]
+if.app-id = 'com.max-langer.Latest' # 여기에 제외할 앱의 ID를 입력하세요
+run = 'layout floating'       # 해당 앱의 창을 플로팅 모드로 설정
+
 # 지정되지 않은 앱을 Z 워크스페이스로 이동 (필요시 주석 해제)
 # [[on-window-detected]]
 # if.app-id = { not-regex: 'com.googlecode.iterm2|company.thebrowser.Browser|com.apple.Safari|com.jetbrains.intellij|com.microsoft.VSCode|com.todesktop.230314mzl4w4u92|io.httpie.desktop|com.apple.finder|com.apple.Safari.WebApp.D1753E26-83B1-4E92-B835-1EE42BF21E60|md.obsidian|com.microsoft.Excel|com.microsoft.Word|com.microsoft.Powerpoint|com.kakao.KakaoTalkMac|com.tinyspeck.slackmacgap|com.tdesktop.Telegram|com.apple.mail|com.okatbest.boop|com.apple.ActivityMonitor|com.utmapp.UTM|com.vmware.fusion|com.trae.app|com.google.Chrome|app.zen-browser.zen|com.trendmicro.TrendCleanerPro|com.linguee.DeepLCopyTranslator' } # 제외할 앱 ID 목록 업데이트 필요
