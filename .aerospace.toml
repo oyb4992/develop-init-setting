@@ -252,75 +252,85 @@ shift-down = ['volume set 0', 'mode main'] # 음소거 하고 'main' 모드로 �
 
 [[on-window-detected]]
 if.app-id = 'com.googlecode.iterm2' # iTerm2
-run = 'move-node-to-workspace T'    # 'T' 워크스페이스로 이동
+run = 'move-node-to-workspace --focus-follows-window T'    # 'T' 워크스페이스로 이동
 
 [[on-window-detected]]
 if.app-id = 'company.thebrowser.Browser' # Arc 브라우저
-run = 'move-node-to-workspace B'         # 'B' 워크스페이스로 이동
+run = 'move-node-to-workspace --focus-follows-window B'         # 'B' 워크스페이스로 이동
 
 [[on-window-detected]]
 if.app-id = 'com.apple.Safari' # Safari
-run = 'move-node-to-workspace B' # 'B' 워크스페이스로 이동
+run = 'move-node-to-workspace --focus-follows-window B' # 'B' 워크스페이스로 이동
 
 [[on-window-detected]]
 if.app-id = 'com.jetbrains.intellij' # IntelliJ IDEA
-run = 'move-node-to-workspace I'     # 'I' 워크스페이스로 이동
+run = 'move-node-to-workspace --focus-follows-window I'     # 'I' 워크스페이스로 이동
 
 [[on-window-detected]]
 if.app-id = 'com.microsoft.VSCode' # Visual Studio Code
-run = 'move-node-to-workspace I'   # 'I' 워크스페이스로 이동
+run = 'move-node-to-workspace --focus-follows-window I'   # 'I' 워크스페이스로 이동
 
 [[on-window-detected]]
 if.app-id = 'com.todesktop.230313mzl4w4u92' # Electron 기반 앱일 가능성 (예: Cursor)
-run = 'move-node-to-workspace I'           # 'I' 워크스페이스로 이동
+run = 'move-node-to-workspace --focus-follows-window I'           # 'I' 워크스페이스로 이동
 
 [[on-window-detected]]
 if.app-id = 'io.httpie.desktop' # HTTPie
-run = 'move-node-to-workspace T'  # 'T' 워크스페이스로 이동
+run = 'move-node-to-workspace --focus-follows-window T'  # 'T' 워크스페이스로 이동
 
 [[on-window-detected]]
 if.app-id = 'com.apple.finder' # Finder
-run = 'move-node-to-workspace F' # 'F' 워크스페이스로 이동 (GlazeWM과 통일)
+run = 'move-node-to-workspace --focus-follows-window F' # 'F' 워크스페이스로 이동 (GlazeWM과 통일)
 
 [[on-window-detected]]
-if.app-id = 'com.apple.Safari.WebApp.FFA81327-AAE6-440F-BC86-2ED1362C41CE' # 특정 웹앱일 가능성 (예: LobeChat PWA?)
-run = 'move-node-to-workspace A' # 'A' 워크스페이스로 이동 (AI)
+if.app-id = 'si.filips.firefoxpwa.runtime'
+if.app-name-regex-substring = 'LobeChat' # LobeChat PWA
+run = 'move-node-to-workspace --focus-follows-window A' # 'A' 워크스페이스로 이동 (AI)
+
+[[on-window-detected]]
+if.app-id = 'si.filips.firefoxpwa.runtime'
+if.app-name-regex-substring = 'NotebookLM' # NotebookLM PWA
+run = 'move-node-to-workspace --focus-follows-window A' # 'A' 워크스페이스로 이동 (AI)
 
 [[on-window-detected]]
 if.app-id = 'ai.perplexity.mac' # Perplexity
-run = 'move-node-to-workspace A' # 'A' 워크스페이스로 이동 (AI)
+run = 'move-node-to-workspace --focus-follows-window A' # 'A' 워크스페이스로 이동 (AI)
+
+[[on-window-detected]]
+if.app-id = 'com.anthropic.claudefordesktop' # Claude
+run = 'move-node-to-workspace --focus-follows-window A' # 'A' 워크스페이스로 이동 (AI)
 
 [[on-window-detected]]
 if.app-id = 'md.obsidian' # Obsidian
-run = 'move-node-to-workspace N' # 'N' 워크스페이스로 이동
+run = 'move-node-to-workspace --focus-follows-window N' # 'N' 워크스페이스로 이동
 
 [[on-window-detected]]
 if.app-id = 'com.microsoft.Excel' # Microsoft Excel
-run = 'move-node-to-workspace D'  # 'D' 워크스페이스로 이동
+run = 'move-node-to-workspace --focus-follows-window D'  # 'D' 워크스페이스로 이동
 
 [[on-window-detected]]
 if.app-id = 'com.microsoft.Word' # Microsoft Word
-run = 'move-node-to-workspace D' # 'D' 워크스페이스로 이동
+run = 'move-node-to-workspace --focus-follows-window D' # 'D' 워크스페이스로 이동
 
 [[on-window-detected]]
 if.app-id = 'com.microsoft.Powerpoint' # Microsoft Powerpoint
-run = 'move-node-to-workspace D'       # 'D' 워크스페이스로 이동
+run = 'move-node-to-workspace --focus-follows-window D'       # 'D' 워크스페이스로 이동
 
 [[on-window-detected]]
 if.app-id = 'com.kakao.KakaoTalkMac' # 카카오톡
-run = ['layout floating', 'move-node-to-workspace M'] # 플로팅 레이아웃으로 변경 후 'M' 워크스페이스로 이동
+run = ['layout floating', 'move-node-to-workspace --focus-follows-window M'] # 플로팅 레이아웃으로 변경 후 'M' 워크스페이스로 이동
 
 [[on-window-detected]]
 if.app-id = 'com.tinyspeck.slackmacgap' # Slack
-run = ['layout floating', 'move-node-to-workspace M'] # 플로팅 레이아웃으로 변경 후 'M' 워크스페이스로 이동
+run = ['layout floating', 'move-node-to-workspace --focus-follows-window M'] # 플로팅 레이아웃으로 변경 후 'M' 워크스페이스로 이동
 
 [[on-window-detected]]
 if.app-id = 'com.tdesktop.Telegram' # Telegram
-run = ['layout floating', 'move-node-to-workspace M'] # 플로팅 레이아웃으로 변경 후 'M' 워크스페이스로 이동
+run = ['layout floating', 'move-node-to-workspace --focus-follows-window M'] # 플로팅 레이아웃으로 변경 후 'M' 워크스페이스로 이동
 
 [[on-window-detected]]
 if.app-id = 'com.apple.mail' # Mail
-run = 'move-node-to-workspace M' # 'M' 워크스페이스로 이동
+run = 'move-node-to-workspace --focus-follows-window M' # 'M' 워크스페이스로 이동
 
 [[on-window-detected]]
 if.app-id = 'com.okatbest.boop' # Boop
@@ -332,23 +342,23 @@ run = 'layout floating'                # 플로팅 레이아웃으로 변경
 
 [[on-window-detected]]
 if.app-id = 'com.utmapp.UTM' # UTM (가상화)
-run = 'move-node-to-workspace W' # 'W' 워크스페이스로 이동
+run = 'move-node-to-workspace --focus-follows-window W' # 'W' 워크스페이스로 이동
 
 [[on-window-detected]]
 if.app-id = 'com.vmware.fusion' # VMware Fusion (가상화)
-run = 'move-node-to-workspace W'  # 'W' 워크스페이스로 이동
+run = 'move-node-to-workspace --focus-follows-window W'  # 'W' 워크스페이스로 이동
 
 [[on-window-detected]]
 if.app-id = 'com.trae.app' # Trae
-run = 'move-node-to-workspace I' # 'I' 워크스페이스로 이동
+run = 'move-node-to-workspace --focus-follows-window I' # 'I' 워크스페이스로 이동
 
 [[on-window-detected]]
 if.app-id = 'com.google.Chrome' # Google Chrome
-run = 'move-node-to-workspace B'  # 'B' 워크스페이스로 이동
+run = 'move-node-to-workspace --focus-follows-window B'  # 'B' 워크스페이스로 이동
 
 [[on-window-detected]]
 if.app-id = 'app.zen-browser.zen' # Zen Browser
-run = 'move-node-to-workspace B'    # 'B' 워크스페이스로 이동
+run = 'move-node-to-workspace --focus-follows-window B'    # 'B' 워크스페이스로 이동
 
 # 특정 앱을 창 관리에서 제외 (플로팅으로 설정)
 [[on-window-detected]]
