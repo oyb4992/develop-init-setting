@@ -219,7 +219,8 @@ let g:EasyMotion_do_mapping = 0
 " EasyMotion mappings - Actions using <Plug> are not converted
 map <leader>f <Plug>(easymotion-s)
 map <leader>F <Plug>(easymotion-s2)
-map <Leader>L <Plug>(easymotion-bd-jk)
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
 map <Leader>/ <Plug>(easymotion-sn)
 
 "------------------------------------------------------------------------------
