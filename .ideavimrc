@@ -65,6 +65,12 @@ set multiple-cursors
 set peekaboo
 set which-key
 set quickscope
+set mini-ai
+set textobj-entire
+set vim-paragraph-motion
+set matchit
+set functiontextobj
+set textobj-indent
 
 "------------------------------------------------------------------------------
 " 6. WhichKey 및 Leader 키 설정 (WhichKey & Leader Settings)
@@ -219,9 +225,9 @@ let g:EasyMotion_do_mapping = 0
 " EasyMotion mappings - Actions using <Plug> are not converted
 map <leader>f <Plug>(easymotion-s)
 map <leader>F <Plug>(easymotion-s2)
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
-map <Leader>/ <Plug>(easymotion-sn)
+map <leader>j <Plug>(easymotion-j)
+map <leader>k <Plug>(easymotion-k)
+map <leader>/ <Plug>(easymotion-sn)
 
 "------------------------------------------------------------------------------
 " 10. 레지스터 및 마크 설정 (Registers & Marks)
