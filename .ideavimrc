@@ -16,7 +16,7 @@ set scrolloff=8
 set sidescroll=5
 set sidescrolloff=8
 set nowrap
-set backspace=indent,eol,start
+" set backspace=indent,eol,start
 set showcmd
 set showmode
 set cursorline
@@ -30,12 +30,12 @@ noremap Q gq
 "------------------------------------------------------------------------------
 " 2. 들여쓰기 설정 (Indentation Settings)
 "------------------------------------------------------------------------------
-set autoindent
-set smartindent
-set tabstop=4
-set shiftwidth=4
-set expandtab
-set softtabstop=4
+" set autoindent
+" set smartindent
+" set tabstop=4
+" set shiftwidth=4
+" set expandtab
+" set softtabstop=4
 
 "------------------------------------------------------------------------------
 " 3. 검색 및 표시 설정 (Search & Display Settings)
@@ -43,15 +43,16 @@ set softtabstop=4
 set ignorecase
 set smartcase
 set visualbell
-set listchars=tab:»\ ,trail:·,nbsp:␣,extends:>,precedes:<
+" set listchars=tab:»\ ,trail:·,nbsp:␣,extends:>,precedes:<
 set list
 
 "------------------------------------------------------------------------------
 " 4. 텍스트 포맷 설정 (Text Format Settings)
 "------------------------------------------------------------------------------
-set formatoptions=tcqj
-set formatoptions+=r
-set formatoptions+=o
+" IdeaVim does not support 'formatoptions'. Use IDE's Code Style settings.
+" set formatoptions=tcqj 
+" set formatoptions+=r
+" set formatoptions+=o
 
 "------------------------------------------------------------------------------
 " 5. IdeaVim 플러그인 활성화 (IdeaVim Extensions)
@@ -223,8 +224,7 @@ let g:qs_disable_for_diffs = 1
 let g:EasyMotion_smartcase = 1
 let g:EasyMotion_do_mapping = 0
 " EasyMotion mappings - Actions using <Plug> are not converted
-map <leader>f <Plug>(easymotion-s)
-map <leader>F <Plug>(easymotion-s2)
+map <leader>f <Plug>(easymotion-s2)
 map <leader>j <Plug>(easymotion-j)
 map <leader>k <Plug>(easymotion-k)
 map <leader>/ <Plug>(easymotion-sn)
