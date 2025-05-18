@@ -23,13 +23,19 @@ call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
   
   " 3. 이동 관련
   Plug 'phaazon/hop.nvim'       " 점프 이동
+  Plug 'echasnovski/mini.ai'
+  Plug 'dbakker/vim-paragraph-motion'
+  Plug 'chrisbra/matchit'
+  Plug 'michaeljsmith/vim-indent-object'
+  Plug 'kana/vim-textobj-user'
+  Plug 'kana/vim-textobj-entire'
   
   " 4. 검색 도구
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'junegunn/fzf.vim'
   
   " 5. VSCode 제외 플러그인
-  if !exists('g:vscode')
+  if !exists('g:vscode') && !exists('g:trae')
     Plug 'liuchengxu/vim-which-key'  " 키 맵핑 도우미
   endif
 call plug#end()
@@ -264,3 +270,47 @@ nnoremap <silent> <leader>l :Lines<CR>
 
 " <leader>M : 마크 목록 보기 (View Marks)
 nnoremap <silent> <leader>M :marks<CR>
+
+" =============================
+" VSCode용 IntelliJ Action 매핑 변환 (자동 생성)
+" =============================
+if exists('g:vscode') || exists('g:trae') 
+  " 코드 formatting
+  nnoremap <leader>r <Cmd>call VSCodeNotify('editor.action.formatDocument')<CR>
+
+  " 탭 관리
+  nnoremap <leader>tx <Cmd>call VSCodeNotify('workbench.action.closeActiveEditor')<CR>
+  nnoremap <leader>ta <Cmd>call VSCodeNotify('workbench.action.closeAllEditors')<CR>
+  nnoremap <leader>to <Cmd>call VSCodeNotify('workbench.action.closeOtherEditors')<CR>
+  nnoremap <leader>t] <Cmd>call VSCodeNotify('workbench.action.nextEditor')<CR>
+  nnoremap <leader>t[ <Cmd>call VSCodeNotify('workbench.action.previousEditor')<CR>
+  nnoremap <leader>tu <Cmd>call VSCodeNotify('workbench.action.closeUnmodifiedEditors')<CR>
+  nnoremap <leader>tc <Cmd>call VSCodeNotify('workbench.action.toggleEditorGroupLayout')<CR>
+  nnoremap <leader>tl <Cmd>call VSCodeNotify('workbench.action.closeEditorsToTheLeft')<CR>
+  nnoremap <leader>tr <Cmd>call VSCodeNotify('workbench.action.closeEditorsToTheRight')<CR>
+
+  " 디버깅
+  nnoremap <leader>dd <Cmd>call VSCodeNotify('workbench.action.debug.start')<CR>
+  nnoremap <leader>ds <Cmd>call VSCodeNotify('workbench.action.debug.stop')<CR>
+  nnoremap <leader>db <Cmd>call VSCodeNotify('editor.debug.action.toggleBreakpoint')<CR>
+
+  " 탐색 및 Search
+  nnoremap <leader>, <Cmd>call VSCodeNotify('workbench.action.quickOpen')<CR>
+  nnoremap <leader>e <Cmd>call VSCodeNotify('workbench.view.explorer')<CR>
+  nnoremap <leader>E <Cmd>call VSCodeNotify('workbench.files.action.showActiveFileInExplorer')<CR>
+
+  " 창 분할 및 최대화
+  nnoremap <leader>- <Cmd>call VSCodeNotify('workbench.action.splitEditorDown')<CR>
+  nnoremap <leader><bar> <Cmd>call VSCodeNotify('workbench.action.splitEditorRight')<CR>
+  nnoremap <leader>m <Cmd>call VSCodeNotify('workbench.action.toggleZenMode')<CR>
+
+  " 코드 탐색 (Go To...)
+  nnoremap <leader>gd <Cmd>call VSCodeNotify('editor.action.revealDefinition')<CR>
+  nnoremap <leader>gi <Cmd>call VSCodeNotify('editor.action.goToImplementation')<CR>
+  nnoremap <leader>gu <Cmd>call VSCodeNotify('editor.action.referenceSearch.trigger')<CR>
+  nnoremap <leader>th <Cmd>call VSCodeNotify('editor.action.showCallHierarchy')<CR>
+  nnoremap <leader>gm <Cmd>call VSCodeNotify('editor.action.jumpToBracket')<CR>
+
+  " 파일 히스토리 (Git)
+  nnoremap <leader>gl <Cmd>call VSCodeNotify('gitlens.views.fileHistory.focus')<CR>
+endif
