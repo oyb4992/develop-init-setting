@@ -31,7 +31,6 @@
   nnoremap <leader>gi <Cmd>call VSCodeNotify('editor.action.goToImplementation')<CR>
   nnoremap <leader>gu <Cmd>call VSCodeNotify('editor.action.referenceSearch.trigger')<CR>
   nnoremap <leader>gh <Cmd>call VSCodeNotify('editor.showCallHierarchy')<CR>
-  nnoremap <leader>rn <Cmd>call VSCodeNotify('editor.action.rename')<CR>
 
   " ** 6. 일반 기능 키 매핑 (전체 변경) **
   " ----------------------------------
@@ -56,3 +55,5 @@
   xnoremap <leader>n <Cmd>call VSCodeNotify('editor.action.addSelectionToNextFindMatch')<CR>
   nnoremap <leader>N <Cmd>call VSCodeNotify('editor.action.selectHighlights')<CR>
   xnoremap <leader>N <Cmd>call VSCodeNotify('editor.action.selectHighlights')<CR>
+  
+  nnoremap <leader>gl <Cmd>call VSCodeNotify('gitlens.views.fileHistory.focus')<CR>
