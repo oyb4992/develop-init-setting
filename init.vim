@@ -10,23 +10,23 @@ endif
 
 call plug#begin(s:is_nvim ? stdpath('data') . '/plugged' : '~/.vim/plugged')
   " 코어 기능
-  Plug 'tpope/vim-surround'
-  Plug 'tpope/vim-commentary'
+  " mini.surround로 대체됨: Plug 'tpope/vim-surround'
+  " mini.comment로 대체됨: Plug 'tpope/vim-commentary'
   " 시각적 향상
   Plug 'machakann/vim-highlightedyank'
   Plug 'unblevable/quick-scope'
   " 이동 관련
   Plug 'phaazon/hop.nvim'
   Plug 'echasnovski/mini.nvim'
-  Plug 'dbakker/vim-paragraph-motion'
-  Plug 'chrisbra/matchit'
-  Plug 'michaeljsmith/vim-indent-object'
-  Plug 'kana/vim-textobj-user'
-  Plug 'kana/vim-textobj-entire'
+  " mini.move로 대체 가능: Plug 'dbakker/vim-paragraph-motion'
+  " mini.basics로 대체 가능: Plug 'chrisbra/matchit'
+  " mini.ai로 대체 가능: Plug 'michaeljsmith/vim-indent-object'
+  " mini.ai로 대체 가능: Plug 'kana/vim-textobj-user'
+  " mini.ai로 대체 가능: Plug 'kana/vim-textobj-entire'
   " Git 통합
-  Plug 'tpope/vim-fugitive'
+  " mini.git으로 대체 가능: Plug 'tpope/vim-fugitive'
   " 정렬 기능
-  Plug 'junegunn/vim-easy-align'
+  " mini.align으로 대체 가능: Plug 'junegunn/vim-easy-align'
   " 날짜/시간 증감
   Plug 'tpope/vim-speeddating'
   " 클립보드 확장
@@ -38,7 +38,7 @@ call plug#end()
 " 2. 환경별 설정
 let g:mapleader = "\<Space>"
 let g:loaded_which_key = 1
-source ~/IdeaProjects/dev-init-setting/vscode-integration.vim
+source ~/Project/develop-init-setting/vscode-integration.vim
 
 " 3. 기본 설정
 set lazyredraw
@@ -92,7 +92,26 @@ require('hop').setup({
   uppercase_labels = true,
   trace_target = true
 })
+require('mini.comment').setup()
+require('mini.surround').setup()
 require('mini.ai').setup()
+require('mini.move').setup()
+require('mini.basics').setup({
+  options = {
+    basic = true,
+    extra_ui = true,
+    win_borders = 'default',
+  },
+  mappings = {
+    basic = true,
+    option_toggle_prefix = '<leader>to',
+  },
+  autocommands = {
+    basic = true,
+  },
+})
+require('mini.git').setup()
+require('mini.align').setup()
 EOF
 
 " 6. 커스텀 키 매핑
@@ -108,15 +127,15 @@ nnoremap <leader>L :HopLine<CR>
 nnoremap <leader>/ :HopPattern<CR>
 nnoremap <leader>x :registers<CR>
 nnoremap <silent> <leader>M :marks<CR>
-" vim-easy-align: 시각적 모드에서 ga로 정렬
-xmap ga :EasyAlign<CR>
-nmap ga :EasyAlign<CR>
+" mini.align: 시각적 모드에서 ga로 정렬 (vim-easy-align 대체)
+xmap ga <Cmd>lua MiniAlign.align_visual()<CR>
+nmap ga <Cmd>lua MiniAlign.operator()<CR>
 
 " vim-speeddating: 기본 키(<C-a>, <C-x>)로 날짜/시간 증감 지원
 
 " vim-easyclip: 시스템 클립보드와 연동, 별도 설정 없이 사용 가능
 
-" vim-fugitive: Git 명령어를 :G 등으로 사용 가능
-nnoremap <leader>gs :G<CR>
+" mini.git: Git 명령어 (vim-fugitive 대체)
+nnoremap <leader>gs <Cmd>lua MiniGit.status()<CR>
 
 " vim-repeat: 플러그인 동작 반복 지원 (별도 설정 불필요)

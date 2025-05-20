@@ -51,9 +51,9 @@
   " ** 7. 추가 VSCode 통합 기능 (변경) **
   " ----------------------------------
   " 다중 커서 기능
-  nnoremap <leader>n <Cmd>call VSCodeNotify('editor.action.addSelectionToNextFindMatch')<CR>
-  xnoremap <leader>n <Cmd>call VSCodeNotify('editor.action.addSelectionToNextFindMatch')<CR>
-  nnoremap <leader>N <Cmd>call VSCodeNotify('editor.action.selectHighlights')<CR>
-  xnoremap <leader>N <Cmd>call VSCodeNotify('editor.action.selectHighlights')<CR>
+  nnoremap <C-n> <Cmd>call VSCodeNotify('editor.action.addSelectionToNextFindMatch')<CR>
+  xnoremap <C-n> <Cmd>call VSCodeNotify('editor.action.addSelectionToNextFindMatch')<CR>
+  nnoremap <C-N> <Cmd>call VSCodeNotify('editor.action.selectHighlights')<CR>
+  xnoremap <C-N> <Cmd>call VSCodeNotify('editor.action.selectHighlights')<CR>
   
   nnoremap <leader>gl <Cmd>call VSCodeNotify('gitlens.views.fileHistory.focus')<CR>
