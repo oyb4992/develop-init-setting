@@ -9,28 +9,14 @@ if empty(glob(s:data_dir . '/autoload/plug.vim'))
 endif
 
 call plug#begin(s:is_nvim ? stdpath('data') . '/plugged' : '~/.vim/plugged')
-  " 코어 기능
-  " mini.surround로 대체됨: Plug 'tpope/vim-surround'
-  " mini.comment로 대체됨: Plug 'tpope/vim-commentary'
   " 시각적 향상
   Plug 'machakann/vim-highlightedyank'
   Plug 'unblevable/quick-scope'
   " 이동 관련
   Plug 'phaazon/hop.nvim'
   Plug 'echasnovski/mini.nvim'
-  " mini.move로 대체 가능: Plug 'dbakker/vim-paragraph-motion'
-  " mini.basics로 대체 가능: Plug 'chrisbra/matchit'
-  " mini.ai로 대체 가능: Plug 'michaeljsmith/vim-indent-object'
-  " mini.ai로 대체 가능: Plug 'kana/vim-textobj-user'
-  " mini.ai로 대체 가능: Plug 'kana/vim-textobj-entire'
-  " Git 통합
-  " mini.git으로 대체 가능: Plug 'tpope/vim-fugitive'
-  " 정렬 기능
-  " mini.align으로 대체 가능: Plug 'junegunn/vim-easy-align'
   " 날짜/시간 증감
   Plug 'tpope/vim-speeddating'
-  " 클립보드 확장
-  Plug 'svermeulen/vim-easyclip'
   " 반복 동작 강화
   Plug 'tpope/vim-repeat'
 call plug#end()
@@ -95,22 +81,6 @@ require('hop').setup({
 require('mini.comment').setup()
 require('mini.surround').setup()
 require('mini.ai').setup()
-require('mini.move').setup()
-require('mini.basics').setup({
-  options = {
-    basic = true,
-    extra_ui = true,
-    win_borders = 'default',
-  },
-  mappings = {
-    basic = true,
-    option_toggle_prefix = '<leader>to',
-  },
-  autocommands = {
-    basic = true,
-  },
-})
-require('mini.git').setup()
 require('mini.align').setup()
 EOF
 
@@ -127,15 +97,7 @@ nnoremap <leader>L :HopLine<CR>
 nnoremap <leader>/ :HopPattern<CR>
 nnoremap <leader>x :registers<CR>
 nnoremap <silent> <leader>M :marks<CR>
-" mini.align: 시각적 모드에서 ga로 정렬 (vim-easy-align 대체)
-xmap ga <Cmd>lua MiniAlign.align_visual()<CR>
-nmap ga <Cmd>lua MiniAlign.operator()<CR>
 
 " vim-speeddating: 기본 키(<C-a>, <C-x>)로 날짜/시간 증감 지원
-
-" vim-easyclip: 시스템 클립보드와 연동, 별도 설정 없이 사용 가능
-
-" mini.git: Git 명령어 (vim-fugitive 대체)
-nnoremap <leader>gs <Cmd>lua MiniGit.status()<CR>
 
 " vim-repeat: 플러그인 동작 반복 지원 (별도 설정 불필요)
