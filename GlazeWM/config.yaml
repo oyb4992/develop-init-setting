@@ -329,10 +329,10 @@ keybindings:
     bindings: ["alt+h"]
   - commands: ["focus --direction right"]
     bindings: ["alt+l"]
-  - commands: ["focus --direction up"]
-    bindings: ["alt+k"]
-  - commands: ["focus --direction down"]
-    bindings: ["alt+j"]
+  # - commands: ["focus --direction up"]
+  #   bindings: ["alt+k"]
+  # - commands: ["focus --direction down"]
+  #   bindings: ["alt+j"]
 
   # 창 스왑 모드를 활성화합니다. (Alt + Win + W)
   - commands: ["wm-enable-binding-mode --name swap"]

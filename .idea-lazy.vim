@@ -36,6 +36,7 @@
 let mapleader=" "
 let maplocalleader="\\"
 
+set clipboard+=ideaput,unnamed
 " 변경 사항을 저장하기 전에 저장 확인
 set formatoptions=jcroqlnt
 " 줄 번호 표시
@@ -67,16 +68,34 @@ set shortmess=filnxtToOF
 " https://github.com/JetBrains/ideavim/wiki/IdeaVim-Plugins
 " https://www.lazyvim.org/plugins
 
-" gcc 및 gc<action> 매핑.
-Plug 'tpope/vim-commentary'
+set commentary
 " s 액션, 예: cs"' ("를 '로 바꾸기), ds" (따옴표 제거)
-Plug 'tpope/vim-surround'
+set surround
 " flash.nvim과 유사
-Plug 'justinmk/vim-sneak'
+set easymotion
 " Jetbrains 마켓플레이스에서 사용 가능한 whichkey 플러그인 활성화
 set which-key
 " 확장 매칭. Neovim 기본 플러그인.
 set matchit
+set highlightedyank
+set multiple-cursors
+set peekaboo
+set mini-ai
+set quickscope
+set vim-paragraph-motion
+set textobj-entire
+set functiontextobj
+set argtextobj
+
+let g:highlightedyank_highlight_duration = 200
+
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+let g:qs_primary_color = '#ff0000'
+let g:qs_secondary_color = '#00ff00'
+let g:qs_disable_for_diffs = 1
+
+let g:EasyMotion_smartcase = 1
+let g:EasyMotion_do_mapping = 0
 
 " 키 매핑
 
@@ -106,9 +125,11 @@ nmap <C-Right> <Action>(IncrementWindowWidth)
 " 아래로 이동
 nmap <A-j> <Action>(MoveLineDown)
 imap <A-j> <Esc><Action>(MoveLineDown)i
+vmap <A-j> <Action>(MoveLineDown)
 " 위로 이동
 nmap <A-k> <Action>(MoveLineUp)
 imap <A-k> <Esc><Action>(MoveLineUp)i
+vmap <A-k> <Action>(MoveLineUp)
 " 이전 버퍼
 nmap <S-h> <Action>(PreviousTab)
 " 다음 버퍼
@@ -149,8 +170,8 @@ nmap [q <Action>(GotoPreviousError)
 " 다음 빠른 수정
 nmap ]q <Action>(GotoNextError)
 " 포맷
-nmap <leader>cf <Action>(Format)
-vmap <leader>cf <Action>(Format)
+nmap <leader>cf <Action>(ReformatCode)
+vmap <leader>cf <Action>(ReformatCode)
 " 줄 진단
 nmap <leader>cd <Action>(ActivateProblemsViewToolWindow)
 " 다음 진단
@@ -204,7 +225,7 @@ nmap <leader>gL <Action>(Vcs.Show.Log)
 " 모두 종료
 nmap <leader>qq <Action>(Exit)
 " 위치 검사
-nmap <leader>ui <Actrion>(ActivateStructureToolWindow)
+nmap <leader>ui <Action>(ActivateStructureToolWindow)
 " 트리 검사
 nmap <leader>uI <Action>(ActivateStructureToolWindow)
 " LazyVim 변경 로그
@@ -251,7 +272,9 @@ nmap <leader>cc :echo 'Lsp 정보에 해당하는 매핑이 없습니다.'<cr>
 nmap gd <Action>(GotoDeclaration)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 참조
-nmap gr <Action>(FindUsages)
+nmap gR <Action>(FindUsages)
+" 사용으로 바로 이동
+nmap gU <Action>(ShowUsages)
 " 구현으로 이동
 nmap gI <Action>(GotoImplementation)
 " 타입 정의로 이동
@@ -487,8 +510,37 @@ nmap <leader>td <Action>(ChooseDebugConfiguration)
 nnoremap Y y$
 inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
+
 " Q는 정확히 같지 않습니다.
 nnoremap Q @@
+
+" OS에 따라 아래 설정이 불필요할 수 있음. 해당 설정은 Windows 기준
+" Normal mode: Explicitly map Ctrl+V to Visual Block mode start - Non-recursive conversion
+nnoremap <C-v> <C-v>
+
+" Insert mode: Map Ctrl+V to IDE's 'Paste' action (<Action> excluded from conversion)
+imap <C-v> <Action>(EditorPaste)
+
+" Visual mode: Map Ctrl+V to IDE's 'Paste' action (replaces selection) (<Action> excluded from conversion)
+vmap <C-v> <Action>(EditorPaste)
+
+" Command-line mode: Map Ctrl+V to paste from '+' register (system clipboard) - Non-recursive conversion
+cnoremap <C-v> <C-R>+
+
+" EasyMotion mappings - Actions using <Plug> are not converted
+map s <Plug>(easymotion-s2)
+
+" 다중 커서 관련 매핑 - Actions using <Plug> are not converted
+nmap <C-n> <Plug>NextWholeOccurrence
+xmap <C-n> <Plug>NextWholeOccurrence
+nmap g<C-n> <Plug>NextOccurrence
+xmap g<C-n> <Plug>NextOccurrence
+xmap <C-x> <Plug>SkipOccurrence
+xmap <C-p> <Plug>RemoveOccurrence
+nmap <leader><C-n> <Plug>AllWholeOccurrences
+xmap <leader><C-n> <Plug>AllWholeOccurrences
+nmap <leader>g<C-n> <Plug>AllOccurrences
+xmap <leader>g<C-n> <Plug>AllOccurrences
 " 포팅해야 할 Neovim 매핑이 몇 가지 더 있습니다. 링크 참조.
 
 " Jetbrains 충돌
