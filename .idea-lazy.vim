@@ -148,6 +148,10 @@ nmap <leader>bd <Action>(CloseContent)
 nmap <leader>bD <Action>(CloseContent)
 " 다른 버퍼 삭제
 nmap <leader>bo <Action>(CloseAllEditorsButActive)
+" 수정하지 않은 버퍼 삭제
+nmap <leader>bu <Action>(CloseAllUnmodifiedEditors)
+" IntelliJ 액션 'Change Splitter Orientation' 호출
+nmap <leader>bc <Action>(ChangeSplitOrientation)
 " Escape 및 hlsearch 지우기
 nmap <esc> :nohlsearch<CR>
 nmap <leader>ur :nohlsearch<CR>
