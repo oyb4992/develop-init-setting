@@ -150,6 +150,8 @@ nmap <leader>bD <Action>(CloseContent)
 nmap <leader>bo <Action>(CloseAllEditorsButActive)
 " 수정하지 않은 버퍼 삭제
 nmap <leader>bu <Action>(CloseAllUnmodifiedEditors)
+" 분할 창 이동
+nmap <leader>bm <Action>(MoveEditorToOppositeTabGroup)
 " IntelliJ 액션 'Change Splitter Orientation' 호출
 nmap <leader>bc <Action>(ChangeSplitOrientation)
 " Escape 및 hlsearch 지우기
