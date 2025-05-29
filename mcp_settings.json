@@ -1,0 +1,124 @@
+{
+  "mcpServers": {
+    "obsidian": {
+      "disabled": false,
+      "timeout": 60,
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-obsidian",
+        "/Users/MZ02-OHYUNBOK/Project/Obsidian"
+      ],
+      "transportType": "stdio"
+    },
+    "perplexity-ask": {
+      "disabled": false,
+      "timeout": 60,
+      "command": "npx",
+      "args": [
+        "-y",
+        "server-perplexity-ask"
+      ],
+      "env": {
+        "PERPLEXITY_API_KEY": ""
+      },
+      "transportType": "stdio"
+    },
+    "GitHub": {
+      "disabled": false,
+      "timeout": 60,
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": ""
+      },
+      "transportType": "stdio"
+    },
+    "brave-search": {
+      "disabled": false,
+      "timeout": 60,
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-brave-search"
+      ],
+      "env": {
+        "BRAVE_API_KEY": ""
+      },
+      "transportType": "stdio"
+    },
+    "playwright": {
+      "disabled": false,
+      "timeout": 60,
+      "command": "npx",
+      "args": [
+        "-y",
+        "@executeautomation/playwright-mcp-server"
+      ],
+      "transportType": "stdio"
+    },
+    "jetbrains": {
+      "disabled": false,
+      "timeout": 60,
+      "command": "npx",
+      "args": [
+        "-y",
+        "@jetbrains/mcp-proxy"
+      ],
+      "transportType": "stdio"
+    },
+    "filesystem": {
+      "disabled": false,
+      "timeout": 60,
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/MZ02-OHYUNBOK/Desktop",
+        "/Users/MZ02-OHYUNBOK/Project"
+      ],
+      "transportType": "stdio"
+    },
+    "git": {
+      "timeout": 60,
+      "command": "uvx",
+      "args": [
+        "mcp-server-git",
+        "--repository",
+        "/Users/MZ02-OHYUNBOK/Project/develop-init-setting"
+      ],
+      "transportType": "stdio"
+    },
+    "sequential-thinking": {
+      "disabled": false,
+      "timeout": 60,
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "transportType": "stdio"
+    },
+    "taskmaster-ai": {
+      "timeout": 60,
+      "command": "npx",
+      "args": [
+        "-y",
+        "--package=task-master-ai",
+        "task-master-ai"
+      ],
+      "env": {
+        "PERPLEXITY_API_KEY": "",
+        "GOOGLE_API_KEY": ""
+      },
+      "transportType": "stdio"
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@latest"]
+    }
+  }
+}
