@@ -37,16 +37,14 @@ let mapleader=" "
 let maplocalleader="\\"
 
 set clipboard+=ideaput,unnamed
-" 변경 사항을 저장하기 전에 저장 확인
-set formatoptions=jcroqlnt
 " 줄 번호 표시
 set number
 " 상대 줄 번호
 set relativenumber
 " 문맥 줄 수
 set scrolloff=4
-" 반올림 들여쓰기
-set shiftround
+" " 반올림 들여쓰기
+" set shiftround
 " 문맥 열 수
 set sidescrolloff=8
 " which-key에서는 높게 설정하거나 notimeout을 설정하라고 합니다.
@@ -54,14 +52,24 @@ set notimeout
 " 줄 바꿈 비활성화
 set nowrap
 
+" 커서를 줄 끝 다음 칸까지 이동 허용
+set virtualedit=onemore
+set incsearch
+set hls
+set ignorecase
+set smartcase
+set ideajoin
+set idearefactormode=keep
+set list
+
 " Vim과 다른 Neovim 설정
 " https://neovim.io/doc/user/diff.html
 " https://github.com/mikeslattery/nvim-defaults.vim/blob/main/plugin/.vimrc
 
-set backspace=indent,eol,start
-set formatoptions=tcqj
-set listchars=tab:>\ ,trail:-,nbsp:+
-set shortmess=filnxtToOF
+" set backspace=indent,eol,start
+" set formatoptions=tcqj
+" set listchars=tab:>\ ,trail:-,nbsp:+
+" set shortmess=filnxtToOF
 
 " 플러그인 동작 활성화
 
@@ -123,13 +131,15 @@ nmap <C-Left> <Action>(DecrementWindowWidth)
 " 창 너비 늘리기
 nmap <C-Right> <Action>(IncrementWindowWidth)
 " 아래로 이동
-nmap <A-j> <Action>(MoveLineDown)
-imap <A-j> <Esc><Action>(MoveLineDown)i
-vmap <A-j> <Action>(MoveLineDown)
+" nmap <A-j> <Action>(MoveLineDown)
+" imap <A-j> <Esc><Action>(MoveLineDown)i
+" vmap <A-j> <Action>(MoveLineDown)
+vmap <S-j> <Action>(MoveLineDown)
 " 위로 이동
-nmap <A-k> <Action>(MoveLineUp)
-imap <A-k> <Esc><Action>(MoveLineUp)i
-vmap <A-k> <Action>(MoveLineUp)
+" nmap <A-k> <Action>(MoveLineUp)
+" imap <A-k> <Esc><Action>(MoveLineUp)i
+" vmap <A-k> <Action>(MoveLineUp)
+vmap <S-k> <Action>(MoveLineUp)
 " 이전 버퍼
 nmap <S-h> <Action>(PreviousTab)
 " 다음 버퍼
