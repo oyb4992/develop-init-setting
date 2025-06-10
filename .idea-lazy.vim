@@ -61,6 +61,14 @@ set smartcase
 set ideajoin
 set idearefactormode=keep
 set list
+set showcmd
+set showmode
+set history=1000
+set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
+set colorcolumn=80
+set cursorline
+set breakindent
+set wrap
 
 " Vim과 다른 Neovim 설정
 " https://neovim.io/doc/user/diff.html
