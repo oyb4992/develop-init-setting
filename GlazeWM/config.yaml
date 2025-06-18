@@ -172,7 +172,7 @@ window_rules:
       #     }
 
       # 카카오톡 알림창 무시
-      - window_process: { equals: "KakaoTalk" }
+      # - window_process: { equals: "KakaoTalk" }
         # window_title: { regex: '알림|Notification|새 메시지|New message' }
 
       # 슬랙 알림창 무시
@@ -258,7 +258,7 @@ window_rules:
       # 문서 앱을 기본 플로팅으로 사용하려면 위의 `set-floating` 규칙에 유지
 
   # 메신저 앱 규칙 (플로팅 모드로 설정하고 M 작업 공간으로 이동)
-  - commands: ["set-floating", "move --workspace Z"]
+  - commands: ["set-floating", "move --workspace M"]
     match:
       - window_process: { equals: "Slack" }
         window_title: { not_regex: "Notification|알림|Slack Notification" }
