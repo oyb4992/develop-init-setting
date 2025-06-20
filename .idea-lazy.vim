@@ -112,6 +112,8 @@ let g:qs_disable_for_diffs = 1
 
 let g:EasyMotion_smartcase = 1
 let g:EasyMotion_do_mapping = 0
+let g:EasyMotion_startofline = 0
+let g:EasyMotion_verbose = 0
 
 " 키 매핑
 
@@ -552,7 +554,7 @@ vmap <C-v> <Action>(EditorPaste)
 cnoremap <C-v> <C-R>+
 
 " EasyMotion mappings - Actions using <Plug> are not converted
-map s <Plug>(easymotion-s2)
+nmap s <Plug>(easymotion-s2)
 
 " 다중 커서 관련 매핑 - Actions using <Plug> are not converted
 nmap <C-n> <Plug>NextWholeOccurrence
@@ -565,6 +567,20 @@ nmap <leader><C-n> <Plug>AllWholeOccurrences
 xmap <leader><C-n> <Plug>AllWholeOccurrences
 nmap <leader>g<C-n> <Plug>AllOccurrences
 xmap <leader>g<C-n> <Plug>AllOccurrences
+
+" 현재 설정에 추가할 surround 단축키들
+nmap <leader>s' ysiw'
+nmap <leader>s" ysiw"
+nmap <leader>s( ysiw(
+nmap <leader>s{ ysiw{
+nmap <leader>s[ ysiw[
+nmap <leader>s` ysiw`
+
+" 줄 전체 감싸기
+nmap <leader>S' yss'
+nmap <leader>S" yss"
+nmap <leader>S( yss(
+nmap <leader>S{ yss{
 " 포팅해야 할 Neovim 매핑이 몇 가지 더 있습니다. 링크 참조.
 
 " Jetbrains 충돌
