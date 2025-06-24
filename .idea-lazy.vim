@@ -91,7 +91,6 @@ set surround
 set easymotion
 " Jetbrains 마켓플레이스에서 사용 가능한 whichkey 플러그인 활성화
 set which-key
-" 확장 매칭. Neovim 기본 플러그인.
 set matchit
 set highlightedyank
 set multiple-cursors
@@ -581,6 +580,246 @@ nmap <leader>S' yss'
 nmap <leader>S" yss"
 nmap <leader>S( yss(
 nmap <leader>S{ yss{
+
+" 확장 매칭. Neovim 기본 플러그인.
+let g:WhichKey_ShowVimActions = "true"
+
+" `IdeaVim-Which-Key` 플러그인용 매핑 설명
+" 다음 변수들은 `set which-key` 옵션이 활성화된 경우 키 매핑에 대한 설명을 제공합니다.
+
+" ' ' (스페이스) 리더 키 매핑 그룹 설명
+let g:WhichKeyDesc_ = "<leader> 액션 목록"
+let g:WhichKeyDesc_u = "<leader>u 토글/유틸리티"
+let g:WhichKeyDesc_f = "<leader>f 파일/터미널"
+let g:WhichKeyDesc_g = "<leader>g Git"
+let g:WhichKeyDesc_c = "<leader>c 코드/LSP"
+let g:WhichKeyDesc_b = "<leader>b 버퍼"
+let g:WhichKeyDesc_s = "<leader>s 검색/정보"
+let g:WhichKeyDesc_d = "<leader>d 디버그 (DAP)"
+let g:WhichKeyDesc_t = "<leader>t 테스트"
+let g:WhichKeyDesc_tab = "<leader><tab> 탭/레이아웃"
+let g:WhichKeyDesc_x = "<leader>x 문제/Todo"
+let g:WhichKeyDesc_l = "<leader>l LazyVim 플러그인 설정"
+let g:WhichKeyDesc_K = "<leader>K 단어 도움말"
+let g:WhichKeyDesc_qq = "<leader>qq 모두 종료"
+let g:WhichKeyDesc_minus = "<leader>- 아래 창 분할"
+let g:WhichKeyDesc_vbar = "<leader>| 오른쪽 창 분할"
+let g:WhichKeyDesc_wd = "<leader>wd 창 삭제"
+let g:WhichKeyDesc_wm = "<leader>wm 최대화 토글"
+let g:WhichKeyDesc_C_forward_slash = "<C-/> 터미널 (루트)" " 이 매핑은 특수키 포함으로 제외될 수 있으나, 편의상 포함
+
+" --- 리더 키 (`<leader>`) 시작 매핑 (이전과 동일하게 유지) ---
+" 전역 리더 키 매핑 (추가됨)
+let g:WhichKeyDesc_space = "<leader><space> 파일 열기 (GotoFile)"
+let g:WhichKeyDesc_comma = "<leader>, 빠르게 버퍼 전환 (Switcher)"
+
+" 토글/유틸리티 매핑 (`<leader>u`)
+let g:WhichKeyDesc_uC = "<leader>uC 색 구성표 미리보기"
+let g:WhichKeyDesc_uL = "<leader>uL 상대 줄 번호 토글"
+let g:WhichKeyDesc_ub = "<leader>ub 배경 토글"
+let g:WhichKeyDesc_uB = "<leader>uB 자동 포맷 토글 (버퍼)" " 현재 매핑 없음
+let g:WhichKeyDesc_uc = "<leader>uc conceallevel 토글" " 현재 매핑 없음
+let g:WhichKeyDesc_ud = "<leader>ud 진단 토글"
+let g:WhichKeyDesc_uh = "<leader>uh 인레이 힌트 토글" " 현재 매핑 없음
+let g:WhichKeyDesc_uI = "<leader>uI 트리 검사"
+let g:WhichKeyDesc_ui = "<leader>ui 위치 검사"
+let g:WhichKeyDesc_ul = "<leader>ul 줄 번호 토글"
+let g:WhichKeyDesc_us = "<leader>us 맞춤법 검사 토글"
+let g:WhichKeyDesc_uT = "<leader>uT Treesitter 강조 토글" " 현재 매핑 없음
+let g:WhichKeyDesc_uw = "<leader>uw 줄 바꿈 토글"
+let g:WhichKeyDesc_un = "<leader>un 알림 지우기"
+let g:WhichKeyDesc_snd = "<leader>snd 알림 지우기"
+
+
+" 파일/터미널 매핑 (`<leader>f`)
+let g:WhichKeyDesc_fn = "<leader>fn 새 파일"
+let g:WhichKeyDesc_ft = "<leader>ft 터미널 (루트)"
+let g:WhichKeyDesc_fT = "<leader>fT 터미널 (현재)"
+let g:WhichKeyDesc_fb = "<leader>fb 버퍼 전환"
+let g:WhichKeyDesc_fc = "<leader>fc 구성 파일 찾기"
+let g:WhichKeyDesc_fe = "<leader>fe 탐색기 (루트)"
+let g:WhichKeyDesc_fE = "<leader>fE 탐색기 (현재)"
+let g:WhichKeyDesc_ff = "<leader>ff 파일 찾기 (루트)"
+let g:WhichKeyDesc_fF = "<leader>fF 파일 찾기 (현재)"
+let g:WhichKeyDesc_fg = "<leader>fg Git 파일 찾기"
+let g:WhichKeyDesc_fr = "<leader>fr 최근 파일 (모든 프로젝트)"
+let g:WhichKeyDesc_fR = "<leader>fR 최근 파일 (현재 프로젝트)"
+let g:WhichKeyDesc_e = "<leader>e 현재 파일 구조 팝업"
+let g:WhichKeyDesc_E = "<leader>E 현재 파일 위치"
+
+
+" Git 매핑 (`<leader>g`)
+let g:WhichKeyDesc_gb = "<leader>gb Git Blame 줄"
+let g:WhichKeyDesc_gB = "<leader>gB Git Browse (로그)"
+let g:WhichKeyDesc_gc = "<leader>gc Git 커밋 (Telescope)"
+let g:WhichKeyDesc_gf = "<leader>gf Git 현재 파일 기록"
+let g:WhichKeyDesc_gg = "<leader>gg Lazygit (루트)"
+let g:WhichKeyDesc_gG = "<leader>gG Lazygit (현재)"
+let g:WhichKeyDesc_gl = "<leader>gl Lazygit 로그 (Telescope)"
+let g:WhichKeyDesc_gL = "<leader>gL Lazygit 로그 (현재)"
+let g:WhichKeyDesc_gs = "<leader>gs Git 상태 (Telescope)"
+let g:WhichKeyDesc_ge = "<leader>ge Git 탐색기"
+
+
+" 코드/LSP 매핑 (`<leader>c`)
+let g:WhichKeyDesc_ca = "<leader>ca 코드 액션"
+let g:WhichKeyDesc_cA = "<leader>cA 소스 액션 (Intention)"
+let g:WhichKeyDesc_cc = "<leader>cc Codelens 실행" " 현재 매핑 없음
+let g:WhichKeyDesc_cC = "<leader>cC Codelens 새로 고침 및 표시" " 현재 매핑 없음
+let g:WhichKeyDesc_cd = "<leader>cd 줄 진단"
+let g:WhichKeyDesc_cf = "<leader>cf 코드 포맷"
+let g:WhichKeyDesc_cR = "<leader>cR 파일 이름 바꾸기"
+let g:WhichKeyDesc_cr = "<leader>cr 이름 바꾸기"
+
+
+" 버퍼 매핑 (`<leader>b`)
+let g:WhichKeyDesc_bb = "<leader>bb 다른 버퍼 전환"
+let g:WhichKeyDesc_bd = "<leader>bd 버퍼 삭제"
+let g:WhichKeyDesc_bD = "<leader>bD 버퍼 및 창 삭제"
+let g:WhichKeyDesc_bl = "<leader>bl 왼쪽 버퍼 삭제"
+let g:WhichKeyDesc_bm = "<leader>bm 분할 창 이동"
+let g:WhichKeyDesc_bo = "<leader>bo 다른 버퍼 삭제"
+let g:WhichKeyDesc_bp = "<leader>bp 핀 토글"
+let g:WhichKeyDesc_bP = "<leader>bP 고정되지 않은 버퍼 삭제"
+let g:WhichKeyDesc_br = "<leader>br 오른쪽 버퍼 삭제"
+let g:WhichKeyDesc_bu = "<leader>bu 수정되지 않은 버퍼 삭제" " 현재 매핑 없음
+let g:WhichKeyDesc_bc = "<leader>bc 분할 방향 변경"
+
+
+" 검색/정보 매핑 (`<leader>s`)
+let g:WhichKeyDesc_s_double_quote = "<leader>s\" 레지스터 표시"
+let g:WhichKeyDesc_sa = "<leader>sa 자동 명령" " 현재 매핑 없음
+let g:WhichKeyDesc_sb = "<leader>sb 버퍼 선택"
+let g:WhichKeyDesc_sc = "<leader>sc 명령 기록"
+let g:WhichKeyDesc_sC = "<leader>sC 명령 찾기 (Action)"
+let g:WhichKeyDesc_sd = "<leader>sd 문서 진단"
+let g:WhichKeyDesc_sD = "<leader>sD 작업 공간 진단"
+let g:WhichKeyDesc_sg = "<leader>sg 프로젝트에서 Grep"
+let g:WhichKeyDesc_sG = "<leader>sG 현재 파일에서 Grep"
+let g:WhichKeyDesc_sh = "<leader>sh 도움말 페이지 (HelpTopics)"
+let g:WhichKeyDesc_sH = "<leader>sH 강조 그룹 검색 (HighlightUsages)"
+let g:WhichKeyDesc_sj = "<leader>sj 점프 목록 (RecentLocations)"
+let g:WhichKeyDesc_sk = "<leader>sk 키 매핑 표시"
+let g:WhichKeyDesc_sl = "<leader>sl 위치 목록"
+let g:WhichKeyDesc_sm = "<leader>sm 마크로 점프"
+let g:WhichKeyDesc_sM = "<leader>sM Man 페이지 (ShowDocumentation)"
+let g:WhichKeyDesc_so = "<leader>so 옵션 (설정)"
+let g:WhichKeyDesc_sq = "<leader>sq 빠른 수정 목록"
+let g:WhichKeyDesc_sR = "<leader>sR 재개 마지막 검색" " 현재 매핑 없음
+let g:WhichKeyDesc_ss = "<leader>ss 현재 파일에서 심볼"
+let g:WhichKeyDesc_sS = "<leader>sS 작업 공간에서 심볼"
+let g:WhichKeyDesc_sw_normal = "<leader>sw 단어 검색 (루트), 일반모드"
+let g:WhichKeyDesc_sW_normal = "<leader>sW 단어 검색 (현재), 일반모드"
+let g:WhichKeyDesc_sw_visual = "<leader>sw 단어 검색 (루트), 비주얼모드"
+let g:WhichKeyDesc_sW_visual = "<leader>sW 단어 검색 (현재), 비주얼모드"
+
+
+" 디버그 (DAP) 매핑 (`<leader>d`)
+let g:WhichKeyDesc_da = "<leader>da 인수로 실행"
+let g:WhichKeyDesc_db = "<leader>db 중단점 토글"
+let g:WhichKeyDesc_dB = "<leader>dB 조건부 중단점"
+let g:WhichKeyDesc_dc = "<leader>dc 계속"
+let g:WhichKeyDesc_dC = "<leader>dC 커서까지 강제 실행"
+let g:WhichKeyDesc_de_normal = "<leader>de 식 평가 (일반모드)"
+let g:WhichKeyDesc_de_visual = "<leader>de 식 평가 (비주얼모드)"
+let g:WhichKeyDesc_dg = "<leader>dg 줄로 이동 (실행 안 함)" " 현재 매핑 없음
+let g:WhichKeyDesc_di = "<leader>di 단계 안으로"
+let g:WhichKeyDesc_dj = "<leader>dj 디버그 다음 항목"
+let g:WhichKeyDesc_dk = "<leader>dk 디버그 이전 항목"
+let g:WhichKeyDesc_dl = "<leader>dl 마지막 실행 디버그"
+let g:WhichKeyDesc_do = "<leader>do 단계 밖으로"
+let g:WhichKeyDesc_dO = "<leader>dO 단계 건너뛰기"
+let g:WhichKeyDesc_dp = "<leader>dp 일시 중지"
+let g:WhichKeyDesc_dr = "<leader>dr REPL 토글"
+let g:WhichKeyDesc_ds = "<leader>ds 세션" " 현재 매핑 없음
+let g:WhichKeyDesc_dt = "<leader>dt 디버거 종료"
+let g:WhichKeyDesc_du = "<leader>du 디버그 UI 열기"
+let g:WhichKeyDesc_dw = "<leader>dw 디버그 위젯" " 현재 매핑 없음
+
+
+" 테스트 매핑 (`<leader>t`)
+let g:WhichKeyDesc_td = "<leader>td 가장 가까운 디버그"
+let g:WhichKeyDesc_tl = "<leader>tl 마지막 테스트 실행"
+let g:WhichKeyDesc_to = "<leader>to 테스트 출력 표시" " 현재 매핑 없음
+let g:WhichKeyDesc_tO = "<leader>tO 테스트 출력 패널 토글" " 현재 매핑 없음
+let g:WhichKeyDesc_tr = "<leader>tr 가장 가까운 테스트 실행"
+let g:WhichKeyDesc_ts = "<leader>ts 테스트 요약 토글"
+let g:WhichKeyDesc_tS = "<leader>tS 테스트 중지"
+let g:WhichKeyDesc_tt = "<leader>tt 현재 파일 테스트 실행"
+let g:WhichKeyDesc_tT = "<leader>tT 모든 테스트 파일 실행"
+let g:WhichKeyDesc_tw = "<leader>tw 테스트 감시 토글"
+
+
+" 탭/레이아웃 매핑 (`<leader><tab>`)
+" NOTE: <leader><tab> 키 자체에 대한 설명은 `g:WhichKeyDesc_tab`으로 상단에 정의됨
+let g:WhichKeyDesc_tabl = "<leader><tab>l 마지막 탭"
+let g:WhichKeyDesc_tabo = "<leader><tab>o 다른 탭 닫기"
+let g:WhichKeyDesc_tabf = "<leader><tab>f 새 탭/첫 번째 탭"
+let g:WhichKeyDesc_tab_square_right = "<leader><tab>] 다음 탭"
+let g:WhichKeyDesc_tab_square_left = "<leader><tab>[ 이전 탭"
+let g:WhichKeyDesc_tabc = "<leader><tab>c 탭 닫기" " 이전에 매핑 정의는 없었으나, 설명을 위해 추가
+
+
+" 문제/Todo 매핑 (`<leader>x`)
+let g:WhichKeyDesc_xl = "<leader>xl 위치 목록 (문제 툴 창)"
+let g:WhichKeyDesc_xq = "<leader>xq 빠른 수정 목록 (문제 툴 창)"
+let g:WhichKeyDesc_xt = "<leader>xt Todo (Trouble)" " 현재 매핑 없음
+let g:WhichKeyDesc_xT = "<leader>xT Todo/Fix/Fixme (Trouble)" " 현재 매핑 없음
+
+" 추가된 검색/정보 매핑
+let g:WhichKeyDesc_slash = "<leader>/ 프로젝트에서 Grep (FindInPath)"
+let g:WhichKeyDesc_colon = "<leader>: 명령 기록 (:history)"
+
+
+" --- 2개 이상 키가 필요한 Vim 기본 액션 (특수키 제외) ---
+" (리더 키를 사용하지 않으면서 2개 이상의 연속된 일반 키 시퀀스)
+" 예: gd, [[, [b 등
+
+let g:WhichKeyDesc_gd = "gd 정의로 이동"
+let g:WhichKeyDesc_gR = "gR 참조 찾기"
+let g:WhichKeyDesc_gU = "gU 사용으로 바로 이동"
+let g:WhichKeyDesc_gI = "gI 구현으로 이동"
+let g:WhichKeyDesc_gy = "gy 타입 정의로 이동"
+let g:WhichKeyDesc_gD = "gD 선언으로 이동"
+let g:WhichKeyDesc_gK = "gK 시그니처 도움말"
+let g:WhichKeyDesc_gco = "gco 아래에 주석 추가"
+let g:WhichKeyDesc_gcO = "gcO 위에 주석 추가"
+
+let g:WhichKeyDesc_square_left_b = "[b 이전 버퍼"
+let g:WhichKeyDesc_square_right_b = "]b 다음 버퍼"
+
+let g:WhichKeyDesc_square_left_left = "[[ 이전 참조"
+let g:WhichKeyDesc_square_right_right = "]] 다음 참조"
+
+let g:WhichKeyDesc_square_left_q = "[q 이전 빠른 수정"
+let g:WhichKeyDesc_square_right_q = "]q 다음 빠른 수정"
+
+let g:WhichKeyDesc_square_left_d = "[d 이전 진단"
+let g:WhichKeyDesc_square_right_d = "]d 다음 진단"
+
+let g:WhichKeyDesc_square_left_e = "[e 이전 오류"
+let g:WhichKeyDesc_square_right_e = "]e 다음 오류"
+
+let g:WhichKeyDesc_square_left_w = "[w 이전 경고"
+let g:WhichKeyDesc_square_right_w = "]w 다음 경고"
+
+let g:WhichKeyDesc_square_left_t = "[t 이전 Todo 주석"
+let g:WhichKeyDesc_square_right_t = "]t 다음 Todo 주석"
+
+" EasyMotion
+let g:WhichKeyDesc_s = "s EasyMotion 시작" " 단일 키지만, 다음 시퀀스를 유도하므로 포함 (편의상)
+
+" Multiple-cursors
+let g:WhichKeyDesc_C_n_normal = "<C-n> 다음 전체 일치 선택" " nmap
+let g:WhichKeyDesc_C_n_visual = "<C-n> 다음 전체 일치 선택" " xmap
+let g:WhichKeyDesc_gC_n = "g<C-n> 다음 일치 선택" " nmap
+let g:WhichKeyDesc_gC_n_visual = "g<C-n> 다음 일치 선택" " xmap
+let g:WhichKeyDesc_C_x_visual = "<C-x> 일치 건너뛰기" " xmap
+let g:WhichKeyDesc_C_p_visual = "<C-p> 일치 제거" " xmap
+let g:WhichKeyDesc_leaderC_n = "<leader><C-n> 모든 전체 일치 선택" " nmap
+let g:WhichKeyDesc_leaderC_n_visual = "<leader><C-n> 모든 전체 일치 선택" " xmap
+let g:WhichKeyDesc_leadergC_n = "<leader>g<C-n> 모든 일치 선택" " nmap
+let g:WhichKeyDesc_leadergC_n_visual = "<leader>g<C-n> 모든 일치 선택" " xmap
 " 포팅해야 할 Neovim 매핑이 몇 가지 더 있습니다. 링크 참조.
 
 " Jetbrains 충돌
