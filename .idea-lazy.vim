@@ -212,9 +212,9 @@ nmap ]w <Action>(GotoNextError)
 " 이전 경고
 nmap [w <Action>(GotoPreviousError)
 " 자동 포맷 토글 (전역)
-nmap <leader>ub :echo '자동 포맷 토글에 해당하는 매핑이 없습니다.'<cr>
+" nmap <leader>ub :echo '자동 포맷 토글에 해당하는 매핑이 없습니다.'<cr>
 " 자동 포맷 토글 (버퍼)
-nmap <leader>uB :echo '자동 포맷 토글에 해당하는 매핑이 없습니다.'<cr>
+" nmap <leader>uB :echo '자동 포맷 토글에 해당하는 매핑이 없습니다.'<cr>
 " 맞춤법 검사 토글
 nmap <leader>us :setlocal spell!<CR>
 " 줄 바꿈 토글
@@ -226,13 +226,13 @@ nmap <leader>ud <Action>(ActivateProblemsViewToolWindow)
 " 줄 번호 토글
 nmap <leader>ul :set number!<CR>
 " conceallevel 토글
-nmap <leader>uc :echo 'Conceallevel 토글에 해당하는 매핑이 없습니다.'<cr>
+" nmap <leader>uc :echo 'Conceallevel 토글에 해당하는 매핑이 없습니다.'<cr>
 " Treesitter 강조 토글
-nmap <leader>uT :echo 'Treesitter 강조 토글에 해당하는 매핑이 없습니다.'<cr>
+" nmap <leader>uT :echo 'Treesitter 강조 토글에 해당하는 매핑이 없습니다.'<cr>
 " 배경 토글
 nmap <leader>ub <Action>(QuickChangeScheme)
 " 인레이 힌트 토글
-nmap <leader>uh :echo '인레이 힌트 토글에 해당하는 매핑이 없습니다.'<cr>
+" nmap <leader>uh :echo '인레이 힌트 토글에 해당하는 매핑이 없습니다.'<cr>
 " Lazygit (루트 디렉토리)
 nmap <leader>gg <Action>(ActivateCommitToolWindow)
 " Lazygit (현재 작업 디렉토리)
@@ -281,18 +281,18 @@ nmap <leader><tab>o :<cr>
 " 첫 번째 탭
 nmap <leader><tab>f <Action>(StoreDefaultLayout)<Action>(ChangeToolWindowLayout)
 " 새 탭
-nmap <leader><tab>f <Action>(StoreDefaultLayout)<Action>(StoreNewLayout)
+nmap <leader><tab>n <Action>(StoreDefaultLayout)<Action>(StoreNewLayout)
 " 다음 탭
 nmap <leader><tab>] <Action>(StoreDefaultLayout)<Action>(ChangeToolWindowLayout)
 " 이전 탭
 nmap <leader><tab>[ <Action>(StoreDefaultLayout)<Action>(ChangeToolWindowLayout)
 " 탭 닫기
-nmap <leader><tab>f <Action>(StoreDefaultLayout)<Action>(ChangeToolWindowLayout)
+nmap <leader><tab>c <Action>(StoreDefaultLayout)<Action>(ChangeToolWindowLayout)
 
 " LSP 키 매핑
 
 " Lsp 정보
-nmap <leader>cc :echo 'Lsp 정보에 해당하는 매핑이 없습니다.'<cr>
+" nmap <leader>cc :echo 'Lsp 정보에 해당하는 매핑이 없습니다.'<cr>
 " 정의로 이동
 nmap gd <Action>(GotoDeclaration)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -314,9 +314,9 @@ imap <C-k> <C-o><Action>(ParameterInfo)
 nmap <leader>ca <Action>(RefactoringMenu)
 vmap <leader>ca <Action>(RefactoringMenu)
 " Codelens 실행
-nmap <leader>cc :echo 'Codelens 실행에 해당하는 매핑이 없습니다.'<cr>
+" nmap <leader>cc :echo 'Codelens 실행에 해당하는 매핑이 없습니다.'<cr>
 " Codelens 새로 고침 및 표시
-nmap <leader>cC :echo 'Codelens 새로 고침 및 표시에 해당하는 매핑이 없습니다.'<cr>
+" nmap <leader>cC :echo 'Codelens 새로 고침 및 표시에 해당하는 매핑이 없습니다.'<cr>
 " 파일 이름 바꾸기
 nmap <leader>cR <Action>(RenameFile)
 " 이름 바꾸기
@@ -394,7 +394,7 @@ nmap <leader>gs <Action>(Vcs.Show.Log)
 " 레지스터
 nmap <leader>s" :registers<cr>
 " 자동 명령
-nmap <leader>sa :echo '해당하는 매핑이 없습니다.'<cr>
+" nmap <leader>sa :echo '해당하는 매핑이 없습니다.'<cr>
 " 버퍼
 nmap <leader>sb <Action>(Switcher)
 " 명령 기록 (대안)
@@ -428,7 +428,7 @@ nmap <leader>so <Action>(ShowSettings)
 " 빠른 수정 목록
 nmap <leader>sq <Action>(ActivateProblemsViewToolWindow)
 " 재개
-nmap <leader>sR :echo '아직 구현되지 않았습니다.'<cr>
+" nmap <leader>sR :echo '아직 구현되지 않았습니다.'<cr>
 " 심볼로 이동
 nmap <leader>ss <Action>(GotoSymbol)
 " 심볼로 이동 (작업 공간)
@@ -457,7 +457,7 @@ nmap <leader>dc <Action>(Resume)
 " 커서까지 실행
 nmap <leader>dC <Action>(ForceRunToCursor)
 " 줄로 이동 (실행 안 함)
-nmap <leader>dg :echo '아직 구현되지 않았습니다.'<cr>
+" nmap <leader>dg :echo '아직 구현되지 않았습니다.'<cr>
 " 단계 안으로
 nmap <leader>di <Action>(StepInto)
 " 아래로
@@ -475,22 +475,22 @@ nmap <leader>dp <Action>(Pause)
 " REPL 토글
 nmap <leader>dr <Action>(JShell.Console)
 " 세션
-nmap <leader>ds :echo '아직 구현되지 않았습니다.'<cr>
+" nmap <leader>ds :echo '아직 구현되지 않았습니다.'<cr>
 " 종료
 nmap <leader>dt <Action>(Stop)
 " 위젯
-nmap <leader>dw :echo '위젯에 해당하는 매핑이 없습니다.'<cr>
+" nmap <leader>dw :echo '위젯에 해당하는 매핑이 없습니다.'<cr>
 
 " Todo-comments 키 매핑
 
 " Todo
 nmap <leader>st oTODO<esc>gcc
 " Todo/Fix/Fixme
-nmap <leader>sT :echo '아직 구현되지 않았습니다.'<cr>
+" nmap <leader>sT :echo '아직 구현되지 않았습니다.'<cr>
 " Todo (Trouble)
-nmap <leader>xt :echo '아직 구현되지 않았습니다.'<cr>
+" nmap <leader>xt :echo '아직 구현되지 않았습니다.'<cr>
 " Todo/Fix/Fixme (Trouble)
-nmap <leader>xT :echo '아직 구현되지 않았습니다.'<cr>
+" nmap <leader>xT :echo '아직 구현되지 않았습니다.'<cr>
 " 이전 Todo 주석
 nmap [t ?TODO<cr>
 " 다음 Todo 주석
@@ -509,9 +509,9 @@ nmap <leader>du <Action>(ActivateDebugToolWindow)
 " 마지막 실행
 nmap <leader>tl <Action>(Run)
 " 출력 표시
-nmap <leader>to :echo '아직 구현되지 않았습니다.'<cr>
+" nmap <leader>to :echo '아직 구현되지 않았습니다.'<cr>
 " 출력 패널 토글
-nmap <leader>tO :echo '아직 구현되지 않았습니다.'<cr>
+" nmap <leader>tO :echo '아직 구현되지 않았습니다.'<cr>
 " 가장 가까운 실행
 nmap <leader>tr <Action>(RunClass)
 " 요약 토글
@@ -589,6 +589,7 @@ let g:WhichKey_ShowVimActions = "true"
 
 " ' ' (스페이스) 리더 키 매핑 그룹 설명
 let g:WhichKeyDesc_ = "<leader> 액션 목록"
+let g:WhichKeyDesc_L = "<leader>L LazyVim 변경 로그"
 let g:WhichKeyDesc_u = "<leader>u 토글/유틸리티"
 let g:WhichKeyDesc_f = "<leader>f 파일/터미널"
 let g:WhichKeyDesc_g = "<leader>g Git"
@@ -612,6 +613,7 @@ let g:WhichKeyDesc_C_forward_slash = "<C-/> 터미널 (루트)" " 이 매핑은 
 " 전역 리더 키 매핑 (추가됨)
 let g:WhichKeyDesc_space = "<leader><space> 파일 열기 (GotoFile)"
 let g:WhichKeyDesc_comma = "<leader>, 빠르게 버퍼 전환 (Switcher)"
+let g:WhichKeyDesc_backtick = "<leader>` 다른 버퍼로 전환 (대안)"
 
 " 토글/유틸리티 매핑 (`<leader>u`)
 let g:WhichKeyDesc_uC = "<leader>uC 색 구성표 미리보기"
@@ -684,6 +686,7 @@ let g:WhichKeyDesc_bP = "<leader>bP 고정되지 않은 버퍼 삭제"
 let g:WhichKeyDesc_br = "<leader>br 오른쪽 버퍼 삭제"
 let g:WhichKeyDesc_bu = "<leader>bu 수정되지 않은 버퍼 삭제" " 현재 매핑 없음
 let g:WhichKeyDesc_bc = "<leader>bc 분할 방향 변경"
+let g:WhichKeyDesc_be = "<leader>be 버퍼 탐색기"
 
 
 " 검색/정보 매핑 (`<leader>s`)
@@ -712,6 +715,7 @@ let g:WhichKeyDesc_sw_normal = "<leader>sw 단어 검색 (루트), 일반모드"
 let g:WhichKeyDesc_sW_normal = "<leader>sW 단어 검색 (현재), 일반모드"
 let g:WhichKeyDesc_sw_visual = "<leader>sw 단어 검색 (루트), 비주얼모드"
 let g:WhichKeyDesc_sW_visual = "<leader>sW 단어 검색 (현재), 비주얼모드"
+let g:WhichKeyDesc_st = "<leader>st Todo 주석 추가"
 
 
 " 디버그 (DAP) 매핑 (`<leader>d`)
@@ -754,7 +758,9 @@ let g:WhichKeyDesc_tw = "<leader>tw 테스트 감시 토글"
 " NOTE: <leader><tab> 키 자체에 대한 설명은 `g:WhichKeyDesc_tab`으로 상단에 정의됨
 let g:WhichKeyDesc_tabl = "<leader><tab>l 마지막 탭"
 let g:WhichKeyDesc_tabo = "<leader><tab>o 다른 탭 닫기"
-let g:WhichKeyDesc_tabf = "<leader><tab>f 새 탭/첫 번째 탭"
+let g:WhichKeyDesc_tabf = "<leader><tab>f 첫 번째 탭"
+let g:WhichKeyDesc_tabn = "<leader><tab>n 새 탭"
+let g:WhichKeyDesc_tabc = "<leader><tab>c 탭 닫기"
 let g:WhichKeyDesc_tab_square_right = "<leader><tab>] 다음 탭"
 let g:WhichKeyDesc_tab_square_left = "<leader><tab>[ 이전 탭"
 let g:WhichKeyDesc_tabc = "<leader><tab>c 탭 닫기" " 이전에 매핑 정의는 없었으나, 설명을 위해 추가
@@ -820,6 +826,19 @@ let g:WhichKeyDesc_leaderC_n = "<leader><C-n> 모든 전체 일치 선택" " nma
 let g:WhichKeyDesc_leaderC_n_visual = "<leader><C-n> 모든 전체 일치 선택" " xmap
 let g:WhichKeyDesc_leadergC_n = "<leader>g<C-n> 모든 일치 선택" " nmap
 let g:WhichKeyDesc_leadergC_n_visual = "<leader>g<C-n> 모든 일치 선택" " xmap
+
+" Surround 관련 추가 매핑
+let g:WhichKeyDesc_s_single_quote = "<leader>s' 단어를 '로 감싸기"
+let g:WhichKeyDesc_s_double_quote_surround = '<leader>s" 단어를 "로 감싸기'
+let g:WhichKeyDesc_s_paren = "<leader>s( 단어를 ()로 감싸기"
+let g:WhichKeyDesc_s_brace = "<leader>s{ 단어를 {}로 감싸기"
+let g:WhichKeyDesc_s_bracket = "<leader>s[ 단어를 []로 감싸기"
+let g:WhichKeyDesc_s_backtick = "<leader>s` 단어를 ``로 감싸기"
+
+let g:WhichKeyDesc_S_single_quote = "<leader>S' 줄을 '로 감싸기"
+let g:WhichKeyDesc_S_double_quote_surround = '<leader>S" 줄을 "로 감싸기'
+let g:WhichKeyDesc_S_paren = "<leader>S( 줄을 ()로 감싸기"
+let g:WhichKeyDesc_S_brace = "<leader>S{ 줄을 {}로 감싸기"
 " 포팅해야 할 Neovim 매핑이 몇 가지 더 있습니다. 링크 참조.
 
 " Jetbrains 충돌
