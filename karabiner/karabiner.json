@@ -80,12 +80,15 @@
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
                                             "^io\\.alacritty$",
+                                            "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.jetbrains\\.goland$",
                                             "^com\\.jetbrains\\.intellij$",
                                             "^com\\.jetbrains\\.webstorm$",
                                             "^com\\.jetbrains\\.webstorm$",
                                             "^com\\.todesktop\\.230313mzl4w4u92$",
-                                            "^com\\.trae\\.app$"
+                                            "^com\\.trae\\.app$",
+                                            "^com\\.microsoft\\.VSCode$",
+                                            "^md\\.obsidian$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -96,6 +99,26 @@
                                 },
                                 "to": [{ "key_code": "escape" }],
                                 "to_after_key_up": [{ "select_input_source": { "language": "en" } }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "R_CMD to switch input languages, Fixes the issue where R_CMD does not switch input languages when caps lock is on",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "right_command",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "spacebar",
+                                        "lazy": true,
+                                        "modifiers": ["left_option"],
+                                        "repeat": false
+                                    }
+                                ],
                                 "type": "basic"
                             }
                         ]

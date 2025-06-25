@@ -16,8 +16,6 @@ brew "fastfetch"
 brew "fzf"
 brew "git"
 brew "git-flow"
-# 필요에 따라 설치
-# brew "jhipster"
 brew "jq"
 brew "kubernetes-cli"
 brew "lsd"
@@ -26,7 +24,6 @@ brew "minikube"
 brew "neovim"
 brew "tree"
 brew "uv"
-# brew "nvm" #asdf로 대체
 brew "radare2"
 brew "scrcpy" # 안드로이드 미러링
 brew "thefuck"
@@ -47,7 +44,7 @@ cask "font-hack-nerd-font"
 cask "github"
 cask "google-chrome"
 cask "google-drive"
-# cask "intellij-idea-ce" #jetbrains-toolbox를 통한 설치
+cask "jetbrains-toolbox"
 # cask "iterm2"
 cask "itsycal"
 cask "jetbrains-toolbox"
@@ -62,7 +59,6 @@ cask "latest"
 brew "mise"
 cask "openlens"
 cask "obsidian"
-cask "onedrive"
 cask "popclip"
 cask "postman"
 cask "raycast"
@@ -79,5 +75,5 @@ mas "iShot",                      id: 1485844094
 mas "Cleaner One Pro", id: 1133028347
 mas "카카오톡",                  id: 869223134
 mas "GrabIt",                     id: 450166997
-# mas "MenubarX", id: 1575588022
+mas "MenubarX", id: 1575588022
 mas "RunCat", id: 1429033973

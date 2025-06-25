@@ -1,3 +1,3 @@
 # !/bin/bash
 
-cp ./karabiner/karabiner.json .config/karabiner/
+cp ./karabiner/karabiner.json ~/.config/karabiner/

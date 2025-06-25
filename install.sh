@@ -10,42 +10,29 @@ fi
 # sudo 권한이 필요한 이유 : cask로 설치한 애플리케이션을 바로 실행하기 위해 다운로드 된 파일에 대한 격리 속성 제거 작업
 read -r -s -p "[sudo] sudo password for $(whoami):" pass
 
+# BrewFile 실행 명령어
+brew bundle --file=./Brewfile
+
 # 설정은 모든 앱 설치 후 별도로 적용
-# # configure zsh
-# chmod 755 ./zsh/install.sh
-# ./zsh/install.sh
+# configure zsh
+chmod 755 ./zsh/install.sh
+./zsh/install.sh
 
-# # copy iterm2 configuration
-# chmod 755 ./iterm2/install.sh
-# ./iterm2/install.sh
-
-# # copy karabiner configuration
-# chmod 755 ./karabiner/install.sh
-# ./karabiner/install.sh
+# copy karabiner configuration
+chmod 755 ./karabiner/install.sh
+./karabiner/install.sh
 
 # # install font
 # cp -a ./fonts/. ~/Library/Fonts
-
-# # zshrc 설정 적용
-# source ~/.zshrc
-
-# BrewFile 실행 명령어
-brew bundle --file=./Brewfile
 
 # cask로 다운로드시 웹에서 다운로드한 것과 동일하기 때문에 실행을 하면 Security 문제로 실행되지 않음
 # cask로 설치한 애플리케이션을 바로 실행하기 위해 다운로드 된 파일에 대한 격리 속성 제거 작업 명령어
 sudo xattr -dr com.apple.quarantine /Applications/AppCleaner.app
 sudo xattr -dr com.apple.quarantine /Applications/BetterTouchTool.app
-sudo xattr -dr com.apple.quarantine /Applications/BetterDisplay.app
 sudo xattr -dr com.apple.quarantine /Applications/Boop.app
-sudo xattr -dr com.apple.quarantine /Applications/DBeaver.app
-sudo xattr -dr com.apple.quarantine /Applications/ChatGPT.app
-sudo xattr -dr com.apple.quarantine /Applications/Cursor.app
 sudo xattr -dr com.apple.quarantine /Applications/DeepL.app
 sudo xattr -dr com.apple.quarantine /Applications/Google\ Chrome.app
 sudo xattr -dr com.apple.quarantine /Applications/Google\ Drive.app
-sudo xattr -dr com.apple.quarantine /Applications/IINA.app
-sudo xattr -dr com.apple.quarantine /Applications/iTerm.app
 sudo xattr -dr com.apple.quarantine /Applications/Itsycal.app
 sudo xattr -dr com.apple.quarantine /Applications/JetBrains\ Toolbox.app
 sudo xattr -dr com.apple.quarantine /Applications/Karabiner-Elements.app
@@ -62,6 +49,13 @@ sudo xattr -dr com.apple.quarantine /Applications/Slack.app
 # sudo xattr -dr com.apple.quarantine /Applications/Telegram #개인맥북엔 필요
 sudo xattr -dr com.apple.quarantine /Applications/Visual\ Studio\ Code.app
 sudo xattr -dr com.apple.quarantine /Applications/GitHub\ Desktop.app
+sudo xattr -dr com.apple.quarantine /Applications/Claude.app
+sudo xattr -dr com.apple.quarantine /Applications/AeroSpace.app
+sudo xattr -dr com.apple.quarantine /Applications/Arc.app
+sudo xattr -dr com.apple.quarantine /Applications/Battery\ Toolkit.app
+sudo xattr -dr com.apple.quarantine /Applications/kitty.app
+sudo xattr -dr com.apple.quarantine /Applications/MonitorControl.app
+sudo xattr -dr com.apple.quarantine /Applications/Ollama.app
 
 
 # 설치 성공 완료 메세지 노출
