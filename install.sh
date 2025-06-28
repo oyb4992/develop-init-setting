@@ -11,7 +11,7 @@ fi
 read -r -s -p "[sudo] sudo password for $(whoami):" pass
 
 # BrewFile 실행 명령어
-brew bundle --file=./Brewfile
+brew bundle --file=./NewBrewfile
 
 # 설정은 모든 앱 설치 후 별도로 적용
 # configure zsh
@@ -43,7 +43,6 @@ sudo xattr -dr com.apple.quarantine /Applications/OneDrive.app
 sudo xattr -dr com.apple.quarantine /Applications/OpenLens.app
 sudo xattr -dr com.apple.quarantine /Applications/PopClip.app
 sudo xattr -dr com.apple.quarantine /Applications/Postman.app
-sudo xattr -dr com.apple.quarantine /Applications/Rancher\ Desktop.app
 sudo xattr -dr com.apple.quarantine /Applications/Raycast.app
 sudo xattr -dr com.apple.quarantine /Applications/Slack.app
 # sudo xattr -dr com.apple.quarantine /Applications/Telegram #개인맥북엔 필요
@@ -56,6 +55,11 @@ sudo xattr -dr com.apple.quarantine /Applications/Battery\ Toolkit.app
 sudo xattr -dr com.apple.quarantine /Applications/kitty.app
 sudo xattr -dr com.apple.quarantine /Applications/MonitorControl.app
 sudo xattr -dr com.apple.quarantine /Applications/Ollama.app
+sudo xattr -dr com.apple.quarantine /Applications/Another\ Redis\ Desktop\ Manager.app
+sudo xattr -dr com.apple.quarantine /Applications/HTTPie\ Desktop.app
+sudo xattr -dr com.apple.quarantine /Applications/IINA.app
+sudo xattr -dr com.apple.quarantine /Applications/Kodi.app
+sudo xattr -dr com.apple.quarantine /Applications/Zen\ Browser.app
 
 
 # 설치 성공 완료 메세지 노출
