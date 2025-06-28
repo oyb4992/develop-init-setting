@@ -158,10 +158,10 @@ alt-shift-r = 'reload-config'
 # 워크스페이스 포커스: Alt + [알파벳] (GlazeWM과 통일)
 alt-a = 'workspace A' # AI 관련
 alt-b = 'workspace B' # 브라우저
+alt-c = 'workspace C' # 커뮤니케이션 (메신저, 메일)
 alt-d = 'workspace D' # 문서 작업
 alt-f = 'workspace F' # 탐색기 (Finder)
 alt-i = 'workspace I' # IDE (개발 환경)
-alt-m = 'workspace M' # 메신저
 alt-n = 'workspace N' # 노트
 alt-t = 'workspace T' # 터미널
 alt-w = 'workspace W' # 윈도우 (가상 머신 등)
@@ -171,10 +171,10 @@ alt-z = 'workspace Z' # 기타
 # 워크스페이스로 노드 이동 (창 이동 후 해당 워크스페이스로 포커스 이동): Alt + Shift + [알파벳] (GlazeWM과 통일)
 alt-shift-a = 'move-node-to-workspace --focus-follows-window A'
 alt-shift-b = 'move-node-to-workspace --focus-follows-window B'
+alt-shift-c = 'move-node-to-workspace --focus-follows-window C'
 alt-shift-d = 'move-node-to-workspace --focus-follows-window D'
 alt-shift-f = 'move-node-to-workspace --focus-follows-window F'
 alt-shift-i = 'move-node-to-workspace --focus-follows-window I'
-alt-shift-m = 'move-node-to-workspace --focus-follows-window M'
 alt-shift-n = 'move-node-to-workspace --focus-follows-window N'
 alt-shift-t = 'move-node-to-workspace --focus-follows-window T'
 alt-shift-w = 'move-node-to-workspace --focus-follows-window W'
@@ -327,8 +327,8 @@ run = 'move-node-to-workspace --focus-follows-window D' # 'D' 워크스페이스
 if.app-id = 'com.kakao.KakaoTalkMac' # 카카오톡
 run = [
   'layout floating',
-  'move-node-to-workspace --focus-follows-window M',
-] # 플로팅 레이아웃으로 변경 후 'M' 워크스페이스로 이동
+  'move-node-to-workspace --focus-follows-window C',
+] # 플로팅 레이아웃으로 변경 후 'C' 워크스페이스로 이동
 
 [[on-window-detected]]
 if.app-id = 'com.tinyspeck.slackmacgap' # Slack
@@ -341,12 +341,12 @@ run = [
 if.app-id = 'com.tdesktop.Telegram' # Telegram
 run = [
   'layout floating',
-  'move-node-to-workspace --focus-follows-window M',
-] # 플로팅 레이아웃으로 변경 후 'M' 워크스페이스로 이동
+  'move-node-to-workspace --focus-follows-window C',
+] # 플로팅 레이아웃으로 변경 후 'C' 워크스페이스로 이동
 
 [[on-window-detected]]
 if.app-id = 'com.apple.mail'                            # Mail
-run = 'move-node-to-workspace --focus-follows-window M' # 'M' 워크스페이스로 이동
+run = 'move-node-to-workspace --focus-follows-window C' # 'C' 워크스페이스로 이동
 
 [[on-window-detected]]
 if.app-id = 'com.okatbest.boop' # Boop
@@ -393,4 +393,3 @@ run = 'layout floating'             # 해당 앱의 창을 플로팅 모드로 �
 # [[on-window-detected]]
 # if.app-id = { not-regex: 'com.googlecode.iterm2|company.thebrowser.Browser|com.apple.Safari|com.jetbrains.intellij|com.microsoft.VSCode|com.todesktop.230314mzl4w4u92|io.httpie.desktop|com.apple.finder|com.apple.Safari.WebApp.D1753E26-83B1-4E92-B835-1EE42BF21E60|md.obsidian|com.microsoft.Excel|com.microsoft.Word|com.microsoft.Powerpoint|com.kakao.KakaoTalkMac|com.tinyspeck.slackmacgap|com.tdesktop.Telegram|com.apple.mail|com.okatbest.boop|com.apple.ActivityMonitor|com.utmapp.UTM|com.vmware.fusion|com.trae.app|com.google.Chrome|app.zen-browser.zen|com.trendmicro.TrendCleanerPro|com.linguee.DeepLCopyTranslator' } # 제외할 앱 ID 목록 업데이트 필요
 # run = 'move-node-to-workspace Z'
-
