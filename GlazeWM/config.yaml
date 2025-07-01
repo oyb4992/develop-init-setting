@@ -128,8 +128,8 @@ workspaces:
   - name: "I" # IDE용
     display_name: "IDE"
     bind_to_monitor: 2
-  - name: "M" # 메신저용
-    display_name: "Messenger"
+  - name: "C" # 메신저용
+    display_name: "Chat"
     bind_to_monitor: 1
   - name: "N" # 노트용
     display_name: "Notes"
@@ -257,8 +257,8 @@ window_rules:
       - window_process: { equals: "POWERPNT" } # PowerPoint (타일링으로 사용 시)
       # 문서 앱을 기본 플로팅으로 사용하려면 위의 `set-floating` 규칙에 유지
 
-  # 메신저 앱 규칙 (플로팅 모드로 설정하고 M 작업 공간으로 이동)
-  - commands: ["set-floating", "move --workspace M"]
+  # 메신저 앱 규칙 (플로팅 모드로 설정하고 C 작업 공간으로 이동)
+  - commands: ["set-floating", "move --workspace C"]
     match:
       - window_process: { equals: "Slack" }
         window_title: { not_regex: "Notification|알림|Slack Notification" }
@@ -414,8 +414,8 @@ keybindings:
     bindings: ["alt+f"] # 주의: Alt+F가 전체 화면 토글과 중복됨. 전체 화면 단축키를 변경하거나 F 워크스페이스 단축키를 변경해야 함. Alt+F는 전체 화면으로 통일하고, F 워크스페이스 단축키는 다른 것으로 변경 제안 (예: Alt+Shift+F)
   - commands: ["focus --workspace I"]
     bindings: ["alt+i"]
-  # - commands: ["focus --workspace M"]
-  #   bindings: ["alt+m"]
+  - commands: ["focus --workspace C"]
+    bindings: ["alt+c"]
   - commands: ["focus --workspace N"]
     bindings: ["alt+n"]
   - commands: ["focus --workspace T"]
@@ -446,8 +446,8 @@ keybindings:
     bindings: ["alt+shift+f"]
   - commands: ["move --workspace I", "focus --workspace I"]
     bindings: ["alt+shift+i"]
-  - commands: ["move --workspace M", "focus --workspace M"]
-    bindings: ["alt+shift+m"]
+  - commands: ["move --workspace C", "focus --workspace C"]
+    bindings: ["alt+shift+c"]
   - commands: ["move --workspace N", "focus --workspace N"]
     bindings: ["alt+shift+n"]
   - commands: ["move --workspace T", "focus --workspace T"]
