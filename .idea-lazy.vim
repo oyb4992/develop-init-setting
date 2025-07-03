@@ -109,9 +109,10 @@ let g:qs_secondary_color = '#00ff00'
 let g:qs_disable_for_diffs = 1
 
 let g:EasyMotion_smartcase = 1
-let g:EasyMotion_do_mapping = 1
+let g:EasyMotion_do_mapping = 0
 let g:EasyMotion_startofline = 0
 let g:EasyMotion_verbose = 0
+let g:EasyMotion_keys = 'asdghklqertyuiopzxcvbnmfj'
 
 " 키 매핑
 
