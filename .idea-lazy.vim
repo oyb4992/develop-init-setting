@@ -5,7 +5,6 @@
 " 필수 플러그인. https://plugins.jetbrains.com/bundles/7-ideavim-bundle
 "  IDEAVim
 "  Which-Key
-"  IdeaVim-Sneak
 
 " 설치하려면 ~/.ideavimrc 상단에 다음을 추가하세요:
 " source ~/.idea-lazy.vim
@@ -110,8 +109,7 @@ let g:qs_secondary_color = '#00ff00'
 let g:qs_disable_for_diffs = 1
 
 let g:EasyMotion_smartcase = 1
-let g:EasyMotion_do_mapping = 0
-let g:EasyMotion_keys='w'
+let g:EasyMotion_do_mapping = 1
 let g:EasyMotion_startofline = 0
 let g:EasyMotion_verbose = 0
 
