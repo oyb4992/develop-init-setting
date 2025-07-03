@@ -176,7 +176,6 @@ nmap <leader>bm <Action>(MoveEditorToOppositeTabGroup)
 " IntelliJ 액션 'Change Splitter Orientation' 호출
 nmap <leader>bc <Action>(ChangeSplitOrientation)
 " Escape 및 hlsearch 지우기
-nmap <esc> :nohlsearch<CR>
 nmap <leader>ur :nohlsearch<CR>
 " Keywordprg
 nmap <leader>K :help<space><C-r><C-w><CR>
@@ -297,7 +296,6 @@ nmap <leader><tab>c <Action>(StoreDefaultLayout)<Action>(ChangeToolWindowLayout)
 " nmap <leader>cc :echo 'Lsp 정보에 해당하는 매핑이 없습니다.'<cr>
 " 정의로 이동
 nmap gd <Action>(GotoDeclaration)
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 참조
 nmap gR <Action>(FindUsages)
 " 사용으로 바로 이동
@@ -637,7 +635,7 @@ let g:WhichKeyDesc_uT = "<leader>uT Treesitter 강조 토글" " 현재 매핑 �
 let g:WhichKeyDesc_uw = "<leader>uw 줄 바꿈 토글"
 let g:WhichKeyDesc_un = "<leader>un 알림 지우기"
 let g:WhichKeyDesc_snd = "<leader>snd 알림 지우기"
-
+let g:WhichKeyDesc_ur = "<leader>ur hlsearch 지우기"
 
 " 파일/터미널 매핑 (`<leader>f`)
 let g:WhichKeyDesc_fn = "<leader>fn 새 파일"
