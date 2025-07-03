@@ -170,6 +170,8 @@ nmap <leader>bD <Action>(CloseContent)
 nmap <leader>bo <Action>(CloseAllEditorsButActive)
 " 수정하지 않은 버퍼 삭제
 nmap <leader>bu <Action>(CloseAllUnmodifiedEditors)
+" 모든 버퍼 삭제 
+nmap <leader>ba <Action>(CloseAllEditors)
 " 분할 창 이동
 nmap <leader>bm <Action>(MoveEditorToOppositeTabGroup)
 " IntelliJ 액션 'Change Splitter Orientation' 호출
@@ -582,6 +584,10 @@ nmap <leader>S" yss"
 nmap <leader>S( yss(
 nmap <leader>S{ yss{
 
+" 경로/참조 복사
+" <leader>y 를 사용하여 복사 기능과 유사하게 매핑
+nmap <leader>y <Action>(CopyReferencePopupGroup)
+
 " 확장 매칭. Neovim 기본 플러그인.
 let g:WhichKey_ShowVimActions = "true"
 
@@ -685,7 +691,8 @@ let g:WhichKeyDesc_bo = "<leader>bo 다른 버퍼 삭제"
 let g:WhichKeyDesc_bp = "<leader>bp 핀 토글"
 let g:WhichKeyDesc_bP = "<leader>bP 고정되지 않은 버퍼 삭제"
 let g:WhichKeyDesc_br = "<leader>br 오른쪽 버퍼 삭제"
-let g:WhichKeyDesc_bu = "<leader>bu 수정되지 않은 버퍼 삭제" " 현재 매핑 없음
+let g:WhichKeyDesc_bu = "<leader>bu 수정되지 않은 버퍼 삭제"
+let g:WhichKeyDesc_ba = "<leader>ba 모든 버퍼 삭제"
 let g:WhichKeyDesc_bc = "<leader>bc 분할 방향 변경"
 let g:WhichKeyDesc_be = "<leader>be 버퍼 탐색기"
 
@@ -840,6 +847,9 @@ let g:WhichKeyDesc_S_single_quote = "<leader>S' 줄을 '로 감싸기"
 let g:WhichKeyDesc_S_double_quote_surround = '<leader>S" 줄을 "로 감싸기'
 let g:WhichKeyDesc_S_paren = "<leader>S( 줄을 ()로 감싸기"
 let g:WhichKeyDesc_S_brace = "<leader>S{ 줄을 {}로 감싸기"
+
+let g:WhichKeyDesc_leader_y = "<leader>y 경로/참조 복사"
+
 " 포팅해야 할 Neovim 매핑이 몇 가지 더 있습니다. 링크 참조.
 
 " Jetbrains 충돌
