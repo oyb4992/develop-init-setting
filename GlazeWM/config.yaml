@@ -172,8 +172,8 @@ window_rules:
       #     }
 
       # 카카오톡 알림창 무시
-      # - window_process: { equals: "KakaoTalk" }
-        # window_title: { regex: '알림|Notification|새 메시지|New message' }
+      - window_process: { equals: "KakaoTalk" }
+        window_title: { regex: '알림|Notification|새 메시지|New message' }
 
       # 슬랙 알림창 무시
       - window_process: { equals: "Slack" }
@@ -262,9 +262,9 @@ window_rules:
     match:
       - window_process: { equals: "Slack" }
         window_title: { not_regex: "Notification|알림|Slack Notification" }
-      - window_process: { equals: "KakaoTalk" }
-        window_title: { not_regex: "알림|Notification|새 메시지|New message" }
-      - window_title: { regex: "카카오톡" } # 카카오톡 본 창
+      # - window_process: { equals: "KakaoTalk" }
+      #   window_title: { not_regex: "알림|Notification|새 메시지|New message" }
+      # - window_title: { regex: "카카오톡" } # 카카오톡 본 창
       - window_title: { regex: "휴대폰과 연결" } # 휴대폰과 연결 앱
       - window_title: { regex: "SPORKY의 S22" } # 휴대폰과 연결 앱
       - window_process: { equals: "Telegram" } # 텔레그램 추가 (프로세스 이름 확인 필요)
