@@ -2,3 +2,15 @@
 .DS_Store
 .mise.toml
 .vscode/settings.json
+
+# Development environment files
+.cursor/
+.env
+.env.example
+.roo/
+.roomodes
+.taskmasterconfig
+.windsurfrules
+CLAUDE.md
+scripts/
+tasks/
