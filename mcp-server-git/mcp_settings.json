@@ -1,132 +1,46 @@
 {
   "mcpServers": {
-    "obsidian": {
-      "disabled": false,
-      "timeout": 60,
+    "sequential-thinking": {
       "command": "npx",
-      "args": [
-        "-y",
-        "mcp-obsidian",
-        "/Users/MZ02-OHYUNBOK/Project/Obsidian"
-      ],
-      "transportType": "stdio"
-    },
-    "perplexity-ask": {
-      "disabled": false,
-      "timeout": 60,
-      "command": "npx",
-      "args": [
-        "-y",
-        "server-perplexity-ask"
-      ],
-      "env": {
-        "PERPLEXITY_API_KEY": ""
-      },
-      "transportType": "stdio"
-    },
-    "GitHub": {
-      "disabled": false,
-      "timeout": 60,
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-github"
-      ],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": ""
-      },
-      "transportType": "stdio"
-    },
-    "brave-search": {
-      "disabled": false,
-      "timeout": 60,
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-brave-search"
-      ],
-      "env": {
-        "BRAVE_API_KEY": ""
-      },
-      "transportType": "stdio"
-    },
-    "playwright": {
-      "disabled": false,
-      "timeout": 60,
-      "command": "npx",
-      "args": [
-        "-y",
-        "@executeautomation/playwright-mcp-server"
-      ],
-      "transportType": "stdio"
-    },
-    "jetbrains": {
-      "disabled": false,
-      "timeout": 60,
-      "command": "npx",
-      "args": [
-        "-y",
-        "@jetbrains/mcp-proxy"
-      ],
-      "transportType": "stdio"
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
     },
     "filesystem": {
-      "disabled": false,
-      "timeout": 60,
       "command": "npx",
       "args": [
         "-y",
         "@modelcontextprotocol/server-filesystem",
-        "/Users/MZ02-OHYUNBOK/Desktop",
-        "/Users/MZ02-OHYUNBOK/Project"
-      ],
-      "transportType": "stdio"
+        "/Users/oyunbog/Desktop",
+        "/Users/oyunbog/IdeaProjects"
+      ]
     },
     "git": {
-      "timeout": 60,
       "command": "uvx",
-      "args": [
-        "mcp-server-git",
-        "--repository",
-        "/Users/MZ02-OHYUNBOK/Project/develop-init-setting"
-      ],
-      "transportType": "stdio"
+      "args": ["mcp-server-git"]
     },
-    "sequential-thinking": {
-      "disabled": false,
-      "timeout": 60,
+    "perplexity-ask": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-sequential-thinking"
-      ],
-      "transportType": "stdio"
-    },
-    "taskmaster-ai": {
-      "timeout": 60,
-      "command": "npx",
-      "args": [
-        "-y",
-        "--package=task-master-ai",
-        "task-master-ai"
-      ],
+      "args": ["-y", "server-perplexity-ask"],
       "env": {
-        "PERPLEXITY_API_KEY": "",
-        "GOOGLE_API_KEY": ""
-      },
-      "transportType": "stdio"
+        "PERPLEXITY_API_KEY": ""
+      }
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@executeautomation/playwright-mcp-server"]
     },
     "context7": {
       "command": "npx",
       "args": ["-y", "@upstash/context7-mcp@latest"]
     },
-    "magic-mcp": {
+    "shrimp-task-manager": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@21st-dev/magic@latest",
-        "API_KEY=\"\""
-      ]
+      "args": ["-y", "mcp-shrimp-task-manager"],
+      "env": {
+        "DATA_DIR": "/Users/oyunbog/IdeaProjects",
+        "TEMPLATES_USE": "en",
+        "ENABLE_GUI": "false"
+      }
     }
-  }
+  },
+  "globalShortcut": ""
 }
