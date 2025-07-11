@@ -92,22 +92,19 @@ outer.right = 5      # 외부 오른쪽 간격
 
 # 애플리케이션 실행 단축키: Alt + Cmd + [알파벳] 패턴 사용 (GlazeWM의 Alt+Win과 유사)
 alt-shift-cmd-ctrl-a = 'exec-and-forget open /Applications/Arc.app'
-alt-shift-cmd-ctrl-z = 'exec-and-forget open /Applications/Zen.app'
+alt-shift-cmd-ctrl-d = 'exec-and-forget open /Applications/Dia.app'
 alt-shift-cmd-ctrl-k = 'exec-and-forget open /Applications/KakaoTalk.app'
-alt-shift-cmd-ctrl-s = 'exec-and-forget open /Applications/Slack.app'
 alt-shift-cmd-ctrl-i = 'exec-and-forget open ~/Applications/"IntelliJ IDEA Ultimate.app"'
 alt-shift-cmd-ctrl-c = 'exec-and-forget open /Applications/Claude.app'
-alt-shift-cmd-ctrl-r = 'exec-and-forget open /Applications/Trae.app'
 alt-shift-cmd-ctrl-l = 'exec-and-forget open ~/Applications/LobeChat.app'
 alt-shift-cmd-ctrl-t = 'exec-and-forget open /Applications/kitty.app'
 alt-shift-cmd-ctrl-o = 'exec-and-forget open /Applications/Obsidian.app'
 alt-shift-cmd-ctrl-b = 'exec-and-forget open /Applications/Boop.app'
 alt-shift-cmd-ctrl-f = 'exec-and-forget open ~'                                                 # Finder로 홈 디렉토리 열기
 alt-shift-cmd-ctrl-p = '''exec-and-forget osascript -e 'tell application "PopClip" to appear'''
-alt-shift-cmd-ctrl-h = 'exec-and-forget open /Applications/HTTPie.app)'
 
 # 참고: https://nikitabobko.github.io/AeroSpace/commands#layout
-# alt-slash = 'layout tiles horizontal vertical' # 타일 레이아웃 (가로/세로 자동 전환) - GlazeWM에 직접 매핑되는 단축키 없음
+alt-slash = 'layout horizontal vertical' # 타일 레이아웃 (가로/세로 자동 전환) - GlazeWM에 직접 매핑되는 단축키 없음
 # alt-comma = 'layout accordion horizontal vertical' # 아코디언 레이아웃 (가로/세로 자동 전환) - GlazeWM에 직접 매핑되는 단축키 없음
 alt-shift-space = 'layout floating tiling' # 플로팅/타일링 레이아웃 전환 (Alt + Shift + Space)
 
@@ -122,10 +119,10 @@ alt-l = 'focus right' # 오른쪽 창으로 포커스 이동 (Alt + L)
 
 # 참고: https://nikitabobko.github.io/AeroSpace/commands#move
 # 직접 창 이동/스왑 단축키는 사용하지 않고, GlazeWM처럼 모드를 사용합니다.
-# alt-shift-h = 'move left' # 창을 왼쪽으로 이동
-# alt-shift-j = 'move down' # 창을 아래쪽으로 이동
-# alt-shift-k = 'move up'   # 창을 위쪽으로 이동
-# alt-shift-l = 'move right' # 창을 오른쪽으로 이동
+alt-shift-h = 'swap left'  # 창을 왼쪽으로 이동
+alt-shift-j = 'swap down'  # 창을 아래쪽으로 이동
+alt-shift-k = 'swap up'    # 창을 위쪽으로 이동
+alt-shift-l = 'swap right' # 창을 오른쪽으로 이동
 
 # 참고: https://nikitabobko.github.io/AeroSpace/commands#resize
 # 직접 창 크기 조절 단축키는 사용하지 않고, GlazeWM처럼 모드를 사용합니다.
@@ -213,14 +210,14 @@ enter = 'mode main'
 # 'swap' 바인딩 모드 선언 (Alt + W)
 [mode.swap.binding]
 # 창 이동/스왑 (GlazeWM과 통일)
-h = 'move left'
-left = 'move left'
-l = 'move right'
-right = 'move right'
-k = 'move up'
-up = 'move up'
-j = 'move down'
-down = 'move down'
+h = 'swap left'
+left = 'swap left'
+l = 'swap right'
+right = 'swap right'
+k = 'swap up'
+up = 'swap up'
+j = 'swap down'
+down = 'swap down'
 # 기본 키 바인딩으로 돌아가려면 Enter/Escape 키를 누르세요. (GlazeWM과 통일)
 esc = 'mode main'
 enter = 'mode main'
@@ -263,6 +260,10 @@ run = 'move-node-to-workspace --focus-follows-window T' # 'T' 워크스페이스
 
 [[on-window-detected]]
 if.app-id = 'company.thebrowser.Browser'                # Arc 브라우저
+run = 'move-node-to-workspace --focus-follows-window B' # 'B' 워크스페이스로 이동
+
+[[on-window-detected]]
+if.app-id = 'company.thebrowser.dia'                    # Dia 브라우저
 run = 'move-node-to-workspace --focus-follows-window B' # 'B' 워크스페이스로 이동
 
 [[on-window-detected]]
@@ -393,3 +394,4 @@ run = 'layout floating'             # 해당 앱의 창을 플로팅 모드로 �
 # [[on-window-detected]]
 # if.app-id = { not-regex: 'com.googlecode.iterm2|company.thebrowser.Browser|com.apple.Safari|com.jetbrains.intellij|com.microsoft.VSCode|com.todesktop.230314mzl4w4u92|io.httpie.desktop|com.apple.finder|com.apple.Safari.WebApp.D1753E26-83B1-4E92-B835-1EE42BF21E60|md.obsidian|com.microsoft.Excel|com.microsoft.Word|com.microsoft.Powerpoint|com.kakao.KakaoTalkMac|com.tinyspeck.slackmacgap|com.tdesktop.Telegram|com.apple.mail|com.okatbest.boop|com.apple.ActivityMonitor|com.utmapp.UTM|com.vmware.fusion|com.trae.app|com.google.Chrome|app.zen-browser.zen|com.trendmicro.TrendCleanerPro|com.linguee.DeepLCopyTranslator' } # 제외할 앱 ID 목록 업데이트 필요
 # run = 'move-node-to-workspace Z'
+
