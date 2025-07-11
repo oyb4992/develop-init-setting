@@ -1,0 +1,32 @@
+AppCleaner.app
+BetterTouchTool.app
+Boop.app
+DeepL.app
+Google Chrome.app
+Google Drive.app
+Itsycal.app
+JetBrains Toolbox.app
+Karabiner-Elements.app
+Keka.app
+Latest.app
+Obsidian.app
+OneDrive.app
+OpenLens.app
+PopClip.app
+Postman.app
+Raycast.app
+Slack.app
+Visual Studio Code.app
+GitHub Desktop.app
+Claude.app
+AeroSpace.app
+Arc.app
+Battery Toolkit.app
+kitty.app
+MonitorControl.app
+Ollama.app
+Another Redis Desktop Manager.app
+HTTPie Desktop.app
+IINA.app
+Kodi.app
+Zen Browser.app

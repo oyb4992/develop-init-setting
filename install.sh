@@ -27,32 +27,27 @@ else
 fi
 
 # 설정은 모든 앱 설치 후 별도로 적용
+function configure_tool() {
+    local tool_name=$1
+    local install_script_path=$2
+
+    echo "${tool_name} 설정을 적용합니다..."
+    if [ -f "${install_script_path}" ]; then
+        chmod 755 "${install_script_path}"
+        "${install_script_path}"
+    else
+        echo "${install_script_path}를 찾을 수 없습니다."
+    fi
+}
+
 # configure zsh
-echo "Zsh 설정을 적용합니다..."
-if [ -f "./zsh/install.sh" ]; then
-    chmod 755 ./zsh/install.sh
-    ./zsh/install.sh
-else
-    echo "zsh/install.sh를 찾을 수 없습니다."
-fi
+configure_tool "Zsh" "./zsh/install.sh"
 
 # copy karabiner configuration
-echo "Karabiner 설정을 적용합니다..."
-if [ -f "./karabiner/install.sh" ]; then
-    chmod 755 ./karabiner/install.sh
-    ./karabiner/install.sh
-else
-    echo "karabiner/install.sh를 찾을 수 없습니다."
-fi
+configure_tool "Karabiner" "./karabiner/install.sh"
 
 # configure kitty
-echo "Kitty 설정을 적용합니다..."
-if [ -f "./kitty/install.sh" ]; then
-    chmod 755 ./kitty/install.sh
-    ./kitty/install.sh
-else
-    echo "kitty/install.sh를 찾을 수 없습니다."
-fi
+configure_tool "Kitty" "./kitty/install.sh"
 
 # install fonts
 echo "폰트를 설치합니다..."
@@ -63,53 +58,22 @@ else
     echo "fonts 디렉토리를 찾을 수 없습니다."
 fi
 
-# cask로 다운로드시 웹에서 다운로드한 것과 동일하기 때문에 실행을 하면 Security 문제로 실행되지 않음
-# cask로 설치한 애플리케이션을 바로 실행하기 위해 다운로드 된 파일에 대한 격리 속성 제거 작업 명령어
-echo "애플리케이션 격리 속성을 제거합니다..."
-
-# 설치된 애플리케이션들의 격리 속성 제거
-APPS=(
-    "AppCleaner.app"
-    "BetterTouchTool.app"
-    "Boop.app"
-    "DeepL.app"
-    "Google Chrome.app"
-    "Google Drive.app"
-    "Itsycal.app"
-    "JetBrains Toolbox.app"
-    "Karabiner-Elements.app"
-    "Keka.app"
-    "Latest.app"
-    "Obsidian.app"
-    "OneDrive.app"
-    "OpenLens.app"
-    "PopClip.app"
-    "Postman.app"
-    "Raycast.app"
-    "Slack.app"
-    "Visual Studio Code.app"
-    "GitHub Desktop.app"
-    "Claude.app"
-    "AeroSpace.app"
-    "Arc.app"
-    "Battery Toolkit.app"
-    "kitty.app"
-    "MonitorControl.app"
-    "Ollama.app"
-    "Another Redis Desktop Manager.app"
-    "HTTPie Desktop.app"
-    "IINA.app"
-    "Kodi.app"
-    "Zen Browser.app"
-)
-
-for app in "${APPS[@]}"; do
-    if [ -d "/Applications/${app}" ]; then
-        sudo xattr -dr com.apple.quarantine "/Applications/${app}" 2>/dev/null && echo "${app} 격리 속성 제거 완료" || echo "${app} 격리 속성 제거 실패 (이미 제거되었을 수 있음)"
+function remove_quarantine_attribute() {
+    echo "애플리케이션 격리 속성을 제거합니다..."
+    if [ -f "./apps.txt" ]; then
+        while IFS= read -r app_name || [[ -n "$app_name" ]]; do
+            if [ -d "/Applications/${app_name}" ]; then
+                sudo xattr -dr com.apple.quarantine "/Applications/${app_name}" 2>/dev/null && echo "${app_name} 격리 속성 제거 완료" || echo "${app_name} 격리 속성 제거 실패 (이미 제거되었을 수 있음)"
+            else
+                echo "${app_name}이 설치되어 있지 않습니다."
+            fi
+        done < ./apps.txt
     else
-        echo "${app}이 설치되어 있지 않습니다."
+        echo "apps.txt 파일을 찾을 수 없습니다. 애플리케이션 격리 속성을 제거할 수 없습니다."
     fi
-done
+}
+
+remove_quarantine_attribute
 
 
 # 설치 성공 완료 메시지 노출
