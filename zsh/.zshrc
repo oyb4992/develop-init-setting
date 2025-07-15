@@ -23,15 +23,28 @@ if [[ -f $ZPLUG_HOME/init.zsh ]]; then
 fi
 
 # zplug plugins
-zplug "romkatv/powerlevel10k", as:theme, depth:1
+zplug "zsh-users/zsh-completions",              defer:0
+zplug "zsh-users/zsh-autosuggestions",          defer:1, on:"zsh-users/zsh-completions"
+zplug "zsh-users/zsh-syntax-highlighting",      defer:1, on:"zsh-users/zsh-autosuggestions"
+zplug "zsh-users/zsh-history-substring-search", defer:2, on:"zsh-users/zsh-syntax-highlighting"
+
+# zplug "zsh-users/zsh-syntax-highlighting", defer:2
+# zplug "zsh-users/zsh-autosuggestions", defer:2
+
+zplug "lib/completion",   from:oh-my-zsh
+zplug "lib/key-bindings", from:oh-my-zsh
+zplug "lib/directories",  from:oh-my-zsh
+
 zplug "plugins/git", from:oh-my-zsh
+zplug "plugins/zsh_reload", from:oh-my-zsh
+zplug "plugins/colorize", from:oh-my-zsh
 zplug "plugins/macos", from:oh-my-zsh
 zplug "plugins/autojump", from:oh-my-zsh
 zplug "plugins/mise", from:oh-my-zsh
 zplug "plugins/fzf", from:oh-my-zsh
 zplug "plugins/aws", from:oh-my-zsh
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
-zplug "zsh-users/zsh-autosuggestions", defer:2
+
+zplug "romkatv/powerlevel10k", as:theme, depth:1
 
 # Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
