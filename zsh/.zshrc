@@ -7,10 +7,6 @@ export PATH=$HOMEBREW_PREFIX/opt/luajit/bin:$PATH
 export DOTNET_ROOT="$HOMEBREW_PREFIX/Cellar/dotnet@8/8.0.13/libexec"
 export LANG=en_US.UTF-8
 
-# Oh My Zsh configuration
-export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="powerlevel10k/powerlevel10k"
-
 # Run fastfetch
 #fastfetch
 flashfetch
@@ -20,22 +16,33 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Oh My Zsh plugins
-plugins=(
-  git
-  macos
-  autojump
-  mise
-  fzf
-  aws
-)
+# Initialize zplug
+export ZPLUG_HOME=$HOMEBREW_PREFIX/opt/zplug
+if [[ -f $ZPLUG_HOME/init.zsh ]]; then
+  source $ZPLUG_HOME/init.zsh
+fi
 
-# Load Oh My Zsh
-source $ZSH/oh-my-zsh.sh
+# zplug plugins
+zplug "romkatv/powerlevel10k", as:theme, depth:1
+zplug "plugins/git", from:oh-my-zsh
+zplug "plugins/macos", from:oh-my-zsh
+zplug "plugins/autojump", from:oh-my-zsh
+zplug "plugins/mise", from:oh-my-zsh
+zplug "plugins/fzf", from:oh-my-zsh
+zplug "plugins/aws", from:oh-my-zsh
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "zsh-users/zsh-autosuggestions", defer:2
 
-# Load plugin sources
-source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source $HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
+
+# Load plugins
+zplug load
 
 # Aliases
 alias python="$HOMEBREW_PREFIX/bin/python3"
@@ -43,6 +50,40 @@ alias ls='lsd'
 alias ll='ls -alhF'
 alias vim='nvim'
 alias vi='nvim'
+alias cat="bat"
+
+# ============= VIM MODE CONFIGURATION =============
+# vim 모드 활성화
+bindkey -v
+
+# 모드 전환 시간 단축 (기본값 0.4초 → 0.1초)
+export KEYTIMEOUT=1
+
+# 현재 모드 표시를 위한 커서 변경
+function zle-keymap-select {
+  if [[ ${KEYMAP} == vicmd ]] ||
+     [[ $1 = 'block' ]]; then
+    echo -ne '\e[1 q'  # 블록 커서 (normal 모드)
+  elif [[ ${KEYMAP} == main ]] ||
+       [[ ${KEYMAP} == viins ]] ||
+       [[ ${KEYMAP} == '' ]] ||
+       [[ $1 = 'beam' ]]; then
+    echo -ne '\e[5 q'  # 빔 커서 (insert 모드)
+  fi
+}
+zle -N zle-keymap-select
+
+# 라인 에디터 시작 시 insert 모드
+function zle-line-init() {
+    echo -ne "\e[5 q"
+}
+zle -N zle-line-init
+
+# normal 모드에서 v로 에디터 열기 
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd v edit-command-line
+# ================================================
 
 # FZF configuration
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
