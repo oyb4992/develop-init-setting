@@ -27,6 +27,14 @@ local CONFIG = {
     BTT = {
         APP_NAME = "BetterTouchTool",
         BUNDLE_ID = "com.hegenberg.BetterTouchTool"
+    },
+    UI = {
+        CANVAS_WIDTH = 500,
+        CANVAS_HEIGHT_MAX = 400,
+        CANVAS_Y_POSITION = 0.2, -- 화면 상단에서 20%
+        STATUS_DISPLAY_TIME = 3, -- 3초
+        TEXT_SIZE = 12,
+        PADDING = 20
     }
 }
 
@@ -769,11 +777,11 @@ local function showStatusWithCanvas(statusLines)
     local screen = hs.screen.mainScreen()
     local screenFrame = screen:frame()
 
-    -- 창 크기와 위치 계산
-    local windowWidth = 500
-    local windowHeight = math.min(400, #statusLines * 20 + 40) -- 줄 수에 따라 높이 조정
+    -- 창 크기와 위치 계산 (CONFIG 값 사용)
+    local windowWidth = CONFIG.UI.CANVAS_WIDTH
+    local windowHeight = math.min(CONFIG.UI.CANVAS_HEIGHT_MAX, #statusLines * 20 + CONFIG.UI.PADDING * 2)
     local x = (screenFrame.w - windowWidth) / 2
-    local y = screenFrame.h * 0.2 -- 화면 상단에서 20% 위치
+    local y = screenFrame.h * CONFIG.UI.CANVAS_Y_POSITION
 
     -- Canvas 생성
     statusCanvas = hs.canvas.new {
@@ -804,7 +812,7 @@ local function showStatusWithCanvas(statusLines)
         type = "text",
         text = table.concat(statusLines, "\n"),
         textFont = "SF Mono",
-        textSize = 12,
+        textSize = CONFIG.UI.TEXT_SIZE,
         textColor = {
             alpha = 1,
             red = 1,
@@ -813,18 +821,18 @@ local function showStatusWithCanvas(statusLines)
         },
         textAlignment = "left",
         frame = {
-            x = 20,
-            y = 20,
-            w = windowWidth - 40,
-            h = windowHeight - 40
+            x = CONFIG.UI.PADDING,
+            y = CONFIG.UI.PADDING,
+            w = windowWidth - (CONFIG.UI.PADDING * 2),
+            h = windowHeight - (CONFIG.UI.PADDING * 2)
         }
     }
 
     -- 창 표시
     statusCanvas:show()
 
-    -- 6초 후 자동으로 닫기
-    hs.timer.doAfter(3, function()
+    -- CONFIG에 설정된 시간 후 자동으로 닫기
+    hs.timer.doAfter(CONFIG.UI.STATUS_DISPLAY_TIME, function()
         if statusCanvas then
             statusCanvas:delete()
             statusCanvas = nil
@@ -982,7 +990,7 @@ hs.hotkey.bind({"cmd", "shift"}, "/", "시스템 전체 단축키 치트시트 �
 end)
 
 -- HSKeybindings: Hammerspoon 단축키 표시
-hs.hotkey.bind({"cmd", "alt", "shift"}, "/", "Hammerspoon 단축키 목록 표시/숨기기", function()
+hs.hotkey.bind({"cmd", "ctrl", "shift"}, "/", "Hammerspoon 단축키 목록 표시/숨기기 (이 스크립트의 단축키들)", function()
     if spoon.HSKeybindings then
         if spoon.HSKeybindings.sheetView and spoon.HSKeybindings.sheetView:hswindow() and
             spoon.HSKeybindings.sheetView:hswindow():isVisible() then
