@@ -774,7 +774,42 @@ local function showStatusWithCanvas(statusLines)
         statusCanvas:delete()
     end
 
-    local screen = hs.screen.mainScreen()
+    -- 화면 선택 로직 개선
+    local screen = nil
+    local screenSource = "main" -- 디버그용
+    
+    -- 1. 현재 포커스된 창이 있는 화면 찾기
+    local focusedWindow = hs.window.focusedWindow()
+    if focusedWindow then
+        screen = focusedWindow:screen()
+        screenSource = "focused-window"
+    end
+    
+    -- 2. 포커스된 창이 없으면 마우스 커서가 있는 화면 사용
+    if not screen then
+        local mousePosition = hs.mouse.absolutePosition()
+        local allScreens = hs.screen.allScreens()
+        for _, s in ipairs(allScreens) do
+            local frame = s:frame()
+            if mousePosition.x >= frame.x and mousePosition.x < (frame.x + frame.w) and
+               mousePosition.y >= frame.y and mousePosition.y < (frame.y + frame.h) then
+                screen = s
+                screenSource = "mouse-cursor"
+                break
+            end
+        end
+    end
+    
+    -- 3. 마지막으로 메인 화면 사용
+    if not screen then
+        screen = hs.screen.mainScreen()
+        screenSource = "main-screen"
+    end
+    
+    -- 화면 정보 (필요시 주석 해제)
+    -- local screenName = screen:name() or "Unknown"
+    -- print("🖥️ 상태창 표시 화면: " .. screenName .. " (출처: " .. screenSource .. ")")
+    
     local screenFrame = screen:frame()
 
     -- 창 크기와 위치 계산 (CONFIG 값 사용)
@@ -783,13 +818,19 @@ local function showStatusWithCanvas(statusLines)
     local x = (screenFrame.w - windowWidth) / 2
     local y = screenFrame.h * CONFIG.UI.CANVAS_Y_POSITION
 
-    -- Canvas 생성
+    -- Canvas 생성 (화면 좌표계를 고려한 절대 좌표 사용)
+    local absoluteX = screenFrame.x + x
+    local absoluteY = screenFrame.y + y
+    
     statusCanvas = hs.canvas.new {
-        x = x,
-        y = y,
+        x = absoluteX,
+        y = absoluteY,
         w = windowWidth,
         h = windowHeight
     }
+    
+    -- Canvas 위치 디버그 (필요시 주석 해제)
+    -- print("📍 Canvas 위치 - 화면: " .. (screen:name() or "Unknown") .. " | Canvas: " .. absoluteX .. "," .. absoluteY)
 
     -- 배경
     statusCanvas[1] = {
