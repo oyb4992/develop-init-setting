@@ -884,94 +884,96 @@ loadSpoon("HSKeybindings")
 -- ========================================
 
 -- 텍스트 변환 (기본)
-hs.hotkey.bind({"cmd", "ctrl"}, "u", function()
+hs.hotkey.bind({"cmd", "ctrl"}, "u", "선택한 텍스트를 대문자로 변환", function()
     transformAndPaste(string.upper)
 end)
 
-hs.hotkey.bind({"cmd", "ctrl"}, "l", function()
+hs.hotkey.bind({"cmd", "ctrl"}, "l", "선택한 텍스트를 소문자로 변환", function()
     transformAndPaste(string.lower)
 end)
 
 -- 케이스 변환 (개발자용)
-hs.hotkey.bind({"cmd", "ctrl", "shift"}, "c", function()
+hs.hotkey.bind({"cmd", "ctrl", "shift"}, "c", "camelCase로 변환 (예: helloWorld)", function()
     transformAndPaste(toCamelCase)
 end)
 
-hs.hotkey.bind({"cmd", "ctrl", "shift"}, "p", function()
+hs.hotkey.bind({"cmd", "ctrl", "shift"}, "p", "PascalCase로 변환 (예: HelloWorld)", function()
     transformAndPaste(toPascalCase)
 end)
 
-hs.hotkey.bind({"cmd", "ctrl", "shift"}, "s", function()
+hs.hotkey.bind({"cmd", "ctrl", "shift"}, "s", "snake_case로 변환 (예: hello_world)", function()
     transformAndPaste(toSnakeCase)
 end)
 
-hs.hotkey.bind({"cmd", "ctrl", "shift"}, "k", function()
+hs.hotkey.bind({"cmd", "ctrl", "shift"}, "k", "kebab-case로 변환 (예: hello-world)", function()
     transformAndPaste(toKebabCase)
 end)
 
 -- 인코딩/디코딩
-hs.hotkey.bind({"ctrl", "shift"}, "b", function()
+hs.hotkey.bind({"ctrl", "shift"}, "b", "Base64로 인코딩", function()
     transformAndPaste(base64Encode)
 end)
 
-hs.hotkey.bind({"ctrl", "shift", "alt"}, "b", function()
+hs.hotkey.bind({"ctrl", "shift", "alt"}, "b", "Base64에서 디코딩", function()
     transformAndPaste(base64Decode)
 end)
 
-hs.hotkey.bind({"ctrl", "shift"}, "u", function()
+hs.hotkey.bind({"ctrl", "shift"}, "u", "URL 인코딩 (퍼센트 인코딩)", function()
     transformAndPaste(urlEncode)
 end)
 
-hs.hotkey.bind({"ctrl", "shift", "alt"}, "u", function()
+hs.hotkey.bind({"ctrl", "shift", "alt"}, "u", "URL 디코딩", function()
     transformAndPaste(urlDecode)
 end)
 
 -- 해시 생성
-hs.hotkey.bind({"ctrl", "shift"}, "m", function()
+hs.hotkey.bind({"ctrl", "shift"}, "m", "MD5 해시 생성", function()
     transformAndPaste(generateMD5)
 end)
 
-hs.hotkey.bind({"ctrl", "shift"}, "h", function()
+hs.hotkey.bind({"ctrl", "shift"}, "h", "SHA256 해시 생성", function()
     transformAndPaste(generateSHA256)
 end)
 
 -- 색상 변환
-hs.hotkey.bind({"ctrl", "shift"}, "r", function()
+hs.hotkey.bind({"ctrl", "shift"}, "r", "HEX 색상을 RGB로 변환 (예: #ff0000 → rgb(255, 0, 0))", function()
     transformAndPaste(hexToRgb)
 end)
 
 -- 개발자 유틸리티 (생성)
-hs.hotkey.bind({"cmd", "ctrl"}, "t", generateTimestamp)
-hs.hotkey.bind({"cmd", "ctrl", "shift"}, "u", generateUUID)
-hs.hotkey.bind({"cmd", "ctrl"}, "r", generateRandomPassword)
+hs.hotkey.bind({"cmd", "ctrl"}, "t", "ISO 타임스탬프 생성 및 클립보드 복사", generateTimestamp)
+hs.hotkey.bind({"cmd", "ctrl", "shift"}, "u", "UUID 생성 및 클립보드 복사", generateUUID)
+hs.hotkey.bind({"cmd", "ctrl"}, "r", "16자리 랜덤 패스워드 생성", generateRandomPassword)
 
 -- JSON 처리
-hs.hotkey.bind({"cmd", "ctrl"}, "j", formatJSON)
-hs.hotkey.bind({"cmd", "ctrl"}, "m", minifyJSON)
+hs.hotkey.bind({"cmd", "ctrl"}, "j", "클립보드의 JSON을 예쁘게 포맷팅", formatJSON)
+hs.hotkey.bind({"cmd", "ctrl"}, "m", "클립보드의 JSON을 한 줄로 압축", minifyJSON)
 
 -- Aerospace 관련 기능 (정보 확인만)
-hs.hotkey.bind({"cmd", "ctrl"}, "w", showWorkspaceInfo)
-hs.hotkey.bind({"cmd", "ctrl", "shift"}, "a", showAerospaceStatus)
+hs.hotkey.bind({"cmd", "ctrl"}, "w", "현재 워크스페이스와 앱 정보 표시", showWorkspaceInfo)
+hs.hotkey.bind({"cmd", "ctrl", "shift"}, "a", "Aerospace 전체 상태 확인", showAerospaceStatus)
 
 -- ========================================
 -- BTT & 카페인 관련 단축키
 -- ========================================
 
 -- BTT 수동 토글
-hs.hotkey.bind({"cmd", "ctrl"}, "b", toggleBTT)
+hs.hotkey.bind({"cmd", "ctrl"}, "b", "BetterTouchTool 실행/종료 토글", toggleBTT)
 
 -- 통합 상태 확인 (BTT + 카페인 + 시스템)
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, "s", showSystemStatus)
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "s", "시스템 상태 확인 (전원, 카페인, BTT, 화면 등)",
+    showSystemStatus)
 
 -- 카페인 수동 토글
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, "f", toggleCaffeine)
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "f", "카페인 활성화/비활성화 토글 (화면 끄기 방지)",
+    toggleCaffeine)
 
 -- ========================================
 -- Spoon 단축키 설정
 -- ========================================
 
 -- KSheet: 단축키 치트시트
-hs.hotkey.bind({"cmd", "shift"}, "/", function()
+hs.hotkey.bind({"cmd", "shift"}, "/", "시스템 전체 단축키 치트시트 표시/숨기기", function()
     if spoon.KSheet then
         spoon.KSheet:toggle()
     else
@@ -980,7 +982,7 @@ hs.hotkey.bind({"cmd", "shift"}, "/", function()
 end)
 
 -- HSKeybindings: Hammerspoon 단축키 표시
-hs.hotkey.bind({"cmd", "ctrl", "shift"}, "/", function()
+hs.hotkey.bind({"cmd", "alt", "shift"}, "/", "Hammerspoon 단축키 목록 표시/숨기기", function()
     if spoon.HSKeybindings then
         if spoon.HSKeybindings.sheetView and spoon.HSKeybindings.sheetView:hswindow() and
             spoon.HSKeybindings.sheetView:hswindow():isVisible() then
