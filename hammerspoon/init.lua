@@ -260,8 +260,6 @@ local function toggleCaffeine()
     setCaffeineState(not currentState, "수동 토글")
 end
 
-
-
 -- 시스템 상태 정보 수집 (전원, 화면, BTT, 카페인)
 local function getSystemInfo()
     return {
@@ -365,12 +363,12 @@ local function showStatusWithCanvas(statusLines)
     local absoluteX = screenFrame.x + x
     local absoluteY = screenFrame.y + y
 
-    statusCanvas = hs.canvas.new {
+    statusCanvas = hs.canvas.new({
         x = absoluteX,
         y = absoluteY,
         w = windowWidth,
         h = windowHeight
-    }
+    })
 
     -- 디버깅용: Canvas 위치 정보 (필요시 활성화)
     -- print("📍 Canvas 위치 - 화면: " .. (screen:name() or "Unknown") .. " | Canvas: " .. absoluteX .. "," .. absoluteY)
@@ -471,10 +469,18 @@ loadSpoon("KSheet")
 -- HSKeybindings (Hammerspoon 단축키 표시)
 loadSpoon("HSKeybindings")
 
+-- TextClipboardHistory (텍스트 클립보드 히스토리)
+if loadSpoon("TextClipboardHistory") then
+    spoon.TextClipboardHistory:start()
+end
+
+-- PopupTranslateSelection (선택 텍스트 번역)
+loadSpoon("PopupTranslateSelection")
+
+
 -- ========================================
 -- 단축키 정의
 -- ========================================
-
 
 -- ========================================
 -- BTT & 카페인 관련 단축키
@@ -518,6 +524,112 @@ hs.hotkey.bind({"cmd", "ctrl", "shift"}, "/",
             hs.alert.show("HSKeybindings Spoon이 로드되지 않았습니다")
         end
     end)
+
+-- ========================================
+-- 새로운 Spoon 단축키 설정
+-- ========================================
+
+-- TextClipboardHistory: 클립보드 히스토리 표시
+hs.hotkey.bind({"cmd", "shift"}, "v", "텍스트 클립보드 히스토리 표시 (코드 스니펫 재사용)",
+    function()
+        if spoon.TextClipboardHistory then
+            spoon.TextClipboardHistory:toggleClipboard()
+        else
+            hs.alert.show("TextClipboardHistory Spoon이 로드되지 않았습니다")
+        end
+    end)
+
+-- PopupTranslateSelection: 선택된 텍스트 번역
+hs.hotkey.bind({"cmd", "ctrl"}, "t", "선택된 텍스트 번역 (에러 메시지, 문서 번역)", function()
+    if spoon.PopupTranslateSelection then
+        spoon.PopupTranslateSelection:translateSelectionPopup()
+    else
+        hs.alert.show("PopupTranslateSelection Spoon이 로드되지 않았습니다")
+    end
+end)
+
+-- ========================================
+-- DevCommander 개발자 명령어 실행기 (자체 구현)
+-- ========================================
+
+-- DevCommander: 개발자 명령어 실행기
+hs.hotkey.bind({"cmd", "ctrl"}, "c", "개발자 명령어 실행기 (Docker, Git, Homebrew 등)", function()
+    -- 개발자 명령어 정의
+    local choices = {
+        {
+            text = "PostgreSQL 재시작",
+            subText = "brew services restart postgresql"
+        },
+        {
+            text = "Docker 정리", 
+            subText = "사용하지 않는 컨테이너/이미지 제거"
+        },
+        {
+            text = "Node 모듈 캐시 정리",
+            subText = "npm cache clean --force"
+        },
+        {
+            text = "Homebrew 업데이트",
+            subText = "brew update && brew upgrade"
+        },
+        {
+            text = "Git 상태 확인",
+            subText = "현재 디렉토리의 Git 변경사항 확인"
+        },
+        {
+            text = "메모리 압력 해제",
+            subText = "sudo purge - 시스템 메모리 정리"
+        },
+        {
+            text = "Dock 재시작",
+            subText = "killall Dock - Dock 프로세스 재시작"
+        },
+        {
+            text = "화면 즉시 잠금",
+            subText = "pmset displaysleepnow"
+        }
+    }
+
+    -- 선택기 생성 및 설정
+    local chooser = hs.chooser.new(function(selectedItem)
+        if not selectedItem then return end
+        
+        local command = selectedItem.text
+        if command == "PostgreSQL 재시작" then
+            hs.execute("brew services restart postgresql")
+            hs.alert.show("PostgreSQL 재시작 중...", 2)
+        elseif command == "Docker 정리" then
+            hs.execute("docker system prune -f")
+            hs.alert.show("Docker 시스템 정리 완료", 2)
+        elseif command == "Node 모듈 캐시 정리" then
+            hs.execute("npm cache clean --force")
+            hs.alert.show("npm 캐시 정리 완료", 2)
+        elseif command == "Homebrew 업데이트" then
+            hs.execute("brew update && brew upgrade")
+            hs.alert.show("Homebrew 업데이트 시작", 2)
+        elseif command == "Git 상태 확인" then
+            local output = hs.execute("git status --porcelain")
+            if output and output ~= "" then
+                hs.alert.show("Git: 변경사항 있음", 3)
+            else
+                hs.alert.show("Git: 깨끗한 상태", 2)
+            end
+        elseif command == "메모리 압력 해제" then
+            hs.execute("sudo purge")
+            hs.alert.show("메모리 정리 완료", 2)
+        elseif command == "Dock 재시작" then
+            hs.execute("killall Dock")
+            hs.alert.show("Dock 재시작됨", 2)
+        elseif command == "화면 즉시 잠금" then
+            hs.execute("pmset displaysleepnow")
+        end
+    end)
+    
+    chooser:choices(choices)
+    chooser:searchSubText(true)
+    chooser:placeholderText("개발자 명령어 검색...")
+    chooser:show()
+end)
 
 -- ========================================
 -- 초기화 및 감지 시작
@@ -598,9 +710,12 @@ print("- 뚜껑 열기 → BTT 실행")
 print("- 시스템 잠들기 → BTT 종료")
 print("- 시스템 깨어나기 → BTT 실행")
 print("")
-print("🧩 Spoon 플러그인:")
+print("🧩 Spoon 플러그인 & 개발자 도구:")
 print("- 단축키 치트시트: Cmd+Shift+/")
 print("- Hammerspoon 단축키 표시: Cmd+Ctrl+Shift+/")
+print("- 텍스트 클립보드 히스토리: Cmd+Shift+V")
+print("- 선택 텍스트 번역: Cmd+Ctrl+T")
+print("- 개발자 명령어 실행기: Cmd+Ctrl+C (자체 구현)")
 print("")
 print("✨ 주요 기능 및 개선사항:")
 print("1. 설정 상수 외부화 - CONFIG 테이블로 중앙 관리")
