@@ -22,7 +22,7 @@ local CONFIG = {
         CANVAS_WIDTH = 500,
         CANVAS_HEIGHT_MAX = 400,
         CANVAS_Y_POSITION = 0.2, -- 화면 상단에서 20%
-        STATUS_DISPLAY_TIME = 3, -- 3초
+        STATUS_DISPLAY_TIME = 10, -- 10초
         TEXT_SIZE = 12,
         PADDING = 20
     }
@@ -492,9 +492,6 @@ local function showStatusWithCanvas(statusLines)
         h = windowHeight
     })
 
-    -- 디버깅용: Canvas 위치 정보 (필요시 활성화)
-    -- print("📍 Canvas 위치 - 화면: " .. (screen:name() or "Unknown") .. " | Canvas: " .. absoluteX .. "," .. absoluteY)
-
     -- 배경
     statusCanvas[1] = {
         type = "rectangle",
@@ -535,11 +532,27 @@ local function showStatusWithCanvas(statusLines)
     -- 창 표시
     statusCanvas:show()
 
+    -- ESC 키 핸들러 등록
+    local escHandler
+    escHandler = hs.hotkey.bind({}, "escape", function()
+        if statusCanvas then
+            statusCanvas:delete()
+            statusCanvas = nil
+            if escHandler then
+                escHandler:delete() -- 핸들러 제거
+                escHandler = nil
+            end
+        end
+    end)
+
     -- CONFIG에 설정된 시간 후 자동으로 닫기
     hs.timer.doAfter(CONFIG.UI.STATUS_DISPLAY_TIME, function()
         if statusCanvas then
             statusCanvas:delete()
             statusCanvas = nil
+            if escHandler then
+                escHandler:delete() -- 핸들러 제거
+            end
         end
     end)
 end
@@ -571,8 +584,6 @@ local gitStatusCanvas = nil
 local brewUpdateCanvas = nil
 
 local function showGitStatusCanvas(statusLines, displayTime)
-    displayTime = displayTime or 10 -- 기본 10초
-
     -- 기존 Git 상태 창이 있으면 닫기
     if gitStatusCanvas then
         gitStatusCanvas:delete()
@@ -812,14 +823,12 @@ local function checkGitStatus()
     table.insert(statusLines, "")
     table.insert(statusLines, "🔑 ESC 키를 눌러 창을 닫을 수 있습니다.")
 
-    -- Canvas로 표시 (10초, ESC로 닫기 가능)
-    showGitStatusCanvas(statusLines, 10)
+    -- Canvas로 표시
+    showGitStatusCanvas(statusLines, CONFIG.UI.STATUS_DISPLAY_TIME)
 end
 
 -- Homebrew 업데이트 결과 표시용 Canvas 함수
 local function showBrewUpdateCanvas(statusLines, displayTime)
-    displayTime = displayTime or 15 -- 기본 15초 (업데이트 내역이 길 수 있음)
-
     -- 기존 Homebrew 업데이트 창이 있으면 닫기
     if brewUpdateCanvas then
         brewUpdateCanvas:delete()
@@ -971,8 +980,7 @@ loadSpoon("PopupTranslateSelection")
 -- ========================================
 
 -- 통합 상태 확인 (BTT + 카페인 + 시스템)
-hs.hotkey.bind({"cmd", "ctrl", "alt"}, "s", "시스템 상태 확인 (전원, 카페인, BTT, 화면 등)",
-    showSystemStatus)
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "s", "시스템 상태 확인", showSystemStatus)
 
 -- 카페인 수동 토글
 hs.hotkey.bind({"cmd", "ctrl", "alt"}, "f", "카페인 활성화/비활성화 토글 (화면 끄기 방지)",
@@ -986,32 +994,63 @@ hs.hotkey.bind({"cmd", "ctrl", "alt"}, "f", "카페인 활성화/비활성화 �
 hs.hotkey.bind({"cmd", "shift"}, "/", "시스템 전체 단축키 치트시트 표시/숨기기", function()
     if spoon.KSheet then
         spoon.KSheet:toggle()
+
+        -- ESC 키로 KSheet 창 닫기 지원 추가
+        if spoon.KSheet.sheetView and spoon.KSheet.sheetView:hswindow() and
+            spoon.KSheet.sheetView:hswindow():isVisible() then
+            local ksheetEscHandler
+            ksheetEscHandler = hs.hotkey.bind({}, "escape", function()
+                if spoon.KSheet.sheetView and spoon.KSheet.sheetView:hswindow() and
+                    spoon.KSheet.sheetView:hswindow():isVisible() then
+                    spoon.KSheet:hide()
+                    if ksheetEscHandler then
+                        ksheetEscHandler:delete()
+                        ksheetEscHandler = nil
+                    end
+                end
+            end)
+        end
     else
         hs.alert.show("KSheet Spoon이 로드되지 않았습니다")
     end
 end)
 
 -- HSKeybindings: Hammerspoon 단축키 표시
-hs.hotkey.bind({"cmd", "ctrl", "shift"}, "/",
-    "Hammerspoon 단축키 목록 표시/숨기기 (이 스크립트의 단축키들)", function()
-        if spoon.HSKeybindings then
+hs.hotkey.bind({"ctrl", "shift"}, "/", "Hammerspoon 단축키 목록 표시/숨기기", function()
+    if spoon.HSKeybindings then
+        if spoon.HSKeybindings.sheetView and spoon.HSKeybindings.sheetView:hswindow() and
+            spoon.HSKeybindings.sheetView:hswindow():isVisible() then
+            spoon.HSKeybindings:hide()
+        else
+            spoon.HSKeybindings:show()
+
+            -- ESC 키로 HSKeybindings 창 닫기 지원 추가
             if spoon.HSKeybindings.sheetView and spoon.HSKeybindings.sheetView:hswindow() and
                 spoon.HSKeybindings.sheetView:hswindow():isVisible() then
-                spoon.HSKeybindings:hide()
-            else
-                spoon.HSKeybindings:show()
+                local hsKeybindingsEscHandler
+                hsKeybindingsEscHandler = hs.hotkey.bind({}, "escape", function()
+                    if spoon.HSKeybindings.sheetView and spoon.HSKeybindings.sheetView:hswindow() and
+                        spoon.HSKeybindings.sheetView:hswindow():isVisible() then
+                        spoon.HSKeybindings:hide()
+                        if hsKeybindingsEscHandler then
+                            hsKeybindingsEscHandler:delete()
+                            hsKeybindingsEscHandler = nil
+                        end
+                    end
+                end)
             end
-        else
-            hs.alert.show("HSKeybindings Spoon이 로드되지 않았습니다")
         end
-    end)
+    else
+        hs.alert.show("HSKeybindings Spoon이 로드되지 않았습니다")
+    end
+end)
 
 -- ========================================
 -- 새로운 Spoon 단축키 설정
 -- ========================================
 
 -- PopupTranslateSelection: 선택된 텍스트 번역
-hs.hotkey.bind({"cmd", "ctrl"}, "t", "선택된 텍스트 번역 (에러 메시지, 문서 번역)", function()
+hs.hotkey.bind({"cmd", "ctrl"}, "t", "선택된 텍스트 번역", function()
     if spoon.PopupTranslateSelection then
         spoon.PopupTranslateSelection:translateSelectionPopup()
     else
@@ -1024,7 +1063,7 @@ end)
 -- ========================================
 
 -- DevCommander: 개발자 명령어 실행기
-hs.hotkey.bind({"cmd", "ctrl"}, "c", "개발자 명령어 실행기 (Docker, Git, Homebrew 등)", function()
+hs.hotkey.bind({"cmd", "ctrl", "alt"}, "c", "개발자 명령어 실행기", function()
     -- 개발자 명령어 정의
     local choices = {{
         text = "Homebrew 업데이트",
@@ -1157,8 +1196,8 @@ hs.hotkey.bind({"cmd", "ctrl"}, "c", "개발자 명령어 실행기 (Docker, Git
                         table.insert(statusLines, "")
                         table.insert(statusLines, "🔑 ESC 키를 눌러 창을 닫을 수 있습니다.")
 
-                        -- Canvas로 결과 표시 (15초)
-                        showBrewUpdateCanvas(statusLines, 15)
+                        -- Canvas로 결과 표시
+                        showBrewUpdateCanvas(statusLines, CONFIG.UI.STATUS_DISPLAY_TIME)
                     end, {"upgrade"}):start()
                 else
                     hs.alert.show("❌ Homebrew update 실패", 3)
@@ -1335,19 +1374,7 @@ print("- 시스템 잠들기 → BTT 종료")
 print("- 시스템 깨어나기 → BTT 실행")
 print("")
 print("🧩 Spoon 플러그인 & 개발자 도구:")
-print("- 단축키 치트시트: Cmd+Shift+/")
-print("- Hammerspoon 단축키 표시: Cmd+Ctrl+Shift+/")
+print("- 단축키 치트시트: Cmd+Shift+/ (ESC로 닫기)")
+print("- Hammerspoon 단축키 표시: Ctrl+Shift+/ (ESC로 닫기)")
 print("- 선택 텍스트 번역: Cmd+Ctrl+T")
-print("- 개발자 명령어 실행기: Cmd+Ctrl+C (자체 구현)")
-print("")
-print("✨ 주요 기능 및 개선사항:")
-print("1. 설정 상수 외부화 - CONFIG 테이블로 중앙 관리")
-print("2. 성능 최적화 - 상태 캐싱 및 지능적 리소스 관리")
-print("3. 함수 모듈화 - 기능별 작은 함수로 분해하여 유지보수성 향상")
-print("4. 안전한 명령어 실행 - 에러 처리 및 복구 메커니즘 추가")
-print("5. 전원 기반 자동화 - 전원 상태에 따른 시스템 제어")
-print("6. 화면 상태 감지 - 뚜껑 닫힘/열림에 따른 자동 제어")
-print("7. 멀티 모니터 지원 - 포커스된 화면에 상태창 표시")
-print("8. 캐시 시스템 - 성능 향상을 위한 지능적 캐싱")
-print("9. 코드 품질 개선 - DRY 원칙 적용, 일관된 네이밍 규칙")
-print("10. 사용자 경험 향상 - 직관적 알림 및 상태 피드백")
+print("- 개발자 명령어 실행기: Cmd+Ctrl+Alt+C (자체 구현)")
