@@ -1,5 +1,6 @@
 -- Hammerspoon 전원 관리 및 시스템 자동화 설정
 -- 전원 상태 기반 카페인 자동화 및 BTT 관리에 집중
+-- 개선된 버전: 에러 처리, 성능 최적화, 코드 모듈화 적용
 print("Hammerspoon 전원 관리 시스템 로드 중...")
 
 -- ========================================
@@ -37,113 +38,215 @@ local screenWatcher = nil
 local caffeineWatcher = nil
 local wifiWatcher = nil
 local isLidClosed = false
-local currentSSID = nil
 
 -- BTT 상태 변수들
 
--- 전원 상태 확인
+-- 상태 표시 성능 향상을 위한 개선된 캐시 시스템
+local systemStatusCache = {
+    info = nil,
+    lastUpdate = 0,
+    cacheDuration = 3, -- 3초간 캐시 유효
+    -- 추가 캐시 항목들
+    btt_running = nil,
+    screen_info = nil,
+    power_state = nil
+}
+
+-- 전원 상태 확인 (개선된 에러 처리)
 local function isOnBatteryPower()
     local success, result = pcall(hs.battery.powerSource)
-    return success and result == "Battery Power"
+    if not success then
+        print("⚠️ 전원 상태 확인 실패: " .. tostring(result))
+        return false
+    end
+    return result == "Battery Power"
 end
 
 local function getCurrentPowerMode()
     return isOnBatteryPower() and "battery" or "power"
 end
 
--- BTT 관리 함수들 (다중 방식 감지 및 제어)
+-- BTT 관리 함수들 (개선된 다중 방식 감지 및 에러 처리)
 local function isBTTRunning()
-    -- 방법 1: Bundle ID로 찾기
-    local bttApp = hs.application.find(CONFIG.BTT.BUNDLE_ID)
-    if bttApp and bttApp:isRunning() then
-        return true
+    -- 캐시된 결과가 있으면 사용 (성능 최적화)
+    local cacheKey = "btt_running"
+    local now = os.time()
+    if systemStatusCache[cacheKey] and (now - systemStatusCache[cacheKey].timestamp) < 2 then
+        return systemStatusCache[cacheKey].value
     end
 
-    -- 방법 2: 앱 이름으로 찾기
-    local bttApp2 = hs.application.find(CONFIG.BTT.APP_NAME)
-    if bttApp2 and bttApp2:isRunning() then
-        return true
-    end
+    local isRunning = false
 
-    -- 방법 3: 실행 중인 앱 목록에서 직접 찾기
-    local runningApps = hs.application.runningApplications()
-    for _, app in ipairs(runningApps) do
-        local bundleID = app:bundleID()
-        if bundleID == CONFIG.BTT.BUNDLE_ID then
-            return true
-        end
-    end
-
-    -- 방법 4: ps 명령어로 프로세스 확인 (fallback)
-    local output, success = hs.execute("ps aux | grep -i bettertouchtool | grep -v grep")
-    if success and output and output:find("BetterTouchTool") then
-        return true
-    end
-
-    return false
-end
-
-local function startBTT()
-    if not isBTTRunning() then
-        local success = hs.application.launchOrFocus(CONFIG.BTT.BUNDLE_ID)
-        if success then
-            hs.alert.show("🎮 BTT 실행됨", 2)
+    -- 방법 1: Bundle ID로 찾기 (가장 신뢰할 수 있는 방법)
+    local success, bttApp = pcall(hs.application.find, CONFIG.BTT.BUNDLE_ID)
+    if success and bttApp and bttApp:isRunning() then
+        isRunning = true
+    else
+        -- 방법 2: 앱 이름으로 찾기
+        success, bttApp = pcall(hs.application.find, CONFIG.BTT.APP_NAME)
+        if success and bttApp and bttApp:isRunning() then
+            isRunning = true
         else
-            -- Bundle ID로 실패시 앱 이름으로 시도
-            local success2 = hs.application.launchOrFocus(CONFIG.BTT.APP_NAME)
-            if success2 then
-                hs.alert.show("🎮 BTT 실행됨", 2)
-            else
-                hs.alert.show("❌ BTT 실행 실패", 3)
+            -- 방법 3: 실행 중인 앱 목록에서 직접 찾기
+            local success2, runningApps = pcall(hs.application.runningApplications)
+            if success2 and runningApps then
+                for _, app in ipairs(runningApps) do
+                    local success3, bundleID = pcall(app.bundleID, app)
+                    if success3 and bundleID == CONFIG.BTT.BUNDLE_ID then
+                        isRunning = true
+                        break
+                    end
+                end
+            end
+
+            -- 방법 4: ps 명령어로 프로세스 확인 (fallback)
+            if not isRunning then
+                local output, success4 = hs.execute("ps aux | grep -i bettertouchtool | grep -v grep")
+                if success4 and output and output:find("BetterTouchTool") then
+                    isRunning = true
+                end
             end
         end
     end
+
+    -- 결과 캐싱
+    systemStatusCache[cacheKey] = {
+        value = isRunning,
+        timestamp = now
+    }
+
+    return isRunning
 end
 
-local function stopBTT()
-    local bttApp = hs.application.find(CONFIG.BTT.BUNDLE_ID)
-    if bttApp and bttApp:isRunning() then
-        bttApp:kill()
-        hs.alert.show("🎮 BTT 종료됨", 2)
+local function startBTT()
+    if isBTTRunning() then
+        return true -- 이미 실행 중
     end
-end
 
--- 화면(모니터) 상태 확인 함수들
-local function getScreenCount()
-    return #hs.screen.allScreens()
-end
-
-local function hasBuiltinScreen()
-    local screens = hs.screen.allScreens()
-    for _, screen in ipairs(screens) do
-        -- 내장 화면은 보통 이름에 "Built-in"이 포함되거나 특정 해상도를 가짐
-        local name = screen:name() or ""
-        if name:match("Built%-in") or name:match("Color LCD") or name:match("Liquid Retina") then
-            return true
-        end
+    -- 첫 번째 시도: Bundle ID로 실행
+    local success, result = pcall(hs.application.launchOrFocus, CONFIG.BTT.BUNDLE_ID)
+    if success and result then
+        hs.alert.show("🎮 BTT 실행됨", 2)
+        return true
     end
+
+    -- 두 번째 시도: 앱 이름으로 실행
+    success, result = pcall(hs.application.launchOrFocus, CONFIG.BTT.APP_NAME)
+    if success and result then
+        hs.alert.show("🎮 BTT 실행됨", 2)
+        return true
+    end
+
+    -- 실행 실패
+    print("⚠️ BTT 실행 실패 - Bundle ID: " .. tostring(result))
+    hs.alert.show("❌ BTT 실행 실패", 3)
     return false
 end
 
--- 카페인 상태 직접 제어
+local function stopBTT()
+    local success, bttApp = pcall(hs.application.find, CONFIG.BTT.BUNDLE_ID)
+    if success and bttApp and bttApp:isRunning() then
+        local killSuccess, killResult = pcall(bttApp.kill, bttApp)
+        if killSuccess then
+            hs.alert.show("🎮 BTT 종료됨", 2)
+            return true
+        else
+            print("⚠️ BTT 종료 실패: " .. tostring(killResult))
+            return false
+        end
+    end
+    return true -- 이미 종료된 상태
+end
+
+-- 화면(모니터) 상태 확인 함수들 (개선된 에러 처리 및 캐싱)
+local function getScreenCount()
+    local cacheKey = "screen_count"
+    local now = os.time()
+    if systemStatusCache[cacheKey] and (now - systemStatusCache[cacheKey].timestamp) < 1 then
+        return systemStatusCache[cacheKey].value
+    end
+
+    local success, screens = pcall(hs.screen.allScreens)
+    local count = success and #screens or 0
+
+    systemStatusCache[cacheKey] = {
+        value = count,
+        timestamp = now
+    }
+
+    return count
+end
+
+local function hasBuiltinScreen()
+    local cacheKey = "builtin_screen"
+    local now = os.time()
+    if systemStatusCache[cacheKey] and (now - systemStatusCache[cacheKey].timestamp) < 1 then
+        return systemStatusCache[cacheKey].value
+    end
+
+    local hasBuiltin = false
+    local success, screens = pcall(hs.screen.allScreens)
+
+    if success and screens then
+        for _, screen in ipairs(screens) do
+            local success2, name = pcall(screen.name, screen)
+            name = success2 and name or ""
+            if name:match("Built%-in") or name:match("Color LCD") or name:match("Liquid Retina") then
+                hasBuiltin = true
+                break
+            end
+        end
+    end
+
+    systemStatusCache[cacheKey] = {
+        value = hasBuiltin,
+        timestamp = now
+    }
+
+    return hasBuiltin
+end
+
+-- 카페인 상태 직접 제어 (개선된 에러 처리)
 local function setCaffeineState(enabled, reason)
-    local currentState = hs.caffeinate.get("displayIdle")
+    local success, currentState = pcall(hs.caffeinate.get, "displayIdle")
+    if not success then
+        print("⚠️ 카페인 상태 확인 실패: " .. tostring(currentState))
+        return false
+    end
 
     if enabled and not currentState then
         -- 카페인 활성화 (디스플레이가 꺼지지 않도록)
-        hs.caffeinate.set("displayIdle", true)
-        hs.alert.show("☕ 카페인 활성화: " .. reason, 3)
+        local setSuccess, setResult = pcall(hs.caffeinate.set, "displayIdle", true)
+        if setSuccess then
+            hs.alert.show("☕ 카페인 활성화: " .. reason, 3)
+            return true
+        else
+            print("⚠️ 카페인 활성화 실패: " .. tostring(setResult))
+            return false
+        end
     elseif not enabled and currentState then
         -- 카페인 비활성화
-        hs.caffeinate.set("displayIdle", false)
-        hs.alert.show("😴 카페인 비활성화: " .. reason, 3)
+        local setSuccess, setResult = pcall(hs.caffeinate.set, "displayIdle", false)
+        if setSuccess then
+            hs.alert.show("😴 카페인 비활성화: " .. reason, 3)
+            return true
+        else
+            print("⚠️ 카페인 비활성화 실패: " .. tostring(setResult))
+            return false
+        end
     end
     -- 이미 원하는 상태라면 아무것도 하지 않음
+    return true
 end
 
--- 현재 카페인 상태 확인
+-- 현재 카페인 상태 확인 (개선된 에러 처리)
 local function isCaffeineActive()
-    return hs.caffeinate.get("displayIdle")
+    local success, result = pcall(hs.caffeinate.get, "displayIdle")
+    if not success then
+        print("⚠️ 카페인 상태 확인 실패: " .. tostring(result))
+        return false
+    end
+    return result
 end
 
 -- MacBook 뚜껑 상태 감지 및 자동 제어 (BTT + 카페인)
@@ -230,15 +333,6 @@ local function handleSystemStateChange(eventType)
     end
 end
 
--- BTT 수동 토글
-local function toggleBTT()
-    if isBTTRunning() then
-        stopBTT()
-    else
-        startBTT()
-    end
-end
-
 -- 전원 상태 변경 처리
 local function handlePowerStateChange(newMode)
     if currentPowerState == newMode then
@@ -260,16 +354,51 @@ local function toggleCaffeine()
     setCaffeineState(not currentState, "수동 토글")
 end
 
--- 시스템 상태 정보 수집 (전원, 화면, BTT, 카페인)
+-- 시스템 상태 정보 수집 (전원, 화면, BTT, 카페인) - 개선된 에러 처리
 local function getSystemInfo()
-    return {
-        powerMode = getCurrentPowerMode(),
-        batteryLevel = hs.battery.percentage(),
-        caffeineState = isCaffeineActive(),
-        bttRunning = isBTTRunning(),
-        screenCount = getScreenCount(),
-        hasBuiltin = hasBuiltinScreen()
+    local info = {
+        powerMode = "unknown",
+        batteryLevel = 0,
+        caffeineState = false,
+        bttRunning = false,
+        screenCount = 0,
+        hasBuiltin = false
     }
+
+    -- 각 정보를 안전하게 수집
+    local success, result
+
+    success, result = pcall(getCurrentPowerMode)
+    if success then
+        info.powerMode = result
+    end
+
+    success, result = pcall(hs.battery.percentage)
+    if success then
+        info.batteryLevel = result
+    end
+
+    success, result = pcall(isCaffeineActive)
+    if success then
+        info.caffeineState = result
+    end
+
+    success, result = pcall(isBTTRunning)
+    if success then
+        info.bttRunning = result
+    end
+
+    success, result = pcall(getScreenCount)
+    if success then
+        info.screenCount = result
+    end
+
+    success, result = pcall(hasBuiltinScreen)
+    if success then
+        info.hasBuiltin = result
+    end
+
+    return info
 end
 
 -- 시스템 상태 정보 포맷팅 (블루투스/와이파이 제외)
@@ -297,13 +426,6 @@ local function addAutomationRules(status)
     end
     return status
 end
-
--- 상태 표시 성능 향상을 위한 캐시 시스템
-local systemStatusCache = {
-    info = nil,
-    lastUpdate = 0,
-    cacheDuration = 3 -- 3초간 캐시 유효
-}
 
 -- Canvas를 이용한 상태 창 표시 (멀티 모니터 지원)
 -- 상태 창 표시용 Canvas 객체 (전역 변수)
@@ -444,6 +566,374 @@ local function showSystemStatus()
     showStatusWithCanvas(status)
 end
 
+-- Git 상태 확인용 Canvas 표시 함수
+local gitStatusCanvas = nil
+local brewUpdateCanvas = nil
+
+local function showGitStatusCanvas(statusLines, displayTime)
+    displayTime = displayTime or 10 -- 기본 10초
+
+    -- 기존 Git 상태 창이 있으면 닫기
+    if gitStatusCanvas then
+        gitStatusCanvas:delete()
+        gitStatusCanvas = nil
+    end
+
+    -- 화면 선택 로직 개선
+    local screen = nil
+    local screenSource = "main" -- 디버그용
+
+    -- 1. 현재 포커스된 창이 있는 화면 찾기
+    local focusedWindow = hs.window.focusedWindow()
+    if focusedWindow then
+        screen = focusedWindow:screen()
+        screenSource = "focused-window"
+    end
+
+    -- 2. 포커스된 창이 없으면 마우스 커서가 있는 화면 사용
+    if not screen then
+        local mousePosition = hs.mouse.absolutePosition()
+        local allScreens = hs.screen.allScreens()
+        for _, s in ipairs(allScreens) do
+            local frame = s:frame()
+            if mousePosition.x >= frame.x and mousePosition.x < (frame.x + frame.w) and mousePosition.y >= frame.y and
+                mousePosition.y < (frame.y + frame.h) then
+                screen = s
+                screenSource = "mouse-cursor"
+                break
+            end
+        end
+    end
+
+    -- 3. 마지막으로 메인 화면 사용
+    if not screen then
+        screen = hs.screen.mainScreen()
+        screenSource = "main-screen"
+    end
+
+    local screenFrame = screen:frame()
+
+    -- 창 크기와 위치 계산
+    local windowWidth = math.min(800, screenFrame.w * 0.8)
+    local windowHeight = math.min(600, #statusLines * 20 + CONFIG.UI.PADDING * 2)
+    local x = (screenFrame.w - windowWidth) / 2
+    local y = (screenFrame.h - windowHeight) / 2
+
+    -- Canvas 생성 (화면 좌표계를 고려한 절대 좌표 사용)
+    local absoluteX = screenFrame.x + x
+    local absoluteY = screenFrame.y + y
+
+    gitStatusCanvas = hs.canvas.new({
+        x = absoluteX,
+        y = absoluteY,
+        w = windowWidth,
+        h = windowHeight
+    })
+
+    -- 배경
+    gitStatusCanvas[1] = {
+        type = "rectangle",
+        action = "fill",
+        fillColor = {
+            alpha = 0.95,
+            red = 0.05,
+            green = 0.05,
+            blue = 0.05
+        },
+        roundedRectRadii = {
+            xRadius = 10,
+            yRadius = 10
+        }
+    }
+
+    -- 텍스트 추가
+    gitStatusCanvas[2] = {
+        type = "text",
+        text = table.concat(statusLines, "\n"),
+        textFont = "SF Mono",
+        textSize = 13,
+        textColor = {
+            alpha = 1,
+            red = 1,
+            green = 1,
+            blue = 1
+        },
+        textAlignment = "left",
+        frame = {
+            x = CONFIG.UI.PADDING,
+            y = CONFIG.UI.PADDING,
+            w = windowWidth - (CONFIG.UI.PADDING * 2),
+            h = windowHeight - (CONFIG.UI.PADDING * 2)
+        }
+    }
+
+    -- 창 표시
+    gitStatusCanvas:show()
+
+    -- ESC 키 핸들러 등록
+    local escHandler
+    escHandler = hs.hotkey.bind({}, "escape", function()
+        if gitStatusCanvas then
+            gitStatusCanvas:delete()
+            gitStatusCanvas = nil
+            if escHandler then
+                escHandler:delete() -- 핸들러 제거
+                escHandler = nil
+            end
+        end
+    end)
+
+    -- 지정된 시간 후 자동으로 닫기
+    hs.timer.doAfter(displayTime, function()
+        if gitStatusCanvas then
+            gitStatusCanvas:delete()
+            gitStatusCanvas = nil
+            if escHandler then
+                escHandler:delete() -- 핸들러 제거
+            end
+        end
+    end)
+end
+
+-- Git 상태 확인 함수 (여러 경로 지원, 브랜치 정보 포함)
+local function checkGitStatus()
+    -- 확인할 Git 리포지토리 경로 목록 (사용자 맞춤 설정)
+    local gitPaths = {{
+        name = "dev-init-setting",
+        path = "/Users/oyunbog/IdeaProjects/dev-init-setting"
+    }, {
+        name = "Obsidian",
+        path = "/Users/oyunbog/IdeaProjects/Obsidian"
+    }, {
+        name = "Current Directory",
+        path = hs.fs.currentDir() or os.getenv("PWD") or "."
+    }}
+
+    local statusLines = {"📋 Git 상태 종합 보고서", ""}
+    local hasChanges = false
+
+    for _, repo in ipairs(gitPaths) do
+        local repoPath = repo.path
+        local repoName = repo.name
+
+        -- Git 리포지토리인지 확인
+        local gitDir = repoPath .. "/.git"
+        local attrs = hs.fs.attributes(gitDir)
+
+        if attrs then
+            -- 현재 브랜치 확인
+            local branchCmd = "cd '" .. repoPath .. "' && git branch --show-current 2>/dev/null"
+            local currentBranch = hs.execute(branchCmd):gsub("\n", "")
+            if currentBranch == "" then
+                currentBranch = "detached HEAD"
+            end
+
+            -- Git 상태 확인
+            local statusCmd = "cd '" .. repoPath .. "' && git status --porcelain 2>/dev/null"
+            local gitOutput = hs.execute(statusCmd)
+
+            -- 문자열 결과 처리
+            if gitOutput and gitOutput ~= "" then
+                local changes = {}
+                local modifiedCount = 0
+                local addedCount = 0
+                local deletedCount = 0
+                local untrackedCount = 0
+
+                for line in gitOutput:gmatch("[^\r\n]+") do
+                    local status = line:sub(1, 2)
+                    local filename = line:sub(4)
+
+                    if status:match("M") then
+                        modifiedCount = modifiedCount + 1
+                    elseif status:match("A") then
+                        addedCount = addedCount + 1
+                    elseif status:match("D") then
+                        deletedCount = deletedCount + 1
+                    elseif status:match("?") then
+                        untrackedCount = untrackedCount + 1
+                    end
+
+                    -- 처음 5개 파일만 표시
+                    if #changes < 5 then
+                        table.insert(changes, "  " .. status .. " " .. filename)
+                    end
+                end
+
+                hasChanges = true
+                table.insert(statusLines, "📁 " .. repoName .. " (브랜치: " .. currentBranch .. ")")
+
+                -- 변경사항 요약
+                local summary = {}
+                if modifiedCount > 0 then
+                    table.insert(summary, modifiedCount .. "개 수정")
+                end
+                if addedCount > 0 then
+                    table.insert(summary, addedCount .. "개 추가")
+                end
+                if deletedCount > 0 then
+                    table.insert(summary, deletedCount .. "개 삭제")
+                end
+                if untrackedCount > 0 then
+                    table.insert(summary, untrackedCount .. "개 미추적")
+                end
+
+                table.insert(statusLines, "  ⚠️ 변경사항: " .. table.concat(summary, ", "))
+
+                -- 상세 변경사항 (처음 5개)
+                for _, change in ipairs(changes) do
+                    table.insert(statusLines, change)
+                end
+
+                if #changes >= 5 and (modifiedCount + addedCount + deletedCount + untrackedCount) > 5 then
+                    table.insert(statusLines, "  ... 및 " ..
+                        ((modifiedCount + addedCount + deletedCount + untrackedCount) - 5) .. "개 추가 변경사항")
+                end
+            else
+                table.insert(statusLines, "✅ " .. repoName .. " (브랜치: " .. currentBranch .. ")")
+                table.insert(statusLines, "  깨끗한 상태 - 변경사항 없음")
+            end
+        else
+            table.insert(statusLines, "❌ " .. repoName)
+            table.insert(statusLines, "  Git 리포지토리가 아님 또는 접근 불가")
+            table.insert(statusLines, "  경로: " .. repoPath)
+        end
+
+        table.insert(statusLines, "") -- 빈 줄 추가
+    end
+
+    -- 요약 정보 추가
+    if hasChanges then
+        table.insert(statusLines, "🚨 주의: 커밋하지 않은 변경사항이 있습니다!")
+    else
+        table.insert(statusLines, "✨ 모든 리포지토리가 깨끗한 상태입니다.")
+    end
+
+    table.insert(statusLines, "")
+    table.insert(statusLines, "🔑 ESC 키를 눌러 창을 닫을 수 있습니다.")
+
+    -- Canvas로 표시 (10초, ESC로 닫기 가능)
+    showGitStatusCanvas(statusLines, 10)
+end
+
+-- Homebrew 업데이트 결과 표시용 Canvas 함수
+local function showBrewUpdateCanvas(statusLines, displayTime)
+    displayTime = displayTime or 15 -- 기본 15초 (업데이트 내역이 길 수 있음)
+
+    -- 기존 Homebrew 업데이트 창이 있으면 닫기
+    if brewUpdateCanvas then
+        brewUpdateCanvas:delete()
+        brewUpdateCanvas = nil
+    end
+
+    -- 화면 선택 로직 (Git Canvas와 동일)
+    local screen = nil
+    local focusedWindow = hs.window.focusedWindow()
+    if focusedWindow then
+        screen = focusedWindow:screen()
+    end
+
+    if not screen then
+        local mousePosition = hs.mouse.absolutePosition()
+        local allScreens = hs.screen.allScreens()
+        for _, s in ipairs(allScreens) do
+            local frame = s:frame()
+            if mousePosition.x >= frame.x and mousePosition.x < (frame.x + frame.w) and mousePosition.y >= frame.y and
+                mousePosition.y < (frame.y + frame.h) then
+                screen = s
+                break
+            end
+        end
+    end
+
+    if not screen then
+        screen = hs.screen.mainScreen()
+    end
+
+    local screenFrame = screen:frame()
+
+    -- 창 크기와 위치 계산 (더 큰 창으로 설정)
+    local windowWidth = math.min(900, screenFrame.w * 0.85)
+    local windowHeight = math.min(700, #statusLines * 20 + CONFIG.UI.PADDING * 2)
+    local x = (screenFrame.w - windowWidth) / 2
+    local y = (screenFrame.h - windowHeight) / 2
+
+    -- Canvas 생성
+    local absoluteX = screenFrame.x + x
+    local absoluteY = screenFrame.y + y
+
+    brewUpdateCanvas = hs.canvas.new({
+        x = absoluteX,
+        y = absoluteY,
+        w = windowWidth,
+        h = windowHeight
+    })
+
+    -- 배경
+    brewUpdateCanvas[1] = {
+        type = "rectangle",
+        action = "fill",
+        fillColor = {
+            alpha = 0.95,
+            red = 0.02,
+            green = 0.08,
+            blue = 0.02
+        },
+        roundedRectRadii = {
+            xRadius = 10,
+            yRadius = 10
+        }
+    }
+
+    -- 텍스트 추가
+    brewUpdateCanvas[2] = {
+        type = "text",
+        text = table.concat(statusLines, "\n"),
+        textFont = "SF Mono",
+        textSize = 12,
+        textColor = {
+            alpha = 1,
+            red = 0.9,
+            green = 1,
+            blue = 0.9
+        },
+        textAlignment = "left",
+        frame = {
+            x = CONFIG.UI.PADDING,
+            y = CONFIG.UI.PADDING,
+            w = windowWidth - (CONFIG.UI.PADDING * 2),
+            h = windowHeight - (CONFIG.UI.PADDING * 2)
+        }
+    }
+
+    -- 창 표시
+    brewUpdateCanvas:show()
+
+    -- ESC 키 핸들러 등록
+    local escHandler
+    escHandler = hs.hotkey.bind({}, "escape", function()
+        if brewUpdateCanvas then
+            brewUpdateCanvas:delete()
+            brewUpdateCanvas = nil
+            if escHandler then
+                escHandler:delete()
+                escHandler = nil
+            end
+        end
+    end)
+
+    -- 지정된 시간 후 자동으로 닫기
+    hs.timer.doAfter(displayTime, function()
+        if brewUpdateCanvas then
+            brewUpdateCanvas:delete()
+            brewUpdateCanvas = nil
+            if escHandler then
+                escHandler:delete()
+            end
+        end
+    end)
+end
+
 -- ========================================
 -- Spoons 플러그인 로딩
 -- ========================================
@@ -469,14 +959,8 @@ loadSpoon("KSheet")
 -- HSKeybindings (Hammerspoon 단축키 표시)
 loadSpoon("HSKeybindings")
 
--- TextClipboardHistory (텍스트 클립보드 히스토리)
-if loadSpoon("TextClipboardHistory") then
-    spoon.TextClipboardHistory:start()
-end
-
 -- PopupTranslateSelection (선택 텍스트 번역)
 loadSpoon("PopupTranslateSelection")
-
 
 -- ========================================
 -- 단축키 정의
@@ -485,9 +969,6 @@ loadSpoon("PopupTranslateSelection")
 -- ========================================
 -- BTT & 카페인 관련 단축키
 -- ========================================
-
--- BTT 수동 토글
-hs.hotkey.bind({"cmd", "ctrl"}, "b", "BetterTouchTool 실행/종료 토글", toggleBTT)
 
 -- 통합 상태 확인 (BTT + 카페인 + 시스템)
 hs.hotkey.bind({"cmd", "ctrl", "alt"}, "s", "시스템 상태 확인 (전원, 카페인, BTT, 화면 등)",
@@ -529,16 +1010,6 @@ hs.hotkey.bind({"cmd", "ctrl", "shift"}, "/",
 -- 새로운 Spoon 단축키 설정
 -- ========================================
 
--- TextClipboardHistory: 클립보드 히스토리 표시
-hs.hotkey.bind({"cmd", "shift"}, "v", "텍스트 클립보드 히스토리 표시 (코드 스니펫 재사용)",
-    function()
-        if spoon.TextClipboardHistory then
-            spoon.TextClipboardHistory:toggleClipboard()
-        else
-            hs.alert.show("TextClipboardHistory Spoon이 로드되지 않았습니다")
-        end
-    end)
-
 -- PopupTranslateSelection: 선택된 텍스트 번역
 hs.hotkey.bind({"cmd", "ctrl"}, "t", "선택된 텍스트 번역 (에러 메시지, 문서 번역)", function()
     if spoon.PopupTranslateSelection then
@@ -555,76 +1026,230 @@ end)
 -- DevCommander: 개발자 명령어 실행기
 hs.hotkey.bind({"cmd", "ctrl"}, "c", "개발자 명령어 실행기 (Docker, Git, Homebrew 등)", function()
     -- 개발자 명령어 정의
-    local choices = {
-        {
-            text = "PostgreSQL 재시작",
-            subText = "brew services restart postgresql"
-        },
-        {
-            text = "Docker 정리", 
-            subText = "사용하지 않는 컨테이너/이미지 제거"
-        },
-        {
-            text = "Node 모듈 캐시 정리",
-            subText = "npm cache clean --force"
-        },
-        {
-            text = "Homebrew 업데이트",
-            subText = "brew update && brew upgrade"
-        },
-        {
-            text = "Git 상태 확인",
-            subText = "현재 디렉토리의 Git 변경사항 확인"
-        },
-        {
-            text = "메모리 압력 해제",
-            subText = "sudo purge - 시스템 메모리 정리"
-        },
-        {
-            text = "Dock 재시작",
-            subText = "killall Dock - Dock 프로세스 재시작"
-        },
-        {
-            text = "화면 즉시 잠금",
-            subText = "pmset displaysleepnow"
-        }
-    }
+    local choices = {{
+        text = "Homebrew 업데이트",
+        subText = "brew update && brew upgrade"
+    }, {
+        text = "Brew 서비스 시작",
+        subText = "특정 brew service 시작"
+    }, {
+        text = "Brew 서비스 종료",
+        subText = "특정 brew service 종료"
+    }, {
+        text = "Git 상태 확인",
+        subText = "현재 디렉토리의 Git 변경사항 확인"
+    }, {
+        text = "Docker 이미지 정리",
+        subText = "사용하지 않는 Docker 이미지 제거"
+    }, {
+        text = "Node 모듈 캐시 정리",
+        subText = "npm cache clean --force"
+    }, {
+        text = "Dock 재시작",
+        subText = "killall Dock - Dock 프로세스 재시작"
+    }, {
+        text = "화면 즉시 잠금",
+        subText = "pmset displaysleepnow"
+    }}
 
     -- 선택기 생성 및 설정
     local chooser = hs.chooser.new(function(selectedItem)
-        if not selectedItem then return end
-        
+        if not selectedItem then
+            return
+        end
+
         local command = selectedItem.text
-        if command == "PostgreSQL 재시작" then
-            hs.execute("brew services restart postgresql")
-            hs.alert.show("PostgreSQL 재시작 중...", 2)
-        elseif command == "Docker 정리" then
-            hs.execute("docker system prune -f")
-            hs.alert.show("Docker 시스템 정리 완료", 2)
+        if command == "Docker 이미지 정리" then
+            hs.alert.show("Docker 이미지 정리 시작...", 2)
+            hs.task.new("/opt/homebrew/bin/docker", function(exitCode, stdOut, stdErr)
+                if exitCode == 0 then
+                    hs.alert.show("✅ Docker 이미지 정리 완료", 3)
+                else
+                    hs.alert.show("❌ Docker 이미지 정리 실패", 3)
+                end
+            end, {"image", "prune", "-f"}):start()
         elseif command == "Node 모듈 캐시 정리" then
-            hs.execute("npm cache clean --force")
-            hs.alert.show("npm 캐시 정리 완료", 2)
+            hs.alert.show("npm 캐시 정리 시작...", 2)
+            hs.task.new("/usr/bin/npm", function(exitCode, stdOut, stdErr)
+                if exitCode == 0 then
+                    hs.alert.show("✅ npm 캐시 정리 완료", 3)
+                else
+                    hs.alert.show("❌ npm 캐시 정리 실패", 3)
+                end
+            end, {"cache", "clean", "--force"}):start()
         elseif command == "Homebrew 업데이트" then
-            hs.execute("brew update && brew upgrade")
-            hs.alert.show("Homebrew 업데이트 시작", 2)
+            hs.alert.show("Homebrew 업데이트 시작...", 2)
+
+            -- 먼저 brew update 실행
+            hs.task.new("/opt/homebrew/bin/brew", function(updateExitCode, updateStdOut, updateStdErr)
+                if updateExitCode == 0 then
+                    -- update 성공 후 upgrade 실행하여 실제 업데이트 내역 확인
+                    hs.task.new("/opt/homebrew/bin/brew", function(upgradeExitCode, upgradeStdOut, upgradeStdErr)
+                        local statusLines = {"🍺 Homebrew 업데이트 결과", ""}
+
+                        if upgradeExitCode == 0 then
+                            hs.alert.show("✅ Homebrew 업데이트 완료", 2)
+
+                            -- 업데이트된 패키지가 있는지 확인
+                            if upgradeStdOut and upgradeStdOut:len() > 10 then
+                                table.insert(statusLines,
+                                    "✅ 업데이트 완료! 다음 패키지들이 업데이트되었습니다:")
+                                table.insert(statusLines, "")
+
+                                -- 업그레이드 출력 파싱
+                                local updatedPackages = {}
+                                local lines = {}
+                                for line in upgradeStdOut:gmatch("[^\r\n]+") do
+                                    table.insert(lines, line)
+                                end
+
+                                -- 주요 정보만 추출하여 표시
+                                local inUpgradeSection = false
+                                for _, line in ipairs(lines) do
+                                    if line:match("Upgrading") or line:match("Installing") then
+                                        inUpgradeSection = true
+                                        local packageInfo = line:gsub("==> ", "📦 ")
+                                        table.insert(statusLines, packageInfo)
+                                    elseif line:match("^🍺") or line:match("Summary") then
+                                        inUpgradeSection = false
+                                    elseif inUpgradeSection and line:match("->") then
+                                        -- 버전 정보가 있는 라인
+                                        table.insert(statusLines, "   " .. line)
+                                    elseif line:match("bottles") and line:match("downloaded") then
+                                        -- 다운로드 정보
+                                        table.insert(statusLines, "📥 " .. line)
+                                    elseif line:match("Installed") or line:match("Upgraded") then
+                                        -- 설치/업그레이드 완료 정보
+                                        table.insert(statusLines, "✅ " .. line)
+                                    end
+                                end
+
+                                -- 업데이트된 패키지 수 계산
+                                local upgradeCount = 0
+                                for line in upgradeStdOut:gmatch("[^\r\n]+") do
+                                    if line:match("==> Upgrading") then
+                                        upgradeCount = upgradeCount + 1
+                                    end
+                                end
+
+                                if upgradeCount > 0 then
+                                    table.insert(statusLines, "")
+                                    table.insert(statusLines, "📊 총 " .. upgradeCount ..
+                                        "개 패키지가 업데이트되었습니다.")
+                                end
+                            else
+                                table.insert(statusLines, "ℹ️ 이미 모든 패키지가 최신 버전입니다.")
+                                table.insert(statusLines, "업데이트할 패키지가 없습니다.")
+                            end
+                        else
+                            hs.alert.show("❌ Homebrew 업데이트 실패", 3)
+                            table.insert(statusLines, "❌ 업데이트 실패")
+                            table.insert(statusLines, "")
+
+                            if upgradeStdErr and upgradeStdErr:len() > 0 then
+                                table.insert(statusLines, "오류 내용:")
+                                for line in upgradeStdErr:gmatch("[^\r\n]+") do
+                                    table.insert(statusLines, "  " .. line)
+                                end
+                            end
+                        end
+
+                        table.insert(statusLines, "")
+                        table.insert(statusLines, "🔑 ESC 키를 눌러 창을 닫을 수 있습니다.")
+
+                        -- Canvas로 결과 표시 (15초)
+                        showBrewUpdateCanvas(statusLines, 15)
+                    end, {"upgrade"}):start()
+                else
+                    hs.alert.show("❌ Homebrew update 실패", 3)
+                end
+            end, {"update"}):start()
         elseif command == "Git 상태 확인" then
-            local output = hs.execute("git status --porcelain")
-            if output and output ~= "" then
-                hs.alert.show("Git: 변경사항 있음", 3)
-            else
-                hs.alert.show("Git: 깨끗한 상태", 2)
-            end
-        elseif command == "메모리 압력 해제" then
-            hs.execute("sudo purge")
-            hs.alert.show("메모리 정리 완료", 2)
+            checkGitStatus()
         elseif command == "Dock 재시작" then
             hs.execute("killall Dock")
             hs.alert.show("Dock 재시작됨", 2)
         elseif command == "화면 즉시 잠금" then
             hs.execute("pmset displaysleepnow")
+        elseif command == "Brew 서비스 시작" then
+            -- 사용 가능한 brew 서비스 목록 가져오기
+            hs.task.new("/opt/homebrew/bin/brew", function(exitCode, stdOut, stdErr)
+                if exitCode == 0 then
+                    local services = {}
+                    for line in stdOut:gmatch("[^\r\n]+") do
+                        local serviceName = line:match("^([%w%-%.]+)")
+                        if serviceName and not line:match("^Name") and serviceName ~= "" then
+                            table.insert(services, {
+                                text = serviceName,
+                                subText = "brew services start " .. serviceName
+                            })
+                        end
+                    end
+
+                    if #services > 0 then
+                        local serviceChooser = hs.chooser.new(function(selectedService)
+                            if selectedService then
+                                hs.alert.show("서비스 시작 중: " .. selectedService.text, 2)
+                                hs.task.new("/opt/homebrew/bin/brew", function(startExitCode, startStdOut, startStdErr)
+                                    if startExitCode == 0 then
+                                        hs.alert.show("✅ " .. selectedService.text .. " 시작됨", 3)
+                                    else
+                                        hs.alert.show("❌ " .. selectedService.text .. " 시작 실패", 3)
+                                    end
+                                end, {"services", "start", selectedService.text}):start()
+                            end
+                        end)
+                        serviceChooser:choices(services)
+                        serviceChooser:placeholderText("시작할 서비스 선택...")
+                        serviceChooser:show()
+                    else
+                        hs.alert.show("사용 가능한 서비스가 없습니다", 3)
+                    end
+                else
+                    hs.alert.show("서비스 목록을 가져올 수 없습니다", 3)
+                end
+            end, {"services", "list"}):start()
+        elseif command == "Brew 서비스 종료" then
+            -- 실행 중인 brew 서비스 목록 가져오기
+            hs.task.new("/opt/homebrew/bin/brew", function(exitCode, stdOut, stdErr)
+                if exitCode == 0 then
+                    local runningServices = {}
+                    for line in stdOut:gmatch("[^\r\n]+") do
+                        local serviceName = line:match("^([%w%-%.]+)%s+started")
+                        if serviceName then
+                            table.insert(runningServices, {
+                                text = serviceName,
+                                subText = "brew services stop " .. serviceName
+                            })
+                        end
+                    end
+
+                    if #runningServices > 0 then
+                        local serviceChooser = hs.chooser.new(function(selectedService)
+                            if selectedService then
+                                hs.alert.show("서비스 종료 중: " .. selectedService.text, 2)
+                                hs.task.new("/opt/homebrew/bin/brew", function(stopExitCode, stopStdOut, stopStdErr)
+                                    if stopExitCode == 0 then
+                                        hs.alert.show("✅ " .. selectedService.text .. " 종료됨", 3)
+                                    else
+                                        hs.alert.show("❌ " .. selectedService.text .. " 종료 실패", 3)
+                                    end
+                                end, {"services", "stop", selectedService.text}):start()
+                            end
+                        end)
+                        serviceChooser:choices(runningServices)
+                        serviceChooser:placeholderText("종료할 서비스 선택...")
+                        serviceChooser:show()
+                    else
+                        hs.alert.show("실행 중인 서비스가 없습니다", 3)
+                    end
+                else
+                    hs.alert.show("서비스 목록을 가져올 수 없습니다", 3)
+                end
+            end, {"services", "list"}):start()
         end
     end)
-    
+
     chooser:choices(choices)
     chooser:searchSubText(true)
     chooser:placeholderText("개발자 명령어 검색...")
@@ -704,7 +1329,6 @@ print("- 뚜껑 닫기/시스템 잠들기 시 배터리 보호")
 print("- 수동 제어: Cmd+Ctrl+Alt+F")
 print("")
 print("🎮 BTT 자동화:")
-print("- BTT 수동 토글: Cmd+Ctrl+B")
 print("- 뚜껑 닫기 → BTT 종료")
 print("- 뚜껑 열기 → BTT 실행")
 print("- 시스템 잠들기 → BTT 종료")
@@ -713,7 +1337,6 @@ print("")
 print("🧩 Spoon 플러그인 & 개발자 도구:")
 print("- 단축키 치트시트: Cmd+Shift+/")
 print("- Hammerspoon 단축키 표시: Cmd+Ctrl+Shift+/")
-print("- 텍스트 클립보드 히스토리: Cmd+Shift+V")
 print("- 선택 텍스트 번역: Cmd+Ctrl+T")
 print("- 개발자 명령어 실행기: Cmd+Ctrl+C (자체 구현)")
 print("")
