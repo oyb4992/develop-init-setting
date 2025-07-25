@@ -12,5 +12,7 @@
 .taskmasterconfig
 .windsurfrules
 CLAUDE.md
+GEMINI.md
 scripts/
 tasks/
+.claude/settings.local.json
