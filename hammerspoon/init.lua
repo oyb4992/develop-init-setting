@@ -1105,12 +1105,6 @@ hs.hotkey.bind({"cmd", "ctrl", "alt"}, "c", "개발자 명령어 실행기", fun
         text = "Homebrew 업데이트",
         subText = "brew update && brew upgrade"
     }, {
-        text = "Brew 서비스 시작",
-        subText = "특정 brew service 시작"
-    }, {
-        text = "Brew 서비스 종료",
-        subText = "특정 brew service 종료"
-    }, {
         text = "Git 상태 확인",
         subText = "현재 디렉토리의 Git 변경사항 확인"
     }, {
@@ -1125,6 +1119,12 @@ hs.hotkey.bind({"cmd", "ctrl", "alt"}, "c", "개발자 명령어 실행기", fun
     }, {
         text = "Yarn 백그라운드 종료",
         subText = "백그라운드에서 실행 중인 yarn 작업 종료"
+    }, {
+        text = "Brew 서비스 시작",
+        subText = "특정 brew service 시작"
+    }, {
+        text = "Brew 서비스 종료",
+        subText = "특정 brew service 종료"
     }, {
         text = "Docker 이미지 정리",
         subText = "사용하지 않는 Docker 이미지 제거"
