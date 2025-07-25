@@ -25,6 +25,35 @@ local CONFIG = {
         STATUS_DISPLAY_TIME = 10, -- 10초
         TEXT_SIZE = 12,
         PADDING = 20
+    },
+    DOCKER_COMPOSE = {
+        -- todo: Docker Compose 프로젝트 경로 목록 (사용자 맞춤 설정)
+        PROJECTS = {{
+            name = "개발 환경",
+            path = "~/IdeaProjects/kids_snsid_inapp"
+        }, {
+            name = "웹 프로젝트",
+            path = "~/IdeaProjects/kids_snsid_inapp"
+        }, {
+            name = "마이크로서비스",
+            path = "~/IdeaProjects/kids_snsid_inapp"
+        }}
+    },
+    YARN_PROJECTS = {
+        -- todo: Yarn 프로젝트 경로 목록 (사용자 맞춤 설정)
+        PROJECTS = {{
+            name = "React 앱",
+            path = "~/IdeaProjects/kids_snsid_inapp",
+            scripts = {"dev", "start", "build", "test"}
+        }, {
+            name = "Node.js 서버",
+            path = "~/IdeaProjects/node-server",
+            scripts = {"dev", "start", "build", "test", "watch"}
+        }, {
+            name = "Frontend 프로젝트",
+            path = "~/IdeaProjects/frontend-project",
+            scripts = {"dev", "start", "build", "test", "storybook"}
+        }}
     }
 }
 
@@ -40,6 +69,13 @@ local wifiWatcher = nil
 local isLidClosed = false
 
 -- BTT 상태 변수들
+
+-- ========================================
+-- 백그라운드 작업 관리
+-- ========================================
+
+-- 백그라운드에서 실행 중인 yarn 작업들을 추적
+local runningYarnTasks = {}
 
 -- 상태 표시 성능 향상을 위한 개선된 캐시 시스템
 local systemStatusCache = {
@@ -1078,6 +1114,18 @@ hs.hotkey.bind({"cmd", "ctrl", "alt"}, "c", "개발자 명령어 실행기", fun
         text = "Git 상태 확인",
         subText = "현재 디렉토리의 Git 변경사항 확인"
     }, {
+        text = "Docker Compose 시작",
+        subText = "특정 경로에서 docker-compose up -d 실행"
+    }, {
+        text = "Docker Compose 중지",
+        subText = "특정 경로에서 docker-compose stop 실행"
+    }, {
+        text = "Yarn 백그라운드 실행",
+        subText = "특정 프로젝트에서 yarn run 스크립트를 백그라운드로 실행"
+    }, {
+        text = "Yarn 백그라운드 종료",
+        subText = "백그라운드에서 실행 중인 yarn 작업 종료"
+    }, {
         text = "Docker 이미지 정리",
         subText = "사용하지 않는 Docker 이미지 제거"
     }, {
@@ -1286,6 +1334,232 @@ hs.hotkey.bind({"cmd", "ctrl", "alt"}, "c", "개발자 명령어 실행기", fun
                     hs.alert.show("서비스 목록을 가져올 수 없습니다", 3)
                 end
             end, {"services", "list"}):start()
+        elseif command == "Docker Compose 시작" then
+            -- Docker Compose 프로젝트 선택 후 시작
+            local projects = {}
+            for _, project in ipairs(CONFIG.DOCKER_COMPOSE.PROJECTS) do
+                -- docker-compose.yml 파일이 존재하는지 확인
+                local composeFile = project.path .. "/docker-compose.yml"
+                local attrs = hs.fs.attributes(composeFile)
+                if attrs then
+                    table.insert(projects, {
+                        text = project.name,
+                        subText = "docker-compose up -d in " .. project.path,
+                        path = project.path
+                    })
+                end
+            end
+
+            if #projects > 0 then
+                local projectChooser = hs.chooser.new(function(selectedProject)
+                    if selectedProject then
+                        hs.alert.show("Docker Compose 시작 중: " .. selectedProject.text, 2)
+
+                        -- docker-compose up -d 실행
+                        local task = hs.task.new("/opt/homebrew/bin/docker-compose", function(exitCode, stdOut, stdErr)
+                            if exitCode == 0 then
+                                hs.alert.show("✅ " .. selectedProject.text .. " Docker Compose 시작됨", 3)
+                                print("📦 Docker Compose 시작 성공: " .. selectedProject.text)
+                                if stdOut and stdOut:len() > 0 then
+                                    print("출력: " .. stdOut)
+                                end
+                            else
+                                hs.alert.show("❌ " .. selectedProject.text .. " Docker Compose 시작 실패", 3)
+                                print("⚠️ Docker Compose 시작 실패: " .. selectedProject.text)
+                                if stdErr and stdErr:len() > 0 then
+                                    print("오류: " .. stdErr)
+                                end
+                            end
+                        end, {"up", "-d"})
+
+                        -- 작업 디렉토리 설정
+                        task:setWorkingDirectory(selectedProject.path)
+                        task:start()
+                    end
+                end)
+                projectChooser:choices(projects)
+                projectChooser:placeholderText("시작할 Docker Compose 프로젝트 선택...")
+                projectChooser:show()
+            else
+                hs.alert.show("사용 가능한 Docker Compose 프로젝트가 없습니다", 3)
+            end
+        elseif command == "Docker Compose 중지" then
+            -- Docker Compose 프로젝트 선택 후 중지
+            local projects = {}
+            for _, project in ipairs(CONFIG.DOCKER_COMPOSE.PROJECTS) do
+                -- docker-compose.yml 파일이 존재하는지 확인
+                local composeFile = project.path .. "/docker-compose.yml"
+                local attrs = hs.fs.attributes(composeFile)
+                if attrs then
+                    table.insert(projects, {
+                        text = project.name,
+                        subText = "docker-compose stop in " .. project.path,
+                        path = project.path
+                    })
+                end
+            end
+
+            if #projects > 0 then
+                local projectChooser = hs.chooser.new(function(selectedProject)
+                    if selectedProject then
+                        hs.alert.show("Docker Compose 중지 중: " .. selectedProject.text, 2)
+
+                        -- docker-compose stop 실행
+                        local task = hs.task.new("/opt/homebrew/bin/docker-compose", function(exitCode, stdOut, stdErr)
+                            if exitCode == 0 then
+                                hs.alert.show("✅ " .. selectedProject.text .. " Docker Compose 중지됨", 3)
+                                print("📦 Docker Compose 중지 성공: " .. selectedProject.text)
+                                if stdOut and stdOut:len() > 0 then
+                                    print("출력: " .. stdOut)
+                                end
+                            else
+                                hs.alert.show("❌ " .. selectedProject.text .. " Docker Compose 중지 실패", 3)
+                                print("⚠️ Docker Compose 중지 실패: " .. selectedProject.text)
+                                if stdErr and stdErr:len() > 0 then
+                                    print("오류: " .. stdErr)
+                                end
+                            end
+                        end, {"stop"})
+
+                        -- 작업 디렉토리 설정
+                        task:setWorkingDirectory(selectedProject.path)
+                        task:start()
+                    end
+                end)
+                projectChooser:choices(projects)
+                projectChooser:placeholderText("중지할 Docker Compose 프로젝트 선택...")
+                projectChooser:show()
+            else
+                hs.alert.show("사용 가능한 Docker Compose 프로젝트가 없습니다", 3)
+            end
+        elseif command == "Yarn 백그라운드 실행" then
+            -- Yarn 프로젝트 선택 후 스크립트 실행
+            local projects = {}
+            for _, project in ipairs(CONFIG.YARN_PROJECTS.PROJECTS) do
+                -- package.json 파일이 존재하는지 확인
+                local expandedPath = project.path:gsub("^~", os.getenv("HOME"))
+                local packageFile = expandedPath .. "/package.json"
+                local attrs = hs.fs.attributes(packageFile)
+                if attrs then
+                    table.insert(projects, {
+                        text = project.name,
+                        subText = "yarn run in " .. project.path,
+                        path = expandedPath,
+                        scripts = project.scripts
+                    })
+                end
+            end
+
+            if #projects > 0 then
+                local projectChooser = hs.chooser.new(function(selectedProject)
+                    if selectedProject then
+                        -- 스크립트 선택
+                        local scriptChoices = {}
+                        for _, script in ipairs(selectedProject.scripts) do
+                            table.insert(scriptChoices, {
+                                text = script,
+                                subText = "yarn run " .. script,
+                                project = selectedProject,
+                                script = script
+                            })
+                        end
+
+                        local scriptChooser = hs.chooser.new(function(selectedScript)
+                            if selectedScript then
+                                local taskKey = selectedScript.project.text .. ":" .. selectedScript.script
+
+                                -- 이미 실행 중인지 확인
+                                if runningYarnTasks[taskKey] then
+                                    hs.alert.show("⚠️ 이미 실행 중: " .. taskKey, 3)
+                                    return
+                                end
+
+                                hs.alert.show("🚀 Yarn 백그라운드 시작: " .. taskKey, 2)
+
+                                -- yarn run 스크립트를 백그라운드로 실행
+                                local task = hs.task.new("/opt/homebrew/bin/yarn", function(exitCode, stdOut, stdErr)
+                                    -- 작업 완료 시 추적 목록에서 제거
+                                    runningYarnTasks[taskKey] = nil
+
+                                    if exitCode == 0 then
+                                        hs.alert.show("✅ " .. taskKey .. " 완료됨", 3)
+                                        print("📦 Yarn 작업 완료: " .. taskKey)
+                                    else
+                                        hs.alert.show("❌ " .. taskKey .. " 종료됨 (코드: " .. exitCode .. ")", 3)
+                                        print("⚠️ Yarn 작업 종료: " .. taskKey .. " (종료 코드: " ..
+                                                  exitCode .. ")")
+                                        if stdErr and stdErr:len() > 0 then
+                                            print("오류: " .. stdErr)
+                                        end
+                                    end
+                                end, {"run", selectedScript.script})
+
+                                -- 작업 디렉토리 설정
+                                task:setWorkingDirectory(selectedScript.project.path)
+
+                                -- 백그라운드 작업으로 추적
+                                runningYarnTasks[taskKey] = {
+                                    task = task,
+                                    project = selectedScript.project.text,
+                                    script = selectedScript.script,
+                                    startTime = os.time()
+                                }
+
+                                task:start()
+                                print("📦 Yarn 백그라운드 시작: " .. taskKey .. " (PID: " .. task:pid() .. ")")
+                            end
+                        end)
+                        scriptChooser:choices(scriptChoices)
+                        scriptChooser:placeholderText("실행할 스크립트 선택...")
+                        scriptChooser:show()
+                    end
+                end)
+                projectChooser:choices(projects)
+                projectChooser:placeholderText("Yarn 프로젝트 선택...")
+                projectChooser:show()
+            else
+                hs.alert.show("사용 가능한 Yarn 프로젝트가 없습니다", 3)
+            end
+        elseif command == "Yarn 백그라운드 종료" then
+            -- 실행 중인 Yarn 작업 목록 표시
+            local runningChoices = {}
+
+            for taskKey, taskInfo in pairs(runningYarnTasks) do
+                local runTime = os.time() - taskInfo.startTime
+                local runTimeStr = string.format("%d분 %d초", math.floor(runTime / 60), runTime % 60)
+
+                table.insert(runningChoices, {
+                    text = taskKey,
+                    subText = "실행 시간: " .. runTimeStr .. " (PID: " .. taskInfo.task:pid() .. ")",
+                    taskKey = taskKey,
+                    taskInfo = taskInfo
+                })
+            end
+
+            if #runningChoices > 0 then
+                local taskChooser = hs.chooser.new(function(selectedTask)
+                    if selectedTask then
+                        local taskInfo = selectedTask.taskInfo
+                        local taskKey = selectedTask.taskKey
+
+                        hs.alert.show("⏹️ Yarn 작업 종료 중: " .. taskKey, 2)
+
+                        -- 작업 종료
+                        taskInfo.task:terminate()
+
+                        -- 추적 목록에서 제거
+                        runningYarnTasks[taskKey] = nil
+
+                        hs.alert.show("✅ " .. taskKey .. " 종료됨", 3)
+                        print("📦 Yarn 백그라운드 종료: " .. taskKey)
+                    end
+                end)
+                taskChooser:choices(runningChoices)
+                taskChooser:placeholderText("종료할 Yarn 작업 선택...")
+                taskChooser:show()
+            else
+                hs.alert.show("실행 중인 Yarn 작업이 없습니다", 3)
+            end
         end
     end)
 
@@ -1378,3 +1652,14 @@ print("- 단축키 치트시트: Cmd+Shift+/ (ESC로 닫기)")
 print("- Hammerspoon 단축키 표시: Ctrl+Shift+/ (ESC로 닫기)")
 print("- 선택 텍스트 번역: Cmd+Ctrl+T")
 print("- 개발자 명령어 실행기: Cmd+Ctrl+Alt+C (자체 구현)")
+print("")
+print("🐳 Docker Compose 관리:")
+print("- Docker Compose 시작: 설정된 프로젝트에서 up -d 실행")
+print("- Docker Compose 중지: 설정된 프로젝트에서 stop 실행")
+print("- 프로젝트 경로는 CONFIG.DOCKER_COMPOSE.PROJECTS에서 설정")
+print("")
+print("🧶 Yarn 백그라운드 작업 관리:")
+print("- Yarn 백그라운드 실행: 설정된 프로젝트에서 yarn run 스크립트를 백그라운드로 실행")
+print("- Yarn 백그라운드 종료: 실행 중인 백그라운드 yarn 작업 종료")
+print("- 프로젝트 경로는 CONFIG.YARN_PROJECTS.PROJECTS에서 설정")
+print("- 실행 시간 및 PID 추적 지원")
