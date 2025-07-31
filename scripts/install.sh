@@ -19,10 +19,10 @@ sudo -v
 
 # BrewFile 실행 명령어
 echo "패키지 설치를 시작합니다..."
-if [ -f "./NewBrewfile" ]; then
-    brew bundle --file=./NewBrewfile
+if [ -f "./packages/Brewfile" ]; then
+    brew bundle --file=./packages/Brewfile
 else
-    echo "NewBrewfile을 찾을 수 없습니다."
+    echo "packages/Brewfile을 찾을 수 없습니다."
     exit 1
 fi
 
@@ -41,35 +41,35 @@ function configure_tool() {
 }
 
 # configure zsh
-configure_tool "Zsh" "./zsh/install.sh"
+configure_tool "Zsh" "./config/terminals/zsh/install.sh"
 
 # copy karabiner configuration
-configure_tool "Karabiner" "./karabiner/install.sh"
+configure_tool "Karabiner" "./config/productivity/karabiner/install.sh"
 
 # configure kitty
-configure_tool "Kitty" "./kitty/install.sh"
+configure_tool "Kitty" "./config/terminals/kitty/install.sh"
 
 # install fonts
 echo "폰트를 설치합니다..."
-if [ -d "./fonts" ]; then
-    cp -a ./fonts/. ~/Library/Fonts
+if [ -d "./assets/fonts" ]; then
+    cp -a ./assets/fonts/. ~/Library/Fonts
     echo "폰트 설치가 완료되었습니다."
 else
-    echo "fonts 디렉토리를 찾을 수 없습니다."
+    echo "assets/fonts 디렉토리를 찾을 수 없습니다."
 fi
 
 function remove_quarantine_attribute() {
     echo "애플리케이션 격리 속성을 제거합니다..."
-    if [ -f "./apps.txt" ]; then
+    if [ -f "./packages/apps.txt" ]; then
         while IFS= read -r app_name || [[ -n "$app_name" ]]; do
             if [ -d "/Applications/${app_name}" ]; then
                 sudo xattr -dr com.apple.quarantine "/Applications/${app_name}" 2>/dev/null && echo "${app_name} 격리 속성 제거 완료" || echo "${app_name} 격리 속성 제거 실패 (이미 제거되었을 수 있음)"
             else
                 echo "${app_name}이 설치되어 있지 않습니다."
             fi
-        done < ./apps.txt
+        done < ./packages/apps.txt
     else
-        echo "apps.txt 파일을 찾을 수 없습니다. 애플리케이션 격리 속성을 제거할 수 없습니다."
+        echo "packages/apps.txt 파일을 찾을 수 없습니다. 애플리케이션 격리 속성을 제거할 수 없습니다."
     fi
 }
 

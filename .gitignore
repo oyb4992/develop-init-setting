@@ -1,7 +1,6 @@
 .idea
 .DS_Store
 .mise.toml
-.vscode/settings.json
 
 # Development environment files
 .cursor/
@@ -11,8 +10,14 @@
 .roomodes
 .taskmasterconfig
 .windsurfrules
-CLAUDE.md
-GEMINI.md
-scripts/
 tasks/
 .claude/settings.local.json
+
+# Node modules and build artifacts
+**/node_modules/
+**/dist/
+**/build/
+**/*.log
+
+# Package lock files for examples
+**/package-lock.json

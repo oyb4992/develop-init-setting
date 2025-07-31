@@ -1,0 +1,8 @@
+{
+  "debug.javascript.defaultRuntimeExecutable": {
+    "pwa-node": "/Users/oyunbog/.local/share/mise/shims/node"
+  },
+  "java.jdt.ls.java.home": "/Users/oyunbog/.local/share/mise/installs/java/corretto-21.0.6.7.1",
+  "java.import.gradle.java.home": "/Users/oyunbog/.local/share/mise/installs/java/corretto-21.0.6.7.1",
+  "postman.settings.dotenv-detection-notification-visibility": false
+}
