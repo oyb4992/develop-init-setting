@@ -1,0 +1,13 @@
+{
+  "editor.fontSize": 14,
+  "editor.fontFamily": "D2Coding",
+  "editor.lineNumbers": "on",
+  "editor.wordWrap": "on",
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+  "workbench.colorTheme": "Default Dark+",
+  "terminal.integrated.fontFamily": "D2Coding",
+  "terminal.integrated.fontSize": 14
+}
