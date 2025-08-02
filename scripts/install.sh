@@ -49,6 +49,9 @@ configure_tool "Karabiner" "./config/productivity/karabiner/install.sh"
 # configure kitty
 configure_tool "Kitty" "./config/terminals/kitty/install.sh"
 
+# configure iTerm2
+# configure_tool "iTerm2" "./config/terminals/iterm2/install.sh"
+
 # install fonts
 echo "폰트를 설치합니다..."
 if [ -d "./assets/fonts" ]; then
