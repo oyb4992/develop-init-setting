@@ -10,13 +10,15 @@ A comprehensive development environment configuration repository for macOS and W
 
 ### Core Components
 
-- **Master Installation Script** (`install.sh`): Orchestrates Homebrew installation, Brewfile execution, and tool configuration
-- **Package Management** (`NewBrewfile`): Homebrew bundle file containing all CLI tools and applications (preferred over legacy `Brewfile`)  
-- **Terminal Configuration** (`zsh/`, `kitty/`, `iterm2/`): Shell and terminal emulator setup
-- **Editor Configuration** (`init.vim`, `lazyVim/`, `vscode-integration.vim`): Neovim and IDE configurations
-- **Input Systems** (`karabiner/`): macOS key remapping and input customization
-- **Window Management** (`GlazeWM/`): Windows tiling window manager configuration
-- **Productivity Tools** (`raycast/`, `popClip/`, `btt-workflow/`, `hammerspoon/`): macOS automation and workflow tools
+- **Master Installation Script** (`scripts/install.sh`): Orchestrates Homebrew installation, Brewfile execution, and tool configuration
+- **Package Management** (`packages/Brewfile`): Homebrew bundle file containing all CLI tools and applications  
+- **Configuration Directory** (`config/`): Organized configuration files by category:
+  - **Terminal Configuration** (`config/terminals/`): Zsh, Kitty, iTerm2 setup
+  - **Editor Configuration** (`config/editors/`): Neovim, LazyVim, VS Code, and IDE configurations
+  - **System Configuration** (`config/system/`): System-level tools and MCP server settings
+  - **Productivity Tools** (`config/productivity/`): PopClip, BetterTouchTool workflows, AutoHotKey scripts
+  - **Window Management** (`config/window-managers/`): GlazeWM and tiling configurations
+- **Services Directory** (`services/`): Docker Compose configurations for development services (LobeChat)
 
 ### Development Tools Stack
 
@@ -48,19 +50,18 @@ This repository configures:
 ### Initial Setup
 ```bash
 # Complete environment setup
-./install.sh
+./scripts/install.sh
 
 # Individual component installation
-./zsh/install.sh           # Zsh configuration only
-./karabiner/install.sh     # Keyboard remapping setup
-./kitty/install.sh         # Terminal configuration
-./iterm2/install.sh        # iTerm2 profiles
+./config/terminals/zsh/install.sh           # Zsh configuration only
+./config/terminals/kitty/install.sh         # Terminal configuration
+./config/terminals/iterm2/install.sh        # iTerm2 profiles
 ```
 
 ### Package Management
 ```bash
-# Install/update all packages (use NewBrewfile)
-brew bundle --file=./NewBrewfile
+# Install/update all packages
+brew bundle --file=./packages/Brewfile
 
 # Check outdated packages
 brew outdated
@@ -76,13 +77,13 @@ brew cleanup
 
 **Raycast Extension Development:**
 ```bash
-cd raycast/raycast_command/[extension-name]
+cd config/productivity/raycast/raycast_command/[extension-name]
 npm run build      # Build extension for production
 npm run dev        # Development mode with hot reload
 npm run lint       # Code linting
 npm run fix-lint   # Auto-fix linting issues
 
-# Available extensions: app-cleaner, tmdb, Naver-Dictionary, custom scripts
+# Available extensions: Naver-Dictionary, custom scripts
 ```
 
 **Neovim Configuration:**
@@ -108,6 +109,10 @@ nvim ~/.config/kitty/kitty.conf           # Kitty terminal
 nvim ~/.config/nvim/init.vim              # Neovim configuration  
 nvim ~/.config/karabiner/karabiner.json   # Keyboard remapping
 nvim ~/.hammerspoon/init.lua              # System automation
+
+# Local repository configurations
+nvim config/terminals/kitty/kitty.conf    # Repository Kitty config
+nvim config/editors/init.vim              # Repository Neovim config
 ```
 
 ## Key Configuration Details
@@ -143,7 +148,7 @@ nvim ~/.hammerspoon/init.lua              # System automation
 ```bash
 # 1. Clone and setup
 git clone <repo> && cd dev-init-setting
-./install.sh
+./scripts/install.sh
 
 # 2. Post-installation verification
 brew doctor
@@ -154,8 +159,8 @@ nvim --version
 ### Daily Development Workflow
 1. **Environment**: Use configured terminal, editor, and shortcuts
 2. **Package Updates**: Regular `brew upgrade` to keep tools current
-3. **Configuration Changes**: Edit files in respective directories and reload
-4. **Extension Development**: Build and test Raycast extensions in `raycast/raycast_command/`
+3. **Configuration Changes**: Edit files in `config/` directories and reload
+4. **Extension Development**: Build and test Raycast extensions in `config/productivity/raycast/raycast_command/`
 
 ### System Maintenance
 ```bash
@@ -166,7 +171,7 @@ brew upgrade && brew cleanup
 nvim +PlugUpdate +qa
 
 # Rebuild all Raycast extensions
-find raycast/raycast_command -name package.json -execdir npm run build \;
+find config/productivity/raycast/raycast_command -name package.json -execdir npm run build \;
 ```
 
 ## Architecture Notes
@@ -178,14 +183,23 @@ find raycast/raycast_command -name package.json -execdir npm run build \;
 - **Development-ready**: Build scripts and development workflows included for custom extensions
 
 ### Security Considerations
-The installation script removes quarantine attributes from Homebrew cask-installed applications to prevent macOS security prompts. This is standard practice for development environment setup but should be noted for security awareness. Application list maintained in `apps.txt`.
+The installation script removes quarantine attributes from Homebrew cask-installed applications to prevent macOS security prompts. This is standard practice for development environment setup but should be noted for security awareness. Application list maintained in `packages/apps.txt`.
 
 ### Configuration File Locations
+
+**System Locations:**
 - **Kitty**: `~/.config/kitty/kitty.conf`
-- **Neovim**: `~/.config/nvim/init.vim` and `lazyVim/` directory
+- **Neovim**: `~/.config/nvim/init.vim`
 - **Karabiner**: `~/.config/karabiner/karabiner.json`
 - **Hammerspoon**: `~/.hammerspoon/init.lua`
-- **Zsh**: `~/.zshrc` and `zsh/` configuration directory
+- **Zsh**: `~/.zshrc`
+
+**Repository Structure:**
+- **Terminals**: `config/terminals/` (kitty, zsh, iterm2)
+- **Editors**: `config/editors/` (neovim, vscode, ideavim)
+- **System Tools**: `config/system/` (mcp-server, fastfetch)
+- **Productivity**: `config/productivity/` (raycast, popclip, btt-workflow)
+- **Window Managers**: `config/window-managers/` (glazewm)
 
 ### Extension Development
 Raycast extensions are TypeScript/JavaScript projects with full development workflows including build, lint, and development modes. Each extension maintains its own `package.json` with appropriate scripts for the development lifecycle.
