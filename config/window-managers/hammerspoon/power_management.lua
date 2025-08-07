@@ -11,6 +11,7 @@ local powerManagement = {}
 -- 전역 변수들
 local currentPowerState = "unknown"
 local isLidClosed = false
+local manualCaffeineOverride = false -- 수동 카페인 설정 상태 추적
 
 -- 전원 상태 확인 (개선된 에러 처리)
 local function isOnBatteryPower()
@@ -229,9 +230,11 @@ local function handleLidStateChange()
         if isLidClosed then
             -- 뚜껑 닫힘
             if powerMode == "battery" then
-                -- 배터리 모드: BTT 종료, 카페인 OFF
+                -- 배터리 모드: BTT 종료, 카페인 OFF (수동 오버라이드 확인)
                 stopBTT()
-                setCaffeineState(false, "배터리 모드 + 뚜껑 닫힘")
+                if not manualCaffeineOverride then
+                    setCaffeineState(false, "배터리 모드 + 뚜껑 닫힘")
+                end
             else
                 -- 전원 연결: BTT 유지, 카페인 ON 유지
                 -- 아무것도 하지 않음 (현재 상태 유지)
@@ -239,15 +242,19 @@ local function handleLidStateChange()
         else
             -- 뚜껑 열림
             if powerMode == "battery" then
-                -- 배터리 모드: BTT 실행, 카페인 OFF
+                -- 배터리 모드: BTT 실행, 카페인 OFF (수동 오버라이드 확인)
                 hs.timer.doAfter(CONFIG.DELAYS.BTT_START_DELAY, startBTT)
-                setCaffeineState(false, "배터리 모드")
+                if not manualCaffeineOverride then
+                    setCaffeineState(false, "배터리 모드")
+                end
             else
-                -- 전원 연결: BTT 실행, 카페인 ON
+                -- 전원 연결: BTT 실행, 카페인 ON (수동 오버라이드 확인)
                 hs.timer.doAfter(CONFIG.DELAYS.BTT_START_DELAY, startBTT)
-                hs.timer.doAfter(CONFIG.DELAYS.SYSTEM_WAKE_DELAY, function()
-                    setCaffeineState(true, "전원 연결됨")
-                end)
+                if not manualCaffeineOverride then
+                    hs.timer.doAfter(CONFIG.DELAYS.SYSTEM_WAKE_DELAY, function()
+                        setCaffeineState(true, "전원 연결됨")
+                    end)
+                end
             end
         end
     end
@@ -261,9 +268,11 @@ local function handleSystemStateChange(eventType)
         isLidClosed = true
 
         if powerMode == "battery" then
-            -- 배터리 모드: BTT 종료, 카페인 OFF
+            -- 배터리 모드: BTT 종료, 카페인 OFF (수동 오버라이드 확인)
             stopBTT()
-            setCaffeineState(false, "배터리 모드 + 시스템 잠들기")
+            if not manualCaffeineOverride then
+                setCaffeineState(false, "배터리 모드 + 시스템 잠들기")
+            end
         else
             -- 전원 연결: BTT는 종료하지만 카페인은 유지
             -- (시스템이 잠들 때는 전원 연결이어도 BTT 종료가 합리적)
@@ -280,13 +289,17 @@ local function handleSystemStateChange(eventType)
                 startBTT()
 
                 if powerMode == "power" then
-                    -- 전원 연결: 카페인 ON
-                    hs.timer.doAfter(CONFIG.DELAYS.LID_STATE_DELAY, function()
-                        setCaffeineState(true, "시스템 깨어남 + 전원 연결됨")
-                    end)
+                    -- 전원 연결: 카페인 ON (수동 오버라이드 확인)
+                    if not manualCaffeineOverride then
+                        hs.timer.doAfter(CONFIG.DELAYS.LID_STATE_DELAY, function()
+                            setCaffeineState(true, "시스템 깨어남 + 전원 연결됨")
+                        end)
+                    end
                 else
-                    -- 배터리 모드: 카페인 OFF
-                    setCaffeineState(false, "시스템 깨어남 + 배터리 모드")
+                    -- 배터리 모드: 카페인 OFF (수동 오버라이드 확인)
+                    if not manualCaffeineOverride then
+                        setCaffeineState(false, "시스템 깨어남 + 배터리 모드")
+                    end
                 end
             end
         end)
@@ -301,6 +314,12 @@ local function handlePowerStateChange(newMode)
 
     currentPowerState = newMode
 
+    -- 수동 오버라이드가 활성화된 경우 자동 제어 건너뛰기
+    if manualCaffeineOverride then
+        print("🔧 수동 카페인 설정 활성화 - 자동 제어 건너뛰기")
+        return
+    end
+
     if newMode == "battery" then
         setCaffeineState(false, "배터리 모드")
     else
@@ -308,10 +327,28 @@ local function handlePowerStateChange(newMode)
     end
 end
 
--- 카페인 수동 토글
+-- 수동 오버라이드 해제 및 자동 제어 재활성화
+local function resetCaffeineToAuto()
+    manualCaffeineOverride = false
+    local powerMode = getCurrentPowerMode()
+    
+    -- 현재 전원 상태에 따라 자동 제어로 복귀
+    if powerMode == "battery" then
+        setCaffeineState(false, "자동 제어 복귀 - 배터리 모드")
+    else
+        setCaffeineState(true, "자동 제어 복귀 - 전원 연결됨")
+    end
+    
+    print("🔄 자동 카페인 제어 복귀")
+    hs.alert.show("🔄 자동 카페인 제어 복귀", 2)
+end
+
+-- 카페인 수동 토글 (오버라이드 플래그 설정)
 local function toggleCaffeine()
     local currentState = isCaffeineActive()
+    manualCaffeineOverride = true -- 수동 오버라이드 활성화
     setCaffeineState(not currentState, "수동 토글")
+    print("🔧 수동 카페인 설정 활성화 - 자동 제어 비활성화")
 end
 
 -- Export functions
@@ -327,6 +364,8 @@ powerManagement.handleLidStateChange = handleLidStateChange
 powerManagement.handleSystemStateChange = handleSystemStateChange
 powerManagement.handlePowerStateChange = handlePowerStateChange
 powerManagement.toggleCaffeine = toggleCaffeine
+powerManagement.resetCaffeineToAuto = resetCaffeineToAuto
 powerManagement.isLidClosed = function() return isLidClosed end
+powerManagement.isManualCaffeineOverride = function() return manualCaffeineOverride end
 
 return powerManagement
