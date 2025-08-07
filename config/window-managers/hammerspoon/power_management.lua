@@ -13,11 +13,41 @@ local currentPowerState = "unknown"
 local isLidClosed = false
 local manualCaffeineOverride = false -- 수동 카페인 설정 상태 추적
 
+-- 상수 정의
+local SCREEN_PATTERNS = {
+    "Built%-in", "Color LCD", "Liquid Retina"
+}
+
+-- 유틸리티 함수들
+local function withCache(key, ttl, fetchFn)
+    local now = os.time()
+    if systemStatusCache[key] and (now - systemStatusCache[key].timestamp) < ttl then
+        return systemStatusCache[key].value
+    end
+    
+    local value = fetchFn()
+    systemStatusCache[key] = {
+        value = value,
+        timestamp = now
+    }
+    
+    return value
+end
+
+local function safeCall(fn, ...)
+    local success, result = pcall(fn, ...)
+    if not success then
+        print("⚠️ 함수 호출 실패: " .. tostring(result))
+        return nil, result
+    end
+    return result, nil
+end
+
 -- 전원 상태 확인 (개선된 에러 처리)
 local function isOnBatteryPower()
-    local success, result = pcall(hs.battery.powerSource)
-    if not success then
-        print("⚠️ 전원 상태 확인 실패: " .. tostring(result))
+    local result, err = safeCall(hs.battery.powerSource)
+    if err then
+        print("⚠️ 전원 상태 확인 실패: " .. tostring(err))
         return false
     end
     return result == "Battery Power"
@@ -27,56 +57,52 @@ local function getCurrentPowerMode()
     return isOnBatteryPower() and "battery" or "power"
 end
 
--- BTT 관리 함수들 (개선된 다중 방식 감지 및 에러 처리)
-local function isBTTRunning()
-    -- 캐시된 결과가 있으면 사용 (성능 최적화)
-    local cacheKey = "btt_running"
-    local now = os.time()
-    if systemStatusCache[cacheKey] and (now - systemStatusCache[cacheKey].timestamp) < 2 then
-        return systemStatusCache[cacheKey].value
-    end
+-- BTT 감지 방법들
+local function tryBundleIdDetection()
+    local bttApp, err = safeCall(hs.application.find, CONFIG.BTT.BUNDLE_ID)
+    return bttApp and bttApp:isRunning()
+end
 
-    local isRunning = false
+local function tryAppNameDetection()
+    local bttApp, err = safeCall(hs.application.find, CONFIG.BTT.APP_NAME)
+    return bttApp and bttApp:isRunning()
+end
 
-    -- 방법 1: Bundle ID로 찾기 (가장 신뢰할 수 있는 방법)
-    local success, bttApp = pcall(hs.application.find, CONFIG.BTT.BUNDLE_ID)
-    if success and bttApp and bttApp:isRunning() then
-        isRunning = true
-    else
-        -- 방법 2: 앱 이름으로 찾기
-        success, bttApp = pcall(hs.application.find, CONFIG.BTT.APP_NAME)
-        if success and bttApp and bttApp:isRunning() then
-            isRunning = true
-        else
-            -- 방법 3: 실행 중인 앱 목록에서 직접 찾기
-            local success2, runningApps = pcall(hs.application.runningApplications)
-            if success2 and runningApps then
-                for _, app in ipairs(runningApps) do
-                    local success3, bundleID = pcall(app.bundleID, app)
-                    if success3 and bundleID == CONFIG.BTT.BUNDLE_ID then
-                        isRunning = true
-                        break
-                    end
-                end
-            end
-
-            -- 방법 4: ps 명령어로 프로세스 확인 (fallback)
-            if not isRunning then
-                local output, success4 = hs.execute("ps aux | grep -i bettertouchtool | grep -v grep")
-                if success4 and output and output:find("BetterTouchTool") then
-                    isRunning = true
-                end
-            end
+local function tryRunningAppsDetection()
+    local runningApps, err = safeCall(hs.application.runningApplications)
+    if not runningApps then return false end
+    
+    for _, app in ipairs(runningApps) do
+        local bundleID, err = safeCall(app.bundleID, app)
+        if bundleID == CONFIG.BTT.BUNDLE_ID then
+            return true
         end
     end
+    return false
+end
 
-    -- 결과 캐싱
-    systemStatusCache[cacheKey] = {
-        value = isRunning,
-        timestamp = now
-    }
+local function tryProcessListDetection()
+    local output, success = hs.execute("ps aux | grep -i bettertouchtool | grep -v grep")
+    return success and output and output:find("BetterTouchTool") ~= nil
+end
 
-    return isRunning
+-- BTT 관리 함수들 (리팩토링된 감지 로직)
+local function isBTTRunning()
+    return withCache("btt_running", 2, function()
+        local detectionMethods = {
+            tryBundleIdDetection,
+            tryAppNameDetection, 
+            tryRunningAppsDetection,
+            tryProcessListDetection
+        }
+        
+        for _, method in ipairs(detectionMethods) do
+            if method() then
+                return true
+            end
+        end
+        return false
+    end)
 end
 
 local function startBTT()
@@ -85,114 +111,103 @@ local function startBTT()
     end
 
     -- 첫 번째 시도: Bundle ID로 실행
-    local success, result = pcall(hs.application.launchOrFocus, CONFIG.BTT.BUNDLE_ID)
-    if success and result then
+    local result, err = safeCall(hs.application.launchOrFocus, CONFIG.BTT.BUNDLE_ID)
+    if not err and result then
         hs.alert.show("🎮 BTT 실행됨", 2)
         return true
     end
 
     -- 두 번째 시도: 앱 이름으로 실행
-    success, result = pcall(hs.application.launchOrFocus, CONFIG.BTT.APP_NAME)
-    if success and result then
+    result, err = safeCall(hs.application.launchOrFocus, CONFIG.BTT.APP_NAME)
+    if not err and result then
         hs.alert.show("🎮 BTT 실행됨", 2)
         return true
     end
 
     -- 실행 실패
-    print("⚠️ BTT 실행 실패 - Bundle ID: " .. tostring(result))
+    print("⚠️ BTT 실행 실패: " .. tostring(err))
     hs.alert.show("❌ BTT 실행 실패", 3)
     return false
 end
 
 local function stopBTT()
-    local success, bttApp = pcall(hs.application.find, CONFIG.BTT.BUNDLE_ID)
-    if success and bttApp and bttApp:isRunning() then
-        local killSuccess, killResult = pcall(bttApp.kill, bttApp)
-        if killSuccess then
+    local bttApp, err = safeCall(hs.application.find, CONFIG.BTT.BUNDLE_ID)
+    if not err and bttApp and bttApp:isRunning() then
+        local _, killErr = safeCall(bttApp.kill, bttApp)
+        if not killErr then
             hs.alert.show("🎮 BTT 종료됨", 2)
             return true
         else
-            print("⚠️ BTT 종료 실패: " .. tostring(killResult))
+            print("⚠️ BTT 종료 실패: " .. tostring(killErr))
             return false
         end
     end
     return true -- 이미 종료된 상태
 end
 
--- 화면(모니터) 상태 확인 함수들 (개선된 에러 처리 및 캐싱)
+-- 화면(모니터) 상태 확인 함수들 (리팩토링된 캐시 사용)
 local function getScreenCount()
-    local cacheKey = "screen_count"
-    local now = os.time()
-    if systemStatusCache[cacheKey] and (now - systemStatusCache[cacheKey].timestamp) < 1 then
-        return systemStatusCache[cacheKey].value
-    end
-
-    local success, screens = pcall(hs.screen.allScreens)
-    local count = success and #screens or 0
-
-    systemStatusCache[cacheKey] = {
-        value = count,
-        timestamp = now
-    }
-
-    return count
+    return withCache("screen_count", 1, function()
+        local screens, err = safeCall(hs.screen.allScreens)
+        return screens and #screens or 0
+    end)
 end
 
 local function hasBuiltinScreen()
-    local cacheKey = "builtin_screen"
-    local now = os.time()
-    if systemStatusCache[cacheKey] and (now - systemStatusCache[cacheKey].timestamp) < 1 then
-        return systemStatusCache[cacheKey].value
-    end
-
-    local hasBuiltin = false
-    local success, screens = pcall(hs.screen.allScreens)
-
-    if success and screens then
+    return withCache("builtin_screen", 1, function()
+        local screens, err = safeCall(hs.screen.allScreens)
+        if not screens then return false end
+        
         for _, screen in ipairs(screens) do
-            local success2, name = pcall(screen.name, screen)
-            name = success2 and name or ""
-            if name:match("Built%-in") or name:match("Color LCD") or name:match("Liquid Retina") then
-                hasBuiltin = true
-                break
+            local name, err = safeCall(screen.name, screen)
+            if name then
+                for _, pattern in ipairs(SCREEN_PATTERNS) do
+                    if name:match(pattern) then
+                        return true
+                    end
+                end
             end
         end
+        return false
+    end)
+end
+
+-- 현재 카페인 상태 확인 (개선된 에러 처리)
+local function isCaffeineActive()
+    local result, err = safeCall(hs.caffeinate.get, "displayIdle")
+    if err then
+        print("⚠️ 카페인 상태 확인 실패: " .. tostring(err))
+        return false
     end
-
-    systemStatusCache[cacheKey] = {
-        value = hasBuiltin,
-        timestamp = now
-    }
-
-    return hasBuiltin
+    return result
 end
 
 -- 카페인 상태 직접 제어 (개선된 에러 처리)
 local function setCaffeineState(enabled, reason)
-    local success, currentState = pcall(hs.caffeinate.get, "displayIdle")
-    if not success then
-        print("⚠️ 카페인 상태 확인 실패: " .. tostring(currentState))
+    local currentState, err = safeCall(hs.caffeinate.get, "displayIdle")
+    if err then
+        print("⚠️ 카페인 상태 확인 실패: " .. tostring(err))
         return false
     end
 
     if enabled and not currentState then
         -- 카페인 활성화 (디스플레이가 꺼지지 않도록)
-        local setSuccess, setResult = pcall(hs.caffeinate.set, "displayIdle", true)
-        if setSuccess then
+        local _, setErr = safeCall(hs.caffeinate.set, "displayIdle", true)
+        if not setErr then
             hs.alert.show("☕ 카페인 활성화: " .. reason, 3)
             return true
         else
-            print("⚠️ 카페인 활성화 실패: " .. tostring(setResult))
+            print("⚠️ 카페인 활성화 실패: " .. tostring(setErr))
             return false
         end
     elseif not enabled and currentState then
         -- 카페인 비활성화
-        local setSuccess, setResult = pcall(hs.caffeinate.set, "displayIdle", false)
-        if setSuccess then
+        local _, setErr = safeCall(hs.caffeinate.set, "displayIdle", false)
+        if not setErr then
             hs.alert.show("😴 카페인 비활성화: " .. reason, 3)
             return true
         else
-            print("⚠️ 카페인 비활성화 실패: " .. tostring(setResult))
+            print("⚠️ 카페인 비활성화 실패: " .. tostring(setErr))
             return false
         end
     end
@@ -200,14 +215,12 @@ local function setCaffeineState(enabled, reason)
     return true
 end
 
--- 현재 카페인 상태 확인 (개선된 에러 처리)
-local function isCaffeineActive()
-    local success, result = pcall(hs.caffeinate.get, "displayIdle")
-    if not success then
-        print("⚠️ 카페인 상태 확인 실패: " .. tostring(result))
-        return false
+-- 조건부 카페인 제어 (수동 오버라이드 고려)
+local function setCaffeineStateIfAuto(enabled, reason)
+    if manualCaffeineOverride then
+        return true -- 수동 모드에서는 아무것도 하지 않음
     end
-    return result
+    return setCaffeineState(enabled, reason)
 end
 
 -- MacBook 뚜껑 상태 감지 및 자동 제어 (BTT + 카페인)
@@ -230,11 +243,9 @@ local function handleLidStateChange()
         if isLidClosed then
             -- 뚜껑 닫힘
             if powerMode == "battery" then
-                -- 배터리 모드: BTT 종료, 카페인 OFF (수동 오버라이드 확인)
+                -- 배터리 모드: BTT 종료, 카페인 OFF
                 stopBTT()
-                if not manualCaffeineOverride then
-                    setCaffeineState(false, "배터리 모드 + 뚜껑 닫힘")
-                end
+                setCaffeineStateIfAuto(false, "배터리 모드 + 뚜껑 닫힘")
             else
                 -- 전원 연결: BTT 유지, 카페인 ON 유지
                 -- 아무것도 하지 않음 (현재 상태 유지)
@@ -242,19 +253,15 @@ local function handleLidStateChange()
         else
             -- 뚜껑 열림
             if powerMode == "battery" then
-                -- 배터리 모드: BTT 실행, 카페인 OFF (수동 오버라이드 확인)
+                -- 배터리 모드: BTT 실행, 카페인 OFF
                 hs.timer.doAfter(CONFIG.DELAYS.BTT_START_DELAY, startBTT)
-                if not manualCaffeineOverride then
-                    setCaffeineState(false, "배터리 모드")
-                end
+                setCaffeineStateIfAuto(false, "배터리 모드")
             else
-                -- 전원 연결: BTT 실행, 카페인 ON (수동 오버라이드 확인)
+                -- 전원 연결: BTT 실행, 카페인 ON
                 hs.timer.doAfter(CONFIG.DELAYS.BTT_START_DELAY, startBTT)
-                if not manualCaffeineOverride then
-                    hs.timer.doAfter(CONFIG.DELAYS.SYSTEM_WAKE_DELAY, function()
-                        setCaffeineState(true, "전원 연결됨")
-                    end)
-                end
+                hs.timer.doAfter(CONFIG.DELAYS.SYSTEM_WAKE_DELAY, function()
+                    setCaffeineStateIfAuto(true, "전원 연결됨")
+                end)
             end
         end
     end
@@ -268,11 +275,9 @@ local function handleSystemStateChange(eventType)
         isLidClosed = true
 
         if powerMode == "battery" then
-            -- 배터리 모드: BTT 종료, 카페인 OFF (수동 오버라이드 확인)
+            -- 배터리 모드: BTT 종료, 카페인 OFF
             stopBTT()
-            if not manualCaffeineOverride then
-                setCaffeineState(false, "배터리 모드 + 시스템 잠들기")
-            end
+            setCaffeineStateIfAuto(false, "배터리 모드 + 시스템 잠들기")
         else
             -- 전원 연결: BTT는 종료하지만 카페인은 유지
             -- (시스템이 잠들 때는 전원 연결이어도 BTT 종료가 합리적)
@@ -289,17 +294,13 @@ local function handleSystemStateChange(eventType)
                 startBTT()
 
                 if powerMode == "power" then
-                    -- 전원 연결: 카페인 ON (수동 오버라이드 확인)
-                    if not manualCaffeineOverride then
-                        hs.timer.doAfter(CONFIG.DELAYS.LID_STATE_DELAY, function()
-                            setCaffeineState(true, "시스템 깨어남 + 전원 연결됨")
-                        end)
-                    end
+                    -- 전원 연결: 카페인 ON
+                    hs.timer.doAfter(CONFIG.DELAYS.LID_STATE_DELAY, function()
+                        setCaffeineStateIfAuto(true, "시스템 깨어남 + 전원 연결됨")
+                    end)
                 else
-                    -- 배터리 모드: 카페인 OFF (수동 오버라이드 확인)
-                    if not manualCaffeineOverride then
-                        setCaffeineState(false, "시스템 깨어남 + 배터리 모드")
-                    end
+                    -- 배터리 모드: 카페인 OFF
+                    setCaffeineStateIfAuto(false, "시스템 깨어남 + 배터리 모드")
                 end
             end
         end)
@@ -314,16 +315,10 @@ local function handlePowerStateChange(newMode)
 
     currentPowerState = newMode
 
-    -- 수동 오버라이드가 활성화된 경우 자동 제어 건너뛰기
-    if manualCaffeineOverride then
-        print("🔧 수동 카페인 설정 활성화 - 자동 제어 건너뛰기")
-        return
-    end
-
     if newMode == "battery" then
-        setCaffeineState(false, "배터리 모드")
+        setCaffeineStateIfAuto(false, "배터리 모드")
     else
-        setCaffeineState(true, "전원 연결됨")
+        setCaffeineStateIfAuto(true, "전원 연결됨")
     end
 end
 
@@ -343,12 +338,27 @@ local function resetCaffeineToAuto()
     hs.alert.show("🔄 자동 카페인 제어 복귀", 2)
 end
 
--- 카페인 수동 토글 (오버라이드 플래그 설정)
+-- 카페인 수동 토글 (스마트 오버라이드 설정)
 local function toggleCaffeine()
     local currentState = isCaffeineActive()
-    manualCaffeineOverride = true -- 수동 오버라이드 활성화
-    setCaffeineState(not currentState, "수동 토글")
-    print("🔧 수동 카페인 설정 활성화 - 자동 제어 비활성화")
+    local newState = not currentState
+    local powerMode = getCurrentPowerMode()
+    
+    -- 자동 제어와 일치하는지 확인
+    local autoState = (powerMode == "power") -- 전원 연결시 true, 배터리시 false
+    
+    if newState == autoState then
+        -- 자동 제어와 일치하면 자동 모드로 복귀
+        manualCaffeineOverride = false
+        setCaffeineState(newState, "자동 제어 복귀 - 수동 토글")
+        print("🔄 자동 카페인 제어 복귀 (설정 일치)")
+        hs.alert.show("🔄 자동 카페인 제어 복귀", 2)
+    else
+        -- 자동 제어와 불일치하면 수동 모드 유지
+        manualCaffeineOverride = true
+        setCaffeineState(newState, "수동 토글")
+        print("🔧 수동 카페인 설정 활성화 - 자동 제어 비활성화")
+    end
 end
 
 -- Export functions
