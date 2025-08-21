@@ -1,12 +1,24 @@
-# Path and environment variables
+# ------------------------------------------------------------------------------
+# PATH and Environment Variables
+# ------------------------------------------------------------------------------
 export HOMEBREW_PREFIX="/opt/homebrew"
 export PATH=$HOMEBREW_PREFIX/bin:$PATH
 export PATH=$HOMEBREW_PREFIX/sbin:$PATH
 export PATH="$PATH:/Users/oyunbog/.dotnet/tools"
 export PATH=$HOMEBREW_PREFIX/opt/luajit/bin:$PATH
+export PATH="$PATH:/Users/oyunbog/.local/bin" # From pipx
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
 export DOTNET_ROOT="$HOMEBREW_PREFIX/Cellar/dotnet@8/8.0.13/libexec"
 export LANG=en_US.UTF-8
 
+export PATH="$PATH:/usr/local/bin" # System binary override prevention
+# ------------------------------------------------------------------------------
+# Shell Startup
+# ------------------------------------------------------------------------------
 # Run fastfetch
 #fastfetch
 flashfetch
@@ -16,6 +28,9 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# ------------------------------------------------------------------------------
+# Plugin Management (zplug)
+# ------------------------------------------------------------------------------
 # Initialize zplug
 export ZPLUG_HOME=$HOMEBREW_PREFIX/opt/zplug
 if [[ -f $ZPLUG_HOME/init.zsh ]]; then
@@ -27,9 +42,6 @@ zplug "zsh-users/zsh-completions",              defer:0
 zplug "zsh-users/zsh-autosuggestions",          defer:1, on:"zsh-users/zsh-completions"
 zplug "zsh-users/zsh-syntax-highlighting",      defer:1, on:"zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-history-substring-search", defer:2, on:"zsh-users/zsh-syntax-highlighting"
-
-# zplug "zsh-users/zsh-syntax-highlighting", defer:2
-# zplug "zsh-users/zsh-autosuggestions", defer:2
 
 zplug "lib/completion",   from:oh-my-zsh
 zplug "lib/key-bindings", from:oh-my-zsh
@@ -57,62 +69,34 @@ fi
 # Load plugins
 zplug load
 
+# ------------------------------------------------------------------------------
 # Aliases
+# ------------------------------------------------------------------------------
 alias python="$HOMEBREW_PREFIX/bin/python3"
 alias ls='lsd'
 alias ll='ls -alhF'
 alias vim='nvim'
 alias vi='nvim'
 alias cat="bat"
+alias buuc='brew update && brew upgrade && brew cleanup'
 
-# ============= VIM MODE CONFIGURATION =============
-# vim 모드 활성화
-bindkey -v
-
-# 모드 전환 시간 단축 (기본값 0.4초 → 0.1초)
-export KEYTIMEOUT=1
-
-# 현재 모드 표시를 위한 커서 변경
-function zle-keymap-select {
-  if [[ ${KEYMAP} == vicmd ]] ||
-     [[ $1 = 'block' ]]; then
-    echo -ne '\e[1 q'  # 블록 커서 (normal 모드)
-  elif [[ ${KEYMAP} == main ]] ||
-       [[ ${KEYMAP} == viins ]] ||
-       [[ ${KEYMAP} == '' ]] ||
-       [[ $1 = 'beam' ]]; then
-    echo -ne '\e[5 q'  # 빔 커서 (insert 모드)
-  fi
-}
-zle -N zle-keymap-select
-
-# 라인 에디터 시작 시 insert 모드
-function zle-line-init() {
-    echo -ne "\e[5 q"
-}
-zle -N zle-line-init
-
-# normal 모드에서 v로 에디터 열기 
-autoload -Uz edit-command-line
-zle -N edit-command-line
-bindkey -M vicmd v edit-command-line
-# ================================================
-
+# ------------------------------------------------------------------------------
+# Tooling Configurations & Initializations
+# ------------------------------------------------------------------------------
 # FZF configuration
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 function fzf-view() {
-    fzf --preview '[[ $(file --mime {}) =~ binary ]] &&
+    fzf --preview '''[[ $(file --mime {}) =~ binary ]] &&
                   echo {} is a binary file ||
                   (bat --color=always {} ||
-                  cat {}) 2> /dev/null | head -500'
+                  cat {}) 2> /dev/null | head -500'''
 }
 
-eval "$(mise activate zsh)"
+# bun completions
+[ -s "/Users/oyunbog/.bun/_bun" ] && source "/Users/oyunbog/.bun/_bun"
 
-export PATH="$PATH:/usr/local/bin"  # 시스템 바이너리 오버라이드 방지
+# mise
+eval "$(mise activate zsh)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# Created by `pipx` on 2025-06-04 14:24:46
-export PATH="$PATH:/Users/oyunbog/.local/bin"
