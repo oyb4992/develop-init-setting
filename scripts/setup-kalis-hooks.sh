@@ -9,7 +9,7 @@ if [ -n "$BRANCH_NAME" ] && [ "$2" != "merge" ] && [ "$2" != "squash" ]; then
     ISSUE_NUMBER=$(echo "$BRANCH_NAME" | grep -o "KALIS-[0-9]\+")
 
     if [ -n "$ISSUE_NUMBER" ] && ! grep -q "$ISSUE_NUMBER" "$1"; then
-        sed -i.bak "1s/^/[$ISSUE_NUMBER] /" "$1"
+        sed -i '.bak' "1s/^/[$ISSUE_NUMBER] /" "$1"
     fi
 fi'
 

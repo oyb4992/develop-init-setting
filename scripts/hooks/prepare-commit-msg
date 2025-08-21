@@ -11,7 +11,7 @@ if [ -n "$BRANCH_NAME" ] && [ "$2" != "merge" ] && [ "$2" != "squash" ]; then
 
         # 이미 이슈 번호가 포함되어 있는지 확인
         if ! grep -q "$ISSUE_NUMBER" "$1"; then
-            sed -i.bak "1s/^/$PREFIX /" "$1"
+            sed -i '.bak' "1s/^/$PREFIX /" "$1"
         fi
     fi
 fi
