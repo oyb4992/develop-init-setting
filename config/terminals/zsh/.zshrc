@@ -78,7 +78,16 @@ alias ll='ls -alhF'
 alias vim='nvim'
 alias vi='nvim'
 alias cat="bat"
-alias buuc='brew update && brew upgrade && brew cleanup'
+alias brew-maint='brew update && brew upgrade && brew cleanup && brew doctor'
+alias d-img-prune=docker image prune -f
+alias npm-cache-clean=npm cache clean --force
+alias dock-restart=killall Dock
+alias brew services=brew services list
+# alias dc-up='docker-compose up -d'
+# alias dc-stop='docker-compose stop'
+alias lc-update='docker stop lobe-chat && docker rm lobe-chat && docker pull lobehub/lobe-chat && docker run -d -p 3210:3210 -e OPENAI_API_KEY=sk-xxxx -e ACCESS_CODE=lobe66 --name lobe-chat lobehub/lobe-chat'
+alias lc-start='docker start lobe-chat && docker ps'
+alias lc-stop='docker stop lobe-chat && docker ps'
 
 # ------------------------------------------------------------------------------
 # Tooling Configurations & Initializations
@@ -91,6 +100,30 @@ function fzf-view() {
                   (bat --color=always {} ||
                   cat {}) 2> /dev/null | head -500'''
 }
+
+ # Brew 서비스 시작 (fzf로 선택)
+ function bstart() {
+   # 1. `brew services list`: 서비스 목록을 가져옵니다.
+   # 2. `awk 'NR>1 {print $1}'`: 헤더를 제외하고 서비스 이름만 추출합니다.
+   # 3. `fzf`: fzf를 통해 목록에서 하나를 선택하게 합니다.
+   # 4. 선택된 서비스 이름을 `brew services start`에 전달합니다.
+   local service_to_start=$(brew services list | awk 'NR>1 {print $1}' | fzf)
+ 
+   # fzf에서 ESC를 누르거나 선택하지 않은 경우를 대비
+   if [[ -n "$service_to_start" ]]; then
+     brew services start "$service_to_start"
+   fi
+ }
+ 
+ # Brew 서비스 종료 (fzf로 선택)
+ function bstop() {
+   # `grep started`: 실행 중인 서비스만 필터링합니다.
+   local service_to_stop=$(brew services list | grep started | awk '{print $1}' | fzf)
+ 
+   if [[ -n "$service_to_stop" ]]; then
+     brew services stop "$service_to_stop"
+   fi
+ }
 
 # bun completions
 [ -s "/Users/oyunbog/.bun/_bun" ] && source "/Users/oyunbog/.bun/_bun"
