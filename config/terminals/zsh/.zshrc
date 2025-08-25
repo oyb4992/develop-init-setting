@@ -79,10 +79,10 @@ alias vim='nvim'
 alias vi='nvim'
 alias cat="bat"
 alias brew-maint='brew update && brew upgrade && brew cleanup && brew doctor'
-alias d-img-prune=docker image prune -f
-alias npm-cache-clean=npm cache clean --force
-alias dock-restart=killall Dock
-alias brew services=brew services list
+alias d-img-prune='docker image prune -f'
+alias npm-cache-clean='npm cache clean --force'
+alias dock-restart='killall Dock'
+alias brew-services='brew services list'
 # alias dc-up='docker-compose up -d'
 # alias dc-stop='docker-compose stop'
 alias lc-update='docker stop lobe-chat && docker rm lobe-chat && docker pull lobehub/lobe-chat && docker run -d -p 3210:3210 -e OPENAI_API_KEY=sk-xxxx -e ACCESS_CODE=lobe66 --name lobe-chat lobehub/lobe-chat'
