@@ -39,7 +39,7 @@ set clipboard+=ideaput,unnamed
 " 줄 번호 표시
 set number
 " 상대 줄 번호
-set relativenumber
+" set relativenumber
 " 문맥 줄 수
 set scrolloff=4
 " " 반올림 들여쓰기
