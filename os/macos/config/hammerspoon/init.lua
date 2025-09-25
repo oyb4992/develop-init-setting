@@ -2,7 +2,6 @@
 -- Hammerspoon 메인 설정 파일 (모듈화 버전)
 -- 전원 관리 및 시스템 자동화 설정
 -- ========================================
-
 print("Hammerspoon 전원 관리 시스템 로드 중...")
 
 -- ========================================
@@ -121,9 +120,6 @@ print("")
 print("🧩 Spoon 플러그인 & 개발자 도구:")
 print("- 단축키 치트시트: Cmd+Shift+/ (ESC로 닫기)")
 print("- Hammerspoon 단축키 표시: Ctrl+Shift+/ (ESC로 닫기)")
-print("- 선택 텍스트 번역: Cmd+Ctrl+T")
-print("- 개발자 명령어 실행기: Cmd+Ctrl+Alt+C (자체 구현)")
+print("- 개발자 명령어 실행기: Cmd+Ctrl+Alt+D (자체 구현)")
 print("")
 print("- 프로젝트 경로는 CONFIG.YARN_PROJECTS.PROJECTS에서 설정")
-print("- 실행 시간 및 PID 추적 지원")
-
