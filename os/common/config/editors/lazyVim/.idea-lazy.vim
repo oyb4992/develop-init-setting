@@ -87,7 +87,7 @@ set commentary
 " s 액션, 예: cs"' ("를 '로 바꾸기), ds" (따옴표 제거)
 set surround
 " flash.nvim과 유사
-set easymotion
+" set easymotion
 " Jetbrains 마켓플레이스에서 사용 가능한 whichkey 플러그인 활성화
 set which-key
 set matchit
@@ -95,7 +95,7 @@ set highlightedyank
 set multiple-cursors
 set peekaboo
 set mini-ai
-set quickscope
+" set quickscope
 set vim-paragraph-motion
 set textobj-entire
 set functiontextobj
@@ -103,16 +103,16 @@ set argtextobj
 
 let g:highlightedyank_highlight_duration = 200
 
-let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
-let g:qs_primary_color = '#ff0000'
-let g:qs_secondary_color = '#00ff00'
-let g:qs_disable_for_diffs = 1
+" let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+" let g:qs_primary_color = '#ff0000'
+" let g:qs_secondary_color = '#00ff00'
+" let g:qs_disable_for_diffs = 1
 
-let g:EasyMotion_smartcase = 1
-let g:EasyMotion_do_mapping = 0
-let g:EasyMotion_startofline = 0
-let g:EasyMotion_verbose = 0
-let g:EasyMotion_keys = 'asdghklqertyuiopzxcvbnmfj'
+" let g:EasyMotion_smartcase = 1
+" let g:EasyMotion_do_mapping = 0
+" let g:EasyMotion_startofline = 0
+" let g:EasyMotion_verbose = 0
+" let g:EasyMotion_keys = 'asdghklqertyuiopzxcvbnmfj'
 
 " 키 매핑
 
@@ -553,7 +553,27 @@ vmap <C-v> <Action>(EditorPaste)
 cnoremap <C-v> <C-R>+
 
 " EasyMotion mappings - Actions using <Plug> are not converted
-nmap s <Plug>(easymotion-s2)
+" nmap s <Plug>(easymotion-s2)
+nmap s <Action>(flash.search)
+xmap s <Action>(flash.search)
+" enhance vim f (find for char in characters to the right of the current cursor)
+nmap f <Action>(flash.find)
+xmap f <Action>(flash.find)
+" enhance vim F (find for char in characters to the left of the current cursor)
+nmap F <Action>(flash.find_backward)
+xmap F <Action>(flash.find_backward)
+" enhance vim t (till for char in characters to the right of the current cursor)
+nmap t <Action>(flash.till)
+xmap t <Action>(flash.till)
+" enhance vim T (till for char in characters to the left of the current cursor)
+nmap T <Action>(flash.till_backward)
+xmap T <Action>(flash.till_backward)
+" enhance vim ; (Repeat the last f/F/t/T search)
+nmap ; <Action>(flash.repeat)
+xmap ; <Action>(flash.repeat)
+" enhance vim , (Repeat the last f/F/t/T search backward)
+nmap , <Action>(flash.repeat_backward)
+xmap , <Action>(flash.repeat_backward)
 
 " 다중 커서 관련 매핑 - Actions using <Plug> are not converted
 nmap <C-n> <Plug>NextWholeOccurrence
