@@ -131,5 +131,40 @@ function fzf-view() {
 # mise
 eval "$(mise activate zsh)"
 
+# =======================================================
+# Git 보호 로직: feat 브랜치에서 develop 직접 pull/merge 차단
+# =======================================================
+function git() {
+  # 1. 사용자가 입력한 명령어 종류 확인 (pull 또는 merge)
+  local command="$1"
+
+  if [[ "$command" == "pull" ]] || [[ "$command" == "merge" ]]; then
+    
+    # 2. 현재 브랜치 이름 확인 (에러 방지를 위해 stderr는 숨김)
+    local current_branch=$(command git symbolic-ref --short HEAD 2>/dev/null)
+
+    # 3. 입력된 모든 인자 중에서 'develop'이 포함되어 있는지 검사
+    # 예: git pull origin develop  -> 'develop' 감지
+    # 예: git merge develop        -> 'develop' 감지
+    local args="$@"
+    
+    # [조건] 현재 브랜치가 'feat'로 시작하고, 명령어 인자에 'develop'이 포함된 경우
+    if [[ "$current_branch" == feat* ]] && [[ "$args" == *"develop"* ]]; then
+        echo "🛑 [BLOCKED] 'feat' 브랜치에서 'develop'을 직접 가져올 수 없습니다."
+        echo "   --------------------------------------------------"
+        echo "   🚫 명령어: git $args"
+        echo "   📍 현재 위치: $current_branch"
+        echo "   ✅ 올바른 전략: develop -> stage -> feat 순서를 따라주세요."
+        echo "   --------------------------------------------------"
+        
+        # 실제 git 명령어를 실행하지 않고 함수 종료 (Return 1)
+        return 1 
+    fi
+  fi
+
+  # 위 조건에 걸리지 않았다면 원래 git 명령어 정상 실행
+  command git "$@"
+}
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
