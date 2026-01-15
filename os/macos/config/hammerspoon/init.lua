@@ -2,6 +2,7 @@
 -- Hammerspoon 메인 설정 파일 (모듈화 버전)
 -- 전원 관리 및 시스템 자동화 설정
 -- ========================================
+
 print("Hammerspoon 전원 관리 시스템 로드 중...")
 
 -- ========================================
@@ -29,6 +30,7 @@ local powerWatcher = nil
 local screenWatcher = nil
 local caffeineWatcher = nil
 local wifiWatcher = nil
+-- local myWatcher = nil
 
 -- ========================================
 -- 초기화 및 감지 시작
@@ -39,6 +41,32 @@ spoonsLoader.loadAllSpoons()
 
 -- 단축키 설정
 hotkeys.setupHotkeys()
+
+-- 특정 앱 이름 리스트 (여기에 앱의 정확한 이름을 추가하세요)
+local targetApps = { "Antigravity", "kitty", "Code", "Obsidian", "WebStorm", "IntelliJ IDEA" }
+
+-- ESC 키 바인딩 생성
+local escBind = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event)
+	local keyCode = event:getKeyCode()
+
+	-- 53은 ESC 키의 키코드입니다.
+	if keyCode == 53 then
+		local frontApp = hs.application.frontmostApplication():name()
+
+		-- 현재 활성화된 앱이 리스트에 있는지 확인
+		for _, appName in ipairs(targetApps) do
+			if frontApp == appName then
+				-- 영문 입력 소스로 전환 (입력 소스 ID는 시스템마다 다를 수 있음)
+				-- 보통 "com.apple.keylayout.ABC" 또는 "com.apple.keylayout.US"
+				hs.keycodes.setLayout("ABC")
+				break
+			end
+		end
+	end
+	return false -- ESC 본연의 기능은 그대로 수행하도록 함
+end)
+
+escBind:start()
 
 -- 전원 상태 변경 감지 시작
 powerWatcher = hs.battery.watcher.new(function()
@@ -55,9 +83,7 @@ screenWatcher:start()
 
 -- 시스템 잠들기/깨어나기 감지 시작
 caffeineWatcher = hs.caffeinate.watcher.new(powerManagement.handleSystemStateChange)
-caffeineWatcher:start()
-
--- 초기 상태 설정
+caffeineWatcher:start() -- 초기 상태 설정
 hs.timer.doAfter(CONFIG.DELAYS.SYSTEM_WAKE_DELAY, function()
 	-- 전원 상태 초기화
 	local initialMode = powerManagement.getCurrentPowerMode()
@@ -109,17 +135,17 @@ print("☕ 카페인 자동화:")
 print("- 전원 연결 시 자동 활성화")
 print("- 배터리 모드 시 자동 비활성화")
 print("- 뚜껑 닫기/시스템 잠들기 시 배터리 보호")
-print("- 수동 제어: Cmd+Ctrl+Alt+F")
+print("- 수동 제어: Cmd+Ctrl+Alt+f")
 print("")
 print("🎮 BTT 자동화:")
 print("- 뚜껑 닫기 → BTT 종료")
 print("- 뚜껑 열기 → BTT 실행")
 print("- 시스템 잠들기 → BTT 종료")
 print("- 시스템 깨어나기 → BTT 실행")
+print("- 시스템 상태 확인: Cmd+Ctrl+Alt+s")
 print("")
 print("🧩 Spoon 플러그인 & 개발자 도구:")
 print("- 단축키 치트시트: Cmd+Shift+/ (ESC로 닫기)")
 print("- Hammerspoon 단축키 표시: Ctrl+Shift+/ (ESC로 닫기)")
-print("- 개발자 명령어 실행기: Cmd+Ctrl+Alt+D (자체 구현)")
-print("")
-print("- 프로젝트 경로는 CONFIG.YARN_PROJECTS.PROJECTS에서 설정")
+print("- 선택 텍스트 번역: Cmd+Ctrl+T")
+print("- 개발자 명령어 실행기: Cmd+Ctrl+Alt+d (자체 구현)")
