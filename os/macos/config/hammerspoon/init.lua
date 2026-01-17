@@ -30,6 +30,12 @@ local keyboardNavigation = require("keyboard_navigation")
 -- WiFi 자동화
 local wifiAutomator = require("wifi_automator")
 
+-- Hyper Key 관리
+local capslockManager = require("capslock_manager")
+
+-- 입력 소스 시각화
+-- local visualizer = require("input_source_visualizer")
+
 -- ========================================
 -- 전역 변수 및 감시자 설정
 -- ========================================
@@ -57,6 +63,12 @@ keyboardNavigation.start()
 
 -- WiFi 자동화 시작
 wifiAutomator.start()
+
+-- Hyper Key 시작
+capslockManager.start()
+
+-- 시각화 시작
+-- visualizer.start()
 
 -- 전원 상태 변경 감지 시작
 powerWatcher = hs.battery.watcher.new(function()
