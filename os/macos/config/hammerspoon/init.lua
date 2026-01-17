@@ -24,6 +24,9 @@ local hotkeys = require("hotkeys")
 -- 입력 소스 관리 (ESC 키 바인딩)
 local inputSourceManager = require("input_source_manager")
 
+-- Vim 스타일 키보드 내비게이션
+local keyboardNavigation = require("keyboard_navigation")
+
 -- ========================================
 -- 전역 변수 및 감시자 설정
 -- ========================================
@@ -45,6 +48,9 @@ hotkeys.setupHotkeys()
 
 -- 입력 소스 관리 시작
 inputSourceManager.start()
+
+-- 키보드 내비게이션 시작
+keyboardNavigation.start()
 
 -- 전원 상태 변경 감지 시작
 powerWatcher = hs.battery.watcher.new(function()
