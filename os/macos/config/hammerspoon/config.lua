@@ -33,7 +33,26 @@ local CONFIG = {
     },
     -- 내장 키보드 타입 ID (알아내기 위해 초기에는 nil로 설정하고 콘솔 로그 확인 필요)
     -- 보통 Apple Internal Keyboard는 58(ISO), 40(ANSI) 등의 값을 가짐
-    INTERNAL_KEYBOARD_TYPE = 91
+    INTERNAL_KEYBOARD_TYPE = 91,
+
+    WIFI_AUTOMATION = {
+        HOME_SSIDS = {"MyHome5G", "KT_GiGA_5G"}, -- 집 WiFi 이름
+        WORK_SSIDS = {"Office_Guest", "Works_Staff"}, -- 회사 WiFi 이름
+        ACTIONS = {
+            HOME = {
+                volume = 50,
+                muted = false
+            },
+            WORK = {
+                volume = 0,
+                muted = true
+            },
+            DEFAULT = {
+                volume = 20,
+                muted = false
+            } -- 그 외 (카페 등)
+        }
+    }
 }
 
 -- 상태 표시 성능 향상을 위한 개선된 캐시 시스템

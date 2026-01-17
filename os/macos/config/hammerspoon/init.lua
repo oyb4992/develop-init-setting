@@ -27,6 +27,9 @@ local inputSourceManager = require("input_source_manager")
 -- Vim 스타일 키보드 내비게이션
 local keyboardNavigation = require("keyboard_navigation")
 
+-- WiFi 자동화
+local wifiAutomator = require("wifi_automator")
+
 -- ========================================
 -- 전역 변수 및 감시자 설정
 -- ========================================
@@ -51,6 +54,9 @@ inputSourceManager.start()
 
 -- 키보드 내비게이션 시작
 keyboardNavigation.start()
+
+-- WiFi 자동화 시작
+wifiAutomator.start()
 
 -- 전원 상태 변경 감지 시작
 powerWatcher = hs.battery.watcher.new(function()
