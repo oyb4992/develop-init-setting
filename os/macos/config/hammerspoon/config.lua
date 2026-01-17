@@ -24,7 +24,10 @@ local CONFIG = {
         TARGET_APPS = {"Antigravity", "kitty", "Code", "Obsidian", "WebStorm", "IntelliJ IDEA"},
         ENGLISH_LAYOUT_ID = "com.apple.keylayout.ABC",
         KOREAN_LAYOUT_ID = "com.apple.inputmethod.Korean.2SetKorean", -- 두벌식 한글 (정확한 ID)
-        RIGHT_COMMAND_KEYCODE = 54
+        RIGHT_COMMAND_KEYCODE = 54,
+        -- 내장 키보드 타입 ID (알아내기 위해 초기에는 nil로 설정하고 콘솔 로그 확인 필요)
+        -- 보통 Apple Internal Keyboard는 58(ISO), 40(ANSI) 등의 값을 가짐
+        INTERNAL_KEYBOARD_TYPE = 91
     }
 }
 

@@ -79,6 +79,16 @@ local function handleFlagsChanged(event)
     if keyCode == rightCmdCode then
         local flags = event:getFlags()
 
+        -- 키보드 타입 확인
+        local keyboardType = event:getProperty(hs.eventtap.event.properties.keyboardEventKeyboardType)
+
+        -- 내장 키보드 제한이 설정되어 있다면 체크
+        if CONFIG.INPUT_SOURCE.INTERNAL_KEYBOARD_TYPE then
+            if keyboardType ~= CONFIG.INPUT_SOURCE.INTERNAL_KEYBOARD_TYPE then
+                return false
+            end
+        end
+
         -- Command 키가 눌렸는지 확인
         if flags.cmd then
             -- 다른 수식 키(Shift, Ctrl, Alt)가 함께 눌리지 않았을 때만 활성화
