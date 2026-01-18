@@ -35,6 +35,9 @@ local keyboardNavigation = require("keyboard_navigation")
 -- Hyper Key 앱 런처
 local appLauncher = require("app_launcher")
 
+-- Window Resizing (Ctrl+Option)
+local windowResize = require("window_resize")
+
 -- Hyper Key 관리 (CapsLock Toggle)
 local capslockManager = require("capslock_manager")
 
@@ -68,6 +71,9 @@ keyboardNavigation.start()
 
 -- 앱 런처 시작
 appLauncher.start()
+
+-- 창 리사이즈 시작
+windowResize.start()
 
 -- Hyper Key (CapsLock Toggle) 시작
 capslockManager.start()

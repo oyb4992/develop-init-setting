@@ -9,7 +9,7 @@ local hyper = {"cmd", "alt", "ctrl", "shift"}
 -- 단축키 매핑 설정
 -- [키] = "앱 이름" (앱 이름은 /Applications 폴더의 이름과 정확히 일치해야 함)
 local mappings = {
-    a = "Antigravity", -- Hyper + A -> Antigravity
+    a = "Antigravity", -- Hyper + a -> Antigravity
     b = "Boop", -- Hyper + B -> Boop
     f = "Finder", -- Hyper + F -> Finder (Home directory)
     ["1"] = "IntelliJ IDEA", -- Hyper + 1 -> IntelliJ IDEA
@@ -36,7 +36,8 @@ end
 
 function appLauncher.start()
     for key, app in pairs(mappings) do
-        hs.hotkey.bind(hyper, key, function()
+        -- App: [앱이름] 형태의 설명 추가
+        hs.hotkey.bind(hyper, key, "App: " .. app, function()
             launchOrFocus(app)
         end)
     end

@@ -7,8 +7,7 @@
 --- Originally based on KSheet.spoon by ashfinal <ashfinal@gmail.com>
 ---
 --- Download: [https://github.com/Hammerspoon/Spoons/raw/master/Spoons/HSKeybindings.spoon.zip](https://github.com/Hammerspoon/Spoons/raw/master/Spoons/HSKeybindings.spoon.zip)
-
-local obj={}
+local obj = {}
 obj.__index = obj
 
 -- Metadata
@@ -19,24 +18,28 @@ obj.homepage = "https://github.com/Hammerspoon/Spoons"
 obj.license = "MIT - https://opensource.org/licenses/MIT"
 
 -- Workaround for "Dictation" menuitem
-hs.application.menuGlyphs[148]="fn fn"
+hs.application.menuGlyphs[148] = "fn fn"
 
 obj.commandEnum = {
     cmd = '⌘',
     shift = '⇧',
     alt = '⌥',
-    ctrl = '⌃',
+    ctrl = '⌃'
 }
 
 function obj:init()
-    self.sheetView = hs.webview.new({x=0, y=0, w=0, h=0})
+    self.sheetView = hs.webview.new({
+        x = 0,
+        y = 0,
+        w = 0,
+        h = 0
+    })
     self.sheetView:windowTitle("HSKeybindings")
     self.sheetView:windowStyle("utility")
     self.sheetView:allowGestures(true)
     self.sheetView:allowNewWindows(false)
     self.sheetView:level(hs.drawing.windowLevels.modalPanel)
 end
-
 
 --[[ 
   local CmdModifiers = ''
@@ -48,46 +51,57 @@ end
   local CmdKeys = CmdChar .. CmdGlyph
   menu = menu .. "<li><div class='cmdModifiers'>" .. CmdModifiers .. " " .. CmdKeys .. "</div><div class='cmdtext'>" .. " " .. val.AXTitle .. "</div></li>"
 
---]] 
+--]]
 
 local function getModifiers(modslist)
-  --print("getModifiers:" .. inspect(mods))
-  local mods = ''
-  for ix, val in ipairs(modslist) do
-    mods = mods .. obj.commandEnum[val]
-  end
-  return mods
+    -- print("getModifiers:" .. inspect(mods))
+    local mods = ''
+    for ix, val in ipairs(modslist) do
+        mods = mods .. obj.commandEnum[val]
+    end
+    return mods
 end
 
 local function processHotkeys()
-  local menu = ""
-  local col = 0
-  local allKeys = hs.hotkey.getHotkeys()
+    local menu = ""
+    local col = 0
+    local allKeys = hs.hotkey.getHotkeys()
 
-  for spoonKey, spoonTable in pairs(spoon) do
-    if spoonTable.mapping then
-      allKeys[#allKeys + 1] = { msg = "Spoon " .. spoonKey }
-      for k,v in pairs(spoonTable.mapping) do
-          allKeys[#allKeys + 1] = { msg = getModifiers(v[1]) .. " " .. v[2] .. " "  .. k }
+    for spoonKey, spoonTable in pairs(spoon) do
+        if spoonTable.mapping then
+            allKeys[#allKeys + 1] = {
+                msg = "Spoon " .. spoonKey
+            }
+            for k, v in pairs(spoonTable.mapping) do
+                allKeys[#allKeys + 1] = {
+                    msg = getModifiers(v[1]) .. " " .. v[2] .. " " .. k
+                }
+            end
         end
     end
-  end
 
-  --print(inspect(allKeys))
+    -- print(inspect(allKeys))
 
-  for ix, entry in ipairs(allKeys) do
-    if ((ix - 1) % 15) == 0 then
-      if ix > 1 then
-        menu = menu .. "</ul>"
-      end  
-      col = col + 1
-      menu = menu .. "<ul class='col col" .. col .. "'>"
+    -- 정렬 로직 추가 (msg 기준 오름차순) -> 그룹핑 효과
+    table.sort(allKeys, function(a, b)
+        local msgA = a.msg or ""
+        local msgB = b.msg or ""
+        return msgA < msgB
+    end)
+
+    for ix, entry in ipairs(allKeys) do
+        if ((ix - 1) % 15) == 0 then
+            if ix > 1 then
+                menu = menu .. "</ul>"
+            end
+            col = col + 1
+            menu = menu .. "<ul class='col col" .. col .. "'>"
+        end
+        menu = menu .. "<li><div class='cmdtext'>" .. " " .. entry.msg .. "</div></li>"
     end
-    menu = menu .. "<li><div class='cmdtext'>" .. " " .. entry.msg .. "</div></li>"
-  end
 
-  menu = menu .. "</ul>"
-  return menu
+    menu = menu .. "</ul>"
+    return menu
 end
 
 local function generateHtml()
@@ -213,10 +227,10 @@ function obj:show()
     local cscreen = hs.screen.mainScreen()
     local cres = cscreen:fullFrame()
     self.sheetView:frame({
-        x = cres.x+cres.w*0.15/2,
-        y = cres.y+cres.h*0.25/2,
-        w = cres.w*0.6,
-        h = cres.h*0.6
+        x = cres.x + cres.w * 0.15 / 2,
+        y = cres.y + cres.h * 0.25 / 2,
+        w = cres.w * 0.6,
+        h = cres.h * 0.6
     })
     local webcontent = generateHtml()
     self.sheetView:html(webcontent)
