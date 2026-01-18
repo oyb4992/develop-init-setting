@@ -1,6 +1,8 @@
 -- ========================================
 -- Hammerspoon 메인 설정 파일 (모듈화 버전)
 -- 전원 관리 및 시스템 자동화 설정
+-- 아래 명령어로 ~/.hammerspoon을 ~/.hammerspoon.bak으로 이동하고, /Users/oyunbog/IdeaProjects/dev-init-setting/os/macos/config/hammerspoon을 ~/.hammerspoon으로 링크합니다.
+-- if [ -L ~/.hammerspoon ]; then rm ~/.hammerspoon; elif [ -d ~/.hammerspoon ]; then mv ~/.hammerspoon ~/.hammerspoon.bak; fi; ln -s /Users/oyunbog/IdeaProjects/dev-init-setting/os/macos/config/hammerspoon ~/.hammerspoon
 -- ========================================
 print("Hammerspoon 전원 관리 시스템 로드 중...")
 
@@ -28,9 +30,12 @@ local inputSourceManager = require("input_source_manager")
 local keyboardNavigation = require("keyboard_navigation")
 
 -- WiFi 자동화
-local wifiAutomator = require("wifi_automator")
+-- local wifiAutomator = require("wifi_automator")
 
--- Hyper Key 관리
+-- Hyper Key 앱 런처
+local appLauncher = require("app_launcher")
+
+-- Hyper Key 관리 (CapsLock Toggle)
 local capslockManager = require("capslock_manager")
 
 -- 입력 소스 시각화
@@ -43,7 +48,7 @@ local capslockManager = require("capslock_manager")
 local powerWatcher = nil
 local screenWatcher = nil
 local caffeineWatcher = nil
-local wifiWatcher = nil
+-- local wifiWatcher = nil
 
 -- ========================================
 -- 초기화 및 감지 시작
@@ -62,9 +67,12 @@ inputSourceManager.start()
 keyboardNavigation.start()
 
 -- WiFi 자동화 시작
-wifiAutomator.start()
+-- wifiAutomator.start()
 
--- Hyper Key 시작
+-- 앱 런처 시작
+appLauncher.start()
+
+-- Hyper Key (CapsLock Toggle) 시작
 capslockManager.start()
 
 -- 시각화 시작
@@ -120,9 +128,9 @@ function reloadConfig(files)
         if caffeineWatcher then
             caffeineWatcher:stop()
         end
-        if wifiWatcher then
-            wifiWatcher:stop()
-        end
+        -- if wifiWatcher then
+        --     wifiWatcher:stop()
+        -- end
 
         -- 모듈별 정리
         inputSourceManager.stop()
