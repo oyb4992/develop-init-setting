@@ -18,17 +18,23 @@ end
 
 -- 모든 Spoon 로드
 local function loadAllSpoons()
-	-- KSheet (단축키 치트시트)
-	loadSpoon("KSheet")
+	-- SpoonInstall 먼저 로드 (필수)
+	if loadSpoon("SpoonInstall") then
+		-- SpoonInstall 설정 (자동 설치 활성화)
+		spoon.SpoonInstall.use_syncinstall = true
+		
+		-- 리포지토리 정보 업데이트 (최신 상태 유지)
+		spoon.SpoonInstall:updateAllRepos()
 
-	-- HSKeybindings (Hammerspoon 단축키 표시)
-	loadSpoon("HSKeybindings")
+		-- KSheet (단축키 치트시트)
+		spoon.SpoonInstall:andUse("KSheet")
 
-	-- PopupTranslateSelection (선택 텍스트 번역)
-	loadSpoon("PopupTranslateSelection")
+		-- HSKeybindings (Hammerspoon 단축키 표시)
+		spoon.SpoonInstall:andUse("HSKeybindings")
 
-	-- SpoonInstall (Spoon 설치)
-	loadSpoon("SpoonInstall")
+		-- PopupTranslateSelection (선택 텍스트 번역)
+		spoon.SpoonInstall:andUse("PopupTranslateSelection")
+	end
 end
 
 -- Export functions
