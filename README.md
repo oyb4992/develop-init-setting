@@ -17,7 +17,7 @@ macOS와 Windows 시스템을 위한 포괄적인 개발 환경 구성 저장소
 ## ✨ 주요 특징
 
 - **🎯 원클릭 설치**: 하나의 스크립트로 완전한 개발 환경 구축
-- **🔧 모듈식 구성**: 기능별로 정리된 설정으로 쉬운 커스터마이징
+- **🔧 모듈식 구성**: OS 및 기능별로 분리된 설정 (`os/common`, `os/macos`)
 - **💻 크로스 플랫폼**: macOS와 Windows 시스템 모두 지원
 - **📦 패키지 관리**: Homebrew를 통한 자동화된 설치
 - **⚡ 성능 최적화**: 빠른 터미널, 효율적인 에디터, 생산성 도구
@@ -31,8 +31,8 @@ git clone <repository-url>
 cd dev-init-setting
 
 # 설치 스크립트 실행
-chmod +x scripts/install.sh
-./scripts/install.sh
+chmod +x install.sh
+./install.sh
 ```
 
 **끝!** 개발 환경이 자동으로 구성됩니다.
@@ -47,66 +47,26 @@ dev-init-setting/
 ├── 📝 shrimp-rules.md              # Shrimp 작업 규칙
 ├── 📄 .gitignore                   # Git 무시 규칙
 ├── 
-├── 📁 config/                      # 모든 설정 파일
-│   ├── 📁 editors/                 # 에디터 설정
-│   │   ├── init.vim                # Neovim 설정
-│   │   ├── vscode-integration.vim  # VS Code Vim 통합
-│   │   ├── lazyVim/                # LazyVim 배포 구성
-│   │   └── sublime_text/           # Sublime Text 설정
-│   ├── 📁 terminals/               # 터미널 설정
-│   │   ├── kitty/                  # Kitty 터미널 설정
-│   │   │   ├── install.sh          # Kitty 설치 스크립트
-│   │   │   └── kitty.conf          # Kitty 설정 파일
-│   │   ├── iterm2/                 # iTerm2 프로필 및 설정
-│   │   │   ├── install.sh          # iTerm2 설치 스크립트
-│   │   │   ├── com.googlecode.iterm2.plist
-│   │   │   └── iTerm2 State.itermexport
-│   │   └── zsh/                    # Zsh 쉘 설정
-│   │       └── install.sh          # Zsh 설치 스크립트
-│   ├── 📁 window-managers/         # 윈도우 관리
-│   │   ├── GlazeWM/                # Windows 타일링 매니저
-│   │   │   └── config.yaml         # GlazeWM 설정
-│   │   └── hammerspoon/            # macOS 자동화
-│   │       ├── init.lua            # 메인 설정 파일
-│   │       ├── config.lua          # 기본 설정
-│   │       ├── Spoons/             # Hammerspoon 확장
-│   │       └── *.lua               # 각종 모듈 파일들
-│   ├── 📁 productivity/            # 생산성 도구
-│   │   ├── AutoHotKey_scripts/     # AutoHotkey 스크립트 (Windows)
-│   │   │   └── esc.ahk             # ESC 키 매핑
-│   │   ├── karabiner/              # 키 리매핑 (macOS)
-│   │   │   ├── install.sh          # Karabiner 설치 스크립트
-│   │   │   └── karabiner.json      # 키 매핑 설정
-│   │   ├── raycast/                # 런처 및 생산성 도구
-│   │   │   ├── *.rayconfig         # Raycast 설정 파일
-│   │   │   └── raycast_command/    # 사용자 정의 명령어들
-│   │   ├── popClip/                # 텍스트 조작 확장
-│   │   │   └── Extension/          # PopClip 확장 기능들
-│   │   └── btt-workflow/           # BetterTouchTool 워크플로우
-│   └── 📁 system/                  # 시스템 설정
-│       ├── fastfetch/              # 시스템 정보 도구
-│       │   └── config.jsonc        # Fastfetch 설정
-│       └── mcp-server-git/         # MCP 서버 설정
-│           └── mcp_settings.json   # MCP 설정 파일
+├── 📁 os/                          # OS별 및 공통 설정
+│   ├── 📁 common/                  # 공통 설정
+│   │   ├── 📁 config/              # 공통 도구 설정 (Kitty, iTerm2, Neovim, Zsh 등)
+│   │   ├── 📁 assets/              # 정적 자산 (폰트 등)
+│   │   └── 📜 install.sh           # 공통 설치 스크립트
+│   │
+│   ├── 📁 macos/                   # macOS 전용 설정
+│   │   ├── 📁 config/              # macOS 전용 도구 설정 (AeroSpace, Hammerspoon, Raycast 등)
+│   │   ├── 📁 packages/            # 패키지 관리 (Brewfile)
+│   │   └── 📜 install.sh           # macOS 설치 스크립트
+│   │
+│   └── 📁 windows/                 # Windows 전용 설정
+│       └── � install.sh           # Windows 설치 스크립트
 ├── 
-├── 📁 packages/                    # 패키지 관리
-│   ├── Brewfile                    # Homebrew 번들 파일
-│   └── apps.txt                    # 애플리케이션 목록
+├── � install.sh                   # 메인 설치 스크립트
 ├── 
-├── 📁 scripts/                     # 설치 스크립트
-│   ├── install.sh                  # 메인 설치 스크립트
-│   └── install/                    # 개별 설치 스크립트 (예정)
-├── 
-├── 📁 assets/                      # 정적 자산
-│   └── fonts/                      # 사용자 정의 폰트
-│       └── D2Coding-Ver1.3.2-20180524-all.ttc
-├── 
-├── 📁 docs/                        # 문서 디렉토리
-│   └── setup-guides/               # 설정 가이드 (예정)
-├── 
-└── 📁 services/                    # Docker 서비스
-    └── lobechat/                   # LobeChat 설정
-        └── docker-compose.yml      # Docker Compose 파일
+├── 📁 services/                    # Docker 서비스
+│   └── lobechat/                   # LobeChat 설정
+│       └── docker-compose.yml      # Docker Compose 파일
+└── 
 ```
 
 ## 🔧 설치 방법
@@ -121,19 +81,19 @@ dev-init-setting/
 
 ```bash
 # 전체 설치 (권장)
-./scripts/install.sh
+./install.sh
 ```
 
 ### 수동 설치
 
 ```bash
 # Homebrew 패키지만 설치
-brew bundle --file=./packages/Brewfile
+brew bundle --file=./os/macos/packages/Brewfile
 
 # 개별 도구 설정
-./config/terminals/zsh/install.sh
-./config/productivity/karabiner/install.sh
-./config/terminals/kitty/install.sh
+./os/common/config/zsh/install.sh
+./os/macos/config/karabiner/install.sh
+./os/common/config/kitty/install.sh
 ```
 
 ## ⚙️ 설정 가이드
@@ -143,7 +103,8 @@ brew bundle --file=./packages/Brewfile
 1. **터미널 재시작**: 모든 쉘 설정 적용
 2. **Raycast 설정**: 단축키 및 확장 기능 설정
 3. **Karabiner 설정**: 키보드 수정 기능 활성화
-4. **Kitty 확인**: 터미널 외관 및 기능 확인
+4. **AeroSpace 설정**: 창 관리자 활성화 및 단축키 확인
+5. **Kitty 확인**: 터미널 외관 및 기능 확인
 
 ### 커스터마이징
 
@@ -155,13 +116,13 @@ brew bundle --file=./packages/Brewfile
 커스터마이징 예시:
 ```bash
 # Kitty 터미널 설정 편집
-vim config/terminals/kitty/kitty.conf
+vim os/common/config/kitty/kitty.conf
 
 # Zsh 설정 수정
-vim config/terminals/zsh/.zshrc
+vim os/common/config/zsh/.zshrc
 
 # 키보드 매핑 업데이트
-vim config/productivity/karabiner/karabiner.json
+vim os/macos/config/karabiner/karabiner.json
 ```
 
 ## 🛠️ 도구 개요
@@ -172,8 +133,8 @@ vim config/productivity/karabiner/karabiner.json
 - **IntelliJ IDEA**: Vim 플러그인 설정
 
 ### 터미널
-- **Kitty**: 빠른 GPU 가속 터미널
-- **iTerm2**: macOS용 기능이 풍부한 터미널
+- **Kitty**: 빠른 GPU 가속 터미널 (메인)
+- **iTerm2**: macOS용 기능이 풍부한 터미널 (보조)
 - **Zsh**: Oh-My-Zsh로 향상된 쉘
 
 ### 생산성 도구 (macOS)
@@ -183,7 +144,7 @@ vim config/productivity/karabiner/karabiner.json
 - **Hammerspoon**: 시스템 자동화 스크립팅
 
 ### 윈도우 관리
-- **AeroSpace**: macOS용 타일링 윈도우 매니저
+- **AeroSpace**: macOS용 타일링 윈도우 매니저 (주력)
 - **GlazeWM**: Windows용 타일링 윈도우 매니저
 - **SKHD**: 단순 핫키 데몬
 
@@ -202,6 +163,7 @@ vim config/productivity/karabiner/karabiner.json
 - ✅ Hammerspoon을 통한 시스템 자동화
 - ✅ Raycast 생산성 도구 모음
 - ✅ BetterTouchTool을 통한 제스처 커스터마이징
+- ✅ AeroSpace를 사용한 강력한 타일링 윈도우 관리
 
 ### Windows 기능
 - ✅ GlazeWM을 사용한 타일링 윈도우 관리
@@ -221,20 +183,20 @@ brew upgrade && brew cleanup
 nvim +PlugUpdate +qa
 
 # Raycast 확장 기능 리빌드
-find config/productivity/raycast/raycast_command -name package.json -execdir npm run build \;
+find os/common/config/raycast/raycast_command -name package.json -execdir npm run build \;
 ```
 
 ### 새로운 도구 추가
 
 ```bash
 # Brewfile에 추가
-echo "brew 'new-tool'" >> packages/Brewfile
+echo "brew 'new-tool'" >> os/macos/packages/Brewfile
 
 # 즉시 설치
 brew install new-tool
 
 # 설정 디렉토리 생성
-mkdir -p config/category/new-tool
+mkdir -p os/common/config/new-tool
 ```
 
 ### 시스템 상태 확인
@@ -276,6 +238,7 @@ zsh --version
 - [LazyVim](https://lazyvim.org/) - Neovim 설정
 - [Raycast](https://raycast.com/) - 생산성 플랫폼
 - [Kitty](https://sw.kovidgoyal.net/kitty/) - 터미널 에뮬레이터
+- [AeroSpace](https://nikitabobko.github.io/AeroSpace/guide) - 타일링 윈도우 매니저
 
 ## 📞 지원
 
