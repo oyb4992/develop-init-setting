@@ -30,9 +30,16 @@ local function loadAllSpoons()
 		spoon.SpoonInstall:andUse("KSheet")
 
 		-- HSKeybindings (Hammerspoon 단축키 표시)
+		-- 해당 spoon의 init.lua의 정렬 로직 추가 (msg 기준 오름차순) -> 그룹핑 효과
+		-- table.sort(allKeys, function(a, b)
+		--     local msgA = a.msg or ""
+		--     local msgB = b.msg or ""
+		--     return msgA < msgB
+		-- end)
 		spoon.SpoonInstall:andUse("HSKeybindings")
 
 		-- PopupTranslateSelection (선택 텍스트 번역)
+		-- 오류 발생시 해당 spoon의 init.lua의 url 변수 확인 : local url = "http://translate.google.co.kr/?" ..
 		spoon.SpoonInstall:andUse("PopupTranslateSelection")
 	end
 end

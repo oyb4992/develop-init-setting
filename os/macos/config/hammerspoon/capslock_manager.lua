@@ -4,7 +4,7 @@
 local capslockManager = {}
 
 -- CapsLock 토글 단축키 (Cmd + Opt + C)
-hs.hotkey.bind({"cmd", "alt"}, "c", function()
+hs.hotkey.bind({"cmd", "alt"}, "c", "CapsLock 토글", function()
     local newState = not hs.hid.capslock.get()
     hs.hid.capslock.set(newState)
     if newState then
