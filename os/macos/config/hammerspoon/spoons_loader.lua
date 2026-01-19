@@ -23,6 +23,12 @@ local function loadAllSpoons()
 
 	-- HSKeybindings (Hammerspoon 단축키 표시)
 	loadSpoon("HSKeybindings")
+
+	-- PopupTranslateSelection (선택 텍스트 번역)
+	loadSpoon("PopupTranslateSelection")
+
+	-- SpoonInstall (Spoon 설치)
+	loadSpoon("SpoonInstall")
 end
 
 -- Export functions

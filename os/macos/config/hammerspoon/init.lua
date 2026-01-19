@@ -2,6 +2,7 @@
 -- Hammerspoon 메인 설정 파일 (모듈화 버전)
 -- 전원 관리 및 시스템 자동화 설정
 -- 아래 명령어로 ~/.hammerspoon을 ~/.hammerspoon.bak으로 이동하고, /Users/oyunbog/IdeaProjects/dev-init-setting/os/macos/config/hammerspoon을 ~/.hammerspoon으로 링크합니다.
+-- 반드시 폴더명 확인 필요
 -- if [ -L ~/.hammerspoon ]; then rm ~/.hammerspoon; elif [ -d ~/.hammerspoon ]; then mv ~/.hammerspoon ~/.hammerspoon.bak; fi; ln -s /Users/oyunbog/IdeaProjects/dev-init-setting/os/macos/config/hammerspoon ~/.hammerspoon
 -- ========================================
 print("Hammerspoon 전원 관리 시스템 로드 중...")

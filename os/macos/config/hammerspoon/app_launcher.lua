@@ -9,7 +9,7 @@ local hyper = {"cmd", "alt", "ctrl", "shift"}
 -- 단축키 매핑 설정
 -- [키] = "앱 이름" (앱 이름은 /Applications 폴더의 이름과 정확히 일치해야 함)
 local mappings = {
-    a = "Antigravity", -- Hyper + a -> Antigravity
+    a = "Antigravity", -- Hyper + A -> Antigravity
     b = "Boop", -- Hyper + B -> Boop
     f = "Finder", -- Hyper + F -> Finder (Home directory)
     ["1"] = "IntelliJ IDEA", -- Hyper + 1 -> IntelliJ IDEA
@@ -30,7 +30,10 @@ local function launchOrFocus(appName)
             hs.application.launchOrFocus("Finder")
         end)
     else
-        hs.application.launchOrFocus(appName)
+        local success = hs.application.launchOrFocus(appName)
+        if not success then
+             hs.alert.show("App not found: " .. appName)
+        end
     end
 end
 

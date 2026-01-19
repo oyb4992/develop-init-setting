@@ -93,6 +93,15 @@ local function setupHotkeys()
 		end
 	end)
 
+	-- PopupTranslateSelection: 선택된 텍스트 번역
+	hs.hotkey.bind({ "cmd", "ctrl" }, "t", "선택된 텍스트 번역", function()
+		if spoon.PopupTranslateSelection then
+			spoon.PopupTranslateSelection:translateSelectionPopup()
+		else
+			hs.alert.show("PopupTranslateSelection Spoon이 로드되지 않았습니다")
+		end
+	end)
+
 	-- DevCommander: 개발자 명령어 실행기
 	hs.hotkey.bind({ "cmd", "ctrl", "alt" }, "d", "개발자 명령어 실행기", devCommander.showDevCommander)
 end
