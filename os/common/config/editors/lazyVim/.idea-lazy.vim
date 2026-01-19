@@ -94,15 +94,18 @@ set matchit
 set highlightedyank
 set multiple-cursors
 set peekaboo
-set mini-ai
-" set quickscope
+" set mini-ai "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인 지원에 따라 설정 활성 유무 정할 것.
+" set quickscope "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인 지원에 따라 설정 활성 유무 정할 것.
 set vim-paragraph-motion
-set textobj-entire
-set functiontextobj
-set argtextobj
+" set textobj-entire "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인 지원에 따라 설정 활성 유무 정할 것.
+" set functiontextobj "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인 지원에 따라 설정 활성 유무 정할 것.
+" set argtextobj "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인 지원에 따라 설정 활성 유무 정할 것.
+set anyobject "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인 지원에 따라 설정 활성 유무 정할 것.
+set dial "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인 지원에 따라 설정 활성 유무 정할 것.
 
 let g:highlightedyank_highlight_duration = 200
 
+let g:dial_include = "basic,numbers,dates,java,javascript" "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인 지원에 따라 설정 활성 유무 정할 것.
 " let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 " let g:qs_primary_color = '#ff0000'
 " let g:qs_secondary_color = '#00ff00'
@@ -123,6 +126,11 @@ let g:highlightedyank_highlight_duration = 200
 
 " 일반 키 매핑
 
+" Map Ctrl+A to increment
+nnoremap <C-a> :DialIncrement<cr>
+
+" Map Ctrl+X to decrement  
+nnoremap <C-x> :DialDecrement<cr>
 " 왼쪽 창으로 이동
 nmap <C-h> <C-w>h
 " 아래쪽 창으로 이동
@@ -605,6 +613,13 @@ nmap <leader>S{ yss{
 " <leader>y 를 사용하여 복사 기능과 유사하게 매핑
 nmap <leader>y <Action>(CopyReferencePopupGroup)
 
+" 마크 설정
+" Show marks - Command `:marks<CR>` is converted
+nmap <leader>M :marks<CR>
+
+map <leader>vi :e ~/.ideavimrc<CR>
+map <leader>vs :source ~/.ideavimrc<CR>
+
 " 확장 매칭. Neovim 기본 플러그인.
 let g:WhichKey_ShowVimActions = "true"
 
@@ -632,6 +647,9 @@ let g:WhichKeyDesc_vbar = "<leader>| 오른쪽 창 분할"
 let g:WhichKeyDesc_wd = "<leader>wd 창 삭제"
 let g:WhichKeyDesc_wm = "<leader>wm 최대화 토글"
 let g:WhichKeyDesc_C_forward_slash = "<C-/> 터미널 (루트)" " 이 매핑은 특수키 포함으로 제외될 수 있으나, 편의상 포함
+let g:WhichKeyDesc_M = "<leader>M 북마크"
+let g:WhichKeyDesc_vi = "<leader>vi open ideavimrc file"
+let g:WhichKeyDesc_vs = "<leader>vs source ideavimrc file"
 
 " --- 리더 키 (`<leader>`) 시작 매핑 (이전과 동일하게 유지) ---
 " 전역 리더 키 매핑 (추가됨)
@@ -866,6 +884,87 @@ let g:WhichKeyDesc_S_paren = "<leader>S( 줄을 ()로 감싸기"
 let g:WhichKeyDesc_S_brace = "<leader>S{ 줄을 {}로 감싸기"
 
 let g:WhichKeyDesc_leader_y = "<leader>y 경로/참조 복사"
+
+" Vim 기본 명령어
+" --- 'g'로 시작하는 명령어 그룹 ---
+let g:WhichKeyDesc_g = "+이동/전역"
+let g:WhichKeyDesc_gd = "gd 정의로 이동 (Go to Definition)"
+let g:WhichKeyDesc_gD = "gD 선언으로 이동 (Go to Declaration)"
+let g:WhichKeyDesc_gI = "gI 구현으로 이동 (Go to Implementation)"
+let g:WhichKeyDesc_gy = "gy 타입 정의로 이동 (Go to Type Definition)"
+let g:WhichKeyDesc_gU = "gU 사용처로 이동 (Go to Usages)"
+let g:WhichKeyDesc_gR = "gR 참조 찾기 (Find References)"
+let g:WhichKeyDesc_ge = "ge 이전 단어 끝으로 이동"
+let g:WhichKeyDesc_gE = "gE 이전 WORD 끝으로 이동"
+let g:WhichKeyDesc_gg = "gg 파일 맨 처음으로"
+let g:WhichKeyDesc_gf = "gf 파일 열기 (Go to File)"
+let g:WhichKeyDesc_gh = "gh 선택 모드 시작"
+let g:WhichKeyDesc_gi = "gi 마지막 편집 위치에서 삽입 모드"
+let g:WhichKeyDesc_gj = "gj 화면 줄 단위 아래로"
+let g:WhichKeyDesc_gk = "gk 화면 줄 단위 위로"
+let g:WhichKeyDesc_gm = "gm 줄의 가운데로 이동"
+let g:WhichKeyDesc_go = "go 바이트 단위로 파일 내 이동"
+let g:WhichKeyDesc_gs = "gs 잠자기 (Ctrl-G와 동일)"
+let g:WhichKeyDesc_gu = "gu 선택 영역 소문자로"
+let g:WhichKeyDesc_gU = "gU 선택 영역 대문자로"
+let g:WhichKeyDesc_gv = "gv 마지막 선택 영역 다시 선택"
+let g:WhichKeyDesc_gV = "gV 마지막 줄 선택 영역 다시 선택"
+let g:WhichKeyDesc_gco = "gco 아래에 주석 추가"
+let g:WhichKeyDesc_gcO = "gcO 위에 주석 추가"
+let g:WhichKeyDesc_gK = "gK 시그니처 도움말"
+" --- 'z'로 시작하는 명령어 그룹 ---
+let g:WhichKeyDesc_z = "+접기/스크롤"
+let g:WhichKeyDesc_za = "za 접기/펴기 토글"
+let g:WhichKeyDesc_zc = "zc 현재 접기"
+let g:WhichKeyDesc_zo = "zo 현재 펴기"
+let g:WhichKeyDesc_zR = "zR 모든 접기 펴기"
+let g:WhichKeyDesc_zM = "zM 모든 접기"
+let g:WhichKeyDesc_zt = "zt 현재 줄을 화면 상단으로"
+let g:WhichKeyDesc_zz = "zz 현재 줄을 화면 중앙으로"
+let g:WhichKeyDesc_zb = "zb 현재 줄을 화면 하단으로"
+let g:WhichKeyDesc_ze = "ze 가로 스크롤 끝으로"
+let g:WhichKeyDesc_zs = "zs 가로 스크롤 시작으로"
+" --- '['로 시작하는 명령어 그룹 ---
+let g:WhichKeyDesc_square_left = "+이전"
+let g:WhichKeyDesc_square_left_square_left = "[[ 이전 함수/클래스"
+let g:WhichKeyDesc_square_left_b = "[b 이전 버퍼"
+let g:WhichKeyDesc_square_left_d = "[d 이전 진단 (Diagnostic)"
+let g:WhichKeyDesc_square_left_e = "[e 이전 오류 (Error)"
+let g:WhichKeyDesc_square_left_w = "[w 이전 경고 (Warning)"
+let g:WhichKeyDesc_square_left_q = "[q 이전 빠른 수정 (Quickfix)"
+let g:WhichKeyDesc_square_left_t = "[t 이전 Todo 주석"
+let g:WhichKeyDesc_square_left_c = "[c 이전 변경사항 (Git)"
+let g:WhichKeyDesc_square_left_m = "[m 이전 메소드"
+let g:WhichKeyDesc_square_left_p = "[p 이전 붙여넣기"
+" --- ']'로 시작하는 명령어 그룹 ---
+let g:WhichKeyDesc_square_right = "+다음"
+let g:WhichKeyDesc_square_right_square_right = "]] 다음 함수/클래스"
+let g:WhichKeyDesc_square_right_b = "]b 다음 버퍼"
+let g:WhichKeyDesc_square_right_d = "]d 다음 진단 (Diagnostic)"
+let g:WhichKeyDesc_square_right_e = "]e 다음 오류 (Error)"
+let g:WhichKeyDesc_square_right_w = "]w 다음 경고 (Warning)"
+let g:WhichKeyDesc_square_right_q = "]q 다음 빠른 수정 (Quickfix)"
+let g:WhichKeyDesc_square_right_t = "]t 다음 Todo 주석"
+let g:WhichKeyDesc_square_right_c = "]c 다음 변경사항 (Git)"
+let g:WhichKeyDesc_square_right_m = "]m 다음 메소드"
+let g:WhichKeyDesc_square_right_p = "]p 다음 붙여넣기"
+" --- 'Ctrl-W'로 시작하는 창(Window) 관리 그룹 ---
+let g:WhichKeyDesc_C_w = "+창 관리"
+let g:WhichKeyDesc_C_w_h = "<C-w>h 왼쪽 창으로"
+let g:WhichKeyDesc_C_w_j = "<C-w>j 아래 창으로"
+let g:WhichKeyDesc_C_w_k = "<C-w>k 위 창으로"
+let g:WhichKeyDesc_C_w_l = "<C-w>l 오른쪽 창으로"
+let g:WhichKeyDesc_C_w_s = "<C-w>s 수평 분할"
+let g:WhichKeyDesc_C_w_v = "<C-w>v 수직 분할"
+let g:WhichKeyDesc_C_w_q = "<C-w>q 창 닫기"
+let g:WhichKeyDesc_C_w_o = "<C-w>o 현재 창만 남기기"
+let g:WhichKeyDesc_C_w_H = "<C-w>H 창 왼쪽으로 이동"
+let g:WhichKeyDesc_C_w_J = "<C-w>J 창 아래로 이동"
+let g:WhichKeyDesc_C_w_K = "<C-w>K 창 위로 이동"
+let g:WhichKeyDesc_C_w_L = "<C-w>L 창 오른쪽으로 이동"
+let g:WhichKeyDesc_C_w_equal = "<C-w>= 모든 창 크기 동일하게"
+let g:WhichKeyDesc_C_w_underscore = "<C-w>_ 창 세로 최대화"
+let g:WhichKeyDesc_C_w_bar = "<C-w>| 창 가로 최대화"
 
 " 포팅해야 할 Neovim 매핑이 몇 가지 더 있습니다. 링크 참조.
 
