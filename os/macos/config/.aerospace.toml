@@ -356,12 +356,12 @@ run = 'move-node-to-workspace --focus-follows-window D' # 'D' 워크스페이스
 if.app-id = 'com.microsoft.Powerpoint'                  # Microsoft Powerpoint
 run = 'move-node-to-workspace --focus-follows-window D' # 'D' 워크스페이스로 이동
 
-# [[on-window-detected]]
-# if.app-id = 'com.kakao.KakaoTalkMac' # 카카오톡
-# run = [
-#   'layout floating',
-#   'move-node-to-workspace --focus-follows-window C',
-# ] # 플로팅 레이아웃으로 변경 후 'C' 워크스페이스로 이동
+[[on-window-detected]]
+if.app-id = 'com.kakao.KakaoTalkMac' # 카카오톡
+run = [
+  'layout floating',
+  'move-node-to-workspace --focus-follows-window C',
+] # 플로팅 레이아웃으로 변경 후 'C' 워크스페이스로 이동
 
 # [[on-window-detected]]
 # if.app-id = 'com.tinyspeck.slackmacgap' # Slack
@@ -439,6 +439,10 @@ run = 'layout floating'             # 해당 앱의 창을 플로팅 모드로 �
 
 [[on-window-detected]]
 if.app-id = 'org.pqrs.Karabiner-Elements.Settings' # 여기에 제외할 앱의 ID를 입력하세요
+run = 'layout floating'             # 해당 앱의 창을 플로팅 모드로 설정
+
+[[on-window-detected]]
+if.app-id = 'com.hegenberg.BetterTouchTool' # 여기에 제외할 앱의 ID를 입력하세요
 run = 'layout floating'             # 해당 앱의 창을 플로팅 모드로 설정
 
 # 지정되지 않은 앱을 Z 워크스페이스로 이동 (필요시 주석 해제)
