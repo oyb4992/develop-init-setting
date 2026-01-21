@@ -16,7 +16,7 @@ local function isInternalKeyboard(event)
     -- print("Device ID: " .. tostring(deviceID))
 
     -- CONFIG에 설정된 ID와 비교 (설정값이 없으면 0이 아닌 모든 키보드를 대상으로 할 수도 있음)
-    -- 여기서는 안전하게 모든 키보드에서 Ctrl+hjkl이 작동하도록 하되, 
+    -- 여기서는 안전하게 모든 키보드에서 Fn+hjkl이 작동하도록 하되, 
     -- 만약 외장 키보드 분리가 강력하게 필요하다면 ID 필터링을 활성화해야 함.
     -- 현재는 사용 편의성을 위해 '모든 키보드'에서 작동하게 하되, 간섭을 최소화하는 방향으로 구현.
     -- (내장 키보드만 감지하는 것은 hs.eventtap에서 완벽하지 않을 수 있음)
@@ -38,10 +38,10 @@ local function handleKeyDown(event)
         return false
     end
 
-    -- Ctrl 키만 눌렸는지 확인
-    local isCtrlOnly = flags.ctrl and not (flags.alt or flags.cmd or flags.shift or flags.fn)
+    -- Fn 키만 눌렸는지 확인
+    local isFnOnly = flags.fn and not (flags.alt or flags.cmd or flags.shift or flags.ctrl)
 
-    if not isCtrlOnly then
+    if not isFnOnly then
         return false
     end
 
@@ -74,7 +74,7 @@ function keyboardNavigation.start()
     -- keyDown 이벤트만 가로챔
     eventTap = hs.eventtap.new({hs.eventtap.event.types.keyDown}, handleKeyDown)
     eventTap:start()
-    print("Navigation: Ctrl+hjkl -> 방향키 (내장 키보드 한정)")
+    print("Navigation: Fn+hjkl -> 방향키 (내장 키보드 한정)")
 end
 
 function keyboardNavigation.stop()
