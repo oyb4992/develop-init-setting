@@ -42,6 +42,9 @@ local windowResize = require("window_resize")
 -- Hyper Key 관리 (CapsLock Toggle)
 local capslockManager = require("capslock_manager")
 
+-- File Organizer (Hazel-like automation)
+local fileOrganizer = require("file_organizer")
+
 -- ========================================
 -- 전역 변수 및 감시자 설정
 -- ========================================
@@ -78,6 +81,9 @@ windowResize.start()
 
 -- Hyper Key (CapsLock Toggle) 시작
 capslockManager.start()
+
+-- 파일 정리 자동화 시작
+fileOrganizer.start()
 
 -- 전원 상태 변경 감지 시작
 powerWatcher = hs.battery.watcher.new(function()

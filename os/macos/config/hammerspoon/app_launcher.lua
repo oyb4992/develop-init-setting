@@ -33,11 +33,17 @@ local function launchOrFocus(appName)
             hs.application.launchOrFocus("Finder")
         end)
     elseif appName == "Zen" then
-        -- macOS에서 Firefox 계열(Zen)은 Option(Alt) 키를 누르고 실행하면 안전 모드로 진입함
-        -- Hyper Key에는 Alt가 포함되어 있으므로, 0.5초 지연 실행하여 키 간섭 방지
-        hs.timer.doAfter(0.4, function()
-            hs.application.launchOrFocus("Zen")
-        end)
+        -- 앱이 실행 중인지 확인
+        local zenApp = hs.application.get("Zen")
+        if zenApp then
+            zenApp:activate()
+        else
+            -- macOS에서 Firefox 계열(Zen)은 Option(Alt) 키를 누르고 실행하면 안전 모드로 진입함
+            -- Hyper Key에는 Alt가 포함되어 있으므로, 0.4초 지연 실행하여 키 간섭 방지
+            hs.timer.doAfter(0.4, function()
+                hs.application.launchOrFocus("Zen")
+            end)
+        end
     else
         local success = hs.application.launchOrFocus(appName)
         if not success then
