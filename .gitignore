@@ -22,3 +22,6 @@ tasks/
 # Package lock files for examples
 **/package-lock.json
 /os/common/config/editors/vscode-lazyvim-settings.json
+
+# Hammerspoon
+os/macos/config/hammerspoon/Spoons/
