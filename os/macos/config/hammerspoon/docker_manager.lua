@@ -1,10 +1,11 @@
 local M = {}
 local log = hs.logger.new('DockerManager', 'info')
+local dockerPath = "/opt/homebrew/bin/docker" -- M1/M2 Mac 기준, 필요시 수정
 
 -- Docker 명령어 실행 헬퍼
 local function dockerExec(cmd)
     -- Docker Path 설정 (Homebrew 등으로 설치된 경로)
-    local dockerPath = "/opt/homebrew/bin/docker" -- M1/M2 Mac 기준, 필요시 수정
+    -- local dockerPath = "/opt/homebrew/bin/docker" -- 상단으로 이동됨
     return hs.execute(dockerPath .. " " .. cmd)
 end
 
@@ -44,7 +45,18 @@ local function performAction(action, containerId, containerName)
     local cmd = ""
     local msg = ""
 
-    if action == "start" then
+    if containerId == "ALL" then
+        if action == "start" then
+            cmd = string.format("start $(%s ps -aq)", dockerPath)
+            msg = "🚀 전체 컨테이너 시작 중..."
+        elseif action == "stop" then
+            cmd = string.format("stop $(%s ps -aq)", dockerPath)
+            msg = "🛑 전체 컨테이너 중지 중..."
+        elseif action == "restart" then
+            cmd = string.format("restart $(%s ps -aq)", dockerPath)
+            msg = "🔄 전체 컨테이너 재시작 중..."
+        end
+    elseif action == "start" then
         cmd = "start " .. containerId
         msg = "🚀 시작됨: " .. containerName
     elseif action == "stop" then
@@ -55,17 +67,13 @@ local function performAction(action, containerId, containerName)
         msg = "🔄 재시작됨: " .. containerName
     elseif action == "logs" then
         -- iTerm2 또는 터미널에서 로그 보기
-        local script = string.format(
-            'tell application "iTerm" to create window with default profile command "/opt/homebrew/bin/docker logs -f %s"',
-            containerId)
-        hs.osascript.applescript(script)
+        local cmd = string.format('/usr/bin/open -n -a Kitty --args %s logs -f %s', dockerPath, containerId)
+        hs.execute(cmd)
         return
     elseif action == "shell" then
         -- 컨테이너 쉘 접속
-        local script = string.format(
-            'tell application "iTerm" to create window with default profile command "/opt/homebrew/bin/docker exec -it %s /bin/sh"',
-            containerId)
-        hs.osascript.applescript(script)
+        local cmd = string.format('/usr/bin/open -n -a Kitty --args %s exec -it %s /bin/sh', dockerPath, containerId)
+        hs.execute(cmd)
         return
     end
 
@@ -83,34 +91,57 @@ end
 
 -- 액션 선택 메뉴 표시
 local function showActions(container)
-    local choices = {{
-        text = "▶️ Start",
-        subText = "컨테이너 시작",
-        action = "start"
-    }, {
-        text = "⏹ Stop",
-        subText = "컨테이너 중지",
-        action = "stop"
-    }, {
-        text = "🔄 Restart",
-        subText = "컨테이너 재시작",
-        action = "restart"
-    }, {
-        text = "📜 Logs",
-        subText = "새 창에서 로그 보기 (-f)",
-        action = "logs"
-    }, {
-        text = "🐚 Shell",
-        subText = "컨테이너 쉘 접속 (/bin/sh)",
-        action = "shell"
-    }, {
-        text = "↩️ Back",
-        subText = "목록으로 돌아가기",
-        action = "back"
-    }}
+    local choices = {}
+    
+    if container.id == "ALL" then
+        choices = {{
+            text = "▶️ Start All",
+            subText = "모든 컨테이너 시작",
+            action = "start"
+        }, {
+            text = "⏹ Stop All",
+            subText = "모든 컨테이너 중지",
+            action = "stop"
+        }, {
+            text = "🔄 Restart All",
+            subText = "모든 컨테이너 재시작",
+            action = "restart"
+        }, {
+            text = "↩️ Back",
+            subText = "목록으로 돌아가기",
+            action = "back"
+        }}
+    else
+        choices = {{
+            text = "▶️ Start",
+            subText = "컨테이너 시작",
+            action = "start"
+        }, {
+            text = "⏹ Stop",
+            subText = "컨테이너 중지",
+            action = "stop"
+        }, {
+            text = "🔄 Restart",
+            subText = "컨테이너 재시작",
+            action = "restart"
+        }, {
+            text = "📜 Logs",
+            subText = "새 창에서 로그 보기 (-f)",
+            action = "logs"
+        }, {
+            text = "🐚 Shell",
+            subText = "컨테이너 쉘 접속 (/bin/sh)",
+            action = "shell"
+        }, {
+            text = "↩️ Back",
+            subText = "목록으로 돌아가기",
+            action = "back"
+        }}
+    end
 
     local chooser = hs.chooser.new(function(selected)
         if not selected then
+            M.showDockerDashboard()
             return
         end
 
@@ -130,6 +161,15 @@ end
 function M.showDockerDashboard()
     hs.alert.show("Docker 컨테이너 조회 중...", 0.5)
     local choices = M.getContainers()
+
+    -- 전체 관리 옵션 추가
+    table.insert(choices, 1, {
+        text = "📚 Manage All Containers",
+        subText = "Start/Stop/Restart all containers",
+        id = "ALL",
+        name = "All Containers",
+        status = "N/A"
+    })
 
     if #choices == 0 then
         hs.alert.show("컨테이너가 없거나 Docker가 실행 중이지 않습니다.")
