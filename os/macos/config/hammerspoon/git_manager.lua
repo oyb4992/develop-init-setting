@@ -18,13 +18,11 @@ local function showGitStatusCanvas(statusLines, displayTime)
 
     -- 화면 선택 로직 개선
     local screen = nil
-    local screenSource = "main" -- 디버그용
 
     -- 1. 현재 포커스된 창이 있는 화면 찾기
     local focusedWindow = hs.window.focusedWindow()
     if focusedWindow then
         screen = focusedWindow:screen()
-        screenSource = "focused-window"
     end
 
     -- 2. 포커스된 창이 없으면 마우스 커서가 있는 화면 사용
@@ -36,7 +34,6 @@ local function showGitStatusCanvas(statusLines, displayTime)
             if mousePosition.x >= frame.x and mousePosition.x < (frame.x + frame.w) and mousePosition.y >= frame.y and
                 mousePosition.y < (frame.y + frame.h) then
                 screen = s
-                screenSource = "mouse-cursor"
                 break
             end
         end
@@ -45,18 +42,23 @@ local function showGitStatusCanvas(statusLines, displayTime)
     -- 3. 마지막으로 메인 화면 사용
     if not screen then
         screen = hs.screen.mainScreen()
-        screenSource = "main-screen"
     end
 
     local screenFrame = screen:frame()
 
+    -- 페이지네이션 설정
+    local LINES_PER_PAGE = 25
+    local totalLines = #statusLines
+    local totalPages = math.max(1, math.ceil(totalLines / LINES_PER_PAGE))
+    local currentPage = 1
+
     -- 창 크기와 위치 계산
     local windowWidth = math.min(800, screenFrame.w * 0.8)
-    local windowHeight = math.min(600, #statusLines * 20 + CONFIG.UI.PADDING * 2)
+    local windowHeight = math.min(600, LINES_PER_PAGE * 20 + CONFIG.UI.PADDING * 3) -- 높이 조정
     local x = (screenFrame.w - windowWidth) / 2
     local y = (screenFrame.h - windowHeight) / 2
 
-    -- Canvas 생성 (화면 좌표계를 고려한 절대 좌표 사용)
+    -- Canvas 생성
     local absoluteX = screenFrame.x + x
     local absoluteY = screenFrame.y + y
 
@@ -67,7 +69,7 @@ local function showGitStatusCanvas(statusLines, displayTime)
         h = windowHeight
     })
 
-    -- 배경
+    -- 1. 배경
     gitStatusCanvas[1] = {
         type = "rectangle",
         action = "fill",
@@ -83,65 +85,168 @@ local function showGitStatusCanvas(statusLines, displayTime)
         }
     }
 
-    -- 텍스트 추가
+    -- 2. 텍스트 (내용)
     gitStatusCanvas[2] = {
         type = "text",
-        text = table.concat(statusLines, "\n"),
+        text = "",
         textFont = "SF Mono",
         textSize = 13,
         textColor = {
-            alpha = 1,
-            red = 1,
-            green = 1,
-            blue = 1
+            hex = "#FFFFFF"
         },
         textAlignment = "left",
         frame = {
             x = CONFIG.UI.PADDING,
             y = CONFIG.UI.PADDING,
             w = windowWidth - (CONFIG.UI.PADDING * 2),
-            h = windowHeight - (CONFIG.UI.PADDING * 2)
+            h = windowHeight - (CONFIG.UI.PADDING * 3)
         }
     }
 
-    -- 창 표시
+    -- 3. 페이지 표시 (Footer)
+    gitStatusCanvas[3] = {
+        type = "text",
+        text = "",
+        textFont = "SF Mono",
+        textSize = 11,
+        textColor = {
+            hex = "#AAAAAA"
+        },
+        textAlignment = "right",
+        frame = {
+            x = CONFIG.UI.PADDING,
+            y = windowHeight - 30,
+            w = windowWidth - (CONFIG.UI.PADDING * 2),
+            h = 20
+        }
+    }
+
+    -- 키보드 모달 사전 선언
+    local inputMode = nil
+
+    local function closeCanvas()
+        if gitStatusCanvas then
+            gitStatusCanvas:delete()
+            gitStatusCanvas = nil
+        end
+        if inputMode then
+            inputMode:exit()
+            inputMode = nil
+        end
+    end
+
+    -- 페이지 렌더링 함수
+    local function renderPage()
+        local startIdx = (currentPage - 1) * LINES_PER_PAGE + 1
+        local endIdx = math.min(totalLines, currentPage * LINES_PER_PAGE)
+        local pageLines = {}
+
+        for i = startIdx, endIdx do
+            table.insert(pageLines, statusLines[i])
+        end
+
+        gitStatusCanvas[2].text = table.concat(pageLines, "\n")
+
+        local footerText = string.format("Page %d / %d (←/h: Prev, →/l: Next, ESC/q: Close)", currentPage,
+            totalPages)
+        gitStatusCanvas[3].text = footerText
+    end
+
+    renderPage()
     gitStatusCanvas:show()
 
-    -- ESC 키 핸들러 등록
-    local escHandler
-    escHandler = hs.hotkey.bind({}, "escape", function()
-        if gitStatusCanvas then
-            gitStatusCanvas:delete()
-            gitStatusCanvas = nil
-            if escHandler then
-                escHandler:delete() -- 핸들러 제거
-                escHandler = nil
+    -- 키보드 모달 설정
+    inputMode = hs.hotkey.modal.new()
+
+    local function nextPage()
+        if currentPage < totalPages then
+            currentPage = currentPage + 1
+            renderPage()
+        end
+    end
+
+    local function prevPage()
+        if currentPage > 1 then
+            currentPage = currentPage - 1
+            renderPage()
+        end
+    end
+
+    -- 키 바인딩
+    inputMode:bind({}, "escape", closeCanvas)
+    inputMode:bind({}, "q", closeCanvas)
+    inputMode:bind({}, "right", nextPage)
+    inputMode:bind({}, "l", nextPage)
+    inputMode:bind({}, "left", prevPage)
+    inputMode:bind({}, "h", prevPage)
+
+    inputMode:enter()
+
+    -- 자동 닫기 타이머 (displayTime이 양수일 때만 설정)
+    if displayTime and displayTime > 0 then
+        hs.timer.doAfter(displayTime, closeCanvas)
+    end
+end
+
+-- ========================================
+-- Helper Functions
+-- ========================================
+
+-- 전체 리포지토리 수집 (설정된 것 + 자동 탐색)
+local function collectAllRepositories()
+    local allRepos = {}
+    local knownPaths = {}
+
+    -- 1. 명시적으로 설정된 리포지토리 추가
+    if CONFIG.GIT_MANAGER.REPOS then
+        for _, repo in ipairs(CONFIG.GIT_MANAGER.REPOS) do
+            table.insert(allRepos, repo)
+            knownPaths[repo.path] = true
+        end
+    end
+
+    -- 2. 자동 탐색 경로에서 리포지토리 찾기
+    if CONFIG.GIT_MANAGER.SCAN_PATHS then
+        for _, scanPathLink in ipairs(CONFIG.GIT_MANAGER.SCAN_PATHS) do
+            -- config.lua 타입 오류 방지 (중첩 테이블 가능성 처리)
+            local scanPath = scanPathLink
+            if type(scanPathLink) == "table" then
+                scanPath = scanPathLink[1] -- {{path}} 형태 처리
+            end
+
+            if scanPath and hs.fs.attributes(scanPath) then
+                for file in hs.fs.dir(scanPath) do
+                    if file ~= "." and file ~= ".." then
+                        local fullPath = scanPath .. "/" .. file
+                        local gitDir = fullPath .. "/.git"
+
+                        -- .git 디렉토리가 있고, 이미 등록되지 않은 경우 추가
+                        if hs.fs.attributes(gitDir) and not knownPaths[fullPath] then
+                            table.insert(allRepos, {
+                                name = file,
+                                path = fullPath,
+                                branches = CONFIG.GIT_MANAGER.DEFAULT_BRANCHES
+                            })
+                            knownPaths[fullPath] = true
+                        end
+                    end
+                end
             end
         end
+    end
+
+    -- 이름순 정렬
+    table.sort(allRepos, function(a, b)
+        return a.name:lower() < b.name:lower()
     end)
 
-    -- 지정된 시간 후 자동으로 닫기
-    hs.timer.doAfter(displayTime, function()
-        if gitStatusCanvas then
-            gitStatusCanvas:delete()
-            gitStatusCanvas = nil
-            if escHandler then
-                escHandler:delete() -- 핸들러 제거
-            end
-        end
-    end)
+    return allRepos
 end
 
 -- Git 상태 확인 함수 (여러 경로 지원, 브랜치 정보 포함)
 local function checkGitStatus()
     -- 확인할 Git 리포지토리 경로 목록 (사용자 맞춤 설정)
-    local gitPaths = {{
-        name = "dev-init-setting",
-        path = "/Users/oyunbog/IdeaProjects/dev-init-setting"
-    }, {
-        name = "Obsidian",
-        path = "/Users/oyunbog/IdeaProjects/Obsidian"
-    }}
+    local gitPaths = collectAllRepositories()
 
     local statusLines = {"📋 Git 상태 종합 보고서", ""}
     local hasChanges = false
@@ -250,8 +355,155 @@ local function checkGitStatus()
     showGitStatusCanvas(statusLines, CONFIG.UI.STATUS_DISPLAY_TIME)
 end
 
+-- Git 자동 업데이트 스케줄러
+-- ========================================
+
+-- 리포지토리 업데이트 실행
+local function updateRepositories()
+    local repos = collectAllRepositories()
+    local results = {}
+    local successCount = 0
+    local failCount = 0
+
+    hs.notify.new({
+        title = "Git Manager",
+        informativeText = "주간 정기 업데이트를 시작합니다..."
+    }):send()
+
+    for _, repo in ipairs(repos) do
+        local repoPath = repo.path
+        local repoName = repo.name
+
+        -- Repo 존재 확인
+        if hs.fs.attributes(repoPath) then
+            for _, branch in ipairs(repo.branches) do
+                -- 1. Fetch
+                local fetchCmd = string.format("cd '%s' && git fetch origin", repoPath)
+                hs.execute(fetchCmd)
+
+                -- 2. Checkout
+                local checkoutCmd = string.format("cd '%s' && git checkout %s", repoPath, branch)
+                local checkoutOutput, checkoutStatus = hs.execute(checkoutCmd)
+
+                if checkoutStatus then
+                    -- 3. Pull
+                    local pullCmd = string.format("cd '%s' && git pull origin %s", repoPath, branch)
+                    local pullOutput, pullStatus = hs.execute(pullCmd)
+
+                    if pullStatus then
+                        table.insert(results, string.format("✅ %s (%s): 성공", repoName, branch))
+                        successCount = successCount + 1
+                    else
+                        table.insert(results, string.format("❌ %s (%s): Pull 실패", repoName, branch))
+                        failCount = failCount + 1
+                    end
+                else
+                    table.insert(results, string.format("❌ %s (%s): Checkout 실패", repoName, branch))
+                    failCount = failCount + 1
+                end
+            end
+        else
+            table.insert(results, string.format("❌ %s: 경로 없음", repoName))
+            failCount = failCount + 1
+        end
+    end
+
+    -- 결과 알림
+    local summaryTitle = string.format("Git 업데이트 완료 (성공: %d, 실패: %d)", successCount, failCount)
+    local summaryText = "세부 결과는 콘솔을 확인하세요."
+    if failCount > 0 then
+        summaryText = "일부 업데이트에 실패했습니다. 콘솔을 확인하세요."
+    end
+
+    hs.notify.new({
+        title = summaryTitle,
+        informativeText = summaryText
+    }):send()
+    print("=== Git 업데이트 결과 ===")
+    for _, line in ipairs(results) do
+        print(line)
+    end
+    print("=========================")
+
+    -- 마지막 업데이트 시간 저장
+    hs.settings.set("git_manager.last_update", os.time())
+end
+
+-- 다음 스케줄 예약
+local updateTimer = nil
+local function scheduleNextUpdate()
+    local schedule = CONFIG.GIT_MANAGER.SCHEDULE
+    local now = os.time()
+    local nowDate = os.date("*t", now)
+
+    -- 이번 주 타겟 시간 계산
+    -- 일단 "오늘" 날짜에 타겟 시간(시/분)을 적용
+    local targetTimeToday = os.time({
+        year = nowDate.year,
+        month = nowDate.month,
+        day = nowDate.day,
+        hour = schedule.HOUR,
+        min = schedule.MINUTE,
+        sec = 0
+    })
+
+    -- 요일 차이 계산 (일=1 ~ 토=7)
+    local diffDays = schedule.DAY - nowDate.wday
+
+    -- "이번 주"의 타겟 시간
+    local thisWeekTarget = targetTimeToday + (diffDays * 24 * 60 * 60)
+
+    local nextRun = nil
+    local lastUpdate = hs.settings.get("git_manager.last_update") or 0
+
+    -- 로직:
+    -- 1. 현재 시간이 이번 주 타겟 시간보다 늦었음 (이미 지남)
+    if now > thisWeekTarget then
+        -- 1-1. 근데 마지막 업데이트가 이번 주 타겟 시간보다 이전임 (안 돌았음)
+        if lastUpdate < thisWeekTarget then
+            print("Git Manager: 예정된 업데이트 시간을 놓쳤습니다. 즉시 실행합니다.")
+            -- 즉시 실행 (1초 후)
+            if updateTimer then
+                updateTimer:stop()
+            end
+            updateTimer = hs.timer.doAfter(1, function()
+                updateRepositories()
+                scheduleNextUpdate()
+            end)
+            return
+        else
+            -- 1-2. 이미 돌았음 -> 다음 주 예약
+            nextRun = thisWeekTarget + (7 * 24 * 60 * 60)
+        end
+    else
+        -- 2. 아직 시간 안 됨 -> 이번 주 타겟 시간에 예약
+        nextRun = thisWeekTarget
+    end
+
+    local timeUntilNextRun = nextRun - now
+
+    print(string.format("Git Manager: 다음 업데이트는 %s에 실행됩니다. (약 %.1f시간 후)",
+        os.date("%Y-%m-%d %H:%M:%S", nextRun), timeUntilNextRun / 3600))
+
+    if updateTimer then
+        updateTimer:stop()
+    end
+
+    updateTimer = hs.timer.doAfter(timeUntilNextRun, function()
+        updateRepositories()
+        scheduleNextUpdate() -- 실행 후 다음 스케줄 예약
+    end)
+end
+
+local function start()
+    print("Git Manager: 스케줄러 시작됨")
+    scheduleNextUpdate()
+end
+
 -- Export functions
 gitManager.checkGitStatus = checkGitStatus
+gitManager.start = start
+gitManager.updateRepositories = updateRepositories -- 수동 실행용
 
 return gitManager
 

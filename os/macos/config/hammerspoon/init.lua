@@ -45,6 +45,9 @@ local capslockManager = require("capslock_manager")
 -- File Organizer (Hazel-like automation)
 local fileOrganizer = require("file_organizer")
 
+-- Git Manager (Scheduled Updates)
+hs.gitManager = require("git_manager")
+
 -- ========================================
 -- 전역 변수 및 감시자 설정
 -- ========================================
@@ -84,6 +87,9 @@ capslockManager.start()
 
 -- 파일 정리 자동화 시작
 fileOrganizer.start()
+
+-- Git Manager 시작
+hs.gitManager.start()
 
 -- 전원 상태 변경 감지 시작
 powerWatcher = hs.battery.watcher.new(function()

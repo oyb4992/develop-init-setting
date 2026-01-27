@@ -15,7 +15,7 @@ local CONFIG = {
         CANVAS_WIDTH = 500,
         CANVAS_HEIGHT_MAX = 400,
         CANVAS_Y_POSITION = 0.2, -- 화면 상단에서 20%
-        STATUS_DISPLAY_TIME = 10, -- 10초
+        STATUS_DISPLAY_TIME = 0, -- 0 = 자동 닫기 비활성화
         TEXT_SIZE = 12,
         PADDING = 20
     },
@@ -36,8 +36,8 @@ local CONFIG = {
     INTERNAL_KEYBOARD_TYPE = 91,
 
     WIFI_AUTOMATION = {
-        HOME_SSIDS = {"MyHome5G", "KT_GiGA_5G"}, -- 집 WiFi 이름
-        WORK_SSIDS = {"Office_Guest", "Works_Staff"}, -- 회사 WiFi 이름
+        HOME_SSIDS = {"5G_LGWiFi_DBE9", "LGWiFi_DBE9"}, -- 집 WiFi 이름
+        WORK_SSIDS = {"Assist."}, -- 회사 WiFi 이름
         ACTIONS = {
             HOME = {
                 volume = 50,
@@ -48,9 +48,23 @@ local CONFIG = {
                 muted = true
             },
             DEFAULT = {
-                volume = 20,
-                muted = false
+                volume = 0,
+                muted = true
+
             } -- 그 외 (카페 등)
+        }
+    },
+    GIT_MANAGER = {
+        -- 수동 탐색 경로 설정
+        REPOS = {},
+        -- 자동 탐색 경로 설정
+        SCAN_PATHS = {os.getenv("HOME") .. "/IdeaProjects"}, -- 자동 탐색 경로 추가
+        -- 자동 탐색된 리포지토리의 기본 업데이트 타겟 브랜치
+        DEFAULT_BRANCHES = {"main", "master", "develop", "stage"},
+        SCHEDULE = {
+            DAY = 4, -- 1:일, 2:월, 3:화, 4:수, 5:목, 6:금, 7:토
+            HOUR = 9,
+            MINUTE = 30
         }
     }
 }
