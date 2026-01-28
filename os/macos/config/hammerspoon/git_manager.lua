@@ -235,9 +235,9 @@ local function collectAllRepositories()
         end
     end
 
-    -- 이름순 정렬
+    -- 경로순 정렬
     table.sort(allRepos, function(a, b)
-        return a.name:lower() < b.name:lower()
+        return a.path:lower() < b.path:lower()
     end)
 
     return allRepos
@@ -361,14 +361,11 @@ end
 -- 리포지토리 업데이트 실행
 local function updateRepositories()
     local repos = collectAllRepositories()
-    local results = {}
-    local successCount = 0
-    local failCount = 0
-
-    hs.notify.new({
-        title = "Git Manager",
-        informativeText = "주간 정기 업데이트를 시작합니다..."
-    }):send()
+    local lastUpdate = hs.settings.get("git_manager.last_update") or 0
+    local nextRun = hs.settings.get("git_manager.next_run") or 0
+    local statusLines = {"  📋 Git 주간 정기 업데이트 알림", ""}
+    table.insert(statusLines, "  ⚠️ 마지막 알림 일시: "..os.date("%Y-%m-%d %H:%M:%S", lastUpdate)..", ✨ 다음 알림 일시: "..os.date("%Y-%m-%d %H:%M:%S", nextRun))
+    table.insert(statusLines, "") -- 빈 줄 추가
 
     for _, repo in ipairs(repos) do
         local repoPath = repo.path
@@ -376,56 +373,13 @@ local function updateRepositories()
 
         -- Repo 존재 확인
         if hs.fs.attributes(repoPath) then
-            for _, branch in ipairs(repo.branches) do
-                -- 1. Fetch
-                local fetchCmd = string.format("cd '%s' && git fetch origin", repoPath)
-                hs.execute(fetchCmd)
-
-                -- 2. Checkout
-                local checkoutCmd = string.format("cd '%s' && git checkout %s", repoPath, branch)
-                local checkoutOutput, checkoutStatus = hs.execute(checkoutCmd)
-
-                if checkoutStatus then
-                    -- 3. Pull
-                    local pullCmd = string.format("cd '%s' && git pull origin %s", repoPath, branch)
-                    local pullOutput, pullStatus = hs.execute(pullCmd)
-
-                    if pullStatus then
-                        table.insert(results, string.format("✅ %s (%s): 성공", repoName, branch))
-                        successCount = successCount + 1
-                    else
-                        table.insert(results, string.format("❌ %s (%s): Pull 실패", repoName, branch))
-                        failCount = failCount + 1
-                    end
-                else
-                    table.insert(results, string.format("❌ %s (%s): Checkout 실패", repoName, branch))
-                    failCount = failCount + 1
-                end
-            end
-        else
-            table.insert(results, string.format("❌ %s: 경로 없음", repoName))
-            failCount = failCount + 1
+            table.insert(statusLines, "    📁 경로: " .. repoPath)
         end
+--         table.insert(statusLines, "") -- 빈 줄 추가
     end
 
-    -- 결과 알림
-    local summaryTitle = string.format("Git 업데이트 완료 (성공: %d, 실패: %d)", successCount, failCount)
-    local summaryText = "세부 결과는 콘솔을 확인하세요."
-    if failCount > 0 then
-        summaryText = "일부 업데이트에 실패했습니다. 콘솔을 확인하세요."
-    end
-
-    hs.notify.new({
-        title = summaryTitle,
-        informativeText = summaryText
-    }):send()
-    print("=== Git 업데이트 결과 ===")
-    for _, line in ipairs(results) do
-        print(line)
-    end
-    print("=========================")
-
-    -- 마지막 업데이트 시간 저장
+    showGitStatusCanvas(statusLines, CONFIG.UI.STATUS_DISPLAY_TIME)
+    -- 마지막 업데이트 알림 시간 저장
     hs.settings.set("git_manager.last_update", os.time())
 end
 
@@ -480,9 +434,11 @@ local function scheduleNextUpdate()
         nextRun = thisWeekTarget
     end
 
+    -- 다음 업데이트 알림 시간 저장
+    hs.settings.set("git_manager.next_run", nextRun)
     local timeUntilNextRun = nextRun - now
 
-    print(string.format("Git Manager: 다음 업데이트는 %s에 실행됩니다. (약 %.1f시간 후)",
+    print(string.format("Git Manager: 다음 업데이트 알림은 %s에 실행됩니다. (약 %.1f시간 후)",
         os.date("%Y-%m-%d %H:%M:%S", nextRun), timeUntilNextRun / 3600))
 
     if updateTimer then
@@ -506,4 +462,3 @@ gitManager.start = start
 gitManager.updateRepositories = updateRepositories -- 수동 실행용
 
 return gitManager
-
