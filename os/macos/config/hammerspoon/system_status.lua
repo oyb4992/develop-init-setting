@@ -106,6 +106,8 @@ local function showStatusWithCanvas(statusLines)
 	-- 화면 선택 로직 개선
 	local screen = nil
 	local screenSource = "main" -- 디버그용
+	-- 자동 닫기 타이머 (displayTime이 양수일 때만 설정)
+	local displayTime = CONFIG.UI.STATUS_DISPLAY_TIME
 
 	-- 1. 현재 포커스된 창이 있는 화면 찾기
 	local focusedWindow = hs.window.focusedWindow()
@@ -212,15 +214,17 @@ local function showStatusWithCanvas(statusLines)
 	end)
 
 	-- CONFIG에 설정된 시간 후 자동으로 닫기
-	hs.timer.doAfter(CONFIG.UI.STATUS_DISPLAY_TIME, function()
-		if statusCanvas then
-			statusCanvas:delete()
-			statusCanvas = nil
-			if escHandler then
-				escHandler:delete() -- 핸들러 제거
+	if displayTime and displayTime > 0 then
+		hs.timer.doAfter(displayTime, function()
+			if statusCanvas then
+				statusCanvas:delete()
+				statusCanvas = nil
+				if escHandler then
+					escHandler:delete() -- 핸들러 제거
+				end
 			end
-		end
-	end)
+		end)
+	end
 end
 
 -- 시스템 통합 상태 표시 (캐시 기반 성능 최적화)
@@ -250,4 +254,3 @@ systemStatus.showSystemStatus = showSystemStatus
 systemStatus.getSystemInfo = getSystemInfo
 
 return systemStatus
-
