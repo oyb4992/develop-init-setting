@@ -112,9 +112,9 @@ outer.right = 5      # 외부 오른쪽 간격
 # alt-shift-cmd-ctrl-f = 'exec-and-forget open ~'                                           # Finder로 홈 디렉토리 열기
 
 # 참고: https://nikitabobko.github.io/AeroSpace/commands#layout
-alt-slash = 'layout tiles horizontal vertical' # 타일 레이아웃 (가로/세로 자동 전환) - GlazeWM에 직접 매핑되는 단축키 없음
+alt-slash = 'layout tiles horizontal vertical'     # 타일 레이아웃 (가로/세로 자동 전환) - GlazeWM에 직접 매핑되는 단축키 없음
 alt-comma = 'layout accordion horizontal vertical' # 아코디언 레이아웃 (가로/세로 자동 전환) - GlazeWM에 직접 매핑되는 단축키 없음
-alt-shift-space = 'layout floating tiling' # 플로팅/타일링 레이아웃 전환 (Alt + Shift + Space)
+alt-shift-space = 'layout floating tiling'         # 플로팅/타일링 레이아웃 전환 (Alt + Shift + Space)
 
 # 타일 아코디언 레이아웃으로 변경 (Alt + Ctrl + X)
 alt-ctrl-x = 'layout tiles accordion'
@@ -189,7 +189,7 @@ alt-q = 'workspace-back-and-forth' # AeroSpace의 back-and-forth가 GlazeWM의 r
 # 참고: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
 # 포커스된 창의 부모 작업 공간을 주어진 방향의 모니터로 이동합니다. (Alt + Shift + Tab) - macOS 고유
 ctrl-shift-tab = 'move-workspace-to-monitor --wrap-around prev' # 현재 워크스페이스를  이전 모니터로 이동 (순환)
-alt-shift-tab = 'move-workspace-to-monitor --wrap-around next' # 현재 워크스페이스를 다음 모니터로 이동 (순환)
+alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'  # 현재 워크스페이스를 다음 모니터로 이동 (순환)
 
 # 참고: https://nikitabobko.github.io/AeroSpace/commands#mode
 # 크기 조절 모드를 활성화합니다. (Alt + Cmd + R) - GlazeWM과 통일
@@ -299,91 +299,71 @@ run = 'move-node-to-workspace --focus-follows-window B' # 'B' 워크스페이스
 [[on-window-detected]]
 if.app-id = 'com.jetbrains.intellij' # IntelliJ IDEA
 run = '''exec-and-forget /bin/zsh -c '
-    # 1. 목표 설정
     TARGET_WS="I"
     TARGET_MON="LS32D70xE"
 
-    # 2. 목표 모니터에 해당 워크스페이스가 있는지 확인 (grep)
     if ! aerospace list-workspaces --monitor "$TARGET_MON" | grep -q "^$TARGET_WS$"; then
-        # 3. 없다면: 해당 워크스페이스를 생성/포커스하고 모니터로 이동시킴
-        aerospace workspace "$TARGET_WS"
-        aerospace move-workspace-to-monitor "$TARGET_MON"
+        aerospace focus-monitor "$TARGET_MON"  # 먼저 TARGET_MON 포커스
+        aerospace workspace "$TARGET_WS"       # TARGET_MON에서 WS 생성/포커스 (이동 불필요)
     fi
 
-    # 4. 앱(창)을 해당 워크스페이스로 이동
-    aerospace move-node-to-workspace "$TARGET_WS"
+    aerospace move-node-to-workspace --focus-follows-window "$TARGET_WS"  # 앱을 WS로 이동
 ' '''
 
 [[on-window-detected]]
 if.app-id = 'com.jetbrains.WebStorm' # WebStorm IDEA
 run = '''exec-and-forget /bin/zsh -c '
-    # 1. 목표 설정
     TARGET_WS="I"
     TARGET_MON="LS32D70xE"
 
-    # 2. 목표 모니터에 해당 워크스페이스가 있는지 확인 (grep)
     if ! aerospace list-workspaces --monitor "$TARGET_MON" | grep -q "^$TARGET_WS$"; then
-        # 3. 없다면: 해당 워크스페이스를 생성/포커스하고 모니터로 이동시킴
-        aerospace workspace "$TARGET_WS"
-        aerospace move-workspace-to-monitor "$TARGET_MON"
+        aerospace focus-monitor "$TARGET_MON"  # 먼저 TARGET_MON 포커스
+        aerospace workspace "$TARGET_WS"       # TARGET_MON에서 WS 생성/포커스 (이동 불필요)
     fi
 
-    # 4. 앱(창)을 해당 워크스페이스로 이동
-    aerospace move-node-to-workspace "$TARGET_WS"
+    aerospace move-node-to-workspace --focus-follows-window "$TARGET_WS"  # 앱을 WS로 이동
 ' '''
 
 [[on-window-detected]]
 if.app-id = 'com.jetbrains.datagrip' # DataGrip IDEA
 run = '''exec-and-forget /bin/zsh -c '
-    # 1. 목표 설정
     TARGET_WS="I"
     TARGET_MON="LS32D70xE"
 
-    # 2. 목표 모니터에 해당 워크스페이스가 있는지 확인 (grep)
     if ! aerospace list-workspaces --monitor "$TARGET_MON" | grep -q "^$TARGET_WS$"; then
-        # 3. 없다면: 해당 워크스페이스를 생성/포커스하고 모니터로 이동시킴
-        aerospace workspace "$TARGET_WS"
-        aerospace move-workspace-to-monitor "$TARGET_MON"
+        aerospace focus-monitor "$TARGET_MON"  # 먼저 TARGET_MON 포커스
+        aerospace workspace "$TARGET_WS"       # TARGET_MON에서 WS 생성/포커스 (이동 불필요)
     fi
 
-    # 4. 앱(창)을 해당 워크스페이스로 이동
-    aerospace move-node-to-workspace "$TARGET_WS"
+    aerospace move-node-to-workspace --focus-follows-window "$TARGET_WS"  # 앱을 WS로 이동
 ' '''
 
 [[on-window-detected]]
 if.app-id = 'com.microsoft.VSCode' # Visual Studio Code
 run = '''exec-and-forget /bin/zsh -c '
-    # 1. 목표 설정
     TARGET_WS="I"
     TARGET_MON="LS32D70xE"
 
-    # 2. 목표 모니터에 해당 워크스페이스가 있는지 확인 (grep)
     if ! aerospace list-workspaces --monitor "$TARGET_MON" | grep -q "^$TARGET_WS$"; then
-        # 3. 없다면: 해당 워크스페이스를 생성/포커스하고 모니터로 이동시킴
-        aerospace workspace "$TARGET_WS"
-        aerospace move-workspace-to-monitor "$TARGET_MON"
+        aerospace focus-monitor "$TARGET_MON"  # 먼저 TARGET_MON 포커스
+        aerospace workspace "$TARGET_WS"       # TARGET_MON에서 WS 생성/포커스 (이동 불필요)
     fi
 
-    # 4. 앱(창)을 해당 워크스페이스로 이동
-    aerospace move-node-to-workspace "$TARGET_WS"
+    aerospace move-node-to-workspace --focus-follows-window "$TARGET_WS"  # 앱을 WS로 이동
 ' '''
 
 [[on-window-detected]]
 if.app-id = 'com.google.antigravity' # Antigravity
 run = '''exec-and-forget /bin/zsh -c '
-    # 1. 목표 설정
     TARGET_WS="I"
     TARGET_MON="LS32D70xE"
 
-    # 2. 목표 모니터에 해당 워크스페이스가 있는지 확인 (grep)
     if ! aerospace list-workspaces --monitor "$TARGET_MON" | grep -q "^$TARGET_WS$"; then
-        # 3. 없다면: 해당 워크스페이스를 생성/포커스하고 모니터로 이동시킴
-        aerospace workspace "$TARGET_WS"
-        aerospace move-workspace-to-monitor "$TARGET_MON"
+        aerospace focus-monitor "$TARGET_MON"  # 먼저 TARGET_MON 포커스
+        aerospace workspace "$TARGET_WS"       # TARGET_MON에서 WS 생성/포커스 (이동 불필요)
     fi
 
-    # 4. 앱(창)을 해당 워크스페이스로 이동
-    aerospace move-node-to-workspace "$TARGET_WS"
+    aerospace move-node-to-workspace --focus-follows-window "$TARGET_WS"  # 앱을 WS로 이동
 ' '''
 
 # [[on-window-detected]]
@@ -480,7 +460,7 @@ run = [
 # 특정 앱을 창 관리에서 제외 (플로팅으로 설정)
 [[on-window-detected]]
 if.app-id = 'com.trendmicro.TrendCleanerPro' # 여기에 제외할 앱의 ID를 입력하세요
-run = 'layout floating'                      # 해당 앱의 창을 플로팅 모드로 설정
+run = 'layout floating'                      # 해당 앱의 창을 플로팅 모드로 설정 
 
 # [[on-window-detected]]
 # if.app-id = 'com.linguee.DeepLCopyTranslator' # 여기에 제외할 앱의 ID를 입력하세요
