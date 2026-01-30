@@ -30,9 +30,6 @@ local inputSourceManager = require("input_source_manager")
 -- Vim 스타일 키보드 내비게이션
 local keyboardNavigation = require("keyboard_navigation")
 
--- WiFi 자동화
--- local wifiAutomator = require("wifi_automator")
-
 -- Hyper Key 앱 런처
 local appLauncher = require("app_launcher")
 
@@ -55,7 +52,6 @@ hs.gitManager = require("git_manager")
 local powerWatcher = nil
 local screenWatcher = nil
 local caffeineWatcher = nil
--- local wifiWatcher = nil
 
 -- ========================================
 -- 초기화 및 감지 시작
@@ -72,9 +68,6 @@ inputSourceManager.start()
 
 -- 키보드 내비게이션 시작
 keyboardNavigation.start()
-
--- WiFi 자동화 시작
--- wifiAutomator.start()
 
 -- 앱 런처 시작
 appLauncher.start()
@@ -93,14 +86,14 @@ hs.gitManager.start()
 
 -- 전원 상태 변경 감지 시작
 powerWatcher = hs.battery.watcher.new(function()
-    local newMode = powerManagement.getCurrentPowerMode()
-    powerManagement.handlePowerStateChange(newMode)
+	local newMode = powerManagement.getCurrentPowerMode()
+	powerManagement.handlePowerStateChange(newMode)
 end)
 powerWatcher:start()
 
 -- 화면 변경 감지 시작 (뚜껑 닫힘/열림 감지)
 screenWatcher = hs.screen.watcher.new(function()
-    hs.timer.doAfter(CONFIG.DELAYS.LID_STATE_DELAY, powerManagement.handleLidStateChange) -- 안정화 대기
+	hs.timer.doAfter(CONFIG.DELAYS.LID_STATE_DELAY, powerManagement.handleLidStateChange) -- 안정화 대기
 end)
 screenWatcher:start()
 
@@ -110,50 +103,13 @@ caffeineWatcher:start()
 
 -- 초기 상태 설정
 hs.timer.doAfter(CONFIG.DELAYS.SYSTEM_WAKE_DELAY, function()
-    -- 전원 상태 초기화
-    local initialMode = powerManagement.getCurrentPowerMode()
-    powerManagement.handlePowerStateChange(initialMode)
+	-- 전원 상태 초기화
+	local initialMode = powerManagement.getCurrentPowerMode()
+	powerManagement.handlePowerStateChange(initialMode)
 
-    -- 뚜껑 상태 초기화
-    powerManagement.handleLidStateChange()
+	-- 뚜껑 상태 초기화
+	powerManagement.handleLidStateChange()
 end)
-
--- ========================================
--- 설정 리로드 감지
--- ========================================
-
--- Hammerspoon 설정 파일 변경 감지 및 자동 재로드
-function reloadConfig(files)
-    doReload = false
-    for _, file in pairs(files) do
-        if file:sub(-4) == ".lua" then
-            doReload = true
-        end
-    end
-    if doReload then
-        -- 리로드 전에 모든 감지 기능 중지
-        if powerWatcher then
-            powerWatcher:stop()
-        end
-        if screenWatcher then
-            screenWatcher:stop()
-        end
-        if caffeineWatcher then
-            caffeineWatcher:stop()
-        end
-        -- if wifiWatcher then
-        --     wifiWatcher:stop()
-        -- end
-
-        -- 모듈별 정리
-        inputSourceManager.stop()
-
-        hs.reload()
-    end
-end
-
-myWatcher = hs.pathwatcher.new(os.getenv("HOME") .. "/.hammerspoon/", reloadConfig):start()
-
 -- ========================================
 -- 초기화 완료
 -- ========================================

@@ -6,7 +6,6 @@ local CONFIG = config.CONFIG
 
 local M = {}
 
--- 볼륨 조절 헬퍼 함수
 local function setWifiVolume(vol, muted)
 	local device = hs.audiodevice.defaultOutputDevice()
 	if device then
@@ -15,27 +14,46 @@ local function setWifiVolume(vol, muted)
 	end
 end
 
--- WiFiTransitions용 actions 테이블 생성
 function M.getActions()
 	local wifiActions = {}
 
-	-- Home Actions
+	-- Home Actions (리스트 형태로 추가)
 	if CONFIG.WIFI_AUTOMATION and CONFIG.WIFI_AUTOMATION.HOME_SSIDS then
 		for _, ssid in ipairs(CONFIG.WIFI_AUTOMATION.HOME_SSIDS) do
-			wifiActions[ssid] = function()
-				setWifiVolume(CONFIG.WIFI_AUTOMATION.ACTIONS.HOME.volume, CONFIG.WIFI_AUTOMATION.ACTIONS.HOME.muted)
-				hs.alert.show("🏠 Home WiFi Connected\nVolume: " .. CONFIG.WIFI_AUTOMATION.ACTIONS.HOME.volume .. "%")
-			end
+			table.insert(wifiActions, {
+				from = nil, -- 어디서 오든
+				to = ssid, -- Lua 패턴 (정확 매칭 시 "^" .. ssid .. "$")
+				fn = function(event, interface, prev_ssid, new_ssid)
+					setWifiVolume(CONFIG.WIFI_AUTOMATION.ACTIONS.HOME.volume, CONFIG.WIFI_AUTOMATION.ACTIONS.HOME.muted)
+					hs.alert.show(
+						"🏠 Home WiFi: "
+							.. new_ssid
+							.. "\nVolume: "
+							.. CONFIG.WIFI_AUTOMATION.ACTIONS.HOME.volume
+							.. "%"
+					)
+				end,
+			})
 		end
 	end
 
-	-- Work Actions
+	-- Work Actions (리스트 형태로 추가)
 	if CONFIG.WIFI_AUTOMATION and CONFIG.WIFI_AUTOMATION.WORK_SSIDS then
 		for _, ssid in ipairs(CONFIG.WIFI_AUTOMATION.WORK_SSIDS) do
-			wifiActions[ssid] = function()
-				setWifiVolume(CONFIG.WIFI_AUTOMATION.ACTIONS.WORK.volume, CONFIG.WIFI_AUTOMATION.ACTIONS.WORK.muted)
-				hs.alert.show("🏢 Work WiFi Connected\nVolume: " .. CONFIG.WIFI_AUTOMATION.ACTIONS.WORK.volume .. "%")
-			end
+			table.insert(wifiActions, {
+				from = nil,
+				to = ssid,
+				fn = function(event, interface, prev_ssid, new_ssid)
+					setWifiVolume(CONFIG.WIFI_AUTOMATION.ACTIONS.WORK.volume, CONFIG.WIFI_AUTOMATION.ACTIONS.WORK.muted)
+					hs.alert.show(
+						"🏢 Work WiFi: "
+							.. new_ssid
+							.. "\nVolume: "
+							.. CONFIG.WIFI_AUTOMATION.ACTIONS.WORK.volume
+							.. "%"
+					)
+				end,
+			})
 		end
 	end
 

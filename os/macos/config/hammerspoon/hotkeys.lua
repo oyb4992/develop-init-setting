@@ -94,7 +94,7 @@ local function setupHotkeys()
 	end)
 
 	-- PopupTranslateSelection: 선택된 텍스트 번역
-	hs.hotkey.bind({ "cmd", "ctrl" }, "t", "선택된 텍스트 번역", function()
+	hs.hotkey.bind({ "cmd", "ctrl", "alt" }, "t", "선택된 텍스트 번역", function()
 		if spoon.PopupTranslateSelection then
 			spoon.PopupTranslateSelection:translateSelectionPopup()
 		else
@@ -104,6 +104,15 @@ local function setupHotkeys()
 
 	-- DevCommander: 개발자 명령어 실행기
 	hs.hotkey.bind({ "cmd", "ctrl", "alt" }, "d", "개발자 명령어 실행기", devCommander.showDevCommander)
+
+	-- MouseCircle: 마우스 포인터 위치 표시
+	hs.hotkey.bind({ "cmd", "ctrl", "alt" }, "m", "마우스 포인터 위치 표시", function()
+		if spoon.MouseCircle then
+			spoon.MouseCircle:show()
+		else
+			hs.alert.show("MouseCircle Spoon이 로드되지 않았습니다")
+		end
+	end)
 end
 
 -- Export functions

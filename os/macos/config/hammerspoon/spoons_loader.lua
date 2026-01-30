@@ -28,18 +28,45 @@ local function loadAllSpoons()
 		spoon.SpoonInstall:updateAllRepos()
 
 		-- ReloadConfiguration.spoon
-		spoon.SpoonInstall:andUse("ReloadConfiguration")
+		spoon.SpoonInstall:andUse("ReloadConfiguration", {
+			hotkeys = {
+				reloadConfiguration = { { "cmd", "ctrl", "alt" }, "r", "Hammerspoon 설정 재로드" },
+			},
+			start = true,
+		})
 
 		-- KSheet (단축키 치트시트)
 		spoon.SpoonInstall:andUse("KSheet")
 
 		-- HSKeybindings (Hammerspoon 단축키 표시)
-		-- 해당 spoon의 init.lua의 정렬 로직 추가 (msg 기준 오름차순) -> 그룹핑 효과
+		-- -- ========================================
+		-- -- 정렬: 설명 부분(: 뒤) 기준
+		-- -- ========================================
+		-- local function sortDesc(e)
+		-- 	local msg = e.msg or ""
+		-- 	-- "⌃⌥C: Window: Center" -> "Window: Center"
+		-- 	return (msg:match("^[^:]+:%s*(.*)$") or msg):lower()
+		-- end
+		--
 		-- table.sort(allKeys, function(a, b)
-		--     local msgA = a.msg or ""
-		--     local msgB = b.msg or ""
-		--     return msgA < msgB
+		-- 	local descA, descB = sortDesc(a), sortDesc(b)
+		-- 	if descA ~= descB then
+		-- 		return descA < descB
+		-- 	end
+		-- 	-- 설명이 같으면 전체 msg로 2차 정렬(안정성)
+		-- 	return (a.msg or ""):lower() < (b.msg or ""):lower()
 		-- end)
+		-- .content > .col{
+		--   width: 28%;                     /* 기존 23% → 28% */
+		--   padding:20px 0 20px 20px;
+		-- }
+		-- .cmdtext{
+		--   float: left;
+		--   overflow: hidden;
+		--   width: 220px;                  /* 기존 165px → 220px */
+		--   white-space: nowrap;           /* 줄바꿈 방지 */
+		--   text-overflow: ellipsis;       /* 넘치면 ... 표시 (선택) */
+		-- }
 		spoon.SpoonInstall:andUse("HSKeybindings")
 
 		-- PopupTranslateSelection (선택 텍스트 번역)
@@ -52,17 +79,15 @@ local function loadAllSpoons()
 		})
 
 		-- MouseCircle (마우스 위치 찾기)
-		spoon.SpoonInstall:andUse("MouseCircle", {
-			hotkeys = {
-				show = { { "cmd", "ctrl", "alt" }, "m" },
-			},
-		})
+		spoon.SpoonInstall:andUse("MouseCircle")
 
 		-- WiFiTransitions (WiFi 자동화)
+		-- 사용시 위치 정보 동의 필요 : 위치 정보 권한의 hammerspoon 미노출시 콘솔에 hs.location.get() 실행
 		spoon.SpoonInstall:andUse("WiFiTransitions", {
-			config = {
-				actions = wifiTransitions.getActions(),
-			},
+			fn = function(s)
+				-- 명시적으로 actions 할당
+				s.actions = wifiTransitions.getActions()
+			end,
 			start = true,
 		})
 	end
