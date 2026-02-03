@@ -62,24 +62,22 @@ zplug "plugins/zsh_reload", from:oh-my-zsh
 zplug "plugins/colorize", from:oh-my-zsh
 zplug "plugins/macos", from:oh-my-zsh
 zplug "plugins/autojump", from:oh-my-zsh
-# zplug "plugins/mise", from:oh-my-zsh
 zplug "plugins/fzf", from:oh-my-zsh
 zplug "plugins/aws", from:oh-my-zsh
+zplug "plugins/copypath", from:oh-my-zsh
+zplug "plugins/copyfile", from:oh-my-zsh
+zplug "plugins/docker", from:oh-my-zsh
+zplug "plugins/docker-compose", from:oh-my-zsh
+zplug "plugins/npm", from:oh-my-zsh
+zplug "plugins/yarn", from:oh-my-zsh
 
+zplug "changyuheng/zsh-interactive-cd"
 zplug "wfxr/forgit", defer:1
 zplug "MichaelAquilina/zsh-you-should-use"
 
 zplug "romkatv/powerlevel10k", as:theme, depth:1
 
-zplug "zsh-users/zsh-syntax-highlighting",     defer:2
-
-# Install plugins if not installed
-# if ! zplug check --verbose; then
-#     printf "Install? [y/N]: "
-#     if read -q; then
-#         echo; zplug install
-#     fi
-# fi
+zplug "zsh-users/zsh-syntax-highlighting"
 
 # Load plugins
 zplug load
@@ -94,7 +92,6 @@ alias vim='nvim'
 alias vi='nvim'
 alias cat="bat"
 alias b-maint='brew update && brew upgrade && brew cleanup --prune=all && brew doctor'
-alias dip='docker image prune -f'
 alias ncc='npm cache clean --force'
 alias kd='killall Dock'
 alias bsl='brew services list'
