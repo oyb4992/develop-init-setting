@@ -27,6 +27,8 @@ export PATH="$HOMEBREW_PREFIX/opt/luajit/bin:$PATH"
 # Prevent system binary override
 export PATH="$PATH:/usr/local/bin"
 
+export YSU_MESSAGE_POSITION="after"  # 명령어 실행 후 메시지 표시
+export YSU_MODE=ALL                  # 모든 alias 제안 (기본은 최근 사용만)
 # ------------------------------------------------------------------------------
 # Shell Startup
 # ------------------------------------------------------------------------------
@@ -77,7 +79,7 @@ zplug "MichaelAquilina/zsh-you-should-use"
 
 zplug "romkatv/powerlevel10k", as:theme, depth:1
 
-zplug "zsh-users/zsh-syntax-highlighting"
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
 # Load plugins
 zplug load
