@@ -8,12 +8,19 @@ local gitManager = {}
 
 -- Git 상태 확인용 Canvas 표시 함수
 local gitStatusCanvas = nil
+local inputMode = nil
 
 local function showGitStatusCanvas(statusLines, displayTime)
 	-- 기존 Git 상태 창이 있으면 닫기
 	if gitStatusCanvas then
 		gitStatusCanvas:delete()
 		gitStatusCanvas = nil
+	end
+
+	-- 기존 입력 모드가 있으면 종료 (중복 실행 방지)
+	if inputMode then
+		inputMode:exit()
+		inputMode = nil
 	end
 
 	-- 화면 선택 로직 개선
@@ -125,8 +132,7 @@ local function showGitStatusCanvas(statusLines, displayTime)
 		},
 	}
 
-	-- 키보드 모달 사전 선언
-	local inputMode = nil
+	-- 키보드 모달 사전 선언 (전역 변수 사용)
 
 	local function closeCanvas()
 		if gitStatusCanvas then
@@ -251,6 +257,11 @@ end
 local function checkGitStatus()
 	-- 확인할 Git 리포지토리 경로 목록 (사용자 맞춤 설정)
 	local gitPaths = collectAllRepositories()
+
+	if #gitPaths == 0 then
+		hs.alert.show("설정된 Git 리포지토리가 없습니다.")
+		return
+	end
 
 	local statusLines = { "📋 Git 상태 종합 보고서", "" }
 	local hasChanges = false
@@ -471,6 +482,15 @@ local function scheduleNextUpdate()
 end
 
 local function start()
+	-- 리포지토리 설정 확인
+	local hasRepos = CONFIG.GIT_MANAGER.REPOS and #CONFIG.GIT_MANAGER.REPOS > 0
+	local hasScanPaths = CONFIG.GIT_MANAGER.SCAN_PATHS and #CONFIG.GIT_MANAGER.SCAN_PATHS > 0
+
+	if not (hasRepos or hasScanPaths) then
+		print("Git Manager: 설정된 리포지토리 경로가 없어 스케줄러를 시작하지 않습니다.")
+		return
+	end
+
 	print("Git Manager: 스케줄러 시작됨")
 	scheduleNextUpdate()
 end
