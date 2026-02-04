@@ -94,7 +94,6 @@ zplug "plugins/yarn", from:oh-my-zsh
 zplug "wfxr/forgit", defer:1
 zplug "MichaelAquilina/zsh-you-should-use"
 zplug "mroth/evalcache"
-zplug "atuinsh/atuin"
 zplug "babarot/enhancd", use:init.sh
 
 zplug "romkatv/zsh-defer"
@@ -174,9 +173,6 @@ function bstop() {
 # mise with evalcache - 회사에서는 sdkman으로 대체
 zsh-defer _evalcache mise activate zsh
 # zsh-defer source "$HOME/.sdkman/bin/sdkman-init.sh"
-
-# atuin initialization (중요!)
-zsh-defer _evalcache atuin init zsh
 
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && zsh-defer source "$HOME/.bun/_bun"
