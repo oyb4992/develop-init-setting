@@ -24,21 +24,15 @@ export DOTNET_ROOT="$HOMEBREW_PREFIX/Cellar/dotnet@8/8.0.13/libexec"
 
 export PATH="$HOMEBREW_PREFIX/opt/luajit/bin:$PATH"
 
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/Users/oyunbog/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+
 # Prevent system binary override
 export PATH="$PATH:/usr/local/bin"
 
 export YSU_MESSAGE_POSITION="after"  # 명령어 실행 후 메시지 표시
 export YSU_MODE=ALL                  # 모든 alias 제안 (기본은 최근 사용만)
-# ------------------------------------------------------------------------------
-# Shell Startup
-# ------------------------------------------------------------------------------
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
-# Only run in interactive shell
-[[ $- == *i* ]] || return
 
 # ------------------------------------------------------------------------------
 # Plugin Management (zplug)
@@ -77,12 +71,34 @@ zplug "changyuheng/zsh-interactive-cd"
 zplug "wfxr/forgit", defer:1
 zplug "MichaelAquilina/zsh-you-should-use"
 
+
+zplug "romkatv/zsh-defer"
+# 사용 예: zsh-defer source ~/.fzf.zsh
 zplug "romkatv/powerlevel10k", as:theme, depth:1
 
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
 # Load plugins
 zplug load
+
+# Compinit optimization - check cache once a day
+autoload -Uz compinit
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
+
+# ------------------------------------------------------------------------------
+# Shell Startup
+# ------------------------------------------------------------------------------
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  zsh-defer source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# Only run in interactive shell
+[[ $- == *i* ]] || return
 
 # ------------------------------------------------------------------------------
 # Aliases
@@ -97,13 +113,26 @@ alias b-maint='brew update && brew upgrade && brew cleanup --prune=all && brew d
 alias ncc='npm cache clean --force'
 alias kd='killall Dock'
 alias bsl='brew services list'
-alias vds='nvim ~/IdeaProjects/dev-init-setting'
+alias vds='cd ~/IdeaProjects/dev-init-setting && nvim .'
+
+alias aws-sso-login="aws sso login --sso-session sso-login"
+alias dc-up-kalis='cd ~/Project/be/kalis-be-library && docker-compose up -d'
+alias dc-stop-kalis='cd ~/Project/be/kalis-be-library && docker-compose stop'
+
+alias ykp='cd ~/Project/fe/kalis-fe-pc && yarn kalis'
+alias yka='cd ~/Project/fe/kalis-fe-admin && yarn kalis-office'
+# =======================================================
+# Git Wrapper 적용 (IntelliJ와 동일한 로직 공유)
+# =======================================================
+if [[ -f "$HOME/git-wrapper.sh" ]]; then
+  alias git="$HOME/git-wrapper.sh"
+fi
 
 # ------------------------------------------------------------------------------
 # Tooling Configurations & Initializations
 # ------------------------------------------------------------------------------
 # FZF configuration
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.fzf.zsh ] && zsh-defer source ~/.fzf.zsh
 function fzf-view() {
     fzf --preview '''[[ $(file --mime {}) =~ binary ]] &&
                   echo {} is a binary file ||
@@ -127,52 +156,19 @@ function bstop() {
   fi
 }
 
-# =======================================================
-# Git 보호 로직: feat 브랜치에서 develop 직접 pull/merge 차단
-# =======================================================
-function git() {
-  # 1. 사용자가 입력한 명령어 종류 확인 (pull 또는 merge)
-  local command="$1"
+# mise (replaces rbenv, nvm, etc) - 회사에서는 sdkman으로 대체
+# eval "$(mise activate zsh)"
+zsh-defer source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-  if [[ "$command" == "pull" ]] || [[ "$command" == "merge" ]]; then
-    
-    # 2. 현재 브랜치 이름 확인 (에러 방지를 위해 stderr는 숨김)
-    local current_branch=$(command git symbolic-ref --short HEAD 2>/dev/null)
-
-    # 3. 입력된 모든 인자 중에서 'develop'이 포함되어 있는지 검사
-    # 예: git pull origin develop  -> 'develop' 감지
-    # 예: git merge develop        -> 'develop' 감지
-    local args="$@"
-    
-    # [조건] 현재 브랜치가 'feat'로 시작하고, 명령어 인자에 'develop'이 포함된 경우
-    if [[ "$current_branch" == feat* ]] && [[ "$args" == *"develop"* ]]; then
-        echo "🛑 [BLOCKED] 'feat' 브랜치에서 'develop'을 직접 가져올 수 없습니다."
-        echo "   --------------------------------------------------"
-        echo "   🚫 명령어: git $args"
-        echo "   📍 현재 위치: $current_branch"
-        echo "   ✅ 올바른 전략: develop -> stage -> feat 순서를 따라주세요."
-        echo "   --------------------------------------------------"
-        
-        # 실제 git 명령어를 실행하지 않고 함수 종료 (Return 1)
-        return 1 
-    fi
-  fi
-
-  # 위 조건에 걸리지 않았다면 원래 git 명령어 정상 실행
-  command git "$@"
-}
 
 # bun completions
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
-
-# mise (replaces rbenv, nvm, etc)
-eval "$(mise activate zsh)"
+[ -s "$HOME/.bun/_bun" ] && zsh-defer source "$HOME/.bun/_bun"
 
 # Powerlevel10k
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # Run fastfetch only in full terminals (skip in IDEs)
-if [[ "$TERM_PROGRAM" != "vscode" && "$TERM_PROGRAM" != "IntelliJ" && -z "$JEDI_TERM" && -z "$IDEA_INITIAL_DIRECTORY" ]]; then
+if [[ "$TERM_PROGRAM" != "vscode" && "$TERM_PROGRAM" != "IntelliJ" && "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" && -z "$JEDI_TERM" && -z "$IDEA_INITIAL_DIRECTORY" ]]; then
   fastfetch --pipe false
 fi
