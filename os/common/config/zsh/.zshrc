@@ -1,12 +1,32 @@
 # ------------------------------------------------------------------------------
+# Essential PATH (Homebrew만 먼저 설정)
+# ------------------------------------------------------------------------------
+export HOMEBREW_PREFIX="/opt/homebrew"
+export PATH="$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin:$PATH"
+
+# ------------------------------------------------------------------------------
+# Startup Display
+# ------------------------------------------------------------------------------
+if [[ "$TERM_PROGRAM" != "vscode" && "$TERM_PROGRAM" != "IntelliJ" && "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" && -z "$JEDI_TERM" && -z "$IDEA_INITIAL_DIRECTORY" ]]; then
+  fastfetch --pipe false
+fi
+
+# ------------------------------------------------------------------------------
+# Shell Startup
+# ------------------------------------------------------------------------------
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# Only run in interactive shell
+[[ $- == *i* ]] || return
+
+# ------------------------------------------------------------------------------
 # PATH and Environment Variables
 # ------------------------------------------------------------------------------
 # Locale
 export LANG=en_US.UTF-8
-
-# Homebrew
-export HOMEBREW_PREFIX="/opt/homebrew"
-export PATH="$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin:$PATH"
 
 # User Binaries
 export PATH="$HOME/.local/bin:$PATH" # pipx etc
@@ -24,12 +44,21 @@ export DOTNET_ROOT="$HOMEBREW_PREFIX/Cellar/dotnet@8/8.0.13/libexec"
 
 export PATH="$HOMEBREW_PREFIX/opt/luajit/bin:$PATH"
 
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+if [[ -d "$HOME/.rd/bin" ]]; then
+  export PATH="$HOME/.rd/bin:$PATH"
+fi
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+
 # Prevent system binary override
 export PATH="$PATH:/usr/local/bin"
 
-export YSU_MESSAGE_POSITION="before"  # 명령어 실행 후 메시지 표시
+export YSU_MESSAGE_POSITION="before"  # 명령어 실행 전 메시지 표시
 export YSU_MODE=ALL                  # 모든 alias 제안 (기본은 최근 사용만)
 export ENHANCD_FILTER="fzf --height 40% --reverse --border"
+export ENHANCD_DOT_SHOW_FULLPATH=1  # .. 경로에서 전체 경로 표시
+export ENHANCD_ENABLE_HOME=0        # 홈 디렉토리 히스토리 제외 (선택)
+
 # ------------------------------------------------------------------------------
 # Plugin Management (zplug)
 # ------------------------------------------------------------------------------
@@ -85,23 +114,6 @@ else
   compinit -C
 fi
 
-### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-if [[ -d "$HOME/.rd/bin" ]]; then
-  zsh-defer export PATH="$HOME/.rd/bin:$PATH"
-fi
-### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
-
-# ------------------------------------------------------------------------------
-# Shell Startup
-# ------------------------------------------------------------------------------
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  zsh-defer source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
-# Only run in interactive shell
-[[ $- == *i* ]] || return
-
 # ------------------------------------------------------------------------------
 # Aliases
 # ------------------------------------------------------------------------------
@@ -131,10 +143,8 @@ if [[ -f "$HOME/git-wrapper.sh" ]]; then
 fi
 
 # ------------------------------------------------------------------------------
-# Tooling Configurations & Initializations
+# Functions
 # ------------------------------------------------------------------------------
-# FZF configuration
-[ -f ~/.fzf.zsh ] && zsh-defer source ~/.fzf.zsh
 function fzf-view() {
     fzf --preview '''[[ $(file --mime {}) =~ binary ]] &&
                   echo {} is a binary file ||
@@ -142,7 +152,6 @@ function fzf-view() {
                   cat {}) 2> /dev/null | head -500'''
 }
 
-# Brew Service Start (fzf)
 function bstart() {
   local service_to_start=$(brew services list | awk 'NR>1 {print $1}' | fzf)
   if [[ -n "$service_to_start" ]]; then
@@ -150,7 +159,6 @@ function bstart() {
   fi
 }
 
-# Brew Service Stop (fzf)
 function bstop() {
   local service_to_stop=$(brew services list | grep started | awk '{print $1}' | fzf)
   if [[ -n "$service_to_stop" ]]; then
@@ -158,20 +166,20 @@ function bstop() {
   fi
 }
 
-# mise (replaces rbenv, nvm, etc) - 회사에서는 sdkman으로 대체
-# zsh-defer eval "$(mise activate zsh)"
+# ------------------------------------------------------------------------------
+# Tool Initializations
+# ------------------------------------------------------------------------------
+[ -f ~/.fzf.zsh ] && zsh-defer source ~/.fzf.zsh
+
+# mise with evalcache - 회사에서는 sdkman으로 대체
 zsh-defer _evalcache mise activate zsh
 # zsh-defer source "$HOME/.sdkman/bin/sdkman-init.sh"
 
+# atuin initialization (중요!)
+zsh-defer _evalcache atuin init zsh
 
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && zsh-defer source "$HOME/.bun/_bun"
 
-# Powerlevel10k
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+# Powerlevel10k configuration
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# Run fastfetch only in full terminals (skip in IDEs)
-if [[ "$TERM_PROGRAM" != "vscode" && "$TERM_PROGRAM" != "IntelliJ" && "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" && -z "$JEDI_TERM" && -z "$IDEA_INITIAL_DIRECTORY" ]]; then
-  fastfetch --pipe false
-fi
