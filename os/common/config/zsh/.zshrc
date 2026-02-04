@@ -24,16 +24,12 @@ export DOTNET_ROOT="$HOMEBREW_PREFIX/Cellar/dotnet@8/8.0.13/libexec"
 
 export PATH="$HOMEBREW_PREFIX/opt/luajit/bin:$PATH"
 
-### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="/Users/oyunbog/.rd/bin:$PATH"
-### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
-
 # Prevent system binary override
 export PATH="$PATH:/usr/local/bin"
 
-export YSU_MESSAGE_POSITION="after"  # 명령어 실행 후 메시지 표시
+export YSU_MESSAGE_POSITION="before"  # 명령어 실행 후 메시지 표시
 export YSU_MODE=ALL                  # 모든 alias 제안 (기본은 최근 사용만)
-
+export ENHANCD_FILTER="fzf --height 40% --reverse --border"
 # ------------------------------------------------------------------------------
 # Plugin Management (zplug)
 # ------------------------------------------------------------------------------
@@ -57,7 +53,6 @@ zplug "plugins/sudo", from:oh-my-zsh
 zplug "plugins/zsh_reload", from:oh-my-zsh
 zplug "plugins/colorize", from:oh-my-zsh
 zplug "plugins/macos", from:oh-my-zsh
-zplug "plugins/autojump", from:oh-my-zsh
 zplug "plugins/fzf", from:oh-my-zsh
 zplug "plugins/aws", from:oh-my-zsh
 zplug "plugins/copypath", from:oh-my-zsh
@@ -67,10 +62,11 @@ zplug "plugins/docker-compose", from:oh-my-zsh
 zplug "plugins/npm", from:oh-my-zsh
 zplug "plugins/yarn", from:oh-my-zsh
 
-zplug "changyuheng/zsh-interactive-cd"
 zplug "wfxr/forgit", defer:1
 zplug "MichaelAquilina/zsh-you-should-use"
-
+zplug "mroth/evalcache"
+zplug "atuinsh/atuin"
+zplug "babarot/enhancd", use:init.sh
 
 zplug "romkatv/zsh-defer"
 # 사용 예: zsh-defer source ~/.fzf.zsh
@@ -88,6 +84,12 @@ if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
 else
   compinit -C
 fi
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+if [[ -d "$HOME/.rd/bin" ]]; then
+  zsh-defer export PATH="$HOME/.rd/bin:$PATH"
+fi
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
 # ------------------------------------------------------------------------------
 # Shell Startup
@@ -157,8 +159,9 @@ function bstop() {
 }
 
 # mise (replaces rbenv, nvm, etc) - 회사에서는 sdkman으로 대체
-# eval "$(mise activate zsh)"
-zsh-defer source "$HOME/.sdkman/bin/sdkman-init.sh"
+# zsh-defer eval "$(mise activate zsh)"
+zsh-defer _evalcache mise activate zsh
+# zsh-defer source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 
 # bun completions
