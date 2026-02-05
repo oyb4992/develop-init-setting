@@ -120,6 +120,7 @@ alias ncc='npm cache clean --force'
 alias kd='killall Dock'
 alias bsl='brew services list'
 alias vds='cd ~/IdeaProjects/dev-init-setting && nvim .'
+alias mcu='mac-cleanup'
 
 alias aws-sso-login="aws sso login --sso-session sso-login"
 alias dc-up-kalis='cd ~/Project/be/kalis-be-library && docker-compose up -d'
