@@ -40,7 +40,7 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 export PATH="$PATH:$HOME/.dotnet/tools"
-export DOTNET_ROOT="$HOMEBREW_PREFIX/Cellar/dotnet@8/8.0.13/libexec"
+export DOTNET_ROOT="$HOMEBREW_PREFIX/opt/dotnet@8/libexec"
 
 export PATH="$HOMEBREW_PREFIX/opt/luajit/bin:$PATH"
 
@@ -49,9 +49,6 @@ if [[ -d "$HOME/.rd/bin" ]]; then
   export PATH="$HOME/.rd/bin:$PATH"
 fi
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
-
-# Prevent system binary override
-export PATH="$PATH:/usr/local/bin"
 
 export YSU_MESSAGE_POSITION="before"  # 명령어 실행 전 메시지 표시
 export YSU_MODE=ALL                  # 모든 alias 제안 (기본은 최근 사용만)
