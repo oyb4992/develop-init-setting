@@ -17,28 +17,15 @@
             "command": "uvx",
             "args": ["mcp-server-git"]
         },
-        "perplexity-ask": {
-            "command": "npx",
-            "args": ["-y", "server-perplexity-ask"],
-            "env": {
-                "PERPLEXITY_API_KEY": "${PERPLEXITY_API_KEY}"
-            }
-        },
-        "playwright": {
+        "__DISABLED_playwright": {
             "command": "npx",
             "args": ["-y", "@executeautomation/playwright-mcp-server"]
         },
         "context7": {
             "command": "npx",
-            "args": ["-y", "@upstash/context7-mcp@latest"]
-        },
-        "shrimp-task-manager": {
-            "command": "npx",
-            "args": ["-y", "mcp-shrimp-task-manager"],
+            "args": ["-y", "@upstash/context7-mcp@latest"],
             "env": {
-                "DATA_DIR": "/Users/oyunbog/IdeaProjects",
-                "TEMPLATES_USE": "en",
-                "ENABLE_GUI": "false"
+                "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
             }
         }
     },

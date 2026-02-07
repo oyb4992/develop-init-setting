@@ -186,3 +186,11 @@ zsh-defer _evalcache atuin init zsh --disable-up-arrow
 
 # Powerlevel10k configuration
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# ------------------------------------------------------------------------------
+# Local Secrets & Overrides
+# ------------------------------------------------------------------------------
+# Load secret environment variables (e.g., API keys) from a local file
+# that is NOT tracked by git.
+if [[ -f "$HOME/.zshrc_secrets" ]]; then
+  source "$HOME/.zshrc_secrets"
+fi
