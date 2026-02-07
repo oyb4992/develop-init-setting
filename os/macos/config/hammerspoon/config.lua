@@ -25,15 +25,10 @@ local CONFIG = {
 		ENGLISH_LAYOUT_ID = "com.apple.keylayout.ABC",
 		KOREAN_LAYOUT_ID = "com.apple.inputmethod.Korean.2SetKorean", -- 두벌식 한글 (정확한 ID)
 		RIGHT_COMMAND_KEYCODE = 54,
+		-- 내장 키보드 타입 ID (알아내기 위해 초기에는 nil로 설정하고 콘솔 로그 확인 필요)
+		-- 보통 Apple Internal Keyboard는 58(ISO), 40(ANSI) 등의 값을 가짐
+		INTERNAL_KEYBOARD_TYPE = 91,
 	},
-	WINDOW_MANAGEMENT = {
-		INTERNAL_DEVICE_NAME = 91, -- 내장 키보드 식별자 (필요시 조정)
-		MODIFIERS = { "ctrl" },
-		MOVE_MODIFIERS = { "ctrl", "shift" },
-	},
-	-- 내장 키보드 타입 ID (알아내기 위해 초기에는 nil로 설정하고 콘솔 로그 확인 필요)
-	-- 보통 Apple Internal Keyboard는 58(ISO), 40(ANSI) 등의 값을 가짐
-	INTERNAL_KEYBOARD_TYPE = 91,
 
 	WIFI_AUTOMATION = {
 		HOME_SSIDS = { "5G_LGWiFi_DBE9", "LGWiFi_DBE9" }, -- 집 WiFi 이름

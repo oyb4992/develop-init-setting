@@ -11,6 +11,8 @@ local systemStatus = {}
 
 -- 상태 창 표시용 Canvas 객체 (전역 변수)
 local statusCanvas = nil
+-- ESC 모달 변수 (충돌 방지용)
+local statusModal = nil
 
 -- 시스템 상태 정보 수집 (전원, 화면, BTT, 카페인) - 개선된 에러 처리
 local function getSystemInfo()
@@ -200,30 +202,33 @@ local function showStatusWithCanvas(statusLines)
 	-- 창 표시
 	statusCanvas:show()
 
-	-- ESC 키 핸들러 등록
-	local escHandler
-	escHandler = hs.hotkey.bind({}, "escape", function()
+	-- 기존 모달이 있으면 종료
+	if statusModal then
+		statusModal:exit()
+		statusModal = nil
+	end
+
+	-- ESC 키 핸들러 등록 (modal 사용)
+	statusModal = hs.hotkey.modal.new()
+
+	local function closeStatus()
 		if statusCanvas then
 			statusCanvas:delete()
 			statusCanvas = nil
-			if escHandler then
-				escHandler:delete() -- 핸들러 제거
-				escHandler = nil
-			end
 		end
-	end)
+		if statusModal then
+			statusModal:exit()
+			statusModal = nil
+		end
+	end
+
+	statusModal:bind({}, "escape", closeStatus)
+	statusModal:bind({}, "q", closeStatus)
+	statusModal:enter()
 
 	-- CONFIG에 설정된 시간 후 자동으로 닫기
 	if displayTime and displayTime > 0 then
-		hs.timer.doAfter(displayTime, function()
-			if statusCanvas then
-				statusCanvas:delete()
-				statusCanvas = nil
-				if escHandler then
-					escHandler:delete() -- 핸들러 제거
-				end
-			end
-		end)
+		hs.timer.doAfter(displayTime, closeStatus)
 	end
 end
 

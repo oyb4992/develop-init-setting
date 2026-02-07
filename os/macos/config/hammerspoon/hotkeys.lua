@@ -8,6 +8,10 @@ local devCommander = require("dev_commander")
 
 local hotkeys = {}
 
+-- ESC 모달 변수 (충돌 방지용)
+local ksheetModal = nil
+local hsKeybindingsModal = nil
+
 -- 모든 단축키 설정
 local function setupHotkeys()
 	-- BTT & 카페인 관련 단축키
@@ -28,26 +32,37 @@ local function setupHotkeys()
 		if spoon.KSheet then
 			spoon.KSheet:toggle()
 
-			-- ESC 키로 KSheet 창 닫기 지원 추가
+			-- ESC 키로 KSheet 창 닫기 지원 (modal 사용)
 			if
 				spoon.KSheet.sheetView
 				and spoon.KSheet.sheetView:hswindow()
 				and spoon.KSheet.sheetView:hswindow():isVisible()
 			then
-				local ksheetEscHandler
-				ksheetEscHandler = hs.hotkey.bind({}, "escape", function()
+				-- 기존 모달이 있으면 종료
+				if ksheetModal then
+					ksheetModal:exit()
+					ksheetModal = nil
+				end
+
+				ksheetModal = hs.hotkey.modal.new()
+
+				local function closeKSheet()
 					if
 						spoon.KSheet.sheetView
 						and spoon.KSheet.sheetView:hswindow()
 						and spoon.KSheet.sheetView:hswindow():isVisible()
 					then
 						spoon.KSheet:hide()
-						if ksheetEscHandler then
-							ksheetEscHandler:delete()
-							ksheetEscHandler = nil
-						end
 					end
-				end)
+					if ksheetModal then
+						ksheetModal:exit()
+						ksheetModal = nil
+					end
+				end
+
+				ksheetModal:bind({}, "escape", closeKSheet)
+				ksheetModal:bind({}, "q", closeKSheet)
+				ksheetModal:enter()
 			end
 		else
 			hs.alert.show("KSheet Spoon이 로드되지 않았습니다")
@@ -66,26 +81,37 @@ local function setupHotkeys()
 			else
 				spoon.HSKeybindings:show()
 
-				-- ESC 키로 HSKeybindings 창 닫기 지원 추가
+				-- ESC 키로 HSKeybindings 창 닫기 지원 (modal 사용)
 				if
 					spoon.HSKeybindings.sheetView
 					and spoon.HSKeybindings.sheetView:hswindow()
 					and spoon.HSKeybindings.sheetView:hswindow():isVisible()
 				then
-					local hsKeybindingsEscHandler
-					hsKeybindingsEscHandler = hs.hotkey.bind({}, "escape", function()
+					-- 기존 모달이 있으면 종료
+					if hsKeybindingsModal then
+						hsKeybindingsModal:exit()
+						hsKeybindingsModal = nil
+					end
+
+					hsKeybindingsModal = hs.hotkey.modal.new()
+
+					local function closeHSKeybindings()
 						if
 							spoon.HSKeybindings.sheetView
 							and spoon.HSKeybindings.sheetView:hswindow()
 							and spoon.HSKeybindings.sheetView:hswindow():isVisible()
 						then
 							spoon.HSKeybindings:hide()
-							if hsKeybindingsEscHandler then
-								hsKeybindingsEscHandler:delete()
-								hsKeybindingsEscHandler = nil
-							end
 						end
-					end)
+						if hsKeybindingsModal then
+							hsKeybindingsModal:exit()
+							hsKeybindingsModal = nil
+						end
+					end
+
+					hsKeybindingsModal:bind({}, "escape", closeHSKeybindings)
+					hsKeybindingsModal:bind({}, "q", closeHSKeybindings)
+					hsKeybindingsModal:enter()
 				end
 			end
 		else
