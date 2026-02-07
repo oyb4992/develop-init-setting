@@ -86,7 +86,6 @@ zplug "plugins/yarn", from:oh-my-zsh
 zplug "wfxr/forgit", defer:1
 zplug "MichaelAquilina/zsh-you-should-use"
 zplug "mroth/evalcache"
-zplug "atuinsh/atuin"
 zplug "babarot/enhancd", use:init.sh
 
 zplug "romkatv/zsh-defer"
@@ -95,8 +94,16 @@ zplug "romkatv/powerlevel10k", as:theme, depth:1
 
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
+# zplug install if needed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then echo; zplug install; fi
+fi
+
 # Load plugins
 zplug load
+
+setopt extendedglob # glob qualifier 사용을 위해 필요
 
 # Compinit optimization - check cache once a day
 autoload -Uz compinit
@@ -129,7 +136,7 @@ alias dc-stop-kalis='cd ~/Project/be/kalis-be-library && docker-compose stop'
 alias ykp='cd ~/Project/fe/kalis-fe-pc && yarn kalis'
 alias yka='cd ~/Project/fe/kalis-fe-admin && yarn kalis-office'
 # =======================================================
-# Git Wrapper 적용 (IntelliJ와 동일한 로직 공유)
+# Git Wrapper 적용 (IntelliJ와 동일한 로직 공유): git-wrapper.sh의 실행 권한이 필요(chmod +x)
 # =======================================================
 if [[ -f "$HOME/git-wrapper.sh" ]]; then
   alias git="$HOME/git-wrapper.sh"
@@ -165,7 +172,7 @@ function bstop() {
 [ -f ~/.fzf.zsh ] && zsh-defer source ~/.fzf.zsh
 
 # mise with evalcache - 회사에서는 sdkman으로 대체
-zsh-defer _evalcache mise activate zsh
+_evalcache mise activate zsh
 # zsh-defer source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 # 설치 및 테스트
