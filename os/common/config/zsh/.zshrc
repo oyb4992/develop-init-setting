@@ -58,6 +58,8 @@ export ENHANCD_ENABLE_HOME=0        # 홈 디렉토리 히스토리 제외 (선�
 # atuin의 SQLite 데이터를 autosuggestions에 활용
 export ATUIN_NOBIND="true"
 
+export PROJECT_ROOT="$HOME/IdeaProjects"
+
 # ------------------------------------------------------------------------------
 # Plugin Management (zplug)
 # ------------------------------------------------------------------------------
@@ -126,15 +128,16 @@ alias b-maint='brew update && brew upgrade && brew cleanup --prune=all && brew d
 alias ncc='npm cache clean --force'
 alias kd='killall Dock'
 alias bsl='brew services list'
-alias vds='cd ~/IdeaProjects/dev-init-setting && nvim .'
+alias vds='cd $PROJECT_ROOT/dev-init-setting && nvim .'
 alias mcu='mac-cleanup'
 
 alias aws-sso-login="aws sso login --sso-session sso-login"
-alias dc-up-kalis='cd ~/Project/be/kalis-be-library && docker-compose up -d'
-alias dc-stop-kalis='cd ~/Project/be/kalis-be-library && docker-compose stop'
+alias dc-up-kalis='cd $PROJECT_ROOT/be/kalis-be-library && docker-compose up -d'
+alias dc-stop-kalis='cd $PROJECT_ROOT/be/kalis-be-library && docker-compose stop'
 
-alias ykp='cd ~/Project/fe/kalis-fe-pc && yarn kalis'
-alias yka='cd ~/Project/fe/kalis-fe-admin && yarn kalis-office'
+alias ykp='cd $PROJECT_ROOT/fe/kalis-fe-pc && yarn kalis'
+alias yka='cd $PROJECT_ROOT/fe/kalis-fe-admin && yarn kalis-office'
+
 # =======================================================
 # Git Wrapper 적용 (IntelliJ와 동일한 로직 공유): git-wrapper.sh의 실행 권한이 필요(chmod +x)
 # =======================================================
@@ -186,11 +189,3 @@ zsh-defer _evalcache atuin init zsh --disable-up-arrow
 
 # Powerlevel10k configuration
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-# ------------------------------------------------------------------------------
-# Local Secrets & Overrides
-# ------------------------------------------------------------------------------
-# Load secret environment variables (e.g., API keys) from a local file
-# that is NOT tracked by git.
-if [[ -f "$HOME/.zshrc_secrets" ]]; then
-  source "$HOME/.zshrc_secrets"
-fi
