@@ -2,6 +2,7 @@
 -- Hyper Key 앱 런처
 -- ========================================
 local appLauncher = {}
+local hotkeys = {} -- 등록된 핫키 저장
 
 -- Hyper modifiers (BTT에서 CapsLock을 이 조합으로 매핑했다고 가정)
 local hyper = { "cmd", "alt", "ctrl", "shift" }
@@ -55,16 +56,20 @@ end
 function appLauncher.start()
 	for key, app in pairs(mappings) do
 		-- App: [앱이름] 형태의 설명 추가
-		hs.hotkey.bind(hyper, key, "App: " .. app, function()
+		local hk = hs.hotkey.bind(hyper, key, "App: " .. app, function()
 			launchOrFocus(app)
 		end)
+		table.insert(hotkeys, hk)
 	end
 	print("🚀 App Launcher 시작됨: Hyper + [a,b,d,f,1,2,3,n,s,z,t,k]")
 end
 
 function appLauncher.stop()
-	-- hotkey.bind는 전역으로 관리되므로 개별 해제가 까다로울 수 있음
-	-- 여기서는 생략 (Hammerspoon reload 시 자동 초기화됨)
+	for _, hk in ipairs(hotkeys) do
+		hk:delete()
+	end
+	hotkeys = {}
+	print("🚀 App Launcher 중지됨")
 end
 
 return appLauncher

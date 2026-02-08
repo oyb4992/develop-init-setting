@@ -1,11 +1,12 @@
+local config = require("config")
+local CONFIG = config.CONFIG
+
 local M = {}
 local log = hs.logger.new("DockerManager", "info")
-local dockerPath = "/opt/homebrew/bin/docker" -- M1/M2 Mac 기준, 필요시 수정
+local dockerPath = CONFIG.DOCKER and CONFIG.DOCKER.PATH or "/opt/homebrew/bin/docker"
 
 -- Docker 명령어 실행 헬퍼
 local function dockerExec(cmd)
-	-- Docker Path 설정 (Homebrew 등으로 설치된 경로)
-	-- local dockerPath = "/opt/homebrew/bin/docker" -- 상단으로 이동됨
 	return hs.execute(dockerPath .. " " .. cmd)
 end
 

@@ -57,6 +57,43 @@ function M.getActions()
 		end
 	end
 
+	-- Default Action (홈/회사가 아닌 모든 WiFi 연결 시)
+	if CONFIG.WIFI_AUTOMATION and CONFIG.WIFI_AUTOMATION.ACTIONS.DEFAULT then
+		-- 모든 알려진 SSID를 수집
+		local knownSSIDs = {}
+		if CONFIG.WIFI_AUTOMATION.HOME_SSIDS then
+			for _, ssid in ipairs(CONFIG.WIFI_AUTOMATION.HOME_SSIDS) do
+				knownSSIDs[ssid] = true
+			end
+		end
+		if CONFIG.WIFI_AUTOMATION.WORK_SSIDS then
+			for _, ssid in ipairs(CONFIG.WIFI_AUTOMATION.WORK_SSIDS) do
+				knownSSIDs[ssid] = true
+			end
+		end
+
+		table.insert(wifiActions, {
+			from = nil,
+			to = ".*", -- 모든 SSID에 매칭 (Lua 패턴)
+			fn = function(event, interface, prev_ssid, new_ssid)
+				-- 알려진 SSID가 아닌 경우에만 DEFAULT 액션 실행
+				if new_ssid and not knownSSIDs[new_ssid] then
+					setWifiVolume(
+						CONFIG.WIFI_AUTOMATION.ACTIONS.DEFAULT.volume,
+						CONFIG.WIFI_AUTOMATION.ACTIONS.DEFAULT.muted
+					)
+					hs.alert.show(
+						"🌐 Other WiFi: "
+							.. new_ssid
+							.. "\nVolume: "
+							.. CONFIG.WIFI_AUTOMATION.ACTIONS.DEFAULT.volume
+							.. "%"
+					)
+				end
+			end,
+		})
+	end
+
 	return wifiActions
 end
 

@@ -65,6 +65,41 @@ local CONFIG = {
 			MINUTE = 00,
 		},
 	},
+	DOCKER = {
+		PATH = "/opt/homebrew/bin/docker", -- M1/M2 Mac 기준, Intel: /usr/local/bin/docker
+	},
+	FILE_ORGANIZER = {
+		WATCH_PATHS = { os.getenv("HOME") .. "/Downloads" },
+		KAKAOTALK_PHOTO_DIR = os.getenv("HOME") .. "/Pictures/KakaoTalk",
+		IMAGE_EXTENSIONS = {
+			[".jpg"] = true,
+			[".jpeg"] = true,
+			[".png"] = true,
+			[".gif"] = true,
+			[".bmp"] = true,
+			[".tiff"] = true,
+			[".webp"] = true,
+			[".svg"] = true,
+			[".heic"] = true,
+			[".raw"] = true,
+		},
+		DOCUMENT_EXTENSIONS = {
+			[".pdf"] = true,
+			[".doc"] = true,
+			[".docx"] = true,
+			[".xls"] = true,
+			[".xlsx"] = true,
+			[".ppt"] = true,
+			[".pptx"] = true,
+			[".txt"] = true,
+			[".md"] = true,
+			[".hwp"] = true,
+			[".csv"] = true,
+			[".pages"] = true,
+			[".numbers"] = true,
+			[".key"] = true,
+		},
+	},
 }
 
 -- 상태 표시 성능 향상을 위한 개선된 캐시 시스템
