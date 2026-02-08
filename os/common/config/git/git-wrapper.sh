@@ -14,10 +14,10 @@ REAL_GIT="/opt/homebrew/bin/git"
 # 이 경로(또는 그 하위 폴더)에서 실행될 때만 차단 로직이 동작합니다.
 # 예시: "/Users/내이름/Work/my-project"
 PROTECTED_PATHS=(
-    "/Users/oyunbog/Project/be"
-    "/Users/oyunbog/Project/fe"
-    "/Users/oyunbog/Project/flyway"
-    "/Users/oyunbog/Project/KALis"
+    "$PROJECT_ROOT/be"
+    "$PROJECT_ROOT/fe"
+    "$PROJECT_ROOT/flyway"
+    "$PROJECT_ROOT/KALis"
 )
 # -----------------------------------------------------------
 
