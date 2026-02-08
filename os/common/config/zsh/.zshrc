@@ -1,15 +1,21 @@
+# PATH 중복 방지
+typeset -U PATH
+
 # ------------------------------------------------------------------------------
 # Essential PATH (Homebrew만 먼저 설정)
 # ------------------------------------------------------------------------------
 export HOMEBREW_PREFIX="/opt/homebrew"
 export PATH="$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin:$PATH"
 
-# ------------------------------------------------------------------------------
-# Startup Display
-# ------------------------------------------------------------------------------
-if [[ "$TERM_PROGRAM" != "vscode" && "$TERM_PROGRAM" != "IntelliJ" && "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" && -z "$JEDI_TERM" && -z "$IDEA_INITIAL_DIRECTORY" ]]; then
-  fastfetch --pipe false
-fi
+# # ------------------------------------------------------------------------------
+# # Startup Display
+# # ------------------------------------------------------------------------------
+# if [[ "$TERM_PROGRAM" != "vscode" && "$TERM_PROGRAM" != "IntelliJ" && "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" && -z "$JEDI_TERM" && -z "$IDEA_INITIAL_DIRECTORY" ]]; then
+#   fastfetch --pipe false
+# fi
+
+# Only run in interactive shell
+[[ $- == *i* ]] || return
 
 # ------------------------------------------------------------------------------
 # Shell Startup
@@ -18,9 +24,6 @@ fi
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-
-# Only run in interactive shell
-[[ $- == *i* ]] || return
 
 # ------------------------------------------------------------------------------
 # PATH and Environment Variables
@@ -81,7 +84,7 @@ zplug "lib/directories",  from:oh-my-zsh
 zplug "plugins/git", from:oh-my-zsh
 zplug "plugins/aws", from:oh-my-zsh
 zplug "plugins/docker", from:oh-my-zsh
-zplug "plugins/docker-compose", from:oh-my-zsh
+# zplug "plugins/docker-compose", from:oh-my-zsh
 zplug "plugins/npm", from:oh-my-zsh
 zplug "plugins/yarn", from:oh-my-zsh
 
@@ -97,7 +100,7 @@ zplug "romkatv/powerlevel10k", as:theme, depth:1
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
 # zplug install if needed
-if ! zplug check --verbose; then
+if ! zplug check; then
     printf "Install? [y/N]: "
     if read -q; then echo; zplug install; fi
 fi
@@ -132,8 +135,8 @@ alias vds='cd $PROJECT_ROOT/dev-init-setting && nvim .'
 alias mcu='mac-cleanup'
 
 alias aws-sso-login="aws sso login --sso-session sso-login"
-alias dc-up-kalis='cd $PROJECT_ROOT/be/kalis-be-library && docker-compose up -d'
-alias dc-stop-kalis='cd $PROJECT_ROOT/be/kalis-be-library && docker-compose stop'
+alias dc-up-kalis='cd $PROJECT_ROOT/be/kalis-be-library && docker compose up -d'
+alias dc-stop-kalis='cd $PROJECT_ROOT/be/kalis-be-library && docker compose stop'
 
 alias ykp='cd $PROJECT_ROOT/fe/kalis-fe-pc && yarn kalis'
 alias yka='cd $PROJECT_ROOT/fe/kalis-fe-admin && yarn kalis-office'
@@ -182,7 +185,7 @@ _evalcache mise activate zsh
 # brew install atuin
 # atuin import auto  # 기존 zsh 히스토리 가져오기
 # 명령어 히스토리 기반 추천 기능 활성화
-zsh-defer _evalcache atuin init zsh --disable-up-arrow
+_evalcache atuin init zsh --disable-up-arrow
 
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && zsh-defer source "$HOME/.bun/_bun"
