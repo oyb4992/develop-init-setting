@@ -114,9 +114,10 @@ zplug load
 
 setopt extendedglob # glob qualifier 사용을 위해 필요
 
-# Compinit optimization - check cache once a day
+# Compinit optimization - check cache once a week
 autoload -Uz compinit
-if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#N.mh+7) ]]; then
   compinit
 else
   compinit -C
