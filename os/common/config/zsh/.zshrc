@@ -53,9 +53,10 @@ if [[ -d "$HOME/.rd/bin" ]]; then
 fi
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # NVM 로드
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # 자동완성 로드
+# mise로 nvm 대체. mise 미사용시에는 해당 설정 사용 필요.
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # NVM 로드
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # 자동완성 로드
 
 export YSU_MESSAGE_POSITION="before"  # 명령어 실행 전 메시지 표시
 export YSU_MODE=ALL                  # 모든 alias 제안 (기본은 최근 사용만)
