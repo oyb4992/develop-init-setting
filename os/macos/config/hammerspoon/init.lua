@@ -45,6 +45,9 @@ local fileOrganizer = require("file_organizer")
 -- Git Manager (Scheduled Updates)
 hs.gitManager = require("git_manager")
 
+-- Window Hints (화면 힌트)
+local windowHints = require("window_hints")
+
 -- ========================================
 -- 전역 변수 및 감시자 설정
 -- ========================================
@@ -83,6 +86,9 @@ fileOrganizer.start()
 
 -- Git Manager 시작
 hs.gitManager.start()
+
+-- Window Hints 시작
+windowHints.start()
 
 -- 전원 상태 변경 감지 시작
 powerWatcher = hs.battery.watcher.new(function()

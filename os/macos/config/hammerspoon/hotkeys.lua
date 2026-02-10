@@ -5,6 +5,7 @@
 local powerManagement = require("power_management")
 local systemStatus = require("system_status")
 local devCommander = require("dev_commander")
+local windowHints = require("window_hints")
 
 local hotkeys = {}
 
@@ -139,6 +140,9 @@ local function setupHotkeys()
 			hs.alert.show("MouseCircle Spoon이 로드되지 않았습니다")
 		end
 	end)
+
+	-- Window Hints: 화면 힌트 표시
+	hs.hotkey.bind({ "cmd", "ctrl", "alt" }, "h", "화면 힌트 표시", windowHints.showHints)
 end
 
 -- Export functions

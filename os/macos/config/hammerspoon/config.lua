@@ -100,6 +100,10 @@ local CONFIG = {
 			[".key"] = true,
 		},
 	},
+	HINTS = {
+		CHARS = "ASDFJKLGHNMXCZWQERTYUIOP", -- 힌트로 사용할 문자열 (왼손 위주)
+		FONT_SIZE = 18,
+	},
 }
 
 -- 상태 표시 성능 향상을 위한 개선된 캐시 시스템
