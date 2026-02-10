@@ -104,6 +104,29 @@ local CONFIG = {
 		CHARS = "ASDFJKLGHNMXCZWQERTYUIOP", -- 힌트로 사용할 문자열 (왼손 위주)
 		FONT_SIZE = 18,
 	},
+	URL_DISPATCHER = {
+		ENABLED = true,
+		DEFAULT_BROWSER = "com.apple.Safari", -- 기본 브라우저 (규칙 미매칭 시)
+		RULES = {
+			-- { pattern = "호스트에 포함된 문자열", browser = "앱 번들 ID" }
+			{ pattern = "github.com", browser = "co.nicematt.zen" },
+			{ pattern = "jira", browser = "com.google.Chrome" },
+			{ pattern = "confluence", browser = "com.google.Chrome" },
+		},
+	},
+	BREAK_REMINDER = {
+		WORK_MINUTES = 50, -- 작업 시간 (분)
+		BREAK_MINUTES = 10, -- 휴식 시간 (분)
+		ALERT_DURATION = 10, -- 알림 표시 시간 (초)
+	},
+	APP_WATCHER = {
+		RULES = {
+			-- event: "launched", "terminated", "activated", "deactivated"
+			-- action: "dnd_on", "dnd_off", "mute", "unmute", "notify" 또는 커스텀 함수
+			{ app = "zoom.us", event = "launched", action = "dnd_on" },
+			{ app = "zoom.us", event = "terminated", action = "dnd_off" },
+		},
+	},
 }
 
 -- 상태 표시 성능 향상을 위한 개선된 캐시 시스템

@@ -6,6 +6,7 @@ local powerManagement = require("power_management")
 local systemStatus = require("system_status")
 local devCommander = require("dev_commander")
 local windowHints = require("window_hints")
+local breakReminder = require("break_reminder")
 
 local hotkeys = {}
 
@@ -143,6 +144,9 @@ local function setupHotkeys()
 
 	-- Window Hints: 화면 힌트 표시
 	hs.hotkey.bind({ "cmd", "ctrl", "alt" }, "h", "화면 힌트 표시", windowHints.showHints)
+
+	-- Break Reminder: 포모도로 타이머 토글
+	hs.hotkey.bind({ "cmd", "ctrl", "alt" }, "b", "휴식 알림 타이머 시작/일시정지", breakReminder.toggle)
 end
 
 -- Export functions

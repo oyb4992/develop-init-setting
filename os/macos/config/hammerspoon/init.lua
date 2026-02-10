@@ -48,6 +48,15 @@ hs.gitManager = require("git_manager")
 -- Window Hints (화면 힌트)
 local windowHints = require("window_hints")
 
+-- URL Dispatcher (URL 브라우저 분배기)
+local urlDispatcher = require("url_dispatcher")
+
+-- Break Reminder (휴식 알림)
+local breakReminder = require("break_reminder")
+
+-- App Watcher (앱 실행/종료 감지)
+local appWatcher = require("app_watcher")
+
 -- ========================================
 -- 전역 변수 및 감시자 설정
 -- ========================================
@@ -89,6 +98,15 @@ hs.gitManager.start()
 
 -- Window Hints 시작
 windowHints.start()
+
+-- URL Dispatcher 시작
+urlDispatcher.start()
+
+-- Break Reminder 시작
+breakReminder.start()
+
+-- App Watcher 시작
+appWatcher.start()
 
 -- 전원 상태 변경 감지 시작
 powerWatcher = hs.battery.watcher.new(function()
