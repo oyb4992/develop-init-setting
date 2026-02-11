@@ -138,7 +138,7 @@ alias ncc='npm cache clean --force'
 alias kd='killall Dock'
 alias bsl='brew services list'
 alias vds='cd $PROJECT_ROOT/dev-init-setting && nvim .'
-alias mcu='mac-cleanup'
+alias moc='mole cleanup --dry-run'
 
 alias aws-sso-login="aws sso login --sso-session sso-login"
 alias dc-up-kalis='cd $PROJECT_ROOT/be/kalis-be-library && docker compose up -d'
