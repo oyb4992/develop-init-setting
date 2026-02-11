@@ -122,9 +122,28 @@ local CONFIG = {
 	APP_WATCHER = {
 		RULES = {
 			-- event: "launched", "terminated", "activated", "deactivated"
-			-- action: "dnd_on", "dnd_off", "mute", "unmute", "notify" 또는 커스텀 함수
-			{ app = "zoom.us", event = "launched", action = "dnd_on" },
-			{ app = "zoom.us", event = "terminated", action = "dnd_off" },
+			-- action: "dnd_on", "dnd_off", "mute", "unmute", "notify",
+			--         "quit_apps", "launch_apps", "set_input_source" 또는 커스텀 함수
+			-- quit_apps/launch_apps: targets = { "앱1", "앱2" } 필수
+			-- set_input_source: source = "english" 또는 "korean" 필수
+
+			-- { app = "zoom.us", event = "launched", action = "dnd_on" },
+			-- { app = "zoom.us", event = "terminated", action = "dnd_off" },
+
+			-- JetBrains IDE 연쇄 종료
+			{ app = "IntelliJ IDEA", event = "terminated", action = "quit_apps", targets = { "WebStorm" } },
+			{ app = "WebStorm", event = "terminated", action = "quit_apps", targets = { "IntelliJ IDEA" } },
+
+			-- JetBrains IDE 연쇄 실행
+			{ app = "IntelliJ IDEA", event = "launched", action = "launch_apps", targets = { "WebStorm" } },
+			{ app = "WebStorm", event = "launched", action = "launch_apps", targets = { "IntelliJ IDEA" } },
+
+			-- IDE/터미널 활성화 시 영문 입력 자동 전환
+			{ app = "IntelliJ IDEA", event = "activated", action = "set_input_source", source = "english" },
+			{ app = "WebStorm", event = "activated", action = "set_input_source", source = "english" },
+			{ app = "DataGrip", event = "activated", action = "set_input_source", source = "english" },
+			{ app = "Antigravity", event = "activated", action = "set_input_source", source = "english" },
+			{ app = "kitty", event = "activated", action = "set_input_source", source = "english" },
 		},
 	},
 }

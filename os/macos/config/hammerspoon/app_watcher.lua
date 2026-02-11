@@ -54,6 +54,77 @@ local builtinActions = {
 	notify = function(appName)
 		hs.alert.show("📱 " .. appName, 3)
 	end,
+
+	-- 연관 앱 종료 (rule.targets에 지정된 앱들을 함께 종료)
+	quit_apps = function(appName, appObject, rule)
+		local targets = rule and rule.targets
+		if not targets or #targets == 0 then
+			print("⚠️ App Watcher: quit_apps 동작에 targets이 없습니다")
+			return
+		end
+
+		local quitList = {}
+		for _, targetApp in ipairs(targets) do
+			local app = hs.application.get(targetApp)
+			if app then
+				app:kill()
+				table.insert(quitList, targetApp)
+			end
+		end
+
+		if #quitList > 0 then
+			hs.alert.show("🚪 " .. appName .. " 종료 → 연관 앱 종료:\n" .. table.concat(quitList, ", "), 4)
+			print("🚪 App Watcher: " .. appName .. " 종료 → " .. table.concat(quitList, ", ") .. " 종료됨")
+		end
+	end,
+
+	-- 연관 앱 실행 (rule.targets에 지정된 앱들을 함께 실행)
+	launch_apps = function(appName, appObject, rule)
+		local targets = rule and rule.targets
+		if not targets or #targets == 0 then
+			print("⚠️ App Watcher: launch_apps 동작에 targets이 없습니다")
+			return
+		end
+
+		local launchList = {}
+		for _, targetApp in ipairs(targets) do
+			local app = hs.application.get(targetApp)
+			if not app then
+				hs.application.launchOrFocus(targetApp)
+				table.insert(launchList, targetApp)
+			end
+		end
+
+		if #launchList > 0 then
+			hs.alert.show("🚀 " .. appName .. " 실행 → 연관 앱 실행:\n" .. table.concat(launchList, ", "), 4)
+			print("🚀 App Watcher: " .. appName .. " 실행 → " .. table.concat(launchList, ", ") .. " 실행됨")
+		end
+	end,
+
+	-- 입력 소스 전환 (rule.source: "english" 또는 "korean")
+	set_input_source = function(appName, appObject, rule)
+		local source = rule and rule.source
+		if not source then
+			print("⚠️ App Watcher: set_input_source 동작에 source가 없습니다")
+			return
+		end
+
+		if source == "english" then
+			local englishLayout = CONFIG.INPUT_SOURCE and CONFIG.INPUT_SOURCE.ENGLISH_LAYOUT_ID
+				or "com.apple.keylayout.ABC"
+			local result = hs.keycodes.setLayout(englishLayout)
+			if not result then
+				hs.keycodes.setLayout("ABC")
+			end
+		elseif source == "korean" then
+			local koreanLayout = CONFIG.INPUT_SOURCE and CONFIG.INPUT_SOURCE.KOREAN_LAYOUT_ID
+				or "com.apple.inputmethod.Korean.2SetKorean"
+			local result = hs.keycodes.setLayout(koreanLayout)
+			if not result then
+				hs.keycodes.setMethod("2-Set Korean")
+			end
+		end
+	end,
 }
 
 -- 이벤트 타입 매핑
@@ -83,13 +154,13 @@ local function handleAppEvent(appName, eventType, appObject)
 				-- 내장 동작 실행
 				local actionFn = builtinActions[action]
 				if actionFn then
-					actionFn(appName)
+					actionFn(appName, appObject, rule)
 				else
 					print("⚠️ App Watcher: 알 수 없는 내장 동작: " .. action)
 				end
 			elseif type(action) == "function" then
 				-- 사용자 정의 함수 실행
-				local success, err = pcall(action, appName, appObject)
+				local success, err = pcall(action, appName, appObject, rule)
 				if not success then
 					print("⚠️ App Watcher 동작 실행 실패: " .. tostring(err))
 				end

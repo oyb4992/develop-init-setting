@@ -43,13 +43,13 @@ local capslockManager = require("capslock_manager")
 local fileOrganizer = require("file_organizer")
 
 -- Git Manager (Scheduled Updates)
-hs.gitManager = require("git_manager")
+local gitManager = require("git_manager")
 
 -- Window Hints (화면 힌트)
 local windowHints = require("window_hints")
 
 -- URL Dispatcher (URL 브라우저 분배기)
-local urlDispatcher = require("url_dispatcher")
+-- local urlDispatcher = require("url_dispatcher")
 
 -- Break Reminder (휴식 알림)
 local breakReminder = require("break_reminder")
@@ -94,13 +94,13 @@ capslockManager.start()
 fileOrganizer.start()
 
 -- Git Manager 시작
-hs.gitManager.start()
+gitManager.start()
 
 -- Window Hints 시작
 windowHints.start()
 
 -- URL Dispatcher 시작
-urlDispatcher.start()
+-- urlDispatcher.start()
 
 -- Break Reminder 시작
 breakReminder.start()
