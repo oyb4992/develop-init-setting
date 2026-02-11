@@ -24,20 +24,14 @@ local spoonsLoader = require("spoons_loader")
 -- 단축키 설정
 local hotkeys = require("hotkeys")
 
--- 입력 소스 관리 (ESC 키 바인딩)
+-- 입력 소스 관리 (ESC 키 바인딩 + Vim 스타일 키보드 내비게이션)
 local inputSourceManager = require("input_source_manager")
-
--- Vim 스타일 키보드 내비게이션
-local keyboardNavigation = require("keyboard_navigation")
 
 -- Hyper Key 앱 런처
 local appLauncher = require("app_launcher")
 
 -- Window Resizing (Ctrl+Option)
 local windowResize = require("window_resize")
-
--- Hyper Key 관리 (CapsLock Toggle)
-local capslockManager = require("capslock_manager")
 
 -- File Organizer (Hazel-like automation)
 local fileOrganizer = require("file_organizer")
@@ -75,20 +69,14 @@ spoonsLoader.loadAllSpoons()
 -- 단축키 설정
 hotkeys.setupHotkeys()
 
--- 입력 소스 관리 시작
+-- 입력 소스 관리 시작 (ESC 영문전환 + RightCmd 한영전환 + Fn+HJKL 방향키)
 inputSourceManager.start()
-
--- 키보드 내비게이션 시작
-keyboardNavigation.start()
 
 -- 앱 런처 시작
 appLauncher.start()
 
 -- 창 리사이즈 시작
 windowResize.start()
-
--- Hyper Key (CapsLock Toggle) 시작
-capslockManager.start()
 
 -- 파일 정리 자동화 시작
 fileOrganizer.start()

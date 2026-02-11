@@ -147,6 +147,17 @@ local function setupHotkeys()
 
 	-- Break Reminder: 포모도로 타이머 토글
 	hs.hotkey.bind({ "cmd", "ctrl", "alt" }, "b", "휴식 알림 타이머 시작/일시정지", breakReminder.toggle)
+
+	-- CapsLock 토글 (capslock_manager에서 통합)
+	hs.hotkey.bind({ "cmd", "ctrl", "alt" }, "c", "CapsLock 토글", function()
+		local newState = not hs.hid.capslock.get()
+		hs.hid.capslock.set(newState)
+		if newState then
+			hs.alert.show("🅰️ CapsLock ON")
+		else
+			hs.alert.show("a CapsLock OFF")
+		end
+	end)
 end
 
 -- Export functions
