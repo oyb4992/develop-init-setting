@@ -10,6 +10,7 @@ local breakReminder = {}
 -- 상태 변수
 local timer = nil
 local menubar = nil
+local sleepWatcher = nil
 local state = "stopped" -- stopped, working, onbreak, paused
 local remainingSeconds = 0
 local pausedSeconds = 0
@@ -214,6 +215,18 @@ function breakReminder.start()
 		menubar:setTitle("⏱️")
 		menubar:setMenu(buildMenu)
 	end
+
+	-- 잠자기/화면잠금 감지 → 타이머 완전 중지
+	sleepWatcher = hs.caffeinate.watcher.new(function(eventType)
+		if eventType == hs.caffeinate.watcher.systemWillSleep or eventType == hs.caffeinate.watcher.screensDidLock then
+			if state ~= "stopped" then
+				breakReminder.stopTimer()
+				print("😴 잠자기/화면잠금 감지 → Break Reminder 중지")
+			end
+		end
+	end)
+	sleepWatcher:start()
+
 	print("✔️ Break Reminder 모듈 로드됨")
 end
 
@@ -222,6 +235,10 @@ function breakReminder.stop()
 	if timer then
 		timer:stop()
 		timer = nil
+	end
+	if sleepWatcher then
+		sleepWatcher:stop()
+		sleepWatcher = nil
 	end
 	if menubar then
 		menubar:delete()
