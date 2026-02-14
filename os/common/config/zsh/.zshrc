@@ -7,22 +7,16 @@ typeset -U PATH
 export HOMEBREW_PREFIX="/opt/homebrew"
 export PATH="$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin:$PATH"
 
-# # ------------------------------------------------------------------------------
-# # Startup Display
-# # ------------------------------------------------------------------------------
-# if [[ "$TERM_PROGRAM" != "vscode" && "$TERM_PROGRAM" != "IntelliJ" && "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" && -z "$JEDI_TERM" && -z "$IDEA_INITIAL_DIRECTORY" ]]; then
-#   fastfetch --pipe false
-# fi
-
-# Only run in interactive shell
-[[ $- == *i* ]] || return
-
 # ------------------------------------------------------------------------------
-# Shell Startup
+# Startup Display & Shell Prompt
 # ------------------------------------------------------------------------------
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+if [[ "$TERM_PROGRAM" != "vscode" && "$TERM_PROGRAM" != "IntelliJ" && "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" && -z "$JEDI_TERM" && -z "$IDEA_INITIAL_DIRECTORY" ]]; then
+  fastfetch --pipe false
+
+  # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+  if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+  fi
 fi
 
 # ------------------------------------------------------------------------------
@@ -59,7 +53,7 @@ fi
 # [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # 자동완성 로드
 
 export YSU_MESSAGE_POSITION="before"  # 명령어 실행 전 메시지 표시
-export YSU_MODE=ALL                  # 모든 alias 제안 (기본은 최근 사용만)
+export YSU_MODE=BESTMATCH             # 모든 alias 제안 (기본은 최근 사용만)
 export ENHANCD_FILTER="fzf --height 40% --reverse --border"
 export ENHANCD_DOT_SHOW_FULLPATH=1  # .. 경로에서 전체 경로 표시
 export ENHANCD_ENABLE_HOME=0        # 홈 디렉토리 히스토리 제외 (선택)
@@ -138,7 +132,9 @@ alias ncc='npm cache clean --force'
 alias kd='killall Dock'
 alias bsl='brew services list'
 alias vds='cd $PROJECT_ROOT/dev-init-setting && nvim .'
-alias moc='mole cleanup --dry-run'
+alias mc='mole clean --dry-run'
+alias vzh='vim $HOME/.zshrc'
+alias szh='source $HOME/.zshrc'
 
 alias aws-sso-login="aws sso login --sso-session sso-login"
 alias dc-up-kalis='cd $PROJECT_ROOT/be/kalis-be-library && docker compose up -d'
