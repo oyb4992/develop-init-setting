@@ -117,7 +117,14 @@ local CONFIG = {
 	BREAK_REMINDER = {
 		WORK_MINUTES = 50, -- 작업 시간 (분)
 		BREAK_MINUTES = 10, -- 휴식 시간 (분)
-		ALERT_DURATION = 10, -- 알림 표시 시간 (초)
+		ALERT_DURATION = 20, -- 알림 표시 시간 (초)
+		ALERT_STYLE = {
+			strokeColor = { white = 1, alpha = 1 },
+			fillColor = { black = 0, alpha = 0.8 },
+			textColor = { white = 1, alpha = 1 },
+			textSize = 35,
+			radius = 12,
+		},
 	},
 	APP_WATCHER = {
 		RULES = {

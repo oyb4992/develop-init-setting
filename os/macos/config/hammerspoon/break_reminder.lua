@@ -30,6 +30,23 @@ local function getAlertDuration()
 	return (CONFIG.BREAK_REMINDER and CONFIG.BREAK_REMINDER.ALERT_DURATION) or 10
 end
 
+local function getAlertStyle()
+	return (CONFIG.BREAK_REMINDER and CONFIG.BREAK_REMINDER.ALERT_STYLE) or {}
+end
+
+-- 통합 알림 함수 (hs.alert + hs.notify)
+local function sendNotification(message, title)
+	-- 1. 화면 중앙 알림 (스타일 적용)
+	hs.alert.show(message, getAlertStyle(), hs.screen.mainScreen(), getAlertDuration())
+
+	-- 2. 시스템 알림 (알림 센터)
+	hs.notify.new({
+		title = title or "Break Reminder",
+		informativeText = message,
+		soundName = "Glass",
+	}):send()
+end
+
 -- 시간 포맷팅 (MM:SS)
 local function formatTime(seconds)
 	local mins = math.floor(seconds / 60)
@@ -126,17 +143,17 @@ local function tick()
 	if remainingSeconds <= 0 then
 		if state == "working" then
 			-- 작업 시간 종료 → 휴식 시작
-			hs.alert.show(
+			sendNotification(
 				"☕ 휴식 시간입니다!\n" .. math.floor(getBreakSeconds() / 60) .. "분간 쉬세요.",
-				getAlertDuration()
+				"🔴 작업 종료 / 🟢 휴식 시작"
 			)
 			state = "onbreak"
 			remainingSeconds = getBreakSeconds()
 		elseif state == "onbreak" then
 			-- 휴식 시간 종료 → 작업 시작
-			hs.alert.show(
+			sendNotification(
 				"🔴 작업 시간입니다!\n" .. math.floor(getWorkSeconds() / 60) .. "분간 집중하세요.",
-				getAlertDuration()
+				"🟢 휴식 종료 / 🔴 작업 시작"
 			)
 			state = "working"
 			remainingSeconds = getWorkSeconds()
@@ -156,7 +173,7 @@ function breakReminder.startTimer()
 	timer = hs.timer.doEvery(1, tick)
 
 	updateMenubar()
-	hs.alert.show("🔴 포모도로 시작! " .. math.floor(getWorkSeconds() / 60) .. "분 집중", 3)
+	sendNotification("🔴 포모도로 시작! " .. math.floor(getWorkSeconds() / 60) .. "분 집중", "Pomodoro Started")
 end
 
 -- 일시정지
