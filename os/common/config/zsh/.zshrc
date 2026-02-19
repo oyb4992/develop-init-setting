@@ -177,20 +177,43 @@ function bstop() {
 # ------------------------------------------------------------------------------
 # Tool Initializations
 # ------------------------------------------------------------------------------
-[ -f ~/.fzf.zsh ] && zsh-defer source ~/.fzf.zsh
 
-# mise with evalcache - 회사에서는 sdkman으로 대체
-_evalcache mise activate zsh
-# zsh-defer source "$HOME/.sdkman/bin/sdkman-init.sh"
+# 1. fzf 설정 (zsh-defer가 있으면 비동기로, 없으면 일반 source)
+if (( $+functions[zsh-defer] )); then
+    [ -f ~/.fzf.zsh ] && zsh-defer source ~/.fzf.zsh
+else
+    [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+fi
 
-# 설치 및 테스트
-# brew install atuin
-# atuin import auto  # 기존 zsh 히스토리 가져오기
-# 명령어 히스토리 기반 추천 기능 활성화
-_evalcache atuin init zsh --disable-up-arrow
+# 2. mise 설정 (_evalcache가 있으면 캐시를 쓰고, 없으면 직접 eval)
+if (( $+functions[_evalcache] )); then
+    _evalcache mise activate zsh
+else
+    # 인텔리제이에서 가끔 플러그인이 늦게 뜰 때를 대비한 직접 실행
+    eval "$(mise activate zsh)"
+fi
 
-# bun completions
-[ -s "$HOME/.bun/_bun" ] && zsh-defer source "$HOME/.bun/_bun"
+# 2. sdkman 설정 (PC 환경에 따라 필요한 경우 주석 해제하여 사용)
+# if (( $+functions[zsh-defer] )); then
+#     zsh-defer source "$HOME/.sdkman/bin/sdkman-init.sh"
+# else
+#     # 인텔리제이에서 가끔 플러그인이 늦게 뜰 때를 대비한 직접 실행
+#     source "$HOME/.sdkman/bin/sdkman-init.sh"
+# fi
+
+# 3. atuin 설정
+if (( $+functions[_evalcache] )); then
+    _evalcache atuin init zsh --disable-up-arrow
+else
+    eval "$(atuin init zsh --disable-up-arrow)"
+fi
+
+# 4. bun completions (비동기 처리 Fallback)
+if (( $+functions[zsh-defer] )); then
+    [ -s "$HOME/.bun/_bun" ] && zsh-defer source "$HOME/.bun/_bun"
+else
+    [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+fi
 
 # Powerlevel10k configuration
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
