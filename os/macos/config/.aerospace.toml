@@ -417,6 +417,13 @@ run = [
   'move-node-to-workspace --focus-follows-window C', # 플로팅 레이아웃으로 변경 후 'C' 워크스페이스로 이동
 ]
 
+[[on-window-detected]]
+if.app-id = 'com.tdesktop.Telegram' # Telegram
+run = [
+  'layout floating',
+  'move-node-to-workspace --focus-follows-window C', # 플로팅 레이아웃으로 변경 후 'C' 워크스페이스로 이동
+]
+
 # [[on-window-detected]]
 # if.app-id = 'com.tinyspeck.slackmacgap' # Slack
 # run = [
