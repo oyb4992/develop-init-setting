@@ -34,10 +34,45 @@ local function getAlertStyle()
 	return (CONFIG.BREAK_REMINDER and CONFIG.BREAK_REMINDER.ALERT_STYLE) or {}
 end
 
+local currentAlertUuid = nil
+local escHotkey = nil
+local alertTimer = nil
+
+local function closeAlert()
+	if currentAlertUuid then
+		pcall(function() hs.alert.closeSpecific(currentAlertUuid) end)
+		currentAlertUuid = nil
+	end
+	if escHotkey then
+		escHotkey:disable()
+	end
+	if alertTimer then
+		alertTimer:stop()
+		alertTimer = nil
+	end
+end
+
 -- 통합 알림 함수 (hs.alert + hs.notify)
 local function sendNotification(message, title)
+	closeAlert()
+	
+	local duration = getAlertDuration()
+	
 	-- 1. 화면 중앙 알림 (스타일 적용)
-	hs.alert.show(message, getAlertStyle(), hs.screen.mainScreen(), getAlertDuration())
+	currentAlertUuid = hs.alert.show(message, getAlertStyle(), hs.screen.mainScreen(), duration)
+
+	-- ESC로 일찍 닫을 수 있도록 핫키 설정
+	if not escHotkey then
+		escHotkey = hs.hotkey.new({}, "escape", function()
+			closeAlert()
+		end)
+	end
+	escHotkey:enable()
+
+	-- 알림이 자동으로 사라질 때 핫키 정리
+	alertTimer = hs.timer.doAfter(duration + 0.1, function()
+		closeAlert()
+	end)
 
 	-- 2. 시스템 알림 (알림 센터)
 	hs.notify.new({
