@@ -138,12 +138,12 @@ local CONFIG = {
 			-- { app = "zoom.us", event = "terminated", action = "dnd_off" },
 
 			-- JetBrains IDE 연쇄 종료
-			{ app = "IntelliJ IDEA", event = "terminated", action = "quit_apps", targets = { "WebStorm" } },
-			{ app = "WebStorm", event = "terminated", action = "quit_apps", targets = { "IntelliJ IDEA" } },
+			-- { app = "IntelliJ IDEA", event = "terminated", action = "quit_apps", targets = { "WebStorm" } },
+			-- { app = "WebStorm", event = "terminated", action = "quit_apps", targets = { "IntelliJ IDEA" } },
 
 			-- JetBrains IDE 연쇄 실행
-			{ app = "IntelliJ IDEA", event = "launched", action = "launch_apps", targets = { "WebStorm" } },
-			{ app = "WebStorm", event = "launched", action = "launch_apps", targets = { "IntelliJ IDEA" } },
+			-- { app = "IntelliJ IDEA", event = "launched", action = "launch_apps", targets = { "WebStorm" } },
+			-- { app = "WebStorm", event = "launched", action = "launch_apps", targets = { "IntelliJ IDEA" } },
 
 			-- IDE/터미널 활성화 시 영문 입력 자동 전환
 			{ app = "IntelliJ IDEA", event = "activated", action = "set_input_source", source = "english" },
@@ -151,6 +151,7 @@ local CONFIG = {
 			{ app = "DataGrip", event = "activated", action = "set_input_source", source = "english" },
 			{ app = "Antigravity", event = "activated", action = "set_input_source", source = "english" },
 			{ app = "kitty", event = "activated", action = "set_input_source", source = "english" },
+			{ app = "cmux", event = "activated", action = "set_input_source", source = "english" },
 		},
 	},
 }

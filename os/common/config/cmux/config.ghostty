@@ -1,0 +1,20 @@
+# ~/.config/ghostty/config
+
+# 최소 외형
+font-family = JetBrainsMono Nerd Font
+font-size = 14
+
+# 코드 가독성
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig
+
+# 사용성
+cursor-click-to-move = true
+mouse-hide-while-typing = true
+
+# 생산성 키바인딩
+keybind = global:cmd+backquote=toggle_quick_terminal
+keybind = cmd+shift+j=jump_to_prompt:-1
+keybind = cmd+shift+k=jump_to_prompt:1
+keybind = cmd+shift+o=write_scrollback_file:open
