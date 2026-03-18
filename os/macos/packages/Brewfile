@@ -10,6 +10,8 @@ brew "aria2"
 brew "ast-grep"
 brew "atuin"
 brew "autojump"
+brew "python@3.13"
+brew "awscli"
 brew "bat"
 brew "bfg"
 brew "blueutil"
@@ -43,7 +45,6 @@ brew "mise"
 brew "mole"
 brew "neovim"
 brew "oci-cli"
-brew "python@3.13"
 brew "pipx"
 brew "pkgconf"
 brew "qemu"
@@ -73,6 +74,7 @@ brew "steipete/tap/imsg"
 brew "steipete/tap/remindctl"
 brew "yakitrak/yakitrak/obsidian-cli"
 cask "nikitabobko/tap/aerospace"
+cask "amitv87-pip"
 cask "another-redis-desktop-manager"
 cask "antigravity"
 cask "mhaeuser/mhaeuser/battery-toolkit"
@@ -81,6 +83,8 @@ cask "beyond-compare"
 cask "bitwarden"
 cask "boop"
 cask "chatgpt"
+cask "clipgrab"
+cask "cmux"
 cask "cursor"
 cask "deepl"
 cask "devtoys"
@@ -99,7 +103,7 @@ cask "itsycal"
 cask "jetbrains-toolbox"
 cask "karabiner-elements"
 cask "keka"
-cask "kitty"
+cask "localsend"
 cask "lulu"
 cask "marta"
 cask "obsidian"
@@ -117,7 +121,6 @@ mas "CloudMounter", id: 1130254674
 mas "Dropover", id: 1355679052
 mas "Get Plain Text", id: 508368068
 mas "GrabIt", id: 450166997
-mas "iRightMouse Lite", id: 1552554632
 mas "iShot", id: 1485844094
 mas "Keynote", id: 409183694
 mas "MYBOX", id: 975815190
@@ -129,7 +132,7 @@ mas "RunCat", id: 1429033973
 mas "Vimari", id: 1480933944
 mas "Xcode", id: 497799835
 mas "카카오톡", id: 869223134
-mas "한컴오피스 한", id: 416746898
+mas "한컴오피스 하", id: 416746898
 vscode "aaron-bond.better-comments"
 vscode "alefragnani.bookmarks"
 vscode "alefragnani.project-manager"
