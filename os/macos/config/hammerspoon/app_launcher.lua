@@ -20,7 +20,7 @@ local mappings = {
 	n = "Obsidian", -- Hyper + N -> Obsidian
 	s = "Safari", -- Hyper + S -> Safari
 	z = "Zen", -- Hyper + Z -> Zen
-	t = "cmux", -- Hyper + T -> cmux
+	t = "ghostty", -- Hyper + T -> ghostty
 	k = "KakaoTalk", -- Hyper + K -> KakaoTalk
 }
 
