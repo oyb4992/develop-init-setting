@@ -1,0 +1,48 @@
+# ~/.config/ghostty/config
+
+# ─── Theme ───────────────────────────────
+theme = Catppuccin Mocha
+
+# ─── Font ────────────────────────────────
+font-family = "Hack Nerd Font Mono"
+# 한글 fallback
+font-family = "Noto Sans CJK KR"          
+font-size = 14
+
+# ─── Window ──────────────────────────────
+window-padding-x = 12
+window-padding-y = 10
+window-decoration = true
+# macOS 네이티브 탭 스타일
+macos-titlebar-style = tabs               
+
+# ─── Background ──────────────────────────
+background-opacity = 0.92
+background-blur-radius = 20
+
+# ─── Cursor ──────────────────────────────
+cursor-style = block
+cursor-style-blink = false
+
+# ─── Mouse ───────────────────────────────
+mouse-hide-while-typing = true
+
+# ─── Clipboard ───────────────────────────
+copy-on-select = true
+clipboard-paste-protection = false
+
+# ─── Scrollback ──────────────────────────
+scrollback-limit = 10000
+
+# ─── macOS 전용 ───────────────────────────
+# tmux에서 Option 키 prefix 활용 필수
+macos-option-as-alt = true               
+
+# ─── Shell Integration ───────────────────
+shell-integration = zsh
+shell-integration-features = cursor,sudo,title
+
+# ─── tmux 함께 쓸 때 불필요한 keybinds 제거 ─
+# (분할은 tmux가 담당하므로 Ghostty의 split 단축키는 최소화)
+keybind = cmd+t=new_tab
+keybind = cmd+w=close_surface

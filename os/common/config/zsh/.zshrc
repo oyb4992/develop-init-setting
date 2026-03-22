@@ -215,5 +215,9 @@ else
     [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 fi
 
+if command -v tmux &>/dev/null && [ -z "$TMUX" ]; then
+  tmux attach -t main 2>/dev/null || tmux new-session -s main
+fi
+
 # Powerlevel10k configuration
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

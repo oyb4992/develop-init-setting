@@ -276,6 +276,12 @@ run = [
 ]
 
 [[on-window-detected]]
+if.app-id = 'com.mitchellh.ghostty' # ghostty
+run = [
+  'move-node-to-workspace --focus-follows-window T', # 'T' 워크스페이스로 이동
+]
+
+[[on-window-detected]]
 if.app-name-regex-substring = 'scrcpy' # scrcpy'
 run = [
   'layout floating',
