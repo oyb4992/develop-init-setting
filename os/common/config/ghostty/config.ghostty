@@ -14,7 +14,7 @@ window-padding-x = 12
 window-padding-y = 10
 window-decoration = true
 # macOS 네이티브 탭 스타일
-macos-titlebar-style = tabs               
+macos-titlebar-style = transparent
 
 # ─── Background ──────────────────────────
 background-opacity = 0.92
