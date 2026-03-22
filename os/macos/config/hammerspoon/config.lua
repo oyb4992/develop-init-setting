@@ -152,6 +152,7 @@ local CONFIG = {
 			{ app = "Antigravity", event = "activated", action = "set_input_source", source = "english" },
 			{ app = "kitty", event = "activated", action = "set_input_source", source = "english" },
 			{ app = "cmux", event = "activated", action = "set_input_source", source = "english" },
+			{ app = "Ghostty", event = "activated", action = "set_input_source", source = "english" },
 		},
 	},
 }
