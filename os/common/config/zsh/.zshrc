@@ -222,6 +222,9 @@ else
     [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 fi
 
+# Powerlevel10k configuration
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
 # ✅ p10k 조건과 동일하게 IDE 예외 추가
 if command -v tmux &> /dev/null && \
    [ -z "$TMUX" ] && \
@@ -232,6 +235,3 @@ if command -v tmux &> /dev/null && \
       -z "$IDEA_INITIAL_DIRECTORY" ]]; then
     tmux new-session -A -s main
 fi
-
-# Powerlevel10k configuration
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
