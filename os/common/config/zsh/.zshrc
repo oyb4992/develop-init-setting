@@ -8,9 +8,20 @@ export HOMEBREW_PREFIX="/opt/homebrew"
 export PATH="$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin:$PATH"
 
 # ------------------------------------------------------------------------------
+# Shared Helpers
+# ------------------------------------------------------------------------------
+function is_plain_terminal_session() {
+  [[ "$TERM_PROGRAM" != "vscode" && \
+     "$TERM_PROGRAM" != "IntelliJ" && \
+     "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" && \
+     -z "$JEDI_TERM" && \
+     -z "$IDEA_INITIAL_DIRECTORY" ]]
+}
+
+# ------------------------------------------------------------------------------
 # Startup Display & Shell Prompt
 # ------------------------------------------------------------------------------
-if [[ "$TERM_PROGRAM" != "vscode" && "$TERM_PROGRAM" != "IntelliJ" && "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" && -z "$JEDI_TERM" && -z "$IDEA_INITIAL_DIRECTORY" ]]; then
+if is_plain_terminal_session; then
   # fastfetch --pipe false
 
   # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
@@ -48,10 +59,14 @@ export PATH="$HOMEBREW_PREFIX/opt/luajit/bin:$PATH"
 # fi
 # ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
-# mise로 nvm 대체. mise 미사용시에는 해당 설정 사용 필요.
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # NVM 로드
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # 자동완성 로드
+# mise를 우선 사용하고, 미설치 환경에서만 nvm을 fallback으로 사용.
+if command -v mise >/dev/null 2>&1; then
+  export MISE_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/mise"
+else
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+fi
 
 export YSU_MESSAGE_POSITION="before"  # 명령어 실행 전 메시지 표시
 export YSU_MODE=BESTMATCH             # 모든 alias 제안 (기본은 최근 사용만)
@@ -70,50 +85,50 @@ export PROJECT_ROOT="$HOME/Project"
 export ZPLUG_HOME="$HOMEBREW_PREFIX/opt/zplug"
 if [[ -f "$ZPLUG_HOME/init.zsh" ]]; then
   source "$ZPLUG_HOME/init.zsh"
-fi
+  
+  # zplug plugins
+  zplug "zsh-users/zsh-completions",              defer:0
+  zplug "zsh-users/zsh-autosuggestions",          defer:1
+  zplug "zsh-users/zsh-history-substring-search", defer:1
 
-# zplug plugins
-zplug "zsh-users/zsh-completions",              defer:0
-zplug "zsh-users/zsh-autosuggestions",          defer:1
-zplug "zsh-users/zsh-history-substring-search", defer:1
+  zplug "lib/completion",   from:oh-my-zsh
+  zplug "lib/key-bindings", from:oh-my-zsh
+  zplug "lib/directories",  from:oh-my-zsh
 
-zplug "lib/completion",   from:oh-my-zsh
-zplug "lib/key-bindings", from:oh-my-zsh
-zplug "lib/directories",  from:oh-my-zsh
+  zplug "plugins/git", from:oh-my-zsh
+  zplug "plugins/aws", from:oh-my-zsh
+  zplug "plugins/docker", from:oh-my-zsh
+  # zplug "plugins/docker-compose", from:oh-my-zsh
+  zplug "plugins/npm", from:oh-my-zsh
+  zplug "plugins/yarn", from:oh-my-zsh
 
-zplug "plugins/git", from:oh-my-zsh
-zplug "plugins/aws", from:oh-my-zsh
-zplug "plugins/docker", from:oh-my-zsh
-# zplug "plugins/docker-compose", from:oh-my-zsh
-zplug "plugins/npm", from:oh-my-zsh
-zplug "plugins/yarn", from:oh-my-zsh
+  zplug "wfxr/forgit", defer:1
+  zplug "MichaelAquilina/zsh-you-should-use"
+  zplug "mroth/evalcache"
+  zplug "babarot/enhancd", use:init.sh
 
-zplug "wfxr/forgit", defer:1
-zplug "MichaelAquilina/zsh-you-should-use"
-zplug "mroth/evalcache"
-zplug "babarot/enhancd", use:init.sh
+  zplug "romkatv/zsh-defer"
+  # 사용 예: zsh-defer source ~/.fzf.zsh
+  zplug "romkatv/powerlevel10k", as:theme, depth:1
 
-zplug "romkatv/zsh-defer"
-# 사용 예: zsh-defer source ~/.fzf.zsh
-zplug "romkatv/powerlevel10k", as:theme, depth:1
+  zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
-
-# zplug install if needed
-if ! zplug check; then
+  # zplug install if needed
+  if ! zplug check; then
     printf "Install? [y/N]: "
     if read -q; then echo; zplug install; fi
-fi
+  fi
 
-# Load plugins
-zplug load
+  # Load plugins
+  zplug load
+fi
 
 setopt extendedglob # glob qualifier 사용을 위해 필요
 
 # Compinit optimization - check cache once a week
 autoload -Uz compinit
 
-if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#N.mh+7) ]]; then
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#N.mh+168) ]]; then
   compinit
 else
   compinit -C
@@ -140,7 +155,7 @@ alias vds='cd $PROJECT_ROOT/dev-init-setting && nvim .'
 alias mc='mole clean --dry-run'
 alias vzh='vim $HOME/.zshrc'
 alias szh='source $HOME/.zshrc'
-alias cs="colima satrt"
+alias cs="colima start"
 alias ct="colima stop"
 
 alias aws-sso-login="aws sso login --sso-session sso-login"
@@ -192,30 +207,34 @@ else
     [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 fi
 
-# # 2. mise 설정 (_evalcache가 있으면 캐시를 쓰고, 없으면 직접 eval)
-# if (( $+functions[_evalcache] )); then
-#     _evalcache mise activate zsh
-# else
-#     # 인텔리제이에서 가끔 플러그인이 늦게 뜰 때를 대비한 직접 실행
-#     eval "$(mise activate zsh)"
+# 2. mise 설정 (_evalcache가 있으면 캐시를 쓰고, 없으면 직접 eval)
+if command -v mise >/dev/null 2>&1; then
+    if (( $+functions[_evalcache] )); then
+        _evalcache mise activate zsh
+    else
+        eval "$(mise activate zsh)"
+    fi
+fi
+
+# # 3. sdkman 설정 (설치된 경우에만 로드)
+# if [ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]; then
+#     if (( $+functions[zsh-defer] )); then
+#         zsh-defer source "$HOME/.sdkman/bin/sdkman-init.sh"
+#     else
+#         source "$HOME/.sdkman/bin/sdkman-init.sh"
+#     fi
 # fi
 
-# 2. sdkman 설정 (PC 환경에 따라 필요한 경우 주석 해제하여 사용)
-if (( $+functions[zsh-defer] )); then
-    zsh-defer source "$HOME/.sdkman/bin/sdkman-init.sh"
-else
-    # 인텔리제이에서 가끔 플러그인이 늦게 뜰 때를 대비한 직접 실행
-    source "$HOME/.sdkman/bin/sdkman-init.sh"
+# 4. atuin 설정
+if command -v atuin >/dev/null 2>&1; then
+    if (( $+functions[_evalcache] )); then
+        _evalcache atuin init zsh --disable-up-arrow
+    else
+        eval "$(atuin init zsh --disable-up-arrow)"
+    fi
 fi
 
-# 3. atuin 설정
-if (( $+functions[_evalcache] )); then
-    _evalcache atuin init zsh --disable-up-arrow
-else
-    eval "$(atuin init zsh --disable-up-arrow)"
-fi
-
-# 4. bun completions (비동기 처리 Fallback)
+# 5. bun completions (비동기 처리 Fallback)
 if (( $+functions[zsh-defer] )); then
     [ -s "$HOME/.bun/_bun" ] && zsh-defer source "$HOME/.bun/_bun"
 else
@@ -225,13 +244,8 @@ fi
 # Powerlevel10k configuration
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# ✅ p10k 조건과 동일하게 IDE 예외 추가
 if command -v tmux &> /dev/null && \
    [ -z "$TMUX" ] && \
-   [[ "$TERM_PROGRAM" != "vscode" && \
-      "$TERM_PROGRAM" != "IntelliJ" && \
-      "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" && \
-      -z "$JEDI_TERM" && \
-      -z "$IDEA_INITIAL_DIRECTORY" ]]; then
+   is_plain_terminal_session; then
     tmux new-session -A -s main
 fi
