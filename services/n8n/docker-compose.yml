@@ -7,7 +7,7 @@ services:
     container_name: n8n
     restart: unless-stopped
     ports:
-      - "5678:5678"  # n8n UI와 webhook 포트를 노출합니다
+      - "127.0.0.1:5678:5678"  # n8n UI와 webhook 포트를 노출합니다
     environment:
       # 컨테이너 내부 시간대를 Asia/Seoul로 설정해 로컬 시간과 일치시킵니다
       TZ: Asia/Seoul
