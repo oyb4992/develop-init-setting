@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  n8n:
+    # 안정적인 운영을 위해 stable 버전 n8n 이미지 사용
+    image: docker.n8n.io/n8nio/n8n:stable
+    container_name: n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"  # n8n UI와 webhook 포트를 노출합니다
+    environment:
+      # 컨테이너 내부 시간대를 Asia/Seoul로 설정해 로컬 시간과 일치시킵니다
+      TZ: Asia/Seoul
+      # n8n에서 webhook URL 생성 시 사용할 호스트와 포트, 프로토콜
+      N8N_HOST: localhost
+      N8N_PORT: 5678
+      N8N_PROTOCOL: http
+      WEBHOOK_URL: http://localhost:5678/
+      # 로컬에서 HTTP로 실행하므로 보안 쿠키를 비활성화합니다
+      N8N_SECURE_COOKIE: "false"
+      # n8n 내부 자격 증명을 암호화하는 키입니다. `.env` 파일에서 설정하세요
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY}
+      # 실행 모드 설정 (단일 컨테이너에는 regular 모드가 적합합니다)
+      EXECUTIONS_MODE: regular
+      # 데이터베이스 크기가 무한히 커지는 것을 방지하기 위해 오래된 실행 데이터를 정리합니다
+      EXECUTIONS_DATA_PRUNE: "true"
+      # 실행 데이터를 보관할 최대 시간(시간 단위). 168은 7일을 의미합니다
+      EXECUTIONS_DATA_MAX_AGE: 168
+      # 공간 절약을 위해 성공한 실행 데이터는 저장하지 않습니다
+      EXECUTIONS_DATA_SAVE_ON_SUCCESS: "none"
+      # 디버깅을 위해 오류 실행 데이터는 모두 저장합니다
+      EXECUTIONS_DATA_SAVE_ON_ERROR: "all"
+      # 플로우 테스트 시 유용한 수동 실행 데이터를 저장합니다
+      EXECUTIONS_DATA_SAVE_MANUAL_EXECUTIONS: "true"
+      # 시작 시 SQLite 데이터베이스를 vacuum하여 공간을 회수합니다
+      DB_SQLITE_VACUUM_ON_STARTUP: "true"
+    volumes:
+      # 워크플로우, 자격 증명 및 실행 데이터를 호스트에 영구 저장합니다
+      - ./data/n8n:/home/node/.n8n
+
+# 이 compose 파일은 SQLite를 사용하는 단일 컨테이너 구성의 n8n을 실행합니다.
+# `docker compose up -d` 명령을 실행하기 전에 `.env.example`을 `.env`로 복사하고
+# `N8N_ENCRYPTION_KEY` 값을 설정하십시오.

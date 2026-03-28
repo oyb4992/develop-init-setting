@@ -25,3 +25,12 @@ tasks/
 
 # Hammerspoon
 os/macos/config/hammerspoon/Spoons/
+
+# n8n
+.n8n/
+**/n8n/data/
+**/n8n_local_setup/data/
+*.sqlite
+database.sqlite*
+n8n-backup/
+backups/
