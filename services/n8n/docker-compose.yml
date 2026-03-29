@@ -37,6 +37,7 @@ services:
     volumes:
       # 워크플로우, 자격 증명 및 실행 데이터를 호스트에 영구 저장합니다
       - ./data/n8n:/home/node/.n8n
+      - ../../../memory:/home/node/openclaw-memory
 
 # 이 compose 파일은 SQLite를 사용하는 단일 컨테이너 구성의 n8n을 실행합니다.
 # `docker compose up -d` 명령을 실행하기 전에 `.env.example`을 `.env`로 복사하고
