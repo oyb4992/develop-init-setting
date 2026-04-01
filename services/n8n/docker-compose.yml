@@ -3,7 +3,8 @@ version: "3.9"
 services:
   n8n:
     # 안정적인 운영을 위해 stable 버전 n8n 이미지 사용
-    image: docker.n8n.io/n8nio/n8n:stable
+    # image: docker.n8n.io/n8nio/n8n:stable
+    image: docker.n8n.io/n8nio/n8n:2.14.2
     container_name: n8n
     restart: unless-stopped
     ports:
@@ -11,6 +12,7 @@ services:
     environment:
       # 컨테이너 내부 시간대를 Asia/Seoul로 설정해 로컬 시간과 일치시킵니다
       TZ: Asia/Seoul
+      GENERIC_TIMEZONE: Asia/Seoul
       # n8n에서 webhook URL 생성 시 사용할 호스트와 포트, 프로토콜
       N8N_HOST: localhost
       N8N_PORT: 5678
