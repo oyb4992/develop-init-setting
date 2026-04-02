@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   n8n:
     # 안정적인 운영을 위해 stable 버전 n8n 이미지 사용
@@ -34,12 +32,15 @@ services:
       EXECUTIONS_DATA_SAVE_ON_ERROR: "all"
       # 플로우 테스트 시 유용한 수동 실행 데이터를 저장합니다
       EXECUTIONS_DATA_SAVE_MANUAL_EXECUTIONS: "true"
+      # Code 노드에서 fs 모듈 등 Node.js 기본 내장 모듈 사용 허용 (안전한 파일 I/O용)
+      NODE_FUNCTION_ALLOW_BUILTIN: "*"
       # 시작 시 SQLite 데이터베이스를 vacuum하여 공간을 회수합니다
       DB_SQLITE_VACUUM_ON_STARTUP: "true"
     volumes:
       # 워크플로우, 자격 증명 및 실행 데이터를 호스트에 영구 저장합니다
-      - ./data/n8n:/home/node/.n8n
-      - ../../../memory:/home/node/openclaw-memory
+      - ~/.openclaw/workspace/develop-init-setting/services/n8n/data/n8n:/home/node/.n8n
+      - ../../../memory:/home/node/openclaw-memory:ro
+      - ~/.openclaw/workspace/integrations/n8n:/home/node/.n8n-files
 
 # 이 compose 파일은 SQLite를 사용하는 단일 컨테이너 구성의 n8n을 실행합니다.
 # `docker compose up -d` 명령을 실행하기 전에 `.env.example`을 `.env`로 복사하고
