@@ -1,5 +1,6 @@
 services:
   n8n:
+    user: "1001:1001"
     # 안정적인 운영을 위해 stable 버전 n8n 이미지 사용
     # image: docker.n8n.io/n8nio/n8n:stable
     image: docker.n8n.io/n8nio/n8n:2.14.2
@@ -8,6 +9,10 @@ services:
     ports:
       - "127.0.0.1:5678:5678"  # n8n UI와 webhook 포트를 노출합니다
     environment:
+      # 파일 노드 허용 경로 계산이 `/.n8n-files`로 꼬이지 않도록 HOME을 명시
+      HOME: /home/node
+      # N8N_USER_FOLDER를 /tmp로 주어 1001 권한으로도 구동에 필요한 캐시 폴더 등을 만들 수 있게 함
+      N8N_USER_FOLDER: /tmp
       # 컨테이너 내부 시간대를 Asia/Seoul로 설정해 로컬 시간과 일치시킵니다
       TZ: Asia/Seoul
       GENERIC_TIMEZONE: Asia/Seoul
@@ -37,10 +42,13 @@ services:
       # 시작 시 SQLite 데이터베이스를 vacuum하여 공간을 회수합니다
       DB_SQLITE_VACUUM_ON_STARTUP: "true"
     volumes:
+      # dummy_home 마운트로 /home/node의 권한(755)을 1001에게 개방
+      - /home/ubuntu/.openclaw/workspace/develop-init-setting/services/n8n/dummy_home:/home/node
       # 워크플로우, 자격 증명 및 실행 데이터를 호스트에 영구 저장합니다
-      - ~/.openclaw/workspace/develop-init-setting/services/n8n/data/n8n:/home/node/.n8n
-      - ../../../memory:/home/node/openclaw-memory:ro
-      - ~/.openclaw/workspace/integrations/n8n:/home/node/.n8n-files
+      # 주의: N8N_USER_FOLDER=/tmp 에 맞춰서 마운트 포인트가 변경됨 (/home/node/.n8n -> /tmp/.n8n)
+      - /home/ubuntu/.openclaw/workspace/develop-init-setting/services/n8n/data/n8n:/tmp/.n8n
+      - /home/ubuntu/.openclaw/workspace/memory:/home/node/openclaw-memory
+      - /home/ubuntu/.openclaw/workspace/integrations/n8n:/home/node/.n8n-files
 
 # 이 compose 파일은 SQLite를 사용하는 단일 컨테이너 구성의 n8n을 실행합니다.
 # `docker compose up -d` 명령을 실행하기 전에 `.env.example`을 `.env`로 복사하고
