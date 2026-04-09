@@ -19,18 +19,6 @@ function is_plain_terminal_session() {
 }
 
 # ------------------------------------------------------------------------------
-# Startup Display & Shell Prompt
-# ------------------------------------------------------------------------------
-if is_plain_terminal_session; then
-  # fastfetch --pipe false
-
-  # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-  if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-  fi
-fi
-
-# ------------------------------------------------------------------------------
 # PATH and Environment Variables
 # ------------------------------------------------------------------------------
 # Locale
@@ -59,13 +47,29 @@ export PATH="$HOMEBREW_PREFIX/opt/luajit/bin:$PATH"
 # fi
 # ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
+# ------------------------------------------------------------------------------
+# Runtime Manager (즉시 로드)
+# ------------------------------------------------------------------------------
 # mise를 우선 사용하고, 미설치 환경에서만 nvm을 fallback으로 사용.
 if command -v mise >/dev/null 2>&1; then
   export MISE_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/mise"
+  eval "$(mise activate zsh)"
 else
   export NVM_DIR="$HOME/.nvm"
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+fi
+
+# ------------------------------------------------------------------------------
+# Startup Display & Shell Prompt
+# ------------------------------------------------------------------------------
+if is_plain_terminal_session; then
+  # fastfetch --pipe false
+
+  # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+  if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+  fi
 fi
 
 export YSU_MESSAGE_POSITION="before"  # 명령어 실행 전 메시지 표시
@@ -207,16 +211,7 @@ else
     [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 fi
 
-# 2. mise 설정 (_evalcache가 있으면 캐시를 쓰고, 없으면 직접 eval)
-if command -v mise >/dev/null 2>&1; then
-    if (( $+functions[_evalcache] )); then
-        _evalcache mise activate zsh
-    else
-        eval "$(mise activate zsh)"
-    fi
-fi
-
-# # 3. sdkman 설정 (설치된 경우에만 로드)
+# # 2. sdkman 설정 (설치된 경우에만 로드)
 # if [ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]; then
 #     if (( $+functions[zsh-defer] )); then
 #         zsh-defer source "$HOME/.sdkman/bin/sdkman-init.sh"
