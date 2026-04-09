@@ -66,15 +66,15 @@ local function performAction(action, containerId, containerName)
 	elseif action == "restart" then
 		cmd = "restart " .. containerId
 		msg = "🔄 재시작됨: " .. containerName
-	elseif action == "logs" then
-		local logCmd = string.format("/usr/bin/open -n -a Kitty --args %s logs -f %s", dockerPath, containerId)
-		hs.execute(logCmd)
-		return
-	elseif action == "shell" then
-		local shellCmd =
-			string.format("/usr/bin/open -n -a Kitty --args %s exec -it %s /bin/sh", dockerPath, containerId)
-		hs.execute(shellCmd)
-		return
+	-- elseif action == "logs" then
+	-- 	local logCmd = string.format("/usr/bin/open -n -a Kitty --args %s logs -f %s", dockerPath, containerId)
+	-- 	hs.execute(logCmd)
+	-- 	return
+	-- elseif action == "shell" then
+	-- 	local shellCmd =
+	-- 		string.format("/usr/bin/open -n -a Kitty --args %s exec -it %s /bin/sh", dockerPath, containerId)
+	-- 	hs.execute(shellCmd)
+	-- 	return
 	end
 
 	if cmd ~= "" then
@@ -133,16 +133,16 @@ local function showActions(container)
 				subText = "컨테이너 재시작",
 				action = "restart",
 			},
-			{
-				text = "📜 Logs",
-				subText = "새 창에서 로그 보기 (-f)",
-				action = "logs",
-			},
-			{
-				text = "🐚 Shell",
-				subText = "컨테이너 쉘 접속 (/bin/sh)",
-				action = "shell",
-			},
+			-- {
+			-- 	text = "📜 Logs",
+			-- 	subText = "새 창에서 로그 보기 (-f)",
+			-- 	action = "logs",
+			-- },
+			-- {
+			-- 	text = "🐚 Shell",
+			-- 	subText = "컨테이너 쉘 접속 (/bin/sh)",
+			-- 	action = "shell",
+			-- },
 			{
 				text = "↩️ Back",
 				subText = "목록으로 돌아가기",
