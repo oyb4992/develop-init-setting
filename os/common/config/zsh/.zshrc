@@ -2,10 +2,41 @@
 typeset -U PATH
 
 # ------------------------------------------------------------------------------
-# Essential PATH (Homebrew만 먼저 설정)
+# Essential PATH
 # ------------------------------------------------------------------------------
 export HOMEBREW_PREFIX="/opt/homebrew"
 export PATH="$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin:$PATH"
+
+# ------------------------------------------------------------------------------
+# Locale
+# ------------------------------------------------------------------------------
+export LANG=en_US.UTF-8
+
+# ------------------------------------------------------------------------------
+# Base Environment & PATH
+# ------------------------------------------------------------------------------
+export PATH="$HOME/.local/bin:$PATH" # pipx etc
+export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
+
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+export PATH="$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools"
+
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+export PATH="$PATH:$HOME/.dotnet/tools"
+export DOTNET_ROOT="$HOMEBREW_PREFIX/opt/dotnet@8/libexec"
+
+export PATH="$HOMEBREW_PREFIX/opt/luajit/bin:$PATH"
+
+export PROJECT_ROOT="$HOME/Project"
+
+# Colima 미사용시 주석 해제.
+# ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+# if [[ -d "$HOME/.rd/bin" ]]; then
+#   export PATH="$HOME/.rd/bin:$PATH"
+# fi
+# ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
 # ------------------------------------------------------------------------------
 # Shared Helpers
@@ -19,45 +50,22 @@ function is_plain_terminal_session() {
 }
 
 # ------------------------------------------------------------------------------
-# PATH and Environment Variables
-# ------------------------------------------------------------------------------
-# Locale
-export LANG=en_US.UTF-8
-
-# User Binaries
-export PATH="$HOME/.local/bin:$PATH" # pipx etc
-export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
-
-# Development Tools
-export ANDROID_HOME="$HOME/Library/Android/sdk"
-export PATH="$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools"
-
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
-export PATH="$PATH:$HOME/.dotnet/tools"
-export DOTNET_ROOT="$HOMEBREW_PREFIX/opt/dotnet@8/libexec"
-
-export PATH="$HOMEBREW_PREFIX/opt/luajit/bin:$PATH"
-
-# Colima 미사용시 주석 해제.
-# ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-# if [[ -d "$HOME/.rd/bin" ]]; then
-#   export PATH="$HOME/.rd/bin:$PATH"
-# fi
-# ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
-
-# ------------------------------------------------------------------------------
 # Runtime Manager (즉시 로드)
 # ------------------------------------------------------------------------------
-# mise를 우선 사용하고, 미설치 환경에서만 nvm을 fallback으로 사용.
-if command -v mise >/dev/null 2>&1; then
-  export MISE_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/mise"
-  eval "$(mise activate zsh)"
-else
-  export NVM_DIR="$HOME/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+# mise를 사용할 때
+# if command -v mise >/dev/null 2>&1; then
+#   export MISE_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/mise"
+#   eval "$(mise activate zsh)"
+# fi
+
+# nvm fallback 예시
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# sdkman 사용 환경
+if [ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]; then
+  source "$HOME/.sdkman/bin/sdkman-init.sh"
 fi
 
 # ------------------------------------------------------------------------------
@@ -72,25 +80,23 @@ if is_plain_terminal_session; then
   fi
 fi
 
+# ------------------------------------------------------------------------------
+# Shell Options & Tool Environment
+# ------------------------------------------------------------------------------
 export YSU_MESSAGE_POSITION="before"  # 명령어 실행 전 메시지 표시
 export YSU_MODE=BESTMATCH             # 모든 alias 제안 (기본은 최근 사용만)
 export ENHANCD_FILTER="fzf --height 40% --reverse --border"
-export ENHANCD_DOT_SHOW_FULLPATH=1  # .. 경로에서 전체 경로 표시
-export ENHANCD_ENABLE_HOME=0        # 홈 디렉토리 히스토리 제외 (선택)
-# atuin의 SQLite 데이터를 autosuggestions에 활용
-export ATUIN_NOBIND="true"
-
-export PROJECT_ROOT="$HOME/Project"
+export ENHANCD_DOT_SHOW_FULLPATH=1    # .. 경로에서 전체 경로 표시
+export ENHANCD_ENABLE_HOME=0          # 홈 디렉토리 히스토리 제외 (선택)
+export ATUIN_NOBIND="true"            # atuin의 SQLite 데이터를 autosuggestions에 활용
 
 # ------------------------------------------------------------------------------
 # Plugin Management (zplug)
 # ------------------------------------------------------------------------------
-# Initialize zplug
 export ZPLUG_HOME="$HOMEBREW_PREFIX/opt/zplug"
 if [[ -f "$ZPLUG_HOME/init.zsh" ]]; then
   source "$ZPLUG_HOME/init.zsh"
-  
-  # zplug plugins
+
   zplug "zsh-users/zsh-completions",              defer:0
   zplug "zsh-users/zsh-autosuggestions",          defer:1
   zplug "zsh-users/zsh-history-substring-search", defer:1
@@ -112,24 +118,23 @@ if [[ -f "$ZPLUG_HOME/init.zsh" ]]; then
   zplug "babarot/enhancd", use:init.sh
 
   zplug "romkatv/zsh-defer"
-  # 사용 예: zsh-defer source ~/.fzf.zsh
   zplug "romkatv/powerlevel10k", as:theme, depth:1
 
   zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
-  # zplug install if needed
   if ! zplug check; then
     printf "Install? [y/N]: "
     if read -q; then echo; zplug install; fi
   fi
 
-  # Load plugins
   zplug load
 fi
 
-setopt extendedglob # glob qualifier 사용을 위해 필요
+setopt extendedglob
 
-# Compinit optimization - check cache once a week
+# ------------------------------------------------------------------------------
+# Completion Init
+# ------------------------------------------------------------------------------
 autoload -Uz compinit
 
 if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#N.mh+168) ]]; then
@@ -161,6 +166,8 @@ alias vzh='vim $HOME/.zshrc'
 alias szh='source $HOME/.zshrc'
 alias cs="colima start"
 alias ct="colima stop"
+# alias soc="ssh -i ~/Documents/KEY/2026/02/ssh-key-2026-02-17.key ubuntu@168.107.22.152"
+# alias n8ns="ssh -i ~/Documents/KEY/2026/02/ssh-key-2026-02-17.key -N -L 5678:127.0.0.1:5678 ubuntu@168.107.22.152"
 
 alias aws-sso-login="aws sso login --sso-session sso-login"
 alias dc-up-kalis='cd $PROJECT_ROOT/be/kalis-be-library && docker compose up -d'
@@ -170,7 +177,7 @@ alias ykp='cd $PROJECT_ROOT/fe/kalis-fe-pc && yarn kalis'
 alias yka='cd $PROJECT_ROOT/fe/kalis-fe-admin && yarn kalis-office'
 
 # =======================================================
-# Git Wrapper 적용 (IntelliJ와 동일한 로직 공유): git-wrapper.sh의 실행 권한이 필요(chmod +x)
+# Git Wrapper 적용 (IntelliJ와 동일한 로직 공유)
 # =======================================================
 if [[ -f "$HOME/git-wrapper.sh" ]]; then
   alias git="$HOME/git-wrapper.sh"
@@ -180,10 +187,10 @@ fi
 # Functions
 # ------------------------------------------------------------------------------
 function fzf-view() {
-    fzf --preview '[[ $(file --mime {}) =~ binary ]] &&
-                  echo {} is a binary file ||
-                  (bat --color=always {} ||
-                  cat {}) 2> /dev/null | head -500'
+  fzf --preview '[[ $(file --mime {}) =~ binary ]] &&
+                echo {} is a binary file ||
+                (bat --color=always {} ||
+                cat {}) 2> /dev/null | head -500'
 }
 
 function bstart() {
@@ -204,43 +211,39 @@ function bstop() {
 # Tool Initializations
 # ------------------------------------------------------------------------------
 
-# 1. fzf 설정 (zsh-defer가 있으면 비동기로, 없으면 일반 source)
+# 1. fzf 설정
 if (( $+functions[zsh-defer] )); then
-    [ -f ~/.fzf.zsh ] && zsh-defer source ~/.fzf.zsh
+  [ -f ~/.fzf.zsh ] && zsh-defer source ~/.fzf.zsh
 else
-    [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+  [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 fi
 
-# # 2. sdkman 설정 (설치된 경우에만 로드)
-# if [ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]; then
-#     if (( $+functions[zsh-defer] )); then
-#         zsh-defer source "$HOME/.sdkman/bin/sdkman-init.sh"
-#     else
-#         source "$HOME/.sdkman/bin/sdkman-init.sh"
-#     fi
-# fi
-
-# 4. atuin 설정
+# 2. atuin 설정
 if command -v atuin >/dev/null 2>&1; then
-    if (( $+functions[_evalcache] )); then
-        _evalcache atuin init zsh --disable-up-arrow
-    else
-        eval "$(atuin init zsh --disable-up-arrow)"
-    fi
+  if (( $+functions[_evalcache] )); then
+    _evalcache atuin init zsh --disable-up-arrow
+  else
+    eval "$(atuin init zsh --disable-up-arrow)"
+  fi
 fi
 
-# 5. bun completions (비동기 처리 Fallback)
+# 3. bun completions
 if (( $+functions[zsh-defer] )); then
-    [ -s "$HOME/.bun/_bun" ] && zsh-defer source "$HOME/.bun/_bun"
+  [ -s "$HOME/.bun/_bun" ] && zsh-defer source "$HOME/.bun/_bun"
 else
-    [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+  [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 fi
 
-# Powerlevel10k configuration
+# ------------------------------------------------------------------------------
+# Theme
+# ------------------------------------------------------------------------------
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# ------------------------------------------------------------------------------
+# tmux auto start
+# ------------------------------------------------------------------------------
 if command -v tmux &> /dev/null && \
    [ -z "$TMUX" ] && \
    is_plain_terminal_session; then
-    tmux new-session -A -s main
+  tmux new-session -A -s main
 fi
