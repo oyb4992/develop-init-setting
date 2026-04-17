@@ -190,7 +190,7 @@ function fzf-view() {
   fzf --preview '[[ $(file --mime {}) =~ binary ]] &&
                 echo {} is a binary file ||
                 (bat --color=always {} ||
-                cat {}) 2> /dev/null | head -500'
+                command cat {}) 2> /dev/null | head -500'
 }
 
 function bstart() {
