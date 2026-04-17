@@ -309,6 +309,10 @@ if.app-id = 'com.google.Chrome'                         # Google Chrome
 run = 'move-node-to-workspace --focus-follows-window B' # 'B' 워크스페이스로 이동
 
 [[on-window-detected]]
+if.app-id = 'com.openai.atlas'                         # ChatGPT Atlas
+run = 'move-node-to-workspace --focus-follows-window B' # 'B' 워크스페이스로 이동
+
+[[on-window-detected]]
 if.app-id = 'com.jetbrains.intellij' # IntelliJ IDEA
 run = '''exec-and-forget /bin/zsh -c '
     TARGET_WS="I"
@@ -400,6 +404,10 @@ run = 'move-node-to-workspace --focus-follows-window A' # 'A' 워크스페이스
 
 [[on-window-detected]]
 if.app-id = 'com.openai.chat'                           # ChatGPT
+run = 'move-node-to-workspace --focus-follows-window A' # 'A' 워크스페이스로 이동 (AI)
+
+[[on-window-detected]]
+if.app-id = 'com.openai.codex'                           # Codex
 run = 'move-node-to-workspace --focus-follows-window A' # 'A' 워크스페이스로 이동 (AI)
 
 [[on-window-detected]]
