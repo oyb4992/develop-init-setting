@@ -118,6 +118,7 @@ local CONFIG = {
 		WORK_MINUTES = 50, -- 작업 시간 (분)
 		BREAK_MINUTES = 10, -- 휴식 시간 (분)
 		ALERT_DURATION = 20, -- 알림 표시 시간 (초)
+		SHOW_MENUBAR = true, -- 메뉴바 아이콘 표시 여부
 		ALERT_STYLE = {
 			strokeColor = { white = 1, alpha = 1 },
 			fillColor = { black = 0, alpha = 0.8 },

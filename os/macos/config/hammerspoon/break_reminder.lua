@@ -14,6 +14,7 @@ local sleepWatcher = nil
 local state = "stopped" -- stopped, working, onbreak, paused
 local remainingSeconds = 0
 local pausedSeconds = 0
+local isMenubarVisible = nil
 
 -- 기본 설정값
 local function getWorkSeconds()
@@ -32,6 +33,13 @@ end
 
 local function getAlertStyle()
 	return (CONFIG.BREAK_REMINDER and CONFIG.BREAK_REMINDER.ALERT_STYLE) or {}
+end
+
+local function isMenubarEnabled()
+	if isMenubarVisible == nil then
+		isMenubarVisible = (CONFIG.BREAK_REMINDER and CONFIG.BREAK_REMINDER.SHOW_MENUBAR ~= false)
+	end
+	return isMenubarVisible
 end
 
 local currentAlertUuid = nil
@@ -91,7 +99,7 @@ end
 
 -- 메뉴바 업데이트
 local function updateMenubar()
-	if not menubar then
+	if not menubar or not isMenubarVisible then
 		return
 	end
 
@@ -161,6 +169,14 @@ local function buildMenu()
 			getBreakSeconds() / 60
 		) .. "분",
 		disabled = true,
+	})
+
+	table.insert(items, { title = "-" })
+	table.insert(items, {
+		title = isMenubarVisible and "🚫 메뉴바 숨기기" or "👁️ 메뉴바 보이기",
+		fn = function()
+			breakReminder.toggleMenubar()
+		end,
 	})
 
 	return items
@@ -259,13 +275,42 @@ function breakReminder.toggle()
 	end
 end
 
+-- 메뉴바 표시 토글
+function breakReminder.toggleMenubar()
+	isMenubarVisible = not isMenubarVisible
+	
+	if isMenubarVisible then
+		if not menubar then
+			menubar = hs.menubar.new()
+			if menubar then
+				menubar:setMenu(buildMenu)
+			end
+		end
+		updateMenubar()
+		hs.alert.show("👁️ 메뉴바 표시 활성화", 2)
+	else
+		if menubar then
+			menubar:delete()
+			menubar = nil
+		end
+		hs.alert.show("🚫 메뉴바 표시 비활성화", 2)
+	end
+end
+
 -- 모듈 초기화
 function breakReminder.start()
-	-- 메뉴바 아이콘 생성
-	menubar = hs.menubar.new()
-	if menubar then
-		menubar:setTitle("⏱️")
-		menubar:setMenu(buildMenu)
+	-- 초기 가시성 설정 로드
+	if isMenubarVisible == nil then
+		isMenubarVisible = (CONFIG.BREAK_REMINDER and CONFIG.BREAK_REMINDER.SHOW_MENUBAR ~= false)
+	end
+
+	-- 메뉴바 아이콘 생성 (설정된 경우에만)
+	if isMenubarVisible then
+		menubar = hs.menubar.new()
+		if menubar then
+			menubar:setTitle("⏱️")
+			menubar:setMenu(buildMenu)
+		end
 	end
 
 	-- 잠자기/화면잠금 감지 → 타이머 완전 중지
