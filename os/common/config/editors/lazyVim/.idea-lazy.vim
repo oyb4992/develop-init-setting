@@ -86,8 +86,7 @@ set commentary
 " s 액션, 예: cs"' ("를 '로 바꾸기), ds" (따옴표 제거)
 set surround
 " flash.nvim과 유사
-" set easymotion
-" Jetbrains 마켓플레이스에서 사용 가능한 whichkey 플러그인 활성화
+" set easymotion "vim-flash 플러그인으로 대체
 set which-key
 set matchit
 set highlightedyank
@@ -548,18 +547,8 @@ inoremap <C-W> <C-G>u<C-W>
 " Q는 정확히 같지 않습니다.
 nnoremap Q @@
 
-" OS에 따라 아래 설정이 불필요할 수 있음. 해당 설정은 Windows 기준
-" Normal mode: Explicitly map Ctrl+V to Visual Block mode start - Non-recursive conversion
-nnoremap <C-v> <C-v>
-
-" Insert mode: Map Ctrl+V to IDE's 'Paste' action (<Action> excluded from conversion)
-imap <C-v> <Action>(EditorPaste)
-
-" Visual mode: Map Ctrl+V to IDE's 'Paste' action (replaces selection) (<Action> excluded from conversion)
-vmap <C-v> <Action>(EditorPaste)
-
-" Command-line mode: Map Ctrl+V to paste from '+' register (system clipboard) - Non-recursive conversion
-cnoremap <C-v> <C-R>+
+" Ctrl+V 충돌 처리: normal에서는 Vim visual block, insert/visual에서는 IDE 붙여넣기
+sethandler <C-v> n:vim i-v:ide
 
 " EasyMotion mappings - Actions using <Plug> are not converted
 " nmap s <Plug>(easymotion-s2)
@@ -618,8 +607,8 @@ nmap <leader>y <Action>(CopyReferencePopupGroup)
 " Show marks - Command `:marks<CR>` is converted
 nmap <leader>M :marks<CR>
 
-map <leader>vi :e ~/.ideavimrc<CR>
-map <leader>vs :source ~/.ideavimrc<CR>
+nmap <leader>vi :e ~/.ideavimrc<CR>
+nmap <leader>vs :source ~/.ideavimrc<CR>
 
 " ============================================================
 " Which-Key descriptions
