@@ -3,8 +3,15 @@
 " Jetbrains IDE용 LazyVim 매핑
 
 " 필수 플러그인. https://plugins.jetbrains.com/bundles/7-ideavim-bundle
-"  IDEAVim
+"  IdeaVim
 "  Which-Key
+"
+" 이 설정에서 사용하는 IdeaVim 확장/에뮬레이션 옵션
+"  commentary, surround, matchit, highlightedyank, multiple-cursors, peekaboo
+"  vim-paragraph-motion, anyobject, dial
+"
+" 추가 액션 의존성
+"  Vim Flash 플러그인: flash.search, flash.find, flash.repeat 계열 액션
 
 " 설치하려면 ~/.ideavimrc 상단에 다음을 추가하세요:
 " source ~/.idea-lazy.vim
