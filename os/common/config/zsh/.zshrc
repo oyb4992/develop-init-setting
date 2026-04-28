@@ -50,6 +50,15 @@ function is_plain_terminal_session() {
 }
 
 # ------------------------------------------------------------------------------
+# Powerlevel10k Instant Prompt
+# ------------------------------------------------------------------------------
+if is_plain_terminal_session; then
+  if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+  fi
+fi
+
+# ------------------------------------------------------------------------------
 # Runtime Manager (즉시 로드)
 # ------------------------------------------------------------------------------
 # mise를 사용할 때
@@ -66,18 +75,6 @@ export NVM_DIR="$HOME/.nvm"
 # sdkman 사용 환경
 if [ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]; then
   source "$HOME/.sdkman/bin/sdkman-init.sh"
-fi
-
-# ------------------------------------------------------------------------------
-# Startup Display & Shell Prompt
-# ------------------------------------------------------------------------------
-if is_plain_terminal_session; then
-  # fastfetch --pipe false
-
-  # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-  if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-  fi
 fi
 
 # ------------------------------------------------------------------------------
@@ -108,11 +105,10 @@ if [[ -f "$ZPLUG_HOME/init.zsh" ]]; then
   zplug "plugins/git", from:oh-my-zsh
   zplug "plugins/aws", from:oh-my-zsh
   zplug "plugins/docker", from:oh-my-zsh
-  # zplug "plugins/docker-compose", from:oh-my-zsh
   zplug "plugins/npm", from:oh-my-zsh
   zplug "plugins/yarn", from:oh-my-zsh
 
-  zplug "wfxr/forgit", defer:1
+  # zplug "wfxr/forgit", defer:1
   zplug "MichaelAquilina/zsh-you-should-use"
   zplug "mroth/evalcache"
   zplug "babarot/enhancd", use:init.sh
@@ -137,11 +133,14 @@ setopt extendedglob
 # ------------------------------------------------------------------------------
 autoload -Uz compinit
 
-if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#N.mh+168) ]]; then
+zsh_config_dir="${ZDOTDIR:-$HOME}"
+zcompdump="$zsh_config_dir/.zcompdump"
+if [[ ! -s "$zcompdump" || "$zcompdump" -ot "$zsh_config_dir/.zshrc" ]]; then
   compinit
 else
   compinit -C
 fi
+unset zsh_config_dir zcompdump
 
 # ------------------------------------------------------------------------------
 # Aliases
