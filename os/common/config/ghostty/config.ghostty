@@ -1,48 +1,57 @@
 # ~/.config/ghostty/config
 
-# ─── Theme ───────────────────────────────
+# ─── Theme ────────────────────────────────
 theme = Catppuccin Mocha
 
-# ─── Font ────────────────────────────────
+# ─── Font ─────────────────────────────────
 font-family = "Hack Nerd Font Mono"
-# 한글 fallback
-font-family = "Noto Sans CJK KR"          
+font-family = "Noto Sans CJK KR"
 font-size = 14
 
-# ─── Window ──────────────────────────────
+# 코드 가독성
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig
+
+# ─── Window ───────────────────────────────
 window-padding-x = 12
 window-padding-y = 10
 window-decoration = true
-# macOS 네이티브 탭 스타일
 macos-titlebar-style = transparent
 
-# ─── Background ──────────────────────────
+# ─── Background ───────────────────────────
 background-opacity = 0.92
-background-blur-radius = 20
+background-blur = 20
 
-# ─── Cursor ──────────────────────────────
+# ─── Cursor ───────────────────────────────
 cursor-style = block
 cursor-style-blink = false
+cursor-click-to-move = true
 
-# ─── Mouse ───────────────────────────────
+# ─── Mouse ────────────────────────────────
 mouse-hide-while-typing = true
 
-# ─── Clipboard ───────────────────────────
-copy-on-select = false
+# ─── Clipboard ────────────────────────────
+copy-on-select = clipboard
 clipboard-paste-protection = true
 
-# ─── Scrollback ──────────────────────────
-scrollback-limit = 10000
+# ─── Scrollback ───────────────────────────
+scrollback-limit = 50000000
 
-# ─── macOS 전용 ───────────────────────────
-# tmux에서 Option 키 prefix 활용 필수
-macos-option-as-alt = true               
+# ─── macOS ────────────────────────────────
+macos-option-as-alt = true
 
-# ─── Shell Integration ───────────────────
+# ─── Shell Integration ────────────────────
 shell-integration = zsh
 shell-integration-features = cursor,sudo,title
 
-# ─── tmux 함께 쓸 때 기본 역할 분리 ─
+# ─── tmux / LazyVim 역할 분리 ─────────────
 # pane 분할/이동은 tmux, 탭/윈도우는 Ghostty가 담당
 keybind = cmd+t=new_tab
 keybind = cmd+w=close_surface
+
+# 빠른 터미널 및 프롬프트 이동
+keybind = global:cmd+backquote=toggle_quick_terminal
+keybind = cmd+shift+j=jump_to_prompt:-1
+keybind = cmd+shift+k=jump_to_prompt:1
+keybind = cmd+shift+o=write_scrollback_file:open
