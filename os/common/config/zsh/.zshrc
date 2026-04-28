@@ -169,12 +169,12 @@ alias ct="colima stop"
 # alias soc="ssh -i ~/Documents/KEY/2026/02/ssh-key-2026-02-17.key ubuntu@168.107.22.152"
 # alias n8ns="ssh -i ~/Documents/KEY/2026/02/ssh-key-2026-02-17.key -N -L 5678:127.0.0.1:5678 ubuntu@168.107.22.152"
 
-alias aws-sso-login="aws sso login --sso-session sso-login"
-alias dc-up-kalis='cd $PROJECT_ROOT/be/kalis-be-library && docker compose up -d'
-alias dc-stop-kalis='cd $PROJECT_ROOT/be/kalis-be-library && docker compose stop'
+# alias aws-sso-login="aws sso login --sso-session sso-login"
+# alias dc-up-kalis='cd $PROJECT_ROOT/be/kalis-be-library && docker compose up -d'
+# alias dc-stop-kalis='cd $PROJECT_ROOT/be/kalis-be-library && docker compose stop'
 
-alias ykp='cd $PROJECT_ROOT/fe/kalis-fe-pc && yarn kalis'
-alias yka='cd $PROJECT_ROOT/fe/kalis-fe-admin && yarn kalis-office'
+# alias ykp='cd $PROJECT_ROOT/fe/kalis-fe-pc && yarn kalis'
+# alias yka='cd $PROJECT_ROOT/fe/kalis-fe-admin && yarn kalis-office'
 
 # =======================================================
 # Git Wrapper 적용 (IntelliJ와 동일한 로직 공유)
