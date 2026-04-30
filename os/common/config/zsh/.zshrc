@@ -1,3 +1,4 @@
+# zmodload zsh/zprof #zsh쉘 로딩 디버깅 모니터링 시작
 # PATH 중복 방지
 typeset -U PATH
 
@@ -29,14 +30,7 @@ export DOTNET_ROOT="$HOMEBREW_PREFIX/opt/dotnet@8/libexec"
 
 export PATH="$HOMEBREW_PREFIX/opt/luajit/bin:$PATH"
 
-export PROJECT_ROOT="$HOME/Project"
-
-# Colima 미사용시 주석 해제.
-# ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-# if [[ -d "$HOME/.rd/bin" ]]; then
-#   export PATH="$HOME/.rd/bin:$PATH"
-# fi
-# ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+export PROJECT_ROOT="$HOME/IdeaProjects"
 
 # ------------------------------------------------------------------------------
 # Shared Helpers
@@ -50,15 +44,6 @@ function is_plain_terminal_session() {
 }
 
 # ------------------------------------------------------------------------------
-# Powerlevel10k Instant Prompt
-# ------------------------------------------------------------------------------
-if is_plain_terminal_session; then
-  if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-  fi
-fi
-
-# ------------------------------------------------------------------------------
 # Runtime Manager (즉시 로드)
 # ------------------------------------------------------------------------------
 # mise를 사용할 때
@@ -66,6 +51,16 @@ fi
 #   export MISE_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/mise"
 #   eval "$(mise activate zsh)"
 # fi
+
+# ------------------------------------------------------------------------------
+# Startup Display & Shell Prompt
+# ------------------------------------------------------------------------------
+if is_plain_terminal_session; then
+  # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+  if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+  fi
+fi
 
 # nvm fallback 예시
 export NVM_DIR="$HOME/.nvm"
@@ -80,8 +75,8 @@ fi
 # ------------------------------------------------------------------------------
 # Shell Options & Tool Environment
 # ------------------------------------------------------------------------------
-export YSU_MESSAGE_POSITION="before"  # 명령어 실행 전 메시지 표시
-export YSU_MODE=BESTMATCH             # 모든 alias 제안 (기본은 최근 사용만)
+# export YSU_MESSAGE_POSITION="before"  # 명령어 실행 전 메시지 표시
+# export YSU_MODE=BESTMATCH             # 모든 alias 제안 (기본은 최근 사용만)
 export ENHANCD_FILTER="fzf --height 40% --reverse --border"
 export ENHANCD_DOT_SHOW_FULLPATH=1    # .. 경로에서 전체 경로 표시
 export ENHANCD_ENABLE_HOME=0          # 홈 디렉토리 히스토리 제외 (선택)
@@ -94,53 +89,57 @@ export ZPLUG_HOME="$HOMEBREW_PREFIX/opt/zplug"
 if [[ -f "$ZPLUG_HOME/init.zsh" ]]; then
   source "$ZPLUG_HOME/init.zsh"
 
-  zplug "zsh-users/zsh-completions",              defer:0
   zplug "zsh-users/zsh-autosuggestions",          defer:1
   zplug "zsh-users/zsh-history-substring-search", defer:1
-
-  zplug "lib/completion",   from:oh-my-zsh
   zplug "lib/key-bindings", from:oh-my-zsh
   zplug "lib/directories",  from:oh-my-zsh
-
-  zplug "plugins/git", from:oh-my-zsh
-  zplug "plugins/aws", from:oh-my-zsh
-  zplug "plugins/docker", from:oh-my-zsh
-  zplug "plugins/npm", from:oh-my-zsh
-  zplug "plugins/yarn", from:oh-my-zsh
-
-  # zplug "wfxr/forgit", defer:1
-  zplug "MichaelAquilina/zsh-you-should-use"
-  zplug "mroth/evalcache"
+  # zplug "plugins/git", from:oh-my-zsh
+  # zplug "plugins/docker", from:oh-my-zsh
+  # zplug "MichaelAquilina/zsh-you-should-use"
+  # zplug "mroth/evalcache"
   zplug "babarot/enhancd", use:init.sh
-
   zplug "romkatv/zsh-defer"
   zplug "romkatv/powerlevel10k", as:theme, depth:1
 
-  zplug "zsh-users/zsh-syntax-highlighting", defer:2
+  zplug "Aloxaf/fzf-tab"
 
-  if ! zplug check; then
-    printf "Install? [y/N]: "
-    if read -q; then echo; zplug install; fi
-  fi
+  zplug "zsh-users/zsh-syntax-highlighting", defer:2
+  # 필요시 주석 해제
+  # if ! zplug check; then
+  #   printf "Install? [y/N]: "
+  #   if read -q; then echo; zplug install; fi
+  # fi
 
   zplug load
 fi
-
 setopt extendedglob
 
 # ------------------------------------------------------------------------------
-# Completion Init
+# fzf-tab
 # ------------------------------------------------------------------------------
-autoload -Uz compinit
+zstyle ':fzf-tab:*' fzf-command fzf
+zstyle ':fzf-tab:*' switch-group ',' '.'
+zstyle ':fzf-tab:*' continuous-trigger '/'
 
-zsh_config_dir="${ZDOTDIR:-$HOME}"
-zcompdump="$zsh_config_dir/.zcompdump"
-if [[ ! -s "$zcompdump" || "$zcompdump" -ot "$zsh_config_dir/.zshrc" ]]; then
-  compinit
-else
-  compinit -C
-fi
-unset zsh_config_dir zcompdump
+zstyle ':fzf-tab:complete:*' fzf-preview '
+  if [[ -d "$realpath" ]]; then
+    if command -v lsd >/dev/null 2>&1; then
+      lsd --color=always "$realpath"
+    else
+      ls -la "$realpath"
+    fi
+  elif [[ -f "$realpath" ]]; then
+    if file --mime "$realpath" | grep -q "text/"; then
+      if command -v bat >/dev/null 2>&1; then
+        bat --color=always --style=numbers --line-range=:200 "$realpath"
+      else
+        sed -n "1,200p" "$realpath"
+      fi
+    else
+      file "$realpath"
+    fi
+  fi
+'
 
 # ------------------------------------------------------------------------------
 # Aliases
@@ -152,35 +151,34 @@ alias vim='nvim'
 alias vi='nvim'
 alias cat="bat"
 alias cdh="cd $HOME"
-alias cdb="cd $PROJECT_ROOT/be/kalis-be-library/"
-alias cdf="cd $PROJECT_ROOT/fe"
+alias cdp="cd $PROJECT_ROOT"
+alias cdw="cd $PROJECT_ROOT/worktrees/"
 alias cl="clear"
 alias b-maint='brew update && brew upgrade && brew cleanup --prune=all && brew doctor'
 alias ncc='npm cache clean --force'
 alias kd='killall Dock'
 alias bsl='brew services list'
-alias vds='cd $PROJECT_ROOT/dev-init-setting && nvim .'
+alias vds="cd $PROJECT_ROOT/dev-init-setting && vim ."
+alias vt='vim ~/.tmux.conf'
 alias mc='mole clean --dry-run'
-alias vzh='vim $HOME/.zshrc'
-alias szh='source $HOME/.zshrc'
+alias vzh="vim $HOME/.zshrc"
+alias szh="source $HOME/.zshrc"
 alias cs="colima start"
 alias ct="colima stop"
-# alias soc="ssh -i ~/Documents/KEY/2026/02/ssh-key-2026-02-17.key ubuntu@168.107.22.152"
-# alias n8ns="ssh -i ~/Documents/KEY/2026/02/ssh-key-2026-02-17.key -N -L 5678:127.0.0.1:5678 ubuntu@168.107.22.152"
-
-# alias aws-sso-login="aws sso login --sso-session sso-login"
-# alias dc-up-kalis='cd $PROJECT_ROOT/be/kalis-be-library && docker compose up -d'
-# alias dc-stop-kalis='cd $PROJECT_ROOT/be/kalis-be-library && docker compose stop'
-
-# alias ykp='cd $PROJECT_ROOT/fe/kalis-fe-pc && yarn kalis'
-# alias yka='cd $PROJECT_ROOT/fe/kalis-fe-admin && yarn kalis-office'
+alias gcgl="git config --global --list"
 
 # =======================================================
 # Git Wrapper 적용 (IntelliJ와 동일한 로직 공유)
 # =======================================================
 if [[ -f "$HOME/git-wrapper.sh" ]]; then
-  alias git="$HOME/git-wrapper.sh"
+  function git() {
+    "$HOME/git-wrapper.sh" "$@"
+  }
+
+  autoload -Uz _git
+  compdef _git git
 fi
+setopt complete_aliases
 
 # ------------------------------------------------------------------------------
 # Functions
@@ -189,7 +187,7 @@ function fzf-view() {
   fzf --preview '[[ $(file --mime {}) =~ binary ]] &&
                 echo {} is a binary file ||
                 (bat --color=always {} ||
-                command cat {}) 2> /dev/null | head -500'
+                cat {}) 2> /dev/null | head -500'
 }
 
 function bstart() {
@@ -206,6 +204,141 @@ function bstop() {
   fi
 }
 
+function wta() {
+  if [ -z "$1" ]; then
+    echo "Usage: wta <branch> [base]"
+    return 1
+  fi
+
+  local branch="$1"
+  local base="${2:-origin/feat/$branch}"
+  local repo_name="${PWD##*/}"
+  local safe_branch="${branch//\//-}"
+  local base_dir="$PROJECT_ROOT/worktrees"
+  local dir="${base_dir}/${repo_name}-${safe_branch}"
+
+  mkdir -p "$base_dir"
+
+  git fetch origin || return 1
+
+  if git worktree list --porcelain | grep -q "^branch refs/heads/$branch$"; then
+    echo "Branch already checked out in another worktree: $branch"
+    git worktree list
+    return 1
+  fi
+
+  if git show-ref --verify --quiet "refs/heads/$branch"; then
+    echo "Using existing local branch: $branch"
+    git worktree add "$dir" "$branch" || return 1
+  else
+    echo "Creating local branch: $branch from $base"
+    git worktree add -b "$branch" "$dir" "$base" || return 1
+  fi
+
+  echo "Created: $dir"
+}
+
+function wtr() {
+  if [ -z "$1" ]; then
+    echo "Usage: wtr <branch>"
+    return 1
+  fi
+
+  local branch="$1"
+  local target=""
+  local current_wt=""
+
+  while IFS= read -r line; do
+    case "$line" in
+      worktree\ *)
+        current_wt="${line#worktree }"
+        ;;
+      branch\ refs/heads/*)
+        local current_branch="${line#branch refs/heads/}"
+        if [ "$current_branch" = "$branch" ]; then
+          target="$current_wt"
+          break
+        fi
+        ;;
+    esac
+  done < <(git worktree list --porcelain)
+
+  if [ -z "$target" ]; then
+    echo "No worktree found for branch: $branch"
+    return 1
+  fi
+
+  git worktree remove "$target" || return 1
+  echo "Removed: $target"
+}
+
+function wtrf() {
+  if [ -z "$1" ]; then
+    echo "Usage: wtrf <branch>"
+    return 1
+  fi
+
+  local branch="$1"
+  local target=""
+  local current_wt=""
+
+  while IFS= read -r line; do
+    case "$line" in
+      worktree\ *)
+        current_wt="${line#worktree }"
+        ;;
+      branch\ refs/heads/*)
+        local current_branch="${line#branch refs/heads/}"
+        if [ "$current_branch" = "$branch" ]; then
+          target="$current_wt"
+          break
+        fi
+        ;;
+    esac
+  done < <(git worktree list --porcelain)
+
+  if [ -z "$target" ]; then
+    echo "No worktree found for branch: $branch"
+    return 1
+  fi
+
+  git worktree remove --force "$target" || return 1
+  echo "Force removed: $target"
+}
+
+function wtl() {
+  git worktree list
+}
+
+function gco-all() {
+  if [ -z "$1" ]; then
+    echo "Usage: gco-all <branch>"
+    return 1
+  fi
+
+  local branch="$1"
+
+  for dir in */; do
+    if [ -d "$dir/.git" ]; then   # ← 핵심
+      echo "==> $dir"
+
+      (
+        cd "$dir" || exit
+
+        git fetch origin
+
+        if git show-ref --verify --quiet "refs/heads/$branch"; then
+          git switch "$branch"
+        elif git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
+          git switch -c "$branch" "origin/$branch"
+        else
+          echo "  ❌ branch not found: $branch"
+        fi
+      )
+    fi
+  done
+}
+
 # ------------------------------------------------------------------------------
 # Tool Initializations
 # ------------------------------------------------------------------------------
@@ -219,16 +352,13 @@ fi
 
 # 2. atuin 설정
 if command -v atuin >/dev/null 2>&1; then
-  if (( $+functions[_evalcache] )); then
-    _evalcache atuin init zsh --disable-up-arrow
-  else
-    eval "$(atuin init zsh --disable-up-arrow)"
-  fi
+  eval "$(atuin init zsh --disable-up-arrow)"
 fi
 
 # 3. bun completions
 if (( $+functions[zsh-defer] )); then
-  [ -s "$HOME/.bun/_bun" ] && zsh-defer source "$HOME/.bun/_bun"
+
+[ -s "$HOME/.bun/_bun" ] && zsh-defer source "$HOME/.bun/_bun"
 else
   [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 fi
@@ -246,3 +376,13 @@ if command -v tmux &> /dev/null && \
    is_plain_terminal_session; then
   tmux new-session -A -s main
 fi
+
+# Colima 미사용시 주석 해제.
+## MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+#export PATH="/Users/oyunbog/.rd/bin:$PATH"
+## MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/oyunbog/.lmstudio/bin"
+# End of LM Studio CLI section
+# zprof #zsh쉘 로딩 디버깅 모니터링 종료
