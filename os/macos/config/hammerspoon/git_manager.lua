@@ -10,6 +10,10 @@ local gitManager = {}
 local gitStatusCanvas = nil
 local inputMode = nil
 
+local function shellQuote(value)
+	return "'" .. tostring(value):gsub("'", "'\\''") .. "'"
+end
+
 local function showGitStatusCanvas(statusLines, displayTime)
 	-- 기존 Git 상태 창이 있으면 닫기
 	if gitStatusCanvas then
@@ -276,14 +280,15 @@ local function checkGitStatus()
 
 		if attrs then
 			-- 현재 브랜치 확인
-			local branchCmd = "cd '" .. repoPath .. "' && git branch --show-current 2>/dev/null"
-			local currentBranch = hs.execute(branchCmd):gsub("\n", "")
+			local quotedRepoPath = shellQuote(repoPath)
+			local branchCmd = "git -C " .. quotedRepoPath .. " branch --show-current 2>/dev/null"
+			local currentBranch = (hs.execute(branchCmd) or ""):gsub("\n", "")
 			if currentBranch == "" then
 				currentBranch = "detached HEAD"
 			end
 
 			-- Git 상태 확인
-			local statusCmd = "cd '" .. repoPath .. "' && git status --porcelain 2>/dev/null"
+			local statusCmd = "git -C " .. quotedRepoPath .. " status --porcelain 2>/dev/null"
 			local gitOutput = hs.execute(statusCmd)
 
 			-- 문자열 결과 처리

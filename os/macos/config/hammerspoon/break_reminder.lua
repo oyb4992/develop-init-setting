@@ -14,6 +14,7 @@ local sleepWatcher = nil
 local state = "stopped" -- stopped, working, onbreak, paused
 local remainingSeconds = 0
 local pausedSeconds = 0
+local pausedState = nil
 local isMenubarVisible = nil
 
 -- 기본 설정값
@@ -217,6 +218,7 @@ end
 function breakReminder.startTimer()
 	state = "working"
 	remainingSeconds = getWorkSeconds()
+	pausedState = nil
 
 	if timer then
 		timer:stop()
@@ -231,6 +233,7 @@ end
 function breakReminder.pauseTimer()
 	if state == "working" or state == "onbreak" then
 		pausedSeconds = remainingSeconds
+		pausedState = state
 		state = "paused"
 		if timer then
 			timer:stop()
@@ -245,7 +248,8 @@ end
 function breakReminder.resumeTimer()
 	if state == "paused" then
 		remainingSeconds = pausedSeconds
-		state = "working"
+		state = pausedState or "working"
+		pausedState = nil
 		timer = hs.timer.doEvery(1, tick)
 		updateMenubar()
 		hs.alert.show("▶️ 타이머 재개", 2)
@@ -256,6 +260,7 @@ end
 function breakReminder.stopTimer()
 	state = "stopped"
 	remainingSeconds = 0
+	pausedState = nil
 	if timer then
 		timer:stop()
 		timer = nil

@@ -174,6 +174,11 @@ function M.showDockerDashboard()
 	hs.alert.show("Docker 컨테이너 조회 중...", 0.5)
 	local choices = M.getContainers()
 
+	if #choices == 0 then
+		hs.alert.show("컨테이너가 없거나 Docker가 실행 중이지 않습니다.")
+		return
+	end
+
 	-- 전체 관리 옵션 추가
 	table.insert(choices, 1, {
 		text = "📚 Manage All Containers",
@@ -182,11 +187,6 @@ function M.showDockerDashboard()
 		name = "All Containers",
 		status = "N/A",
 	})
-
-	if #choices == 0 then
-		hs.alert.show("컨테이너가 없거나 Docker가 실행 중이지 않습니다.")
-		return
-	end
 
 	local chooser = hs.chooser.new(function(selected)
 		if not selected then

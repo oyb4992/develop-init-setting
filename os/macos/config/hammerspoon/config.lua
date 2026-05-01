@@ -70,6 +70,7 @@ local CONFIG = {
 	},
 	FILE_ORGANIZER = {
 		WATCH_PATHS = { os.getenv("HOME") .. "/Downloads" },
+		SCAN_EXISTING_ON_START = false,
 		KAKAOTALK_PHOTO_DIR = os.getenv("HOME") .. "/Pictures/KakaoTalk",
 		IMAGE_EXTENSIONS = {
 			[".jpg"] = true,
