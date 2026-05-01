@@ -37,26 +37,32 @@ local function copyToClipboard(text, label)
 	hs.alert.show("📋 " .. label .. " 복사됨:\n" .. text, 3)
 end
 
--- JSON Pretty Print (순수 Lua 구현)
+-- JSON Pretty Print
 local function jsonPrettify(str)
-	local result, err = hs.execute("echo " .. hs.execute("printf '%q' " .. str) .. " | python3 -m json.tool 2>&1")
-	if result and not result:find("Error") and not result:find("error") then
-		return result:gsub("%s+$", "")
+	local decodeOk, decoded = pcall(hs.json.decode, str)
+	if not decodeOk or decoded == nil then
+		return nil, decoded or "invalid JSON"
 	end
-	return nil, err or result
+
+	local encodeOk, encoded = pcall(hs.json.encode, decoded, true)
+	if not encodeOk then
+		return nil, encoded
+	end
+	return encoded
 end
 
--- JSON Minify (순수 Lua 구현)
+-- JSON Minify
 local function jsonMinify(str)
-	local result = hs.execute(
-		"echo "
-			.. hs.execute("printf '%q' " .. str)
-			.. ' | python3 -c \'import sys,json;print(json.dumps(json.load(sys.stdin),separators=("\\x2c",":")))\'  2>&1'
-	)
-	if result then
-		return result:gsub("%s+$", "")
+	local decodeOk, decoded = pcall(hs.json.decode, str)
+	if not decodeOk or decoded == nil then
+		return nil, decoded or "invalid JSON"
 	end
-	return nil
+
+	local encodeOk, encoded = pcall(hs.json.encode, decoded, false)
+	if not encodeOk then
+		return nil, encoded
+	end
+	return encoded
 end
 
 -- ========================================

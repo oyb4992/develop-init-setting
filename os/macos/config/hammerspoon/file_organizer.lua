@@ -11,6 +11,7 @@ local function getFileOrganizerConfig()
 	local fo = CONFIG.FILE_ORGANIZER or {}
 	return {
 		watchPaths = fo.WATCH_PATHS or { os.getenv("HOME") .. "/Downloads" },
+		scanExistingOnStart = fo.SCAN_EXISTING_ON_START == true,
 		kakaoPhotoDir = fo.KAKAOTALK_PHOTO_DIR or os.getenv("HOME") .. "/Pictures/KakaoTalk",
 		imageExts = fo.IMAGE_EXTENSIONS or {
 			[".jpg"] = true,
@@ -171,7 +172,7 @@ local function scanDirectory(path, rules)
 end
 
 -- 특정 디렉토리를 규칙에 따라 감시 시작
-function M.watch(path, rules)
+function M.watch(path, rules, scanExistingOnStart)
 	-- 경로 정규화 (홈 디렉토리 확장)
 	path = path:gsub("~", os.getenv("HOME"))
 
@@ -180,8 +181,9 @@ function M.watch(path, rules)
 		return
 	end
 
-	-- 기존 파일 초기 스캔 수행
-	scanDirectory(path, rules)
+	if scanExistingOnStart then
+		scanDirectory(path, rules)
+	end
 
 	log.i("감시 시작: " .. path)
 
@@ -244,7 +246,7 @@ function M.start()
 
 	-- 감시 경로 설정
 	for _, watchPath in ipairs(foConfig.watchPaths) do
-		M.watch(watchPath, downloadsRules)
+		M.watch(watchPath, downloadsRules, foConfig.scanExistingOnStart)
 	end
 
 	log.i("파일 정리기(File Organizer)가 시작되었습니다.")
