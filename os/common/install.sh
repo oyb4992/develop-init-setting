@@ -25,6 +25,11 @@ mkdir -p "$HOME/.config/nvim"
 ln -sfv "$PROJECT_ROOT/os/common/config/editors/init.vim" "$HOME/.config/nvim/init.vim"
 ln -sfv "$PROJECT_ROOT/os/common/config/editors/.ideavimrc" "$HOME/.ideavimrc"
 
+# Zed (Vim mode)
+mkdir -p "$HOME/.config/zed"
+ln -sfv "$PROJECT_ROOT/os/common/config/zed/settings.json" "$HOME/.config/zed/settings.json"
+ln -sfv "$PROJECT_ROOT/os/common/config/zed/keymap.json" "$HOME/.config/zed/keymap.json"
+
 # --- Install common assets (e.g., fonts) ---
 echo "Installing common assets (fonts)..."
 if [ "$(uname -s)" == "Darwin" ]; then

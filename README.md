@@ -131,6 +131,7 @@ vim os/macos/config/karabiner/karabiner.json
 - **Neovim**: LazyVim 배포판을 사용한 모던 Vim
 - **VS Code**: Vim 키바인딩과 통합
 - **IntelliJ IDEA**: Vim 플러그인 설정
+- **Zed**: IdeaVim/LazyVim 스타일 Vim mode 키맵
 
 ### 터미널
 - **Kitty**: 빠른 GPU 가속 터미널 (메인)

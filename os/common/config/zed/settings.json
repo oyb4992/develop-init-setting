@@ -1,0 +1,30 @@
+{
+  "base_keymap": "JetBrains",
+  "vim_mode": true,
+  "vim": {
+    "default_mode": "normal",
+    "use_system_clipboard": "always",
+    "use_smartcase_find": true,
+    "use_regex_search": true,
+    "toggle_relative_line_numbers": false,
+    "highlight_on_yank_duration": 200
+  },
+  "gutter": {
+    "line_numbers": true
+  },
+  "relative_line_numbers": "disabled",
+  "vertical_scroll_margin": 4,
+  "soft_wrap": "editor_width",
+  "preferred_line_length": 80,
+  "current_line_highlight": "all",
+  "cursor_shape": "block",
+  "show_whitespaces": "all",
+  "show_wrap_guides": true,
+  "wrap_guides": [80],
+  "command_aliases": {
+    "W": "w",
+    "Wq": "wq",
+    "Q": "q",
+    "Qa": "qa"
+  }
+}
