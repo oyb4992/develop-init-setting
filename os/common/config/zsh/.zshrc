@@ -35,12 +35,17 @@ export PROJECT_ROOT="$HOME/IdeaProjects"
 # ------------------------------------------------------------------------------
 # Shared Helpers
 # ------------------------------------------------------------------------------
+function is_zed_terminal_session() {
+  [[ "$IN_ZED_TERMINAL" == "1" || "$ZED_TERM" == "true" ]]
+}
+
 function is_plain_terminal_session() {
   [[ "$TERM_PROGRAM" != "vscode" && \
      "$TERM_PROGRAM" != "IntelliJ" && \
      "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" && \
      -z "$JEDI_TERM" && \
-     -z "$IDEA_INITIAL_DIRECTORY" ]]
+     -z "$IDEA_INITIAL_DIRECTORY" && \
+     ! is_zed_terminal_session ]]
 }
 
 # ------------------------------------------------------------------------------
@@ -60,6 +65,18 @@ if is_plain_terminal_session; then
   if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
   fi
+fi
+
+# tmux auto start
+if command -v tmux &> /dev/null && \
+   [ -z "$TMUX" ] && \
+   is_plain_terminal_session; then
+  tmux new-session -A -s main
+fi
+
+if is_zed_terminal_session; then
+  export EDITOR="zed --wait"
+  export VISUAL="zed --wait"
 fi
 
 # nvm fallback 예시
