@@ -361,18 +361,27 @@ function gco-all() {
 # ------------------------------------------------------------------------------
 
 # 1. fzf 설정
-if (( $+functions[zsh-defer] )); then
-  [ -f ~/.fzf.zsh ] && zsh-defer source ~/.fzf.zsh
-else
-  [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-fi
+# fzf-history-widget을 직접 바인딩하기 위해 즉시 로드한다.
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # 2. atuin 설정
 if command -v atuin >/dev/null 2>&1; then
-  eval "$(atuin init zsh --disable-up-arrow)"
+  eval "$(atuin init zsh --disable-up-arrow --disable-ctrl-r)"
 fi
 
-# 3. bun completions
+# 3. history search key bindings
+# Atuin >= 18 uses atuin-search. fzf-history-widget is defined by ~/.fzf.zsh.
+if (( ${+widgets[atuin-search]} )); then
+  bindkey -M emacs '^R' atuin-search
+  bindkey -M viins '^R' atuin-search
+fi
+
+if (( ${+widgets[fzf-history-widget]} )); then
+  bindkey -M emacs '^X^R' fzf-history-widget
+  bindkey -M viins '^X^R' fzf-history-widget
+fi
+
+# 4. bun completions
 if (( $+functions[zsh-defer] )); then
 
 [ -s "$HOME/.bun/_bun" ] && zsh-defer source "$HOME/.bun/_bun"
