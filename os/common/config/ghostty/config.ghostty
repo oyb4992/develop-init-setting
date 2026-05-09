@@ -24,7 +24,7 @@ background-opacity = 0.92
 background-blur = 20
 
 # ─── Cursor ───────────────────────────────
-# cursor-style = block
+cursor-style = block
 cursor-style-blink = false
 cursor-click-to-move = true
 
@@ -43,7 +43,7 @@ macos-option-as-alt = true
 
 # ─── Shell Integration ────────────────────
 shell-integration = zsh
-shell-integration-features = cursor,sudo,title
+shell-integration-features = no-cursor,sudo,title
 
 # ─── tmux / LazyVim 역할 분리 ─────────────
 # pane 분할/이동은 tmux, 탭/윈도우는 Ghostty가 담당

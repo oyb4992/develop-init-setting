@@ -61,22 +61,21 @@ if is_zed_terminal_session; then
 fi
 
 # ------------------------------------------------------------------------------
+# Startup Display & Shell Prompt
+# ------------------------------------------------------------------------------
+if is_plain_terminal_session; then
+  if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+  fi
+fi
+
+# ------------------------------------------------------------------------------
 # Runtime Manager (즉시 로드)
 # ------------------------------------------------------------------------------
 # mise를 사용할 때
 if command -v mise >/dev/null 2>&1; then
   export MISE_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/mise"
   eval "$(mise activate zsh)"
-fi
-
-# ------------------------------------------------------------------------------
-# Startup Display & Shell Prompt
-# ------------------------------------------------------------------------------
-if is_plain_terminal_session; then
-  # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-  if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-  fi
 fi
 
 # # nvm fallback 예시
@@ -162,11 +161,9 @@ zstyle ':fzf-tab:complete:*' fzf-preview '
 # Aliases
 # ------------------------------------------------------------------------------
 alias python="$HOMEBREW_PREFIX/bin/python3"
-alias ls='lsd'
 alias ll='ls -alhF'
 alias vim='nvim'
 alias vi='nvim'
-alias cat="bat"
 alias cdh="cd $HOME"
 alias cdp="cd $PROJECT_ROOT"
 alias cdw="cd $PROJECT_ROOT/worktrees/"
@@ -183,6 +180,9 @@ alias szh="source $HOME/.zshrc"
 alias cs="colima start"
 alias ct="colima stop"
 alias gcgl="git config --global --list"
+
+command -v lsd >/dev/null 2>&1 && alias ls='lsd'
+command -v bat >/dev/null 2>&1 && alias cat='bat'
 
 # =======================================================
 # Git Wrapper 적용 (IntelliJ와 동일한 로직 공유)
@@ -383,8 +383,7 @@ fi
 
 # 4. bun completions
 if (( $+functions[zsh-defer] )); then
-
-[ -s "$HOME/.bun/_bun" ] && zsh-defer source "$HOME/.bun/_bun"
+  [ -s "$HOME/.bun/_bun" ] && zsh-defer source "$HOME/.bun/_bun"
 else
   [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 fi
@@ -409,6 +408,6 @@ fi
 ## MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
 # Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/oyunbog/.lmstudio/bin"
+export PATH="$PATH:$HOME/.lmstudio/bin"
 # End of LM Studio CLI section
 # zprof #zsh쉘 로딩 디버깅 모니터링 종료
