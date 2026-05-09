@@ -13,7 +13,7 @@ after-login-command = []
 after-startup-command = [
   # JankyBorders는 이미 실행 중인 프로세스를 감지하는 기능이 내장되어 있어,
   # AeroSpace 재시작 시 두 번 실행되지 않습니다.
-  'exec-and-forget borders active_color=0xff00ff00 inactive_color=0xff494d64 width=5.0',
+  "exec-and-forget borders active_color=0xff00ff00 inactive_color=0xff494d64 width=5.0",
 ]
 
 # 로그인 시 AeroSpace 시작
@@ -29,19 +29,19 @@ enable-normalization-opposite-orientation-for-nested-containers = true
 accordion-padding = 30
 
 # 가능한 값: tiles|accordion (타일|아코디언)
-default-root-container-layout = 'accordion'
+default-root-container-layout = "accordion"
 
 # 가능한 값: horizontal|vertical|auto (수평|수직|자동)
 # 'auto' 의미: 넓은 모니터(높이보다 너비가 넓은 경우)는 수평 방향,
 #               높은 모니터(너비보다 높이가 높은 경우)는 수직 방향
-default-root-container-orientation = 'auto'
+default-root-container-orientation = "auto"
 
 # 포커스된 모니터가 변경될 때 마우스 커서가 따라갑니다.
 # 이 동작을 원하지 않으면 설정에서 제거하세요.
 # 참고: https://nikitabobko.github.io/AeroSpace/guide#on-focus-changed-callbacks
 # 참고: https://nikitabobko.github.io/AeroSpace/commands#move-mouse
 # 기본값 (키를 생략한 경우): on-focused-monitor-changed = []
-on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+on-focused-monitor-changed = ["move-mouse monitor-lazy-center"]
 on-focus-changed = "move-mouse window-lazy-center"
 
 # 이 플래그를 토글하여 macOS의 "응용 프로그램 가리기"(cmd-h) 기능을 효과적으로 끌 수 있습니다.
@@ -52,7 +52,7 @@ automatically-unhide-macos-hidden-apps = true
 # 가능한 값: (qwerty|dvorak)
 # 참고: https://nikitabobko.github.io/AeroSpace/guide#key-mapping
 [key-mapping]
-preset = 'qwerty'
+preset = "qwerty"
 
 # 창 사이의 간격(inner-*) 및 모니터 가장자리와의 간격(outer-*).
 # 가능한 값:
@@ -62,19 +62,18 @@ preset = 'qwerty'
 #             모니터 패턴은 'workspace-to-monitor-force-assignment'와 동일합니다.
 #             참고: https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
 [gaps]
-inner.horizontal = 5 # 내부 수평 간격
-inner.vertical = 5   # 내부 수직 간격
-outer.left = 5       # 외부 왼쪽 간격
-outer.bottom = 5     # 외부 아래쪽 간격
-outer.top = 5        # 외부 위쪽 간격
-outer.right = 5      # 외부 오른쪽 간격
+inner.horizontal = 5  # 내부 수평 간격
+inner.vertical = 5  # 내부 수직 간격
+outer.left = 5  # 외부 왼쪽 간격
+outer.bottom = 5  # 외부 아래쪽 간격
+outer.top = 5  # 외부 위쪽 간격
+outer.right = 5  # 외부 오른쪽 간격
 
 # 'main' 바인딩 모드 선언
 # 참고: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 # 'main' 바인딩 모드는 항상 존재해야 합니다.
 # 기본값 (키를 생략한 경우): mode.main.binding = {}
 [mode.main.binding]
-
 # 가능한 모든 키:
 # - 문자.           a, b, c, ..., z
 # - 숫자.           0, 1, 2, ..., 9
@@ -112,18 +111,18 @@ outer.right = 5      # 외부 오른쪽 간격
 # alt-shift-cmd-ctrl-f = 'exec-and-forget open ~'                                           # Finder로 홈 디렉토리 열기
 
 # 참고: https://nikitabobko.github.io/AeroSpace/commands#layout
-alt-slash = 'layout tiles horizontal vertical'     # 타일 레이아웃 (가로/세로 자동 전환) - GlazeWM에 직접 매핑되는 단축키 없음
-alt-comma = 'layout accordion horizontal vertical' # 아코디언 레이아웃 (가로/세로 자동 전환) - GlazeWM에 직접 매핑되는 단축키 없음
-alt-shift-space = 'layout floating tiling'         # 플로팅/타일링 레이아웃 전환 (Alt + Shift + Space)
+alt-slash = "layout tiles horizontal vertical"  # 타일 레이아웃 (가로/세로 자동 전환) - GlazeWM에 직접 매핑되는 단축키 없음
+alt-comma = "layout accordion horizontal vertical"  # 아코디언 레이아웃 (가로/세로 자동 전환) - GlazeWM에 직접 매핑되는 단축키 없음
+alt-shift-space = "layout floating tiling"  # 플로팅/타일링 레이아웃 전환 (Alt + Shift + Space)
 
 # 타일 아코디언 레이아웃으로 변경 (Alt + Ctrl + X)
-alt-ctrl-x = 'layout tiles accordion'
+alt-ctrl-x = "layout tiles accordion"
 
 # 참고: https://nikitabobko.github.io/AeroSpace/commands#focus
-alt-h = 'focus left'  # 왼쪽 창으로 포커스 이동 (Alt + H)
-alt-j = 'focus down'  # 아래쪽 창으로 포커스 이동 (Alt + J)
-alt-k = 'focus up'    # 위쪽 창으로 포커스 이동 (Alt + K)
-alt-l = 'focus right' # 오른쪽 창으로 포커스 이동 (Alt + L)
+alt-h = "focus left"  # 왼쪽 창으로 포커스 이동 (Alt + H)
+alt-j = "focus down"  # 아래쪽 창으로 포커스 이동 (Alt + J)
+alt-k = "focus up"  # 위쪽 창으로 포커스 이동 (Alt + K)
+alt-l = "focus right"  # 오른쪽 창으로 포커스 이동 (Alt + L)
 
 # 참고: https://nikitabobko.github.io/AeroSpace/commands#move
 # 직접 창 이동/스왑 단축키는 사용하지 않고, GlazeWM처럼 모드를 사용합니다.
@@ -136,328 +135,241 @@ alt-l = 'focus right' # 오른쪽 창으로 포커스 이동 (Alt + L)
 # 직접 창 크기 조절 단축키는 사용하지 않고, GlazeWM처럼 모드를 사용합니다.
 # alt-shift-minus = 'resize smart -50' # 창 크기 지능적으로 줄이기
 # alt-shift-equal = 'resize smart +50' # 창 크기 지능적으로 늘리기
-alt-shift-0 = 'balance-sizes' # 창 크기 균형 맞추기 (GlazeWM에 직접 매핑되는 단축키 없음)
+alt-shift-0 = "balance-sizes"  # 창 크기 균형 맞추기 (GlazeWM에 직접 매핑되는 단축키 없음)
 
 # 포커스된 창을 전체 화면으로 변경. (Alt + Ctrl + F) - GlazeWM과 통일 - 맥에선 불필요XX
-alt-ctrl-f = 'macos-native-fullscreen'
+alt-ctrl-f = "macos-native-fullscreen"
 
 # 포커스된 창 최소화. (Alt + Ctrl + G) - GlazeWM과 통일
-alt-ctrl-g = 'macos-native-minimize'
+alt-ctrl-g = "macos-native-minimize"
 
 # 포커스된 창 닫기. (Alt + Ctrl + Q) - GlazeWM과 통일
-alt-ctrl-q = 'close'
+alt-ctrl-q = "close"
 
-# AeroSpace 프로세스를 안전하게 종료합니다. (Alt + Shift + X) - GlazeWM과 통일
-alt-shift-x = 'enable off'
+# AeroSpace 비활성화는 실수 방지를 위해 service 모드에서 실행합니다.
 
 # 구성 파일 재평가. (Alt + Shift + R) - GlazeWM과 통일
-alt-shift-r = 'reload-config'
+alt-shift-r = "reload-config"
 
 # 참고: https://nikitabobko.github.io/AeroSpace/commands#workspace
 # 워크스페이스 포커스: Alt + [알파벳] (GlazeWM과 통일)
-alt-a = 'workspace A' # AI 관련
-alt-b = 'workspace B' # 브라우저
-alt-c = 'workspace C' # 커뮤니케이션 (메신저, 메일)
-alt-d = 'workspace D' # 문서 작업
-alt-f = 'workspace F' # 탐색기 (Finder)
-alt-i = 'workspace I' # IDE (개발 환경)
-alt-n = 'workspace N' # 노트
-alt-t = 'workspace T' # 터미널
-alt-w = 'workspace W' # 윈도우 (가상 머신 등)
-alt-z = 'workspace Z' # 기타
+alt-a = "workspace A"  # AI 관련
+alt-b = "workspace B"  # 브라우저
+alt-c = "workspace C"  # 커뮤니케이션 (메신저, 메일)
+alt-d = "workspace D"  # 문서 작업
+alt-f = "workspace F"  # 탐색기 (Finder)
+alt-i = "workspace I"  # IDE (개발 환경)
+alt-n = "workspace N"  # 노트
+alt-t = "workspace T"  # 터미널
+alt-w = "workspace W"  # 윈도우 (가상 머신 등)
+alt-z = "workspace Z"  # 기타
 
 # 참고: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
 # 워크스페이스로 노드 이동 (창 이동 후 해당 워크스페이스로 포커스 이동): Alt + Shift + [알파벳] (GlazeWM과 통일)
-alt-shift-a = 'move-node-to-workspace --focus-follows-window A'
-alt-shift-b = 'move-node-to-workspace --focus-follows-window B'
-alt-shift-c = 'move-node-to-workspace --focus-follows-window C'
-alt-shift-d = 'move-node-to-workspace --focus-follows-window D'
-alt-shift-f = 'move-node-to-workspace --focus-follows-window F'
-alt-shift-i = 'move-node-to-workspace --focus-follows-window I'
-alt-shift-n = 'move-node-to-workspace --focus-follows-window N'
-alt-shift-t = 'move-node-to-workspace --focus-follows-window T'
-alt-shift-w = 'move-node-to-workspace --focus-follows-window W'
-alt-shift-z = 'move-node-to-workspace --focus-follows-window Z'
+alt-shift-a = "move-node-to-workspace --focus-follows-window A"
+alt-shift-b = "move-node-to-workspace --focus-follows-window B"
+alt-shift-c = "move-node-to-workspace --focus-follows-window C"
+alt-shift-d = "move-node-to-workspace --focus-follows-window D"
+alt-shift-f = "move-node-to-workspace --focus-follows-window F"
+alt-shift-i = "move-node-to-workspace --focus-follows-window I"
+alt-shift-n = "move-node-to-workspace --focus-follows-window N"
+alt-shift-t = "move-node-to-workspace --focus-follows-window T"
+alt-shift-w = "move-node-to-workspace --focus-follows-window W"
+alt-shift-z = "move-node-to-workspace --focus-follows-window Z"
 
 # 멀티 모니터 설정을 위한 추가 단축키 (macOS 고유)
-alt-cmd-h = 'focus-monitor --wrap-around prev' # 이전 모니터로 포커스 이동 (순환)
-alt-cmd-l = 'focus-monitor --wrap-around next' # 다음 모니터로 포커스 이동 (순환)
+alt-cmd-h = "focus-monitor --wrap-around prev"  # 이전 모니터로 포커스 이동 (순환)
+alt-cmd-l = "focus-monitor --wrap-around next"  # 다음 모니터로 포커스 이동 (순환)
 
 # 마지막으로 포커스했던 작업 공간에 포커스합니다. (Alt + Q) - GlazeWM의 Alt+Q와 통일
-alt-q = 'workspace-back-and-forth' # AeroSpace의 back-and-forth가 GlazeWM의 recent와 유사
+alt-q = "workspace-back-and-forth"  # AeroSpace의 back-and-forth가 GlazeWM의 recent와 유사
 
 # 참고: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
 # 포커스된 창의 부모 작업 공간을 주어진 방향의 모니터로 이동합니다. (Alt + Shift + Tab) - macOS 고유
-ctrl-shift-tab = 'move-workspace-to-monitor --wrap-around prev' # 현재 워크스페이스를  이전 모니터로 이동 (순환)
-alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'  # 현재 워크스페이스를 다음 모니터로 이동 (순환)
+ctrl-shift-tab = "move-workspace-to-monitor --wrap-around prev"  # 현재 워크스페이스를  이전 모니터로 이동 (순환)
+alt-shift-tab = "move-workspace-to-monitor --wrap-around next"  # 현재 워크스페이스를 다음 모니터로 이동 (순환)
 
 # 참고: https://nikitabobko.github.io/AeroSpace/commands#mode
 # 크기 조절 모드를 활성화합니다. (Alt + Cmd + R) - GlazeWM과 통일
-alt-cmd-r = 'mode resize'
+alt-cmd-r = "mode resize"
 
 # 창 스왑 모드를 활성화합니다. (Alt + Cmd + W) - GlazeWM과 통일
-alt-cmd-w = 'mode swap'
+alt-cmd-w = "mode swap"
 
-# 'service' 바인딩 모드 진입 (Alt + Shift + Semicolon) - macOS 고유 유틸리티 모드
-alt-cmd-s = 'mode service'
+# 'service' 바인딩 모드 진입 (Alt + Cmd + S) - macOS 고유 유틸리티 모드
+alt-cmd-s = "mode service"
 
 # 'resize' 바인딩 모드 선언 (Alt + R)
 [mode.resize.binding]
 # 크기 조절 (GlazeWM과 통일)
-h = 'resize smart -50'     # 왼쪽으로 줄이기 (GlazeWM의 width -2%와 유사)
-left = 'resize smart -50'
-l = 'resize smart +50'     # 오른쪽으로 늘리기 (GlazeWM의 width +2%와 유사)
-right = 'resize smart +50'
-k = 'resize smart +50'     # 위쪽으로 늘리기 (GlazeWM의 height +2%와 유사) - 방향 주의 (위로 늘리면 창 아래쪽이 내려옴)
-up = 'resize smart +50'
-j = 'resize smart -50'     # 아래쪽으로 줄이기 (GlazeWM의 height -2%와 유사) - 방향 주의 (아래로 줄이면 창 아래쪽이 올라옴)
-down = 'resize smart -50'
+h = "resize smart -50"  # 왼쪽으로 줄이기 (GlazeWM의 width -2%와 유사)
+left = "resize smart -50"
+l = "resize smart +50"  # 오른쪽으로 늘리기 (GlazeWM의 width +2%와 유사)
+right = "resize smart +50"
+k = "resize smart +50"  # 위쪽으로 늘리기 (GlazeWM의 height +2%와 유사) - 방향 주의 (위로 늘리면 창 아래쪽이 내려옴)
+up = "resize smart +50"
+j = "resize smart -50"  # 아래쪽으로 줄이기 (GlazeWM의 height -2%와 유사) - 방향 주의 (아래로 줄이면 창 아래쪽이 올라옴)
+down = "resize smart -50"
 # 기본 키 바인딩으로 돌아가려면 Enter/Escape 키를 누르세요. (GlazeWM과 통일)
-esc = 'mode main'
-enter = 'mode main'
+esc = "mode main"
+enter = "mode main"
 
 # 'swap' 바인딩 모드 선언 (Alt + W)
 [mode.swap.binding]
 # 창 이동/스왑 (GlazeWM과 통일)
-h = 'swap left'
-left = 'swap left'
-l = 'swap right'
-right = 'swap right'
-k = 'swap up'
-up = 'swap up'
-j = 'swap down'
-down = 'swap down'
+h = "swap left"
+left = "swap left"
+l = "swap right"
+right = "swap right"
+k = "swap up"
+up = "swap up"
+j = "swap down"
+down = "swap down"
 # 기본 키 바인딩으로 돌아가려면 Enter/Escape 키를 누르세요. (GlazeWM과 통일)
-esc = 'mode main'
-enter = 'mode main'
+esc = "mode main"
+enter = "mode main"
 
 # 'service' 바인딩 모드 선언. (macOS 고유 유틸리티 모드)
 # 참고: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 [mode.service.binding]
-esc = 'mode main'   # 'main' 모드로 복귀 (GlazeWM의 Esc/Enter와 유사)
-enter = 'mode main' # 'main' 모드로 복귀
+esc = "mode main"  # 'main' 모드로 복귀 (GlazeWM의 Esc/Enter와 유사)
+enter = "mode main"  # 'main' 모드로 복귀
 
 # service 모드 내에서 실행할 유틸리티 명령어
-r = ['flatten-workspace-tree', 'mode main'] # 레이아웃 초기화 (트리 평탄화)하고 'main' 모드로 복귀
+r = [
+  "flatten-workspace-tree",
+  "mode main"
+]  # 레이아웃 초기화 (트리 평탄화)하고 'main' 모드로 복귀
+x = "enable off"  # AeroSpace 창 관리를 비활성화
 # f = ['layout floating tiling', 'mode main'] # 플로팅/타일링 레이아웃 전환하고 'main' 모드로 복귀 (Alt+Shift+Space, Alt+X로 통일)
 backspace = [
-  'close-all-windows-but-current',
-  'mode main',
-] # 현재 창 제외 모든 창 닫고 'main' 모드로 복귀 (GlazeWM에 직접 매핑되는 단축키 없음)
+  "close-all-windows-but-current",
+  "mode main",
+]  # 현재 창 제외 모든 창 닫고 'main' 모드로 복귀 (GlazeWM에 직접 매핑되는 단축키 없음)
 
 # `join-with` 명령어 (service 모드에서 shift + 방향키로 활성화) - GlazeWM에 직접 매핑되는 기능 없음
-shift-h = ['join-with left', 'mode main']  # 왼쪽 창과 합치고 'main' 모드로 복귀
-shift-j = ['join-with down', 'mode main']  # 아래쪽 창과 합치고 'main' 모드로 복귀
-shift-k = ['join-with up', 'mode main']    # 위쪽 창과 합치고 'main' 모드로 복귀
-shift-l = ['join-with right', 'mode main'] # 오른쪽 창과 합치고 'main' 모드로 복귀
+shift-h = ["join-with left", "mode main"]  # 왼쪽 창과 합치고 'main' 모드로 복귀
+shift-j = ["join-with down", "mode main"]  # 아래쪽 창과 합치고 'main' 모드로 복귀
+shift-k = ["join-with up", "mode main"]  # 위쪽 창과 합치고 'main' 모드로 복귀
+shift-l = ["join-with right", "mode main"]  # 오른쪽 창과 합치고 'main' 모드로 복귀
 
 # 볼륨 조절 (service 모드 내에서) - GlazeWM에 직접 매핑되는 기능 없음
-down = 'volume down'                       # 볼륨 줄이기
-up = 'volume up'                           # 볼륨 높이기
-shift-down = ['volume set 0', 'mode main'] # 음소거 하고 'main' 모드로 복귀
+down = "volume down"  # 볼륨 줄이기
+up = "volume up"  # 볼륨 높이기
+shift-down = ["volume set 0", "mode main"]  # 음소거 하고 'main' 모드로 복귀
 
 # 창 감지 시 실행 규칙 ([[on-window-detected]]) - 통합 워크스페이스 이름 반영
 # 특정 앱 ID를 가진 창이 감지되면 지정된 워크스페이스로 이동하거나 레이아웃을 변경합니다.
 [[on-window-detected]]
-if.app-id = 'com.mitchellh.ghostty' # ghostty
+if.app-id = "com.mitchellh.ghostty"  # ghostty
 run = [
-  'move-node-to-workspace --focus-follows-window T', # 'T' 워크스페이스로 이동
+  "move-node-to-workspace --focus-follows-window T",  # 'T' 워크스페이스로 이동
 ]
 
 [[on-window-detected]]
-if.app-name-regex-substring = 'scrcpy' # scrcpy'
+if.app-name-regex-substring = "scrcpy"  # scrcpy'
 run = [
-  'layout floating',
-  'move-node-to-workspace --focus-follows-window T', # 플로팅 레이아웃으로 변경 후 'T' 워크스페이스로 이동
+  "layout floating",
+  "move-node-to-workspace --focus-follows-window T",  # 플로팅 레이아웃으로 변경 후 'T' 워크스페이스로 이동
 ]
 
 [[on-window-detected]]
-if.app-id = 'com.apple.Safari'                          # Safari
-run = 'move-node-to-workspace --focus-follows-window B' # 'B' 워크스페이스로 이동
+if.app-id = "com.apple.Safari"  # Safari
+run = "move-node-to-workspace --focus-follows-window B"  # 'B' 워크스페이스로 이동
 
 [[on-window-detected]]
-if.app-id = 'app.zen-browser.zen'                       # Zen
-run = 'move-node-to-workspace --focus-follows-window B' # 'B' 워크스페이스로 이동
+if.app-id = "app.zen-browser.zen"  # Zen
+run = "move-node-to-workspace --focus-follows-window B"  # 'B' 워크스페이스로 이동
 
 [[on-window-detected]]
-if.app-id = 'com.google.Chrome'                         # Google Chrome
-run = 'move-node-to-workspace --focus-follows-window B' # 'B' 워크스페이스로 이동
+if.app-id = "com.google.Chrome"  # Google Chrome
+run = "move-node-to-workspace --focus-follows-window B"  # 'B' 워크스페이스로 이동
 
 [[on-window-detected]]
-if.app-id = 'com.openai.atlas'                         # ChatGPT Atlas
-run = 'move-node-to-workspace --focus-follows-window B' # 'B' 워크스페이스로 이동
+if.app-id = "com.openai.atlas"  # ChatGPT Atlas
+run = "move-node-to-workspace --focus-follows-window B"  # 'B' 워크스페이스로 이동
 
 [[on-window-detected]]
-if.app-id = 'com.jetbrains.intellij' # IntelliJ IDEA
-run = '''exec-and-forget /bin/zsh -c '
-    TARGET_WS="I"
-    TARGET_MON="LS32D70xE"
-
-    if ! aerospace list-workspaces --monitor "$TARGET_MON" | grep -q "^$TARGET_WS$"; then
-        aerospace focus-monitor "$TARGET_MON"  # 먼저 TARGET_MON 포커스
-        aerospace workspace "$TARGET_WS"       # TARGET_MON에서 WS 생성/포커스 (이동 불필요)
-    fi
-
-    aerospace move-node-to-workspace --focus-follows-window "$TARGET_WS"  # 앱을 WS로 이동
-' '''
+if.app-id = "com.jetbrains.intellij"  # IntelliJ IDEA
+run = "move-node-to-workspace --focus-follows-window I"
 
 [[on-window-detected]]
-if.app-id = 'com.jetbrains.WebStorm' # WebStorm IDEA
-run = '''exec-and-forget /bin/zsh -c '
-    TARGET_WS="I"
-    TARGET_MON="LS32D70xE"
-
-    if ! aerospace list-workspaces --monitor "$TARGET_MON" | grep -q "^$TARGET_WS$"; then
-        aerospace focus-monitor "$TARGET_MON"  # 먼저 TARGET_MON 포커스
-        aerospace workspace "$TARGET_WS"       # TARGET_MON에서 WS 생성/포커스 (이동 불필요)
-    fi
-
-    aerospace move-node-to-workspace --focus-follows-window "$TARGET_WS"  # 앱을 WS로 이동
-' '''
+if.app-id = "com.jetbrains.WebStorm"  # WebStorm IDEA
+run = "move-node-to-workspace --focus-follows-window I"
 
 [[on-window-detected]]
-if.app-id = 'com.jetbrains.datagrip' # DataGrip IDEA
-run = '''exec-and-forget /bin/zsh -c '
-    TARGET_WS="I"
-    TARGET_MON="LS32D70xE"
-
-    if ! aerospace list-workspaces --monitor "$TARGET_MON" | grep -q "^$TARGET_WS$"; then
-        aerospace focus-monitor "$TARGET_MON"  # 먼저 TARGET_MON 포커스
-        aerospace workspace "$TARGET_WS"       # TARGET_MON에서 WS 생성/포커스 (이동 불필요)
-    fi
-
-    aerospace move-node-to-workspace --focus-follows-window "$TARGET_WS"  # 앱을 WS로 이동
-' '''
+if.app-id = "com.jetbrains.datagrip"  # DataGrip IDEA
+run = "move-node-to-workspace --focus-follows-window I"
 
 [[on-window-detected]]
-if.app-id = 'com.microsoft.VSCode' # Visual Studio Code
-run = '''exec-and-forget /bin/zsh -c '
-    TARGET_WS="I"
-    TARGET_MON="LS32D70xE"
-
-    if ! aerospace list-workspaces --monitor "$TARGET_MON" | grep -q "^$TARGET_WS$"; then
-        aerospace focus-monitor "$TARGET_MON"  # 먼저 TARGET_MON 포커스
-        aerospace workspace "$TARGET_WS"       # TARGET_MON에서 WS 생성/포커스 (이동 불필요)
-    fi
-
-    aerospace move-node-to-workspace --focus-follows-window "$TARGET_WS"  # 앱을 WS로 이동
-' '''
+if.app-id = "com.microsoft.VSCode"  # Visual Studio Code
+run = "move-node-to-workspace --focus-follows-window I"
 
 [[on-window-detected]]
-if.app-id = 'com.google.antigravity' # Antigravity
-run = '''exec-and-forget /bin/zsh -c '
-    TARGET_WS="I"
-    TARGET_MON="LS32D70xE"
-
-    if ! aerospace list-workspaces --monitor "$TARGET_MON" | grep -q "^$TARGET_WS$"; then
-        aerospace focus-monitor "$TARGET_MON"  # 먼저 TARGET_MON 포커스
-        aerospace workspace "$TARGET_WS"       # TARGET_MON에서 WS 생성/포커스 (이동 불필요)
-    fi
-
-    aerospace move-node-to-workspace --focus-follows-window "$TARGET_WS"  # 앱을 WS로 이동
-' '''
-
-# [[on-window-detected]]
-# if.app-id = 'com.todesktop.230313mzl4w4u92'             # Electron 기반 앱일 가능성 (예: Cursor)
-# run = 'move-node-to-workspace --focus-follows-window I' # 'I' 워크스페이스로 이동
+if.app-id = "com.google.antigravity"  # Antigravity
+run = "move-node-to-workspace --focus-follows-window I"
 
 [[on-window-detected]]
-if.app-id = 'com.apple.finder'                          # Finder
-run = 'move-node-to-workspace --focus-follows-window F' # 'F' 워크스페이스로 이동
+if.app-id = "dev.zed.Zed"  # Zed
+run = "move-node-to-workspace --focus-follows-window I"
 
 [[on-window-detected]]
-if.app-id = 'com.lobehub.lobehub-desktop-beta'          # LobeHub
-run = 'move-node-to-workspace --focus-follows-window A' # 'A' 워크스페이스로 이동 (AI)
+if.app-id = "com.apple.finder"  # Finder
+run = "move-node-to-workspace --focus-follows-window F"  # 'F' 워크스페이스로 이동
 
 [[on-window-detected]]
-if.app-id = 'ai.perplexity.mac'                         # Perplexity
-run = 'move-node-to-workspace --focus-follows-window A' # 'A' 워크스페이스로 이동 (AI)
+if.app-id = "ai.perplexity.mac"  # Perplexity
+run = "move-node-to-workspace --focus-follows-window A"  # 'A' 워크스페이스로 이동 (AI)
 
 [[on-window-detected]]
-if.app-id = 'com.anthropic.claudefordesktop'            # Claude
-run = 'move-node-to-workspace --focus-follows-window A' # 'A' 워크스페이스로 이동 (AI)
+if.app-id = "com.anthropic.claudefordesktop"  # Claude
+run = "move-node-to-workspace --focus-follows-window A"  # 'A' 워크스페이스로 이동 (AI)
 
 [[on-window-detected]]
-if.app-id = 'ai.elementlabs.lmstudio'                   # LM Studio
-run = 'move-node-to-workspace --focus-follows-window A' # 'A' 워크스페이스로 이동 (AI)
+if.app-id = "ai.elementlabs.lmstudio"  # LM Studio
+run = "move-node-to-workspace --focus-follows-window A"  # 'A' 워크스페이스로 이동 (AI)
 
 [[on-window-detected]]
-if.app-id = 'com.openai.chat'                           # ChatGPT
-run = 'move-node-to-workspace --focus-follows-window A' # 'A' 워크스페이스로 이동 (AI)
+if.app-id = "com.openai.chat"  # ChatGPT
+run = "move-node-to-workspace --focus-follows-window A"  # 'A' 워크스페이스로 이동 (AI)
 
 [[on-window-detected]]
-if.app-id = 'com.openai.codex'                           # Codex
-run = 'move-node-to-workspace --focus-follows-window A' # 'A' 워크스페이스로 이동 (AI)
+if.app-id = "com.openai.codex"  # Codex
+run = "move-node-to-workspace --focus-follows-window A"  # 'A' 워크스페이스로 이동 (AI)
 
 [[on-window-detected]]
-if.app-id = 'md.obsidian' # Obsidian
+if.app-id = "md.obsidian"  # Obsidian
 run = [
-  'move-node-to-workspace --focus-follows-window N', # 'N' 워크스페이스로 이동
+  "move-node-to-workspace --focus-follows-window N",  # 'N' 워크스페이스로 이동
 ]
 
 [[on-window-detected]]
-if.app-id = 'com.microsoft.Excel' # Microsoft Excel
+if.app-id = "com.microsoft.Excel"  # Microsoft Excel
 run = [
-  'move-node-to-workspace --focus-follows-window D', # 'D' 워크스페이스로 이동
+  "move-node-to-workspace --focus-follows-window D",  # 'D' 워크스페이스로 이동
 ]
 
 [[on-window-detected]]
-if.app-id = 'com.microsoft.Word' # Microsoft Word
+if.app-id = "com.microsoft.Word"  # Microsoft Word
 run = [
-  'move-node-to-workspace --focus-follows-window D', # 'D' 워크스페이스로 이동
+  "move-node-to-workspace --focus-follows-window D",  # 'D' 워크스페이스로 이동
 ]
 
 [[on-window-detected]]
-if.app-id = 'com.microsoft.Powerpoint' # Microsoft Powerpoint
+if.app-id = "com.microsoft.Powerpoint"  # Microsoft Powerpoint
 run = [
-  'move-node-to-workspace --focus-follows-window D', # 'D' 워크스페이스로 이동
+  "move-node-to-workspace --focus-follows-window D",  # 'D' 워크스페이스로 이동
 ]
 
 [[on-window-detected]]
-if.app-id = 'com.kakao.KakaoTalkMac' # 카카오톡
+if.app-id = "net.golbin.hop"  # HOP
 run = [
-  'layout floating',
-  'move-node-to-workspace --focus-follows-window C', # 플로팅 레이아웃으로 변경 후 'C' 워크스페이스로 이동
+  "move-node-to-workspace --focus-follows-window D",  # 'D' 워크스페이스로 이동
 ]
 
 [[on-window-detected]]
-if.app-id = 'com.tdesktop.Telegram' # Telegram
-run = [
-  'layout floating',
-  'move-node-to-workspace --focus-follows-window C', # 플로팅 레이아웃으로 변경 후 'C' 워크스페이스로 이동
-]
-
-# [[on-window-detected]]
-# if.app-id = 'com.tinyspeck.slackmacgap' # Slack
-# run = [
-#   'layout floating',
-#   'move-node-to-workspace --focus-follows-window M',
-# ] # 플로팅 레이아웃으로 변경 후 'M' 워크스페이스로 이동
-
-[[on-window-detected]]
-if.app-id = 'com.apple.mail'                            # Mail
-run = 'move-node-to-workspace --focus-follows-window C' # 'C' 워크스페이스로 이동
-
-[[on-window-detected]]
-if.app-id = 'com.okatbest.boop' # Boop
-run = [
-  'layout floating',                # 플로팅 레이아웃으로 변경
-  'move-node-to-monitor LS32D70xE',
-]
-
-[[on-window-detected]]
-if.app-id = 'com.devtoys' # DevToys
-run = [
-  'layout floating',                # 플로팅 레이아웃으로 변경
-  'move-node-to-monitor LS32D70xE',
-]
-
-[[on-window-detected]]
-if.app-id = 'com.apple.ActivityMonitor' # 활성 상태 보기
-run = [
-  'layout floating',                # 플로팅 레이아웃으로 변경
-  'move-node-to-monitor LS32D70xE',
-]
+if.app-id = "com.apple.mail"  # Mail
+run = "move-node-to-workspace --focus-follows-window C"  # 'C' 워크스페이스로 이동
 
 # [[on-window-detected]]
 # if.app-id = 'com.utmapp.UTM'                            # UTM (가상화)
@@ -469,34 +381,49 @@ run = [
 
 # 특정 앱을 창 관리에서 제외 (플로팅으로 설정)
 [[on-window-detected]]
-if.app-id = 'com.trendmicro.TrendCleanerPro' # 여기에 제외할 앱의 ID를 입력하세요
-run = 'layout floating'                      # 해당 앱의 창을 플로팅 모드로 설정 
-
-# [[on-window-detected]]
-# if.app-id = 'com.linguee.DeepLCopyTranslator' # 여기에 제외할 앱의 ID를 입력하세요
-# run = 'layout floating'                       # 해당 앱의 창을 플로팅 모드로 설정
-
-[[on-window-detected]]
-if.app-id = 'com.max-langer.Latest' # 여기에 제외할 앱의 ID를 입력하세요
+if.app-id = "com.kakao.KakaoTalkMac"  # 카카오톡
 run = [
-  'layout floating',                # 플로팅 레이아웃으로 변경
-  'move-node-to-monitor LS32D70xE',
+  "layout floating",
+  "move-node-to-workspace --focus-follows-window C",  # 플로팅 레이아웃으로 변경 후 'C' 워크스페이스로 이동
 ]
 
 [[on-window-detected]]
-if.app-id = 'org.pqrs.Karabiner-EventViewer' # 여기에 제외할 앱의 ID를 입력하세요
-run = 'layout floating'                      # 해당 앱의 창을 플로팅 모드로 설정
-
-[[on-window-detected]]
-if.app-id = 'org.pqrs.Karabiner-Elements.Settings' # 여기에 제외할 앱의 ID를 입력하세요
-run = 'layout floating'                            # 해당 앱의 창을 플로팅 모드로 설정
-
-[[on-window-detected]]
-if.app-id = 'com.hegenberg.BetterTouchTool' # 여기에 제외할 앱의 ID를 입력하세요
+if.app-id = "com.tdesktop.Telegram"  # Telegram
 run = [
-  'layout floating',                # 플로팅 레이아웃으로 변경
-  'move-node-to-monitor LS32D70xE',
+  "layout floating",
+  "move-node-to-workspace --focus-follows-window C",  # 플로팅 레이아웃으로 변경 후 'C' 워크스페이스로 이동
 ]
+
+[[on-window-detected]]
+if.app-id = "com.tinyspeck.slackmacgap"  # Slack
+run = [
+  "layout floating",
+  "move-node-to-workspace --focus-follows-window C",
+]  # 플로팅 레이아웃으로 변경 후 'C' 워크스페이스로 이동
+
+[[on-window-detected]]
+if.app-id = "com.okatbest.boop"  # Boop
+run = "layout floating"
+
+[[on-window-detected]]
+if.app-id = "com.devtoys"  # DevToys
+run = "layout floating"
+
+[[on-window-detected]]
+if.app-id = "com.apple.ActivityMonitor"  # 활성 상태 보기
+run = "layout floating"
+
+[[on-window-detected]]
+if.app-id = "com.linguee.DeepLCopyTranslator"  # 여기에 제외할 앱의 ID를 입력하세요
+run = "layout floating"  # 해당 앱의 창을 플로팅 모드로 설정
+
+[[on-window-detected]]
+if.app-id = "com.max-langer.Latest"  # 여기에 제외할 앱의 ID를 입력하세요
+run = "layout floating"
+
+[[on-window-detected]]
+if.app-id = "com.hegenberg.BetterTouchTool"  # 여기에 제외할 앱의 ID를 입력하세요
+run = "layout floating"
 
 # 지정되지 않은 앱을 Z 워크스페이스로 이동 (필요시 주석 해제)
 # [[on-window-detected]]
