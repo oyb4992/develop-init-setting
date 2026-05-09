@@ -1,7 +1,7 @@
 # ~/.config/ghostty/config
 
 # ─── Theme ────────────────────────────────
-theme = Catppuccin Mocha
+theme = Atom One Dark
 
 # ─── Font ─────────────────────────────────
 font-family = "Hack Nerd Font Mono"
@@ -24,7 +24,7 @@ background-opacity = 0.92
 background-blur = 20
 
 # ─── Cursor ───────────────────────────────
-cursor-style = block
+# cursor-style = block
 cursor-style-blink = false
 cursor-click-to-move = true
 

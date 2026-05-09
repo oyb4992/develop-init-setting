@@ -40,22 +40,34 @@ function is_zed_terminal_session() {
 }
 
 function is_plain_terminal_session() {
-  [[ "$TERM_PROGRAM" != "vscode" && \
-     "$TERM_PROGRAM" != "IntelliJ" && \
-     "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" && \
-     -z "$JEDI_TERM" && \
-     -z "$IDEA_INITIAL_DIRECTORY" && \
-     ! is_zed_terminal_session ]]
+  [[ "$TERM_PROGRAM" != "vscode" &&
+     "$TERM_PROGRAM" != "IntelliJ" &&
+     "$TERMINAL_EMULATOR" != "JetBrains-JediTerm" &&
+     -z "$JEDI_TERM" &&
+     -z "$IDEA_INITIAL_DIRECTORY" ]]
+
+  local is_plain=$?
+
+  if is_zed_terminal_session; then
+    return 1
+  fi
+
+  return $is_plain
 }
+
+if is_zed_terminal_session; then
+  export EDITOR="zed --wait"
+  export VISUAL="zed --wait"
+fi
 
 # ------------------------------------------------------------------------------
 # Runtime Manager (즉시 로드)
 # ------------------------------------------------------------------------------
 # mise를 사용할 때
-# if command -v mise >/dev/null 2>&1; then
-#   export MISE_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/mise"
-#   eval "$(mise activate zsh)"
-# fi
+if command -v mise >/dev/null 2>&1; then
+  export MISE_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/mise"
+  eval "$(mise activate zsh)"
+fi
 
 # ------------------------------------------------------------------------------
 # Startup Display & Shell Prompt
@@ -67,27 +79,15 @@ if is_plain_terminal_session; then
   fi
 fi
 
-# tmux auto start
-if command -v tmux &> /dev/null && \
-   [ -z "$TMUX" ] && \
-   is_plain_terminal_session; then
-  tmux new-session -A -s main
-fi
-
-if is_zed_terminal_session; then
-  export EDITOR="zed --wait"
-  export VISUAL="zed --wait"
-fi
-
-# nvm fallback 예시
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-
-# sdkman 사용 환경
-if [ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]; then
-  source "$HOME/.sdkman/bin/sdkman-init.sh"
-fi
+# # nvm fallback 예시
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+#
+# # sdkman 사용 환경
+# if [ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]; then
+#   source "$HOME/.sdkman/bin/sdkman-init.sh"
+# fi
 
 # ------------------------------------------------------------------------------
 # Shell Options & Tool Environment
@@ -110,9 +110,9 @@ if [[ -f "$ZPLUG_HOME/init.zsh" ]]; then
   zplug "zsh-users/zsh-history-substring-search", defer:1
   zplug "lib/key-bindings", from:oh-my-zsh
   zplug "lib/directories",  from:oh-my-zsh
-  # zplug "plugins/git", from:oh-my-zsh
+  zplug "plugins/git", from:oh-my-zsh
   # zplug "plugins/docker", from:oh-my-zsh
-  # zplug "MichaelAquilina/zsh-you-should-use"
+  zplug "MichaelAquilina/zsh-you-should-use"
   # zplug "mroth/evalcache"
   zplug "babarot/enhancd", use:init.sh
   zplug "romkatv/zsh-defer"
