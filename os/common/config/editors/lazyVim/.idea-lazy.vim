@@ -326,6 +326,9 @@ imap <C-k> <C-o><Action>(ParameterInfo)
 " 코드 액션
 nmap <leader>ca <Action>(RefactoringMenu)
 vmap <leader>ca <Action>(RefactoringMenu)
+" ESLint Fix
+nmap <leader>cl <Action>(Javascript.Linters.EsLint.Fix)
+vmap <leader>cl <Action>(Javascript.Linters.EsLint.Fix)
 " Codelens 실행
 " nmap <leader>cc :echo 'Codelens 실행에 해당하는 매핑이 없습니다.'<cr>
 " Codelens 새로 고침 및 표시
@@ -634,10 +637,14 @@ let g:WhichKeyDesc_g = "<leader>g Git"
 let g:WhichKeyDesc_c = "<leader>c 코드/LSP"
 let g:WhichKeyDesc_b = "<leader>b 버퍼"
 let g:WhichKeyDesc_s = "<leader>s 검색/정보"
+let g:WhichKeyDesc_S = "<leader>S 줄 감싸기"
 let g:WhichKeyDesc_d = "<leader>d 디버그"
 let g:WhichKeyDesc_t = "<leader>t 테스트"
 let g:WhichKeyDesc_x = "<leader>x 문제/Todo"
+let g:WhichKeyDesc_w = "<leader>w 창"
 let g:WhichKeyDesc_l = "<leader>l LazyVim 플러그인 설정"
+let g:WhichKeyDesc_e = "<leader>e 프로젝트 창"
+let g:WhichKeyDesc_E = "<leader>E 현재 파일 프로젝트에서 선택"
 let g:WhichKeyDesc_K = "<leader>K 단어 도움말"
 let g:WhichKeyDesc_M = "<leader>M 마크"
 let g:WhichKeyDesc_y = "<leader>y 경로/참조 복사"
@@ -656,6 +663,13 @@ let g:WhichKeyDesc_colon = "<leader>: 명령 기록"
 let g:WhichKeyDesc_qq = "<leader>qq 종료"
 let g:WhichKeyDesc_minus = "<leader>- 아래 창 분할"
 let g:WhichKeyDesc_vbar = "<leader>| 오른쪽 창 분할"
+let g:WhichKeyDesc_C_n = "<leader><C-n> 모든 단어 선택"
+
+" ------------------------------------------------------------
+" Windows: <leader>w
+" ------------------------------------------------------------
+let g:WhichKeyDesc_wd = "<leader>wd 창 닫기"
+let g:WhichKeyDesc_wm = "<leader>wm 최대화 토글"
 
 " ------------------------------------------------------------
 " Toggles / Utilities: <leader>u
@@ -701,6 +715,7 @@ let g:WhichKeyDesc_gl = "<leader>gl Git 로그"
 let g:WhichKeyDesc_gL = "<leader>gL Git 로그"
 let g:WhichKeyDesc_gs = "<leader>gs Git 상태/로그"
 let g:WhichKeyDesc_ge = "<leader>ge Git 도구 창"
+let g:WhichKeyDesc_g_C_n = "<leader>g<C-n> 모든 항목 선택"
 
 " ------------------------------------------------------------
 " Code / LSP: <leader>c
@@ -709,6 +724,7 @@ let g:WhichKeyDesc_ca = "<leader>ca 코드 액션"
 let g:WhichKeyDesc_cA = "<leader>cA 인텐션 액션"
 let g:WhichKeyDesc_cd = "<leader>cd 문제 창"
 let g:WhichKeyDesc_cf = "<leader>cf 코드 포맷"
+let g:WhichKeyDesc_cl = "<leader>cl ESLint Fix"
 let g:WhichKeyDesc_cR = "<leader>cR 파일 이름 변경"
 let g:WhichKeyDesc_cr = "<leader>cr 이름 변경"
 let g:WhichKeyDesc_cs = "<leader>cs 파일 구조"
@@ -733,7 +749,7 @@ let g:WhichKeyDesc_be = "<leader>be 프로젝트 창"
 " ------------------------------------------------------------
 " Search / Info: <leader>s
 " ------------------------------------------------------------
-let g:WhichKeyDesc_s_double_quote = "<leader>s\" 레지스터"
+let g:WhichKeyDesc_s_double_quote = '<leader>s" 단어를 "로 감싸기'
 let g:WhichKeyDesc_sb = "<leader>sb 버퍼 선택"
 let g:WhichKeyDesc_sc = "<leader>sc 명령 기록"
 let g:WhichKeyDesc_sC = "<leader>sC 액션 찾기"
@@ -761,13 +777,12 @@ let g:WhichKeyDesc_snd = "<leader>snd 알림 지우기"
 
 " Surround shortcuts under <leader>s
 let g:WhichKeyDesc_s_single_quote = "<leader>s' 단어를 '로 감싸기"
-let g:WhichKeyDesc_s_double_quote_surround = '<leader>s" 단어를 "로 감싸기'
 let g:WhichKeyDesc_s_paren = "<leader>s( 단어를 ()로 감싸기"
 let g:WhichKeyDesc_s_brace = "<leader>s{ 단어를 {}로 감싸기"
 let g:WhichKeyDesc_s_bracket = "<leader>s[ 단어를 []로 감싸기"
 let g:WhichKeyDesc_s_backtick = "<leader>s` 단어를 ``로 감싸기"
 let g:WhichKeyDesc_S_single_quote = "<leader>S' 줄을 '로 감싸기"
-let g:WhichKeyDesc_S_double_quote_surround = '<leader>S" 줄을 "로 감싸기'
+let g:WhichKeyDesc_S_double_quote = '<leader>S" 줄을 "로 감싸기'
 let g:WhichKeyDesc_S_paren = "<leader>S( 줄을 ()로 감싸기"
 let g:WhichKeyDesc_S_brace = "<leader>S{ 줄을 {}로 감싸기"
 
