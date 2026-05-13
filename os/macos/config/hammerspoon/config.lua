@@ -151,10 +151,9 @@ local CONFIG = {
 			{ app = "IntelliJ IDEA", event = "activated", action = "set_input_source", source = "english" },
 			{ app = "WebStorm", event = "activated", action = "set_input_source", source = "english" },
 			{ app = "DataGrip", event = "activated", action = "set_input_source", source = "english" },
-			{ app = "Antigravity", event = "activated", action = "set_input_source", source = "english" },
-			{ app = "kitty", event = "activated", action = "set_input_source", source = "english" },
-			{ app = "cmux", event = "activated", action = "set_input_source", source = "english" },
 			{ app = "Ghostty", event = "activated", action = "set_input_source", source = "english" },
+			{ app = "Antigravity", event = "activated", action = "set_input_source", source = "english" },
+			{ app = "Zed", event = "activated", action = "set_input_source", source = "english" },
 		},
 	},
 }
