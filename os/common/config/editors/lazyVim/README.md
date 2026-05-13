@@ -1,19 +1,19 @@
-# LazyVim 설정
+# LazyVim 스타일 IdeaVim 설정
 
-이 디렉토리는 Neovim용 LazyVim 전용 설정들을 포함합니다.
+이 디렉토리는 Neovim LazyVim 자체 설정이 아니라, LazyVim에서 쓰는 조작감을 JetBrains IdeaVim 쪽으로 맞추기 위한 설정을 보관합니다.
 
-## 파일 구조
-- `lua/` - LazyVim 설정 파일들
-- `plugins/` - 사용자 정의 플러그인 설정
-- `config/` - 추가 설정 파일들
+## 파일
 
-## 설치 및 설정
-LazyVim 설정은 메인 init.vim 파일에 의해 자동으로 로드됩니다.
+- `.idea-lazy.vim`: JetBrains IDE에서 사용할 IdeaVim 설정
 
-## 사용법
-1. Neovim 실행 후 `:Lazy` 명령어로 플러그인 관리자 열기
-2. `:LazyHealth` 명령어로 LazyVim 상태 확인
-3. 필요에 따라 `plugins/` 디렉토리에 개인 플러그인 설정 추가
+## 사용 방법
 
-## 참고 문서
-자세한 정보는 공식 문서를 참조하세요: https://www.lazyvim.org/
+JetBrains IDE의 IdeaVim 설정에서 이 파일을 참조하거나, 개인 `~/.ideavimrc`에서 source해서 사용합니다.
+
+```vim
+source /Users/oyunbog/IdeaProjects/dev-init-setting/os/common/config/editors/lazyVim/.idea-lazy.vim
+```
+
+## 참고
+
+Zed는 Vimscript를 직접 읽지 않으므로 `os/common/config/zed/`에 별도 `settings.json`, `keymap.json`으로 포팅한 설정을 둡니다.

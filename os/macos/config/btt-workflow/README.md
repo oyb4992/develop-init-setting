@@ -1,22 +1,15 @@
 # BetterTouchTool 워크플로우
 
-이 디렉토리는 macOS 생산성 향상을 위한 BetterTouchTool 워크플로우 설정들을 포함합니다.
+이 디렉토리는 BetterTouchTool 관련 설정을 보관하기 위한 자리입니다.
 
-## 설치 방법
-1. BetterTouchTool에 워크플로우 파일 가져오기
-2. 필요에 따라 트리거와 액션 설정
-3. BetterTouchTool 환경설정에서 워크플로우 활성화
+현재 repo에는 실제 `.bttpreset` 파일이 없고 README만 있습니다. 워크플로우를 repo로 관리하려면 BetterTouchTool에서 preset을 export한 뒤 이 디렉토리에 추가합니다.
 
-## 워크플로우 카테고리
-- **제스처**: 트랙패드 및 마우스 제스처 설정
-- **키보드**: 사용자 정의 키보드 단축키 및 매크로
-- **Touch Bar**: Touch Bar 커스터마이징 (지원되는 MacBook)
-- **앱별 설정**: 특정 애플리케이션 전용 단축키 및 자동화
+## 관리 기준
 
-## 파일 형식
-워크플로우는 BetterTouchTool에서 `.bttpreset` 파일로 내보냅니다.
+- 공유 가능한 preset만 commit합니다.
+- 개인 앱 경로, 계정, 민감한 스크립트 값이 들어 있으면 commit 전에 제거합니다.
+- macOS가 만든 `.DS_Store`는 commit하지 않습니다.
 
-## 사용 팁
-- 새로운 워크플로우 추가 시 기존 설정과 충돌하지 않는지 확인
-- 정기적으로 설정을 백업하여 데이터 손실 방지
-- BetterTouchTool의 최신 버전 사용 권장
+## 가져오기
+
+BetterTouchTool에서 preset을 export/import해 관리합니다. 새 preset을 추가한 뒤에는 충돌하는 단축키나 제스처가 없는지 확인합니다.
