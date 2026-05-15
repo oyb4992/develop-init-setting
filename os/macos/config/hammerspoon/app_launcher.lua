@@ -21,7 +21,6 @@ local mappings = {
 	s = "Safari", -- Hyper + S -> Safari
 	z = "Zen", -- Hyper + Z -> Zen
 	t = "ghostty", -- Hyper + T -> ghostty
-	k = "KakaoTalk", -- Hyper + K -> KakaoTalk
 }
 
 -- 앱 실행 또는 포커스 또는 숨기기 함수
@@ -61,7 +60,7 @@ function appLauncher.start()
 		end)
 		table.insert(hotkeys, hk)
 	end
-	print("🚀 App Launcher 시작됨: Hyper + [a,b,d,f,1,2,3,n,s,z,t,k]")
+	print("🚀 App Launcher 시작됨: Hyper + [a,b,d,f,1,2,3,n,s,z,t]")
 end
 
 function appLauncher.stop()

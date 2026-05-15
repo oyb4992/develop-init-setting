@@ -3,7 +3,7 @@ services:
     user: "1001:1001"
     # 안정적인 운영을 위해 stable 버전 n8n 이미지 사용
     # image: docker.n8n.io/n8nio/n8n:stable
-    image: docker.n8n.io/n8nio/n8n:2.15.0
+    image: docker.n8n.io/n8nio/n8n:2.20.6
     container_name: n8n
     restart: unless-stopped
     ports:

@@ -10,10 +10,26 @@ local inputSourceManager = {}
 -- 이벤트 탭 변수
 local keyDownEventTap = nil
 local flagsEventTap = nil
+local navigationHotkeys = {}
 
 -- 상태 추적 변수
 local rightCommandDown = false
 local otherKeyPressed = false
+
+local hyper = { "cmd", "alt", "ctrl", "shift" }
+local hyperNavigationMappings = {
+	h = { keyCode = 123, description = "Hyper+H: Left" },
+	j = { keyCode = 125, description = "Hyper+J: Down" },
+	k = { keyCode = 126, description = "Hyper+K: Up" },
+	l = { keyCode = 124, description = "Hyper+L: Right" },
+	u = { keyCode = 115, description = "Hyper+U: Home" },
+	o = { keyCode = 119, description = "Hyper+O: End" },
+}
+
+local function sendKeyCode(keyCode)
+	hs.eventtap.event.newKeyEvent({}, keyCode, true):post()
+	hs.eventtap.event.newKeyEvent({}, keyCode, false):post()
+end
 
 -- 입력 소스 토글 함수
 local function toggleInputSource()
@@ -72,12 +88,33 @@ local function handleVimNavigation(event)
 	end
 
 	if arrowKey then
-		hs.eventtap.event.newKeyEvent({}, arrowKey, true):post()
-		hs.eventtap.event.newKeyEvent({}, arrowKey, false):post()
+		sendKeyCode(arrowKey)
 		return true
 	end
 
 	return false
+end
+
+local function startHyperNavigation()
+	if #navigationHotkeys > 0 then
+		return
+	end
+
+	for key, mapping in pairs(hyperNavigationMappings) do
+		local function press()
+			sendKeyCode(mapping.keyCode)
+		end
+
+		local hk = hs.hotkey.bind(hyper, key, mapping.description, press, nil, press)
+		table.insert(navigationHotkeys, hk)
+	end
+end
+
+local function stopHyperNavigation()
+	for _, hk in ipairs(navigationHotkeys) do
+		hk:delete()
+	end
+	navigationHotkeys = {}
 end
 
 -- KeyDown 핸들러 (ESC 로직 + 간섭 감지 + Vim 내비게이션)
@@ -164,6 +201,7 @@ function inputSourceManager.start()
 	if keyDownEventTap and flagsEventTap then
 		keyDownEventTap:start()
 		flagsEventTap:start()
+		startHyperNavigation()
 		return
 	end
 
@@ -173,7 +211,9 @@ function inputSourceManager.start()
 	flagsEventTap = hs.eventtap.new({ hs.eventtap.event.types.flagsChanged }, handleFlagsChanged)
 	flagsEventTap:start()
 
-	print("⌨️ 입력 소스 관리자 시작됨 (ESC: 영문전환, RightCmd: 한영전환, Fn+HJKL: 방향키)")
+	startHyperNavigation()
+
+	print("⌨️ 입력 소스 관리자 시작됨 (ESC: 영문전환, RightCmd: 한영전환, Fn+HJKL/Hyper+HJKL: 방향키, Hyper+U/O: Home/End)")
 end
 
 -- 감지 중지
@@ -184,6 +224,7 @@ function inputSourceManager.stop()
 	if flagsEventTap then
 		flagsEventTap:stop()
 	end
+	stopHyperNavigation()
 	print("⌨️ 입력 소스 관리자 중지됨")
 end
 
