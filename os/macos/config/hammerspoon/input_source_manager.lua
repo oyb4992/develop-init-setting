@@ -10,18 +10,29 @@ local inputSourceManager = {}
 -- 이벤트 탭 변수
 local keyDownEventTap = nil
 local flagsEventTap = nil
+local navigationHotkeys = {}
 
 -- 상태 추적 변수
 local rightCommandDown = false
 local otherKeyPressed = false
 
-local hyperNavigationMappings = {
+local hyper = { "cmd", "alt", "ctrl", "shift" }
+local vimNavigationMappings = {
 	[4] = { modifiers = {}, key = "left" }, -- h
 	[38] = { modifiers = {}, key = "down" }, -- j
 	[40] = { modifiers = {}, key = "up" }, -- k
 	[37] = { modifiers = {}, key = "right" }, -- l
 	[32] = { modifiers = { "cmd" }, key = "left" }, -- u
 	[31] = { modifiers = { "cmd" }, key = "right" }, -- o
+}
+
+local hyperNavigationMappings = {
+	h = { modifiers = {}, key = "left" },
+	j = { modifiers = {}, key = "down" },
+	k = { modifiers = {}, key = "up" },
+	l = { modifiers = {}, key = "right" },
+	u = { modifiers = { "cmd" }, key = "left" },
+	o = { modifiers = { "cmd" }, key = "right" },
 }
 
 local function sendKey(modifiers, key)
@@ -37,6 +48,30 @@ local function sendKey(modifiers, key)
 	local keyUp = hs.eventtap.event.newKeyEvent(modifiers, key, false)
 	keyUp:setFlags(flags)
 	keyUp:post()
+end
+
+local function startHyperNavigation()
+	if #navigationHotkeys > 0 then
+		return
+	end
+
+	for key, mapping in pairs(hyperNavigationMappings) do
+		local function press()
+			hs.timer.doAfter(0, function()
+				sendKey(mapping.modifiers, mapping.key)
+			end)
+		end
+
+		local hk = hs.hotkey.bind(hyper, key, press, nil, press)
+		table.insert(navigationHotkeys, hk)
+	end
+end
+
+local function stopHyperNavigation()
+	for _, hk in ipairs(navigationHotkeys) do
+		hk:delete()
+	end
+	navigationHotkeys = {}
 end
 
 -- 입력 소스 토글 함수
@@ -83,59 +118,19 @@ local function handleVimNavigation(event)
 		return false
 	end
 
-	-- 키 매핑 (h=4, j=38, k=40, l=37) -> 방향키
-	local arrowKey = nil
-	if keyCode == 4 then
-		arrowKey = "left"
-	elseif keyCode == 38 then
-		arrowKey = "down"
-	elseif keyCode == 40 then
-		arrowKey = "up"
-	elseif keyCode == 37 then
-		arrowKey = "right"
-	end
-
-	if arrowKey then
-		sendKey({}, arrowKey)
+	-- 키 매핑 (h/j/k/l -> 방향키, u/o -> 줄 처음/끝)
+	local mapping = vimNavigationMappings[keyCode]
+	if mapping then
+		sendKey(mapping.modifiers, mapping.key)
 		return true
 	end
 
 	return false
 end
 
-local function handleHyperNavigation(event)
-	local flags = event:getFlags()
-	local isHyperOnly = flags.cmd and flags.alt and flags.ctrl and flags.shift and not flags.fn
-	if not isHyperOnly then
-		return false
-	end
-
-	local mapping = hyperNavigationMappings[event:getKeyCode()]
-	if not mapping then
-		return false
-	end
-
-	if event:getType() == hs.eventtap.event.types.keyUp then
-		return true
-	end
-
-	sendKey(mapping.modifiers, mapping.key)
-	return true
-end
-
 -- KeyDown 핸들러 (ESC 로직 + 간섭 감지 + Vim 내비게이션)
 local function handleKeyDown(event)
-	-- 1. Hyper 내비게이션 먼저 처리
-	local hyperNavResult = handleHyperNavigation(event)
-	if hyperNavResult then
-		return true
-	end
-
-	if event:getType() ~= hs.eventtap.event.types.keyDown then
-		return false
-	end
-
-	-- 2. Vim 내비게이션 처리 (Fn+HJKL)
+	-- 1. Vim 내비게이션 처리 (Fn+HJKL)
 	local navResult = handleVimNavigation(event)
 	if navResult then
 		return true
@@ -143,12 +138,12 @@ local function handleKeyDown(event)
 
 	local keyCode = event:getKeyCode()
 
-	-- 3. Right Command 누른 상태에서 다른 키 입력 시 토글 취소
+	-- 2. Right Command 누른 상태에서 다른 키 입력 시 토글 취소
 	if rightCommandDown then
 		otherKeyPressed = true
 	end
 
-	-- 4. ESC 키 로직 (특정 앱에서 영문 전환)
+	-- 3. ESC 키 로직 (특정 앱에서 영문 전환)
 	if keyCode == 53 then
 		local frontAppObj = hs.application.frontmostApplication()
 		if not frontAppObj then
@@ -217,14 +212,17 @@ function inputSourceManager.start()
 	if keyDownEventTap and flagsEventTap then
 		keyDownEventTap:start()
 		flagsEventTap:start()
+		startHyperNavigation()
 		return
 	end
 
-	keyDownEventTap = hs.eventtap.new({ hs.eventtap.event.types.keyDown, hs.eventtap.event.types.keyUp }, handleKeyDown)
+	keyDownEventTap = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, handleKeyDown)
 	keyDownEventTap:start()
 
 	flagsEventTap = hs.eventtap.new({ hs.eventtap.event.types.flagsChanged }, handleFlagsChanged)
 	flagsEventTap:start()
+
+	startHyperNavigation()
 
 	print("⌨️ 입력 소스 관리자 시작됨 (ESC: 영문전환, RightCmd: 한영전환, Fn+HJKL/Hyper+HJKL: 방향키, Hyper+U/O: 줄 처음/끝)")
 end
@@ -237,6 +235,7 @@ function inputSourceManager.stop()
 	if flagsEventTap then
 		flagsEventTap:stop()
 	end
+	stopHyperNavigation()
 	print("⌨️ 입력 소스 관리자 중지됨")
 end
 
