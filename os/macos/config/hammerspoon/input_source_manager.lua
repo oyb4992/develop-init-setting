@@ -18,17 +18,16 @@ local otherKeyPressed = false
 
 local hyper = { "cmd", "alt", "ctrl", "shift" }
 local hyperNavigationMappings = {
-	h = { keyCode = 123, description = "Hyper+H: Left" },
-	j = { keyCode = 125, description = "Hyper+J: Down" },
-	k = { keyCode = 126, description = "Hyper+K: Up" },
-	l = { keyCode = 124, description = "Hyper+L: Right" },
-	u = { keyCode = 115, description = "Hyper+U: Home" },
-	o = { keyCode = 119, description = "Hyper+O: End" },
+	h = { modifiers = {}, key = "left" },
+	j = { modifiers = {}, key = "down" },
+	k = { modifiers = {}, key = "up" },
+	l = { modifiers = {}, key = "right" },
+	u = { modifiers = { "cmd" }, key = "left" },
+	o = { modifiers = { "cmd" }, key = "right" },
 }
 
-local function sendKeyCode(keyCode)
-	hs.eventtap.event.newKeyEvent({}, keyCode, true):post()
-	hs.eventtap.event.newKeyEvent({}, keyCode, false):post()
+local function sendKey(modifiers, key)
+	hs.eventtap.keyStroke(modifiers, key, 0)
 end
 
 -- 입력 소스 토글 함수
@@ -75,20 +74,20 @@ local function handleVimNavigation(event)
 		return false
 	end
 
-	-- 키 매핑 (h=4, j=38, k=40, l=37) -> 방향키 (Left=123, Down=125, Up=126, Right=124)
+	-- 키 매핑 (h=4, j=38, k=40, l=37) -> 방향키
 	local arrowKey = nil
 	if keyCode == 4 then
-		arrowKey = 123 -- h -> Left
+		arrowKey = "left"
 	elseif keyCode == 38 then
-		arrowKey = 125 -- j -> Down
+		arrowKey = "down"
 	elseif keyCode == 40 then
-		arrowKey = 126 -- k -> Up
+		arrowKey = "up"
 	elseif keyCode == 37 then
-		arrowKey = 124 -- l -> Right
+		arrowKey = "right"
 	end
 
 	if arrowKey then
-		sendKeyCode(arrowKey)
+		sendKey({}, arrowKey)
 		return true
 	end
 
@@ -102,10 +101,10 @@ local function startHyperNavigation()
 
 	for key, mapping in pairs(hyperNavigationMappings) do
 		local function press()
-			sendKeyCode(mapping.keyCode)
+			sendKey(mapping.modifiers, mapping.key)
 		end
 
-		local hk = hs.hotkey.bind(hyper, key, mapping.description, press, nil, press)
+		local hk = hs.hotkey.bind(hyper, key, press, nil, press)
 		table.insert(navigationHotkeys, hk)
 	end
 end
