@@ -2,6 +2,17 @@
 -- Hammerspoon 설정 상수 및 캐싱 시스템
 -- ========================================
 local CONFIG = {
+	FEATURES = {
+		POWER_AUTOMATION = false,
+		INPUT_SOURCE = true,
+		APP_LAUNCHER = true,
+		WINDOW_RESIZE = false,
+		FILE_ORGANIZER = false,
+		GIT_MANAGER = false,
+		WINDOW_HINTS = true,
+		BREAK_REMINDER = false,
+		APP_WATCHER = true,
+	},
 	DELAYS = {
 		BTT_START_DELAY = 2, -- 2초
 		SYSTEM_WAKE_DELAY = 3, -- 3초
@@ -53,9 +64,7 @@ local CONFIG = {
 		REPOS = {},
 		-- 자동 탐색 경로 설정
 		SCAN_PATHS = {
-			os.getenv("HOME") .. "/Project/be",
-			os.getenv("HOME") .. "/Project/fe",
-			os.getenv("HOME") .. "/Project/flyway",
+			os.getenv("HOME") .. "/IdeaProjects",
 		}, -- 자동 탐색 경로 추가
 		-- 자동 탐색된 리포지토리의 기본 업데이트 타겟 브랜치
 		DEFAULT_BRANCHES = { "main", "master", "develop", "stage" },

@@ -50,8 +50,8 @@ function configure_macos_tool() {
 # Configure Karabiner
 configure_macos_tool "Karabiner" "$MACOS_DIR/config/karabiner/install.sh"
 
-# Configure iTerm2 (if needed)
-# configure_macos_tool "iTerm2" "$MACOS_DIR/config/iterm2/install.sh"
+# Configure legacy iTerm2 profile (if needed)
+# configure_macos_tool "iTerm2" "$MACOS_DIR/config/legacy/iterm2/install.sh"
 
 
 # --- Remove Quarantine Attribute ---
@@ -72,7 +72,11 @@ function remove_quarantine_attribute() {
     fi
 }
 
-remove_quarantine_attribute
+if [[ "${REMOVE_QUARANTINE:-0}" == "1" ]]; then
+    remove_quarantine_attribute
+else
+    echo "Skipping quarantine removal. Set REMOVE_QUARANTINE=1 to run it."
+fi
 
 
 # --- Final Success Message ---
