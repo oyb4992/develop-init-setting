@@ -28,12 +28,7 @@ local function loadAllSpoons()
 		spoon.SpoonInstall:updateAllRepos()
 
 		-- ReloadConfiguration.spoon
-		spoon.SpoonInstall:andUse("ReloadConfiguration", {
-			hotkeys = {
-				reloadConfiguration = { { "cmd", "ctrl", "alt" }, "r", "Hammerspoon 설정 재로드" },
-			},
-			start = true,
-		})
+		spoon.SpoonInstall:andUse("ReloadConfiguration")
 
 		-- KSheet (단축키 치트시트)
 		spoon.SpoonInstall:andUse("KSheet")

@@ -7,6 +7,8 @@ local systemStatus = require("system_status")
 local devCommander = require("dev_commander")
 local windowHints = require("window_hints")
 local breakReminder = require("break_reminder")
+local config = require("config")
+local CONFIG = config.CONFIG
 
 local hotkeys = {}
 
@@ -14,9 +16,37 @@ local hotkeys = {}
 local ksheetModal = nil
 local hsKeybindingsModal = nil
 
+local function registerDocumentedHotkeys()
+	if not CONFIG.FEATURES.INPUT_SOURCE or not spoon.HSKeybindings then
+		return
+	end
+
+	spoon.HSKeybindings.commandEnum.fn = "fn"
+	spoon.HSKeybindings.mapping = spoon.HSKeybindings.mapping or {}
+
+	local documentedMappings = {
+		["Navigation: Left Arrow"] = { { "fn" }, "H" },
+		["Navigation: Down Arrow"] = { { "fn" }, "J" },
+		["Navigation: Up Arrow"] = { { "fn" }, "K" },
+		["Navigation: Right Arrow"] = { { "fn" }, "L" },
+		["Navigation: Cmd+Left"] = { { "fn" }, "U" },
+		["Navigation: Cmd+Down"] = { { "fn" }, "I" },
+		["Navigation: Cmd+Up"] = { { "fn" }, "O" },
+		["Navigation: Cmd+Right"] = { { "fn" }, "P" },
+	}
+
+	for description, mapping in pairs(documentedMappings) do
+		spoon.HSKeybindings.mapping[description] = mapping
+	end
+end
+
 -- 모든 단축키 설정
 local function setupHotkeys()
+	registerDocumentedHotkeys()
+
 	-- BTT & 카페인 관련 단축키
+	hs.hotkey.bind({ "cmd", "ctrl", "alt" }, "r", "Hammerspoon 설정 재로드", hs.reload)
+
 	-- 통합 상태 확인 (BTT + 카페인 + 시스템)
 	hs.hotkey.bind({ "cmd", "ctrl", "alt" }, "s", "시스템 상태 확인", systemStatus.showSystemStatus)
 
@@ -143,11 +173,15 @@ local function setupHotkeys()
 	end)
 
 	-- Window Hints: 화면 힌트 표시
-	hs.hotkey.bind({ "cmd", "ctrl", "alt" }, "h", "화면 힌트 표시", windowHints.showHints)
+	if CONFIG.FEATURES.WINDOW_HINTS then
+		hs.hotkey.bind({ "cmd", "ctrl", "alt" }, "h", "화면 힌트 표시", windowHints.showHints)
+	end
 
 	-- Break Reminder: 포모도로 타이머 토글
-	hs.hotkey.bind({ "cmd", "ctrl", "alt" }, "b", "휴식 알림 타이머 시작/일시정지", breakReminder.toggle)
-	hs.hotkey.bind({ "cmd", "ctrl", "alt" }, "n", "휴식 알림 메뉴바 표시 토글", breakReminder.toggleMenubar)
+	if CONFIG.FEATURES.BREAK_REMINDER then
+		hs.hotkey.bind({ "cmd", "ctrl", "alt" }, "b", "휴식 알림 타이머 시작/일시정지", breakReminder.toggle)
+		hs.hotkey.bind({ "cmd", "ctrl", "alt" }, "n", "휴식 알림 메뉴바 표시 토글", breakReminder.toggleMenubar)
+	end
 
 	-- CapsLock 토글 (capslock_manager에서 통합)
 	hs.hotkey.bind({ "cmd", "ctrl", "alt" }, "c", "CapsLock 토글", function()

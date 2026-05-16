@@ -10,29 +10,20 @@ local inputSourceManager = {}
 -- 이벤트 탭 변수
 local keyDownEventTap = nil
 local flagsEventTap = nil
-local navigationHotkeys = {}
 
 -- 상태 추적 변수
 local rightCommandDown = false
 local otherKeyPressed = false
 
-local hyper = { "cmd", "alt", "ctrl", "shift" }
 local vimNavigationMappings = {
 	[4] = { modifiers = {}, key = "left" }, -- h
 	[38] = { modifiers = {}, key = "down" }, -- j
 	[40] = { modifiers = {}, key = "up" }, -- k
 	[37] = { modifiers = {}, key = "right" }, -- l
 	[32] = { modifiers = { "cmd" }, key = "left" }, -- u
-	[31] = { modifiers = { "cmd" }, key = "right" }, -- o
-}
-
-local hyperNavigationMappings = {
-	h = { modifiers = {}, key = "left" },
-	j = { modifiers = {}, key = "down" },
-	k = { modifiers = {}, key = "up" },
-	l = { modifiers = {}, key = "right" },
-	u = { modifiers = { "cmd" }, key = "left" },
-	o = { modifiers = { "cmd" }, key = "right" },
+	[34] = { modifiers = { "cmd" }, key = "down" }, -- i
+	[31] = { modifiers = { "cmd" }, key = "up" }, -- o
+	[35] = { modifiers = { "cmd" }, key = "right" }, -- p
 }
 
 local function sendKey(modifiers, key)
@@ -48,30 +39,6 @@ local function sendKey(modifiers, key)
 	local keyUp = hs.eventtap.event.newKeyEvent(modifiers, key, false)
 	keyUp:setFlags(flags)
 	keyUp:post()
-end
-
-local function startHyperNavigation()
-	if #navigationHotkeys > 0 then
-		return
-	end
-
-	for key, mapping in pairs(hyperNavigationMappings) do
-		local function press()
-			hs.timer.doAfter(0, function()
-				sendKey(mapping.modifiers, mapping.key)
-			end)
-		end
-
-		local hk = hs.hotkey.bind(hyper, key, press, nil, press)
-		table.insert(navigationHotkeys, hk)
-	end
-end
-
-local function stopHyperNavigation()
-	for _, hk in ipairs(navigationHotkeys) do
-		hk:delete()
-	end
-	navigationHotkeys = {}
 end
 
 -- 입력 소스 토글 함수
@@ -118,7 +85,7 @@ local function handleVimNavigation(event)
 		return false
 	end
 
-	-- 키 매핑 (h/j/k/l -> 방향키, u/o -> 줄 처음/끝)
+	-- 키 매핑 (h/j/k/l -> 방향키, u/i/o/p -> 문서/줄 단위 이동)
 	local mapping = vimNavigationMappings[keyCode]
 	if mapping then
 		sendKey(mapping.modifiers, mapping.key)
@@ -212,7 +179,6 @@ function inputSourceManager.start()
 	if keyDownEventTap and flagsEventTap then
 		keyDownEventTap:start()
 		flagsEventTap:start()
-		startHyperNavigation()
 		return
 	end
 
@@ -222,9 +188,7 @@ function inputSourceManager.start()
 	flagsEventTap = hs.eventtap.new({ hs.eventtap.event.types.flagsChanged }, handleFlagsChanged)
 	flagsEventTap:start()
 
-	startHyperNavigation()
-
-	print("⌨️ 입력 소스 관리자 시작됨 (ESC: 영문전환, RightCmd: 한영전환, Fn+HJKL/Hyper+HJKL: 방향키, Hyper+U/O: 줄 처음/끝)")
+	print("⌨️ 입력 소스 관리자 시작됨 (ESC: 영문전환, RightCmd: 한영전환, Fn+HJKL: 방향키, Fn+U/I/O/P: Cmd+Left/Down/Up/Right)")
 end
 
 -- 감지 중지
@@ -235,7 +199,6 @@ function inputSourceManager.stop()
 	if flagsEventTap then
 		flagsEventTap:stop()
 	end
-	stopHyperNavigation()
 	print("⌨️ 입력 소스 관리자 중지됨")
 end
 
