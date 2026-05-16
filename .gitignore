@@ -34,3 +34,5 @@ os/macos/config/hammerspoon/Spoons/
 database.sqlite*
 n8n-backup/
 backups/
+.codex/
+*.patch
