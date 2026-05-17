@@ -38,17 +38,16 @@ case "$OS" in
         ;;
 esac
 
-# --- Execute Common Installation ---
-if [ -f "$SCRIPT_DIR/os/common/install.sh" ]; then
-    echo "INFO: Running common setup script..."
-    bash "$SCRIPT_DIR/os/common/install.sh"
-else
-    echo "WARN: Common setup script not found, skipping."
-fi
-
 # --- Execute OS-specific Installation ---
 case "$OS" in
     macos)
+        if [ -f "$SCRIPT_DIR/os/common/install.sh" ]; then
+            echo "INFO: Running common setup script..."
+            bash "$SCRIPT_DIR/os/common/install.sh"
+        else
+            echo "WARN: Common setup script not found, skipping."
+        fi
+
         if [ -f "$SCRIPT_DIR/os/macos/install.sh" ]; then
             echo "INFO: Running macOS setup script..."
             bash "$SCRIPT_DIR/os/macos/install.sh"
@@ -58,10 +57,13 @@ case "$OS" in
         fi
         ;;
     linux)
-        echo "INFO: Linux setup not yet implemented."
-        # if [ -f "$SCRIPT_DIR/os/linux/install.sh" ]; then
-        #     bash "$SCRIPT_DIR/os/linux/install.sh"
-        # fi
+        if [ -f "$SCRIPT_DIR/os/linux/install.sh" ]; then
+            echo "INFO: Running Linux setup script..."
+            bash "$SCRIPT_DIR/os/linux/install.sh"
+        else
+            echo "ERROR: Linux setup script not found." >&2
+            exit 1
+        fi
         ;;
 esac
 

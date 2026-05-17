@@ -1,6 +1,6 @@
 # dev-init-setting
 
-macOS와 Windows 개발 환경 설정을 한 저장소에서 관리하기 위한 개인용 dotfiles/bootstrap 저장소입니다. 터미널, 쉘, 에디터, 윈도우 매니저, 생산성 도구, 로컬 Docker 서비스 설정을 OS별로 나눠 보관합니다.
+macOS, Linux VPS, Windows 개발 환경 설정을 한 저장소에서 관리하기 위한 개인용 dotfiles/bootstrap 저장소입니다. 터미널, 쉘, 에디터, 윈도우 매니저, 생산성 도구, 로컬 Docker 서비스 설정을 OS별로 나눠 보관합니다.
 
 ## 빠른 시작
 
@@ -16,6 +16,12 @@ macOS에서 패키지만 먼저 설치하려면 다음을 실행합니다.
 
 ```bash
 brew bundle --file ./os/macos/packages/Brewfile
+```
+
+Ubuntu VPS에서 방화벽과 기본 쉘 변경까지 함께 적용하려면 다음처럼 실행합니다.
+
+```bash
+APPLY_SECURITY=1 CHANGE_SHELL=1 ./install.sh
 ```
 
 ## 디렉토리 구조
@@ -49,6 +55,14 @@ dev-init-setting/
 │   │   │   └── raycast
 │   │   ├── packages/
 │   │   └── install.sh
+│   ├── linux/
+│   │   ├── config/
+│   │   │   ├── ssh/
+│   │   │   ├── tmux/
+│   │   │   └── zsh/
+│   │   ├── packages/
+│   │   ├── README.md
+│   │   └── install.sh
 │   └── windows/
 │       ├── config/
 │       └── packages/
@@ -67,6 +81,7 @@ dev-init-setting/
 - `os/macos/config/hammerspoon/`: macOS 자동화 Lua 스크립트와 필요한 Spoon 패치
 - `os/macos/config/karabiner/`: Karabiner-Elements 키 리매핑
 - `os/macos/config/raycast/`: Raycast 백업과 script command
+- `os/linux/`: OpenClaw 운영용 Ubuntu VPS zsh, tmux, apt 패키지, SSH hardening 예시
 - `services/n8n/`: 로컬 n8n Docker Compose 환경
 
 ## 설치 후 확인
@@ -83,6 +98,20 @@ tmux source-file -n os/common/config/tmux/.tmux.conf
 
 # AeroSpace 설정 확인
 aerospace reload-config --dry-run
+```
+
+Ubuntu VPS에서는 다음을 확인합니다.
+
+```bash
+# 쉘 설정 문법 확인
+zsh -n os/linux/config/zsh/.zshrc
+
+# tmux 설정 문법 확인
+tmux source-file -n os/linux/config/tmux/.tmux.conf
+
+# 보안 서비스 상태
+systemctl status fail2ban
+sudo ufw status
 ```
 
 ## 로컬 생성물 정리 기준
