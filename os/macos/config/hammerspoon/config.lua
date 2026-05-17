@@ -116,12 +116,10 @@ local CONFIG = {
     },
     URL_DISPATCHER = {
         ENABLED = true,
-        DEFAULT_BROWSER = "com.apple.Safari", -- 기본 브라우저 (규칙 미매칭 시)
+        DEFAULT_BROWSER = "com.google.Chrome", -- 기본 브라우저 (규칙 미매칭 시)
         RULES = {
             -- { pattern = "호스트에 포함된 문자열", browser = "앱 번들 ID" }
-            { pattern = "github.com", browser = "co.nicematt.zen" },
-            { pattern = "jira",       browser = "com.google.Chrome" },
-            { pattern = "confluence", browser = "com.google.Chrome" },
+            { pattern = "github.com", browser = "com.openai.atlas" },
         },
     },
     BREAK_REMINDER = {

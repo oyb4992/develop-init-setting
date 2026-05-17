@@ -43,7 +43,7 @@ local gitManager = require("git_manager")
 local windowHints = require("window_hints")
 
 -- URL Dispatcher (URL 브라우저 분배기)
--- local urlDispatcher = require("url_dispatcher")
+local urlDispatcher = require("url_dispatcher")
 
 -- Break Reminder (휴식 알림)
 local breakReminder = require("break_reminder")
@@ -71,32 +71,32 @@ hotkeys.setupHotkeys()
 
 -- 입력 소스 관리 시작 (ESC 영문전환 + RightCmd 한영전환 + Fn+HJKL 방향키)
 if CONFIG.FEATURES.INPUT_SOURCE then
-	inputSourceManager.start()
+    inputSourceManager.start()
 end
 
 -- 앱 런처 시작
 if CONFIG.FEATURES.APP_LAUNCHER then
-	appLauncher.start()
+    appLauncher.start()
 end
 
 -- 창 리사이즈 시작
 if CONFIG.FEATURES.WINDOW_RESIZE then
-	windowResize.start()
+    windowResize.start()
 end
 
 -- 파일 정리 자동화 시작
 if CONFIG.FEATURES.FILE_ORGANIZER then
-	fileOrganizer.start()
+    fileOrganizer.start()
 end
 
 -- Git Manager 시작
 if CONFIG.FEATURES.GIT_MANAGER then
-	gitManager.start()
+    gitManager.start()
 end
 
 -- Window Hints 시작
 if CONFIG.FEATURES.WINDOW_HINTS then
-	windowHints.start()
+    windowHints.start()
 end
 
 -- URL Dispatcher 시작
@@ -104,41 +104,41 @@ end
 
 -- Break Reminder 시작
 if CONFIG.FEATURES.BREAK_REMINDER then
-	breakReminder.start()
+    breakReminder.start()
 end
 
 -- App Watcher 시작
 if CONFIG.FEATURES.APP_WATCHER then
-	appWatcher.start()
+    appWatcher.start()
 end
 
 -- 전원 상태 변경 감지 시작
 if CONFIG.FEATURES.POWER_AUTOMATION then
-	powerWatcher = hs.battery.watcher.new(function()
-		local newMode = powerManagement.getCurrentPowerMode()
-		powerManagement.handlePowerStateChange(newMode)
-	end)
-	powerWatcher:start()
+    powerWatcher = hs.battery.watcher.new(function()
+        local newMode = powerManagement.getCurrentPowerMode()
+        powerManagement.handlePowerStateChange(newMode)
+    end)
+    powerWatcher:start()
 
-	-- 화면 변경 감지 시작 (뚜껑 닫힘/열림 감지)
-	screenWatcher = hs.screen.watcher.new(function()
-		hs.timer.doAfter(CONFIG.DELAYS.LID_STATE_DELAY, powerManagement.handleLidStateChange) -- 안정화 대기
-	end)
-	screenWatcher:start()
+    -- 화면 변경 감지 시작 (뚜껑 닫힘/열림 감지)
+    screenWatcher = hs.screen.watcher.new(function()
+        hs.timer.doAfter(CONFIG.DELAYS.LID_STATE_DELAY, powerManagement.handleLidStateChange) -- 안정화 대기
+    end)
+    screenWatcher:start()
 
-	-- 시스템 잠들기/깨어나기 감지 시작
-	caffeineWatcher = hs.caffeinate.watcher.new(powerManagement.handleSystemStateChange)
-	caffeineWatcher:start()
+    -- 시스템 잠들기/깨어나기 감지 시작
+    caffeineWatcher = hs.caffeinate.watcher.new(powerManagement.handleSystemStateChange)
+    caffeineWatcher:start()
 
-	-- 초기 상태 설정
-	hs.timer.doAfter(CONFIG.DELAYS.SYSTEM_WAKE_DELAY, function()
-		-- 전원 상태 초기화
-		local initialMode = powerManagement.getCurrentPowerMode()
-		powerManagement.handlePowerStateChange(initialMode)
+    -- 초기 상태 설정
+    hs.timer.doAfter(CONFIG.DELAYS.SYSTEM_WAKE_DELAY, function()
+        -- 전원 상태 초기화
+        local initialMode = powerManagement.getCurrentPowerMode()
+        powerManagement.handlePowerStateChange(initialMode)
 
-		-- 뚜껑 상태 초기화
-		powerManagement.handleLidStateChange()
-	end)
+        -- 뚜껑 상태 초기화
+        powerManagement.handleLidStateChange()
+    end)
 end
 -- ========================================
 -- 초기화 완료
@@ -147,14 +147,14 @@ end
 print("🚀 Hammerspoon 전원 관리 시스템 설정 완료!")
 print("")
 if CONFIG.FEATURES.POWER_AUTOMATION then
-	print("☕ 카페인/BTT 자동화:")
-	print("- 전원 연결 시 카페인 활성화")
-	print("- 배터리 모드 시 카페인 비활성화")
-	print("- 뚜껑/시스템 상태에 따라 BTT 실행 상태 조정")
-	print("- 수동 제어: Cmd+Ctrl+Alt+F")
+    print("☕ 카페인/BTT 자동화:")
+    print("- 전원 연결 시 카페인 활성화")
+    print("- 배터리 모드 시 카페인 비활성화")
+    print("- 뚜껑/시스템 상태에 따라 BTT 실행 상태 조정")
+    print("- 수동 제어: Cmd+Ctrl+Alt+F")
 else
-	print("☕ 카페인/BTT 자동화: 비활성화")
-	print("- 수동 제어: Cmd+Ctrl+Alt+F")
+    print("☕ 카페인/BTT 자동화: 비활성화")
+    print("- 수동 제어: Cmd+Ctrl+Alt+F")
 end
 print("")
 print("⌨️ 입력 소스 자동화:")
