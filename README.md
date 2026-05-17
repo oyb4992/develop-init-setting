@@ -64,7 +64,7 @@ dev-init-setting/
 - `os/common/config/zed/`: Zed Vim mode와 LazyVim 스타일 keymap
 - `os/common/config/editors/`: Vim/IdeaVim/VS Code 연동 설정
 - `os/macos/config/.aerospace.toml`: AeroSpace workspace, window rule, keybind 설정
-- `os/macos/config/hammerspoon/`: macOS 자동화 Lua 스크립트
+- `os/macos/config/hammerspoon/`: macOS 자동화 Lua 스크립트와 필요한 Spoon 패치
 - `os/macos/config/karabiner/`: Karabiner-Elements 키 리매핑
 - `os/macos/config/raycast/`: Raycast 백업과 script command
 - `services/n8n/`: 로컬 n8n Docker Compose 환경
@@ -95,7 +95,8 @@ aerospace reload-config --dry-run
 - `.claude/`: Claude Code 로컬 설정. 개인 설정이 필요 없으면 불필요.
 - `.DS_Store`: macOS Finder 메타데이터. 삭제해도 프로젝트 동작에는 영향 없음.
 - `services/n8n/data/`: n8n SQLite DB와 실행 로그. 워크플로/자격증명 데이터가 필요 없을 때만 삭제.
-- `os/macos/config/hammerspoon/Spoons/`: Hammerspoon Spoon 설치본. bootstrap 방식에 따라 필요할 수 있으므로 삭제 전 확인.
+
+주의: `os/macos/config/hammerspoon/Spoons/` 아래에 repo가 추적하는 Spoon 패치가 있을 수 있습니다. 예를 들어 `HSKeybindings.spoon`은 단축키 목록 표시를 현재 설정에 맞게 보정하기 위해 설치 스크립트가 `~/.hammerspoon/Spoons/`로 링크합니다. 추적되지 않는 Spoon 설치본만 정리 대상으로 봅니다.
 
 ignored 파일 정리 후보는 dry-run으로 먼저 확인합니다.
 
