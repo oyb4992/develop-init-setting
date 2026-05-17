@@ -8,6 +8,16 @@ SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 MACOS_DIR=$SCRIPT_DIR
 PROJECT_ROOT=$(dirname "$(dirname "$MACOS_DIR")")
 
+link_file() {
+    local source_path=$1
+    local target_path=$2
+    local target_dir
+
+    target_dir=$(dirname "$target_path")
+    mkdir -p "$target_dir"
+    ln -sfv "$source_path" "$target_path"
+}
+
 # --- Homebrew Installation ---
 if ! command -v brew &> /dev/null; then
     echo "Homebrew not found. Installing Homebrew..."
@@ -32,26 +42,17 @@ else
     exit 1
 fi
 
-# --- Configure macOS-specific tools ---
-function configure_macos_tool() {
-    local tool_name=$1
-    local install_script_path=$2
+# --- Link macOS-specific configurations ---
+echo "Linking macOS-specific configurations..."
 
-    echo "Configuring ${tool_name}..."
-    if [ -f "${install_script_path}" ]; then
-        chmod +x "${install_script_path}"
-        # Pass project root to sub-scripts if they need it
-        PROJECT_ROOT="$PROJECT_ROOT" bash "${install_script_path}"
-    else
-        echo "WARN: Install script not found: ${install_script_path}"
-    fi
-}
+# AeroSpace
+link_file "$MACOS_DIR/config/.aerospace.toml" "$HOME/.aerospace.toml"
 
-# Configure Karabiner
-configure_macos_tool "Karabiner" "$MACOS_DIR/config/karabiner/install.sh"
-
-# Configure legacy iTerm2 profile (if needed)
-# configure_macos_tool "iTerm2" "$MACOS_DIR/config/legacy/iterm2/install.sh"
+# Hammerspoon
+mkdir -p "$HOME/.hammerspoon"
+for lua_file in "$MACOS_DIR"/config/hammerspoon/*.lua; do
+    link_file "$lua_file" "$HOME/.hammerspoon/$(basename "$lua_file")"
+done
 
 
 # --- Remove Quarantine Attribute ---
@@ -86,5 +87,5 @@ echo "    macOS Environment Setup Complete!    "
 echo "=========================================="
 echo "Next Steps:"
 echo "1. Restart your terminal to apply all changes."
-echo "2. Open Raycast, Karabiner-Elements, etc. to complete their initial setup."
+echo "2. Open Ghostty, Zed, Hammerspoon, and AeroSpace to complete their initial setup."
 echo ""

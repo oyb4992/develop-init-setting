@@ -20,13 +20,28 @@ detect_os() {
 }
 
 OS=$(detect_os)
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 echo "INFO: Detected Operating System: $OS"
 
+case "$OS" in
+    macos|linux)
+        ;;
+    windows)
+        echo "INFO: Windows setup is not automated yet."
+        echo "INFO: Apply files under '$SCRIPT_DIR/os/windows/' manually for now."
+        exit 0
+        ;;
+    *)
+        echo "ERROR: Unsupported operating system." >&2
+        exit 1
+        ;;
+esac
+
 # --- Execute Common Installation ---
-if [ -f "os/common/install.sh" ]; then
+if [ -f "$SCRIPT_DIR/os/common/install.sh" ]; then
     echo "INFO: Running common setup script..."
-    bash "os/common/install.sh"
+    bash "$SCRIPT_DIR/os/common/install.sh"
 else
     echo "WARN: Common setup script not found, skipping."
 fi
@@ -34,9 +49,9 @@ fi
 # --- Execute OS-specific Installation ---
 case "$OS" in
     macos)
-        if [ -f "os/macos/install.sh" ]; then
+        if [ -f "$SCRIPT_DIR/os/macos/install.sh" ]; then
             echo "INFO: Running macOS setup script..."
-            bash "os/macos/install.sh"
+            bash "$SCRIPT_DIR/os/macos/install.sh"
         else
             echo "ERROR: macOS setup script not found." >&2
             exit 1
@@ -44,16 +59,9 @@ case "$OS" in
         ;;
     linux)
         echo "INFO: Linux setup not yet implemented."
-        # if [ -f "os/linux/install.sh" ]; then
-        #     bash "os/linux/install.sh"
+        # if [ -f "$SCRIPT_DIR/os/linux/install.sh" ]; then
+        #     bash "$SCRIPT_DIR/os/linux/install.sh"
         # fi
-        ;;
-    windows)
-        echo "INFO: For Windows, please run the 'os/windows/install.ps1' script in PowerShell."
-        ;;
-    *)
-        echo "ERROR: Unsupported operating system." >&2
-        exit 1
         ;;
 esac
 

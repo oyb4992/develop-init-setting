@@ -17,7 +17,7 @@ PROTECTED_PATHS=(
     "$PROJECT_ROOT/be"
     "$PROJECT_ROOT/fe"
     "$PROJECT_ROOT/flyway"
-    "$PROJECT_ROOT/KALis"
+    "$PROJECT_ROOT/Keis"
 )
 # -----------------------------------------------------------
 
