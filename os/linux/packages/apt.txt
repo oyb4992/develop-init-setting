@@ -20,3 +20,4 @@ fail2ban
 unattended-upgrades
 httpie
 lnav
+nodejs

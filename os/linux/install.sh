@@ -62,6 +62,8 @@ install_apt_packages() {
 configure_security() {
     if [[ "${APPLY_SECURITY:-0}" != "1" ]]; then
         echo "Skipping firewall/security changes. Set APPLY_SECURITY=1 to configure ufw, fail2ban, and unattended-upgrades."
+        $SUDO systemctl disable --now fail2ban >/dev/null 2>&1 || true
+        $SUDO systemctl disable --now ufw >/dev/null 2>&1 || true
         return
     fi
 
