@@ -63,11 +63,12 @@ fi
 # ------------------------------------------------------------------------------
 # Startup Display & Shell Prompt
 # ------------------------------------------------------------------------------
-if is_plain_terminal_session; then
-  if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-  fi
-fi
+# if is_plain_terminal_session; then
+#   if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+#     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+#   fi
+# fi
+eval "$(starship init zsh)"
 
 # ------------------------------------------------------------------------------
 # Runtime Manager (즉시 로드)
@@ -115,7 +116,7 @@ if [[ -f "$ZPLUG_HOME/init.zsh" ]]; then
   # zplug "mroth/evalcache"
   zplug "babarot/enhancd", use:init.sh
   zplug "romkatv/zsh-defer"
-  zplug "romkatv/powerlevel10k", as:theme, depth:1
+  # zplug "romkatv/powerlevel10k", as:theme, depth:1
 
   zplug "Aloxaf/fzf-tab"
 
@@ -139,7 +140,9 @@ zstyle ':fzf-tab:*' continuous-trigger '/'
 
 zstyle ':fzf-tab:complete:*' fzf-preview '
   if [[ -d "$realpath" ]]; then
-    if command -v lsd >/dev/null 2>&1; then
+    if command -v eza >/dev/null 2>&1; then
+      eza --icons=auto --group-directories-first --color=always "$realpath"
+    elif command -v lsd >/dev/null 2>&1; then
       lsd --color=always "$realpath"
     else
       ls -la "$realpath"
@@ -161,7 +164,6 @@ zstyle ':fzf-tab:complete:*' fzf-preview '
 # Aliases
 # ------------------------------------------------------------------------------
 alias python="$HOMEBREW_PREFIX/bin/python3"
-alias ll='ls -alhF'
 alias vim='nvim'
 alias vi='nvim'
 alias cdh="cd $HOME"
@@ -180,8 +182,23 @@ alias szh="source $HOME/.zshrc"
 alias cs="colima start"
 alias ct="colima stop"
 alias gcgl="git config --global --list"
+alias soc="ssh -i ~/Documents/KEY/2026/02/ssh-key-2026-02-17.key ubuntu@168.107.22.152"
+alias n8ns="ssh -i ~/Documents/KEY/2026/02/ssh-key-2026-02-17.key -N -L 5678:127.0.0.1:5678 ubuntu@168.107.22.152"
 
-command -v lsd >/dev/null 2>&1 && alias ls='lsd'
+if command -v eza >/dev/null 2>&1; then
+  alias ls='eza --icons=auto --group-directories-first'
+  alias ll='eza -al --icons=auto --group-directories-first --git'
+  alias la='eza -a --icons=auto --group-directories-first'
+  alias lt='eza -al --tree --level=2 --icons=auto --group-directories-first --git'
+elif command -v lsd >/dev/null 2>&1; then
+  alias ls='lsd'
+  alias ll='lsd -al'
+  alias la='lsd -a'
+  alias lt='lsd --tree --depth 2'
+else
+  alias ll='ls -alhF'
+  alias la='ls -A'
+fi
 command -v bat >/dev/null 2>&1 && alias cat='bat'
 
 # =======================================================
@@ -391,7 +408,7 @@ fi
 # ------------------------------------------------------------------------------
 # Theme
 # ------------------------------------------------------------------------------
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # ------------------------------------------------------------------------------
 # tmux auto start
