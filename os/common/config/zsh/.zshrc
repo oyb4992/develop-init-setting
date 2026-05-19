@@ -182,8 +182,10 @@ alias szh="source $HOME/.zshrc"
 alias cs="colima start"
 alias ct="colima stop"
 alias gcgl="git config --global --list"
-alias soc="ssh -i ~/Documents/KEY/2026/02/ssh-key-2026-02-17.key ubuntu@168.107.22.152"
-alias n8ns="ssh -i ~/Documents/KEY/2026/02/ssh-key-2026-02-17.key -N -L 5678:127.0.0.1:5678 ubuntu@168.107.22.152"
+
+if [[ -f "$HOME/.zshrc.local" ]]; then
+  source "$HOME/.zshrc.local"
+fi
 
 if command -v eza >/dev/null 2>&1; then
   alias ls='eza --icons=auto --group-directories-first'
@@ -415,6 +417,7 @@ fi
 # ------------------------------------------------------------------------------
 if command -v tmux &> /dev/null && \
    [ -z "$TMUX" ] && \
+   [ -z "${SKIP_TMUX_AUTO_START:-}" ] && \
    is_plain_terminal_session; then
   tmux new-session -A -s main
 fi

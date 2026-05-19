@@ -41,19 +41,19 @@ esac
 # --- Execute OS-specific Installation ---
 case "$OS" in
     macos)
-        if [ -f "$SCRIPT_DIR/os/common/install.sh" ]; then
-            echo "INFO: Running common setup script..."
-            bash "$SCRIPT_DIR/os/common/install.sh"
-        else
-            echo "WARN: Common setup script not found, skipping."
-        fi
-
         if [ -f "$SCRIPT_DIR/os/macos/install.sh" ]; then
             echo "INFO: Running macOS setup script..."
             bash "$SCRIPT_DIR/os/macos/install.sh"
         else
             echo "ERROR: macOS setup script not found." >&2
             exit 1
+        fi
+
+        if [ -f "$SCRIPT_DIR/os/common/install.sh" ]; then
+            echo "INFO: Running common setup script..."
+            bash "$SCRIPT_DIR/os/common/install.sh"
+        else
+            echo "WARN: Common setup script not found, skipping."
         fi
         ;;
     linux)

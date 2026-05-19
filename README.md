@@ -73,6 +73,7 @@ dev-init-setting/
 ## 주요 설정
 
 - `os/common/config/zsh/.zshrc`: zsh, mise, zplug, fzf, atuin, tmux 자동 시작
+- `os/common/config/zsh/.zshrc.local.example`: 개인 서버 alias처럼 repo에 넣지 않을 로컬 전용 설정 예시
 - `os/common/config/tmux/.tmux.conf`: tmux pane, copy-mode, Catppuccin, plugin 설정
 - `os/common/config/ghostty/config.ghostty`: Ghostty 테마, 폰트, keybind, shell integration
 - `os/common/config/zed/`: Zed Vim mode와 LazyVim 스타일 keymap
@@ -152,5 +153,6 @@ git status --short --ignored
 
 - 공유 가능한 설정은 repo에 둡니다.
 - 개인 토큰, `.env`, 런타임 DB, 캐시, 가상환경은 commit하지 않습니다.
+- 개인 서버 접속 alias처럼 노출되면 곤란한 값은 `~/.zshrc.local`에 둡니다.
 - 설치 스크립트는 멱등적으로 유지합니다.
 - OS 공통 설정은 `os/common`, 플랫폼 전용 설정은 `os/macos` 또는 `os/windows`에 둡니다.

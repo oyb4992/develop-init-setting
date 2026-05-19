@@ -1,0 +1,6 @@
+# ~/.zshrc.local
+# 개인 장비/서버 전용 alias와 secret-adjacent 값을 여기에 둡니다.
+# 이 파일은 repo에 연결하지 말고, 각 머신의 $HOME 아래에서 직접 관리하세요.
+
+# alias my-server='ssh -i ~/.ssh/example-key ubuntu@example.com'
+# alias my-tunnel='ssh -N -L 8080:127.0.0.1:8080 my-server'
