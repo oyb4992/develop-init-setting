@@ -6,7 +6,7 @@ typeset -U PATH
 # Essential PATH
 # ------------------------------------------------------------------------------
 export HOMEBREW_PREFIX="/opt/homebrew"
-export PATH="$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin:$PATH"
+export PATH="$PATH:$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin"
 
 # ------------------------------------------------------------------------------
 # Locale
