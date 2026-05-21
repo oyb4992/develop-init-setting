@@ -6,7 +6,7 @@ typeset -U PATH
 # Essential PATH
 # ------------------------------------------------------------------------------
 export HOMEBREW_PREFIX="/opt/homebrew"
-export PATH="$PATH:$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin"
+export PATH="$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin:$PATH"
 
 # ------------------------------------------------------------------------------
 # Locale
@@ -30,7 +30,9 @@ export DOTNET_ROOT="$HOMEBREW_PREFIX/opt/dotnet@8/libexec"
 
 export PATH="$HOMEBREW_PREFIX/opt/luajit/bin:$PATH"
 
-export PROJECT_ROOT="$HOME/IdeaProjects"
+export PATH="$PATH:$HOME/.lmstudio/bin"
+
+export PROJECT_ROOT="$HOME/Project"
 
 # ------------------------------------------------------------------------------
 # Shared Helpers
@@ -59,16 +61,6 @@ if is_zed_terminal_session; then
   export EDITOR="zed --wait"
   export VISUAL="zed --wait"
 fi
-
-# ------------------------------------------------------------------------------
-# Startup Display & Shell Prompt
-# ------------------------------------------------------------------------------
-# if is_plain_terminal_session; then
-#   if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-#     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-#   fi
-# fi
-eval "$(starship init zsh)"
 
 # ------------------------------------------------------------------------------
 # Runtime Manager (즉시 로드)
@@ -116,7 +108,6 @@ if [[ -f "$ZPLUG_HOME/init.zsh" ]]; then
   # zplug "mroth/evalcache"
   zplug "babarot/enhancd", use:init.sh
   zplug "romkatv/zsh-defer"
-  # zplug "romkatv/powerlevel10k", as:theme, depth:1
 
   zplug "Aloxaf/fzf-tab"
 
@@ -182,10 +173,6 @@ alias szh="source $HOME/.zshrc"
 alias cs="colima start"
 alias ct="colima stop"
 alias gcgl="git config --global --list"
-
-if [[ -f "$HOME/.zshrc.local" ]]; then
-  source "$HOME/.zshrc.local"
-fi
 
 if command -v eza >/dev/null 2>&1; then
   alias ls='eza --icons=auto --group-directories-first'
@@ -408,9 +395,18 @@ else
 fi
 
 # ------------------------------------------------------------------------------
+# Local Overrides
+# ------------------------------------------------------------------------------
+if [[ -f "$HOME/.zshrc.local" ]]; then
+  source "$HOME/.zshrc.local"
+fi
+
+# ------------------------------------------------------------------------------
 # Theme
 # ------------------------------------------------------------------------------
-# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+if command -v starship >/dev/null 2>&1; then
+  eval "$(starship init zsh)"
+fi
 
 # ------------------------------------------------------------------------------
 # tmux auto start
@@ -427,7 +423,4 @@ fi
 #export PATH="/Users/oyunbog/.rd/bin:$PATH"
 ## MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:$HOME/.lmstudio/bin"
-# End of LM Studio CLI section
 # zprof #zsh쉘 로딩 디버깅 모니터링 종료
