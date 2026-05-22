@@ -34,7 +34,7 @@ zplug_light "Aloxaf/fzf-tab"
 zplug_light "zsh-users/zsh-syntax-highlighting" # 구문 강조는 항상 마지막에 로드
 
 # 수동 플러그인 전체 업데이트 함수
-function zplugin_update() {
+function zplug_update() {
     for d in "$ZPLUGINDIR"/*/; do
         echo "Updating ${d:t}..."
         git -C "$d" pull
