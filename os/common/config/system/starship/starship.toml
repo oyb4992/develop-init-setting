@@ -1,0 +1,108 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+[░▒▓](#a3aed2)\
+[  ](bg:#a3aed2 fg:#090c0c)\
+[](bg:#769ff0 fg:#a3aed2)\
+$username\
+$hostname\
+$directory\
+[](fg:#769ff0 bg:#394260)\
+$git_branch\
+$git_status\
+[](fg:#394260 bg:#212736)\
+$nodejs\
+$bun\
+$java\
+$rust\
+$golang\
+$php\
+$docker_context\
+[](fg:#212736 bg:#1d2230)\
+$cmd_duration\
+$time\
+[ ](fg:#1d2230)\
+\n$status$character"""
+
+[directory]
+style = "fg:#e3e5e5 bg:#769ff0"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[directory.substitutions]
+"Documents" = "📄 "
+"Downloads" = "📥 "
+"Music" = "🎵 "
+"Pictures" = "🖼️ "
+
+[git_branch]
+symbol = ""
+style = "bg:#394260"
+format = '[[ $symbol $branch ](fg:#7dcfff bg:#394260)]($style)'
+
+[git_status]
+style = "bg:#394260"
+format = '[[ $all_status$ahead_behind ](fg:#f7768e bg:#394260)]($style)'
+
+[nodejs]
+symbol = ""
+style = "bg:#212736"
+format = '[[ $symbol Node ($version) ](fg:#9ece6a bg:#212736)]($style)'
+
+[bun]
+symbol = ""
+style = "bg:#212736"
+format = '[[ $symbol Bun ($version) ](fg:#ff9e64 bg:#212736)]($style)'
+
+[java]
+symbol = "☕"
+style = "bg:#212736"
+format = '[[ $symbol Java ($version) ](fg:#e0af68 bg:#212736)]($style)'
+
+[rust]
+symbol = ""
+style = "bg:#212736"
+format = '[[ $symbol Rust ($version) ](fg:#f7768e bg:#212736)]($style)'
+
+[golang]
+symbol = ""
+style = "bg:#212736"
+format = '[[ $symbol Go ($version) ](fg:#7dcfff bg:#212736)]($style)'
+
+[php]
+symbol = ""
+style = "bg:#212736"
+format = '[[ $symbol PHP ($version) ](fg:#bb9af7 bg:#212736)]($style)'
+
+[docker_context]
+disabled = false
+symbol = ""
+style = "bg:#212736"
+format = '[[ $symbol Docker ($context) ](fg:#7aa2f7 bg:#212736)]($style)'
+
+[cmd_duration]
+min_time = 1000
+style = "bg:#1d2230"
+format = '[[ ⏱ $duration ](fg:#e0af68 bg:#1d2230)]($style)'
+
+[time]
+disabled = false
+time_format = "%R"
+style = "bg:#1d2230"
+format = '[[ 🕒 $time ](fg:#a0a9cb bg:#1d2230)]($style)'
+
+[status]
+disabled = false
+symbol = "❌"
+format = '[$symbol $status ](bold fg:#f7768e)'
+
+[username]
+show_always = false
+style_user = "fg:#c0caf5 bg:#769ff0"
+format = '[ 👤 $user ]($style)'
+
+[hostname]
+ssh_only = true
+style = "fg:#7dcfff bg:#769ff0"
+format = '[@$hostname ]($style)'
