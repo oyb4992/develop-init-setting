@@ -6,15 +6,19 @@ compinit
 ZPLUGINDIR="$HOME/.config/zsh/plugins"
 mkdir -p "$ZPLUGINDIR"
 
-# [경량화 핵심] 플러그인 매니저 없이 자동 다운로드 및 로드하는 경량 함수
+# [경량화 핵심] 플러그인 매니저 없이 자동 다운로드 및 직접 로드하는 경량 함수
 function zplug_light() {
     local repo=$1
     local plugin_name=${repo#*/}
     local init_file="$ZPLUGINDIR/$plugin_name/$plugin_name.plugin.zsh"
 
     if [[ ! -d "$ZPLUGINDIR/$plugin_name" ]]; then
-        echo "📥 Installing plugin: $repo..."
-        git clone --depth 1 "https://github.com/$repo.git" "$ZPLUGINDIR/$plugin_name"
+        if command -v git >/dev/null 2>&1; then
+            echo "📥 Installing plugin: $repo..."
+            git clone --depth 1 "https://github.com/$repo.git" "$ZPLUGINDIR/$plugin_name" >/dev/null 2>&1 || return
+        else
+            return
+        fi
     fi
 
     if [[ -f "$init_file" ]]; then

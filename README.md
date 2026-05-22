@@ -72,7 +72,7 @@ dev-init-setting/
 
 ## 주요 설정
 
-- `os/common/config/zsh/.zshrc`: zsh, mise, zplug, fzf, atuin, tmux 자동 시작
+- `os/common/config/zsh/.zshrc`: zsh, mise, 직접 로드하는 zsh 플러그인, fzf, atuin, tmux 자동 시작
 - `os/common/config/zsh/.zshrc.local.example`: 개인 서버 alias처럼 repo에 넣지 않을 로컬 전용 설정 예시
 - `os/common/config/tmux/.tmux.conf`: tmux pane, copy-mode, Catppuccin, plugin 설정
 - `os/common/config/ghostty/config.ghostty`: Ghostty 테마, 폰트, keybind, shell integration

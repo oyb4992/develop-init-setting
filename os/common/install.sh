@@ -38,24 +38,15 @@ install_tmux_plugin_manager() {
     git clone https://github.com/tmux-plugins/tpm "$tpm_dir"
 }
 
-install_zplug_plugins() {
-    local zplug_init="${HOMEBREW_PREFIX:-/opt/homebrew}/opt/zplug/init.zsh"
-
-    if [ ! -f "$zplug_init" ]; then
-        echo "WARN: zplug init script not found. Skipping zplug plugin installation."
-        return
-    fi
-
-    echo "Installing zplug plugins..."
-    SKIP_TMUX_AUTO_START=1 ZPLUG_LOADFILE="$PROJECT_ROOT/os/common/config/zsh/.zshrc" \
-        zsh -fc 'source "$ZPLUG_LOADFILE"; zplug check || zplug install'
-}
-
 # --- Link common configurations ---
 echo "Linking common configurations..."
 
 # Zsh
 link_file "$PROJECT_ROOT/os/common/config/zsh/.zshrc" "$HOME/.zshrc"
+mkdir -p "$HOME/.config/zsh"
+for zsh_config_file in "$PROJECT_ROOT"/os/common/config/zsh/config/*.zsh; do
+    link_file "$zsh_config_file" "$HOME/.config/zsh/$(basename "$zsh_config_file")"
+done
 
 # Git wrapper used by .zshrc
 chmod +x "$PROJECT_ROOT/os/common/config/git/git-wrapper.sh"
@@ -75,9 +66,6 @@ install_tmux_plugin_manager
 # Zed (Vim mode)
 link_file "$PROJECT_ROOT/os/common/config/zed/settings.json" "$HOME/.config/zed/settings.json"
 link_file "$PROJECT_ROOT/os/common/config/zed/keymap.json" "$HOME/.config/zed/keymap.json"
-
-# Zsh plugins
-install_zplug_plugins
 
 # --- Install common assets (e.g., fonts) ---
 echo "Installing common assets (fonts)..."

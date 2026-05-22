@@ -17,7 +17,7 @@ export PATH="$PATH:$HOME/.dotnet/tools"
 export DOTNET_ROOT="$HOMEBREW_PREFIX/opt/dotnet@8/libexec"
 export PATH="$HOMEBREW_PREFIX/opt/luajit/bin:$PATH"
 export PATH="$PATH:$HOME/.lmstudio/bin"
-export PROJECT_ROOT="$HOME/Project"
+export PROJECT_ROOT="$HOME/IdeaProjects/"
 
 # [경량화 핵심] 강력한 Zsh 히스토리 세부 옵션
 export HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/zsh/history"

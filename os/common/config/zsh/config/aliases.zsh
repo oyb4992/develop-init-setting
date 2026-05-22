@@ -19,8 +19,6 @@ alias szh="source $HOME/.zshrc"
 alias cs="colima start"
 alias ct="colima stop"
 alias gcgl="git config --global --list"
-alias soc="ssh -i ~/Documents/KEY/2026/02/ssh-key-2026-02-17.key ubuntu@168.107.22.152"
-alias n8ns="ssh -i ~/Documents/KEY/2026/02/ssh-key-2026-02-17.key -N -L 5678:127.0.0.1:5678 ubuntu@168.107.22.152"
 
 # [영상 반영] zoxide 초기화 및 점프 활성화
 if command -v zoxide >/dev/null 2>&1; then

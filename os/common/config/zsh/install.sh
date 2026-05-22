@@ -16,8 +16,7 @@ link_file() {
 
 link_file "$SCRIPT_DIR/.zshrc" "$HOME/.zshrc"
 
-# ⚠️ 실제 원본 파일들이 들어있는 폴더 경로로 변경해 주세요!
-ORIGIN_DIR="/config"
+ORIGIN_DIR="$SCRIPT_DIR/config"
 
 # 대상 폴더 생성 (없을 경우 대비)
 mkdir -p ~/.config/zsh

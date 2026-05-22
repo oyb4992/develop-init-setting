@@ -18,5 +18,10 @@ if command -v bat >/dev/null 2>&1; then
   export FZF_ALT_C_OPTS="--preview 'eza --tree --level=2 --icons=auto --color=always {} 2>/dev/null || ls -la {}'"
 fi
 
-bindkey '^T' fzf-file-widget
-bindkey '\ec' fzf-cd-widget # Alt + C (또는 Option + C)
+if (( ${+widgets[fzf-file-widget]} )); then
+  bindkey '^T' fzf-file-widget
+fi
+
+if (( ${+widgets[fzf-cd-widget]} )); then
+  bindkey '\ec' fzf-cd-widget # Alt + C (또는 Option + C)
+fi

@@ -1,3 +1,4 @@
+# zmodload zsh/zprof #zsh쉘 로딩 디버깅 모니터링 시작
 # 분할된 설정 파일들 순차적 소싱 (의존 관계 순서 준수)
 ZSH_CONFIG_DIR="$HOME/.config/zsh"
 
@@ -44,6 +45,7 @@ fi
 # 8. Tmux Auto Start - 순수 터미널 에뮬레이터 세션만 감지하여 무한 루프 완벽 방어
 if command -v tmux &> /dev/null && \
    [ -z "$TMUX" ] && \
+   [ -z "${SKIP_TMUX_AUTO_START:-}" ] && \
    [ -z "${TERMINAL_EMULATOR}" ] && \
    [ "${TERM_PROGRAM}" != "vscode" ] && \
    [ "${TERM_PROGRAM}" != "IntelliJ" ] && \
@@ -54,3 +56,4 @@ if command -v tmux &> /dev/null && \
   # main 세션이 이미 존재하면 연결(Attach), 없으면 신규 생성
   tmux attach-session -t main 2>/dev/null || tmux new-session -s main
 fi
+# zprof #zsh쉘 로딩 디버깅 모니터링 종료
