@@ -46,6 +46,7 @@ fi
 if command -v tmux &> /dev/null && \
    [ -z "$TMUX" ] && \
    [ -z "${SKIP_TMUX_AUTO_START:-}" ] && \
+   ! is_zed_terminal_session && \
    [ -z "${TERMINAL_EMULATOR}" ] && \
    [ "${TERM_PROGRAM}" != "vscode" ] && \
    [ "${TERM_PROGRAM}" != "IntelliJ" ] && \

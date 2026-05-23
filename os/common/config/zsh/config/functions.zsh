@@ -1,6 +1,8 @@
 # Shared Helpers (IDE 및 터미널 감지 시스템)
 function is_zed_terminal_session() {
-  [[ "$IN_ZED_TERMINAL" == "1" || "$ZED_TERM" == "true" ]]
+  [[ "$IN_ZED_TERMINAL" == "1" ||
+     "$ZED_TERM" == "true" ||
+     "${TERM_PROGRAM:l}" == "zed" ]]
 }
 
 function is_plain_terminal_session() {
