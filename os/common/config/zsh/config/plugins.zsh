@@ -1,47 +1,71 @@
-# Zsh 완성(Completion) 시스템 초기화 (compdef 명령어 에러 해결)
-autoload -Uz compinit
-compinit
-
 # 플러그인이 저장될 디렉토리 정의
-ZPLUGINDIR="$HOME/.config/zsh/plugins"
-mkdir -p "$ZPLUGINDIR"
+ZSH_PLUGIN_DIR="$HOME/.config/zsh/plugins"
+mkdir -p "$ZSH_PLUGIN_DIR"
 
-# [경량화 핵심] 플러그인 매니저 없이 자동 다운로드 및 직접 로드하는 경량 함수
-function zplug_light() {
+# fpath 중복 방지
+typeset -U fpath
+
+# 플러그인 매니저 없이 GitHub 저장소를 직접 다운로드
+function clone_zsh_plugin() {
     local repo=$1
     local plugin_name=${repo#*/}
-    local init_file="$ZPLUGINDIR/$plugin_name/$plugin_name.plugin.zsh"
+    local plugin_dir="$ZSH_PLUGIN_DIR/$plugin_name"
 
-    if [[ ! -d "$ZPLUGINDIR/$plugin_name" ]]; then
-        if command -v git >/dev/null 2>&1; then
-            echo "📥 Installing plugin: $repo..."
-            git clone --depth 1 "https://github.com/$repo.git" "$ZPLUGINDIR/$plugin_name" >/dev/null 2>&1 || return
-        else
-            return
-        fi
+    if [[ -d "$plugin_dir" ]]; then
+        return
     fi
 
-    if [[ -f "$init_file" ]]; then
-        source "$init_file"
-    elif [[ -f "$ZPLUGINDIR/$plugin_name/$plugin_name.zsh" ]]; then
-        source "$ZPLUGINDIR/$plugin_name/$plugin_name.zsh"
-    elif [[ -f "$ZPLUGINDIR/$plugin_name/init.sh" ]]; then
-        source "$ZPLUGINDIR/$plugin_name/init.sh"
+    if ! command -v git >/dev/null 2>&1; then
+        return
+    fi
+
+    echo "Installing zsh plugin: $repo..."
+    git clone --depth 1 "https://github.com/$repo.git" "$plugin_dir" >/dev/null 2>&1
+}
+
+# source 기반 플러그인 로드
+function load_zsh_plugin() {
+    local repo=$1
+    local plugin_name=${repo#*/}
+    local plugin_dir="$ZSH_PLUGIN_DIR/$plugin_name"
+
+    clone_zsh_plugin "$repo" || return
+
+    if [[ -f "$plugin_dir/$plugin_name.plugin.zsh" ]]; then
+        source "$plugin_dir/$plugin_name.plugin.zsh"
+    elif [[ -f "$plugin_dir/$plugin_name.zsh" ]]; then
+        source "$plugin_dir/$plugin_name.zsh"
+    elif [[ -f "$plugin_dir/init.sh" ]]; then
+        source "$plugin_dir/init.sh"
     fi
 }
 
-# 순수 플러그인 직접 로드 (매니저 오버헤드 0%)
-zplug_light "zsh-users/zsh-autosuggestions"
-zplug_light "zsh-users/zsh-history-substring-search"
-zplug_light "babarot/enhancd"
-zplug_light "Aloxaf/fzf-tab"
-zplug_light "zsh-users/zsh-syntax-highlighting" # 구문 강조는 항상 마지막에 로드
+# Completion-only 플러그인은 compinit 전에 fpath에 등록해야 함
+clone_zsh_plugin "zsh-users/zsh-completions"
+if [[ -d "$ZSH_PLUGIN_DIR/zsh-completions/src" ]]; then
+    fpath=("$ZSH_PLUGIN_DIR/zsh-completions/src" $fpath)
+fi
+
+# Zsh 완성(Completion) 시스템 초기화
+autoload -Uz compinit
+compinit
+
+# source 기반 플러그인 로드
+load_zsh_plugin "zsh-users/zsh-autosuggestions"
+load_zsh_plugin "zsh-users/zsh-history-substring-search"
+load_zsh_plugin "babarot/enhancd"
+load_zsh_plugin "Aloxaf/fzf-tab"
+load_zsh_plugin "zsh-users/zsh-syntax-highlighting" # 구문 강조는 항상 마지막에 로드
 
 # 수동 플러그인 전체 업데이트 함수
-function zplug_update() {
-    for d in "$ZPLUGINDIR"/*/; do
-        echo "Updating ${d:t}..."
-        git -C "$d" pull
+function zsh_plugins_update() {
+    local plugin_dir
+
+    for plugin_dir in "$ZSH_PLUGIN_DIR"/*(/N); do
+        if [[ -d "$plugin_dir/.git" ]]; then
+            echo "Updating ${plugin_dir:t}..."
+            git -C "$plugin_dir" pull --ff-only
+        fi
     done
 }
 
