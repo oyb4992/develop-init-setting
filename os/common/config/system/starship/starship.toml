@@ -1,24 +1,35 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
+add_newline = false
+scan_timeout = 30
+command_timeout = 1000
+
 format = """
 [░▒▓](#a3aed2)\
 [  ](bg:#a3aed2 fg:#090c0c)\
 [](bg:#769ff0 fg:#a3aed2)\
 $username\
 $hostname\
+$shell\
 $directory\
 [](fg:#769ff0 bg:#394260)\
 $git_branch\
 $git_status\
 [](fg:#394260 bg:#212736)\
 $nodejs\
-$bun\
+$package\
 $java\
+$gradle\
+$maven\
 $rust\
 $golang\
 $php\
 $docker_context\
+$aws\
+$mise\
+$sudo\
 [](fg:#212736 bg:#1d2230)\
+$jobs\
 $cmd_duration\
 $time\
 [ ](fg:#1d2230)\
@@ -49,16 +60,45 @@ format = '[[ $all_status$ahead_behind ](fg:#f7768e bg:#394260)]($style)'
 symbol = ""
 style = "bg:#212736"
 format = '[[ $symbol Node ($version) ](fg:#9ece6a bg:#212736)]($style)'
+detect_extensions = ["js", "mjs", "cjs", "jsx", "ts", "mts", "cts", "tsx"]
+detect_files = ["package.json", ".node-version", ".nvmrc", "tsconfig.json", "vite.config.js", "vite.config.ts", "next.config.js", "next.config.ts"]
+detect_folders = ["node_modules"]
 
-[bun]
-symbol = ""
+# [bun]
+# symbol = ""
+# style = "bg:#212736"
+# format = '[[ $symbol Bun ($version) ](fg:#ff9e64 bg:#212736)]($style)'
+
+[package]
+disabled = false
+display_private = true
+symbol = "pkg"
 style = "bg:#212736"
-format = '[[ $symbol Bun ($version) ](fg:#ff9e64 bg:#212736)]($style)'
+format = '[[ $symbol ($version) ](fg:#c0caf5 bg:#212736)]($style)'
 
 [java]
 symbol = "☕"
 style = "bg:#212736"
 format = '[[ $symbol Java ($version) ](fg:#e0af68 bg:#212736)]($style)'
+detect_extensions = ["java", "class", "gradle", "jar", "clj", "cljs", "cljc"]
+detect_files = ["pom.xml", "build.gradle", "build.gradle.kts", "settings.gradle", "settings.gradle.kts", "gradlew", "build.sbt", ".java-version", "deps.edn", "project.clj", "build.boot", ".sdkmanrc"]
+
+[gradle]
+disabled = false
+symbol = "Gradle"
+style = "bg:#212736"
+format = '[[ $symbol ($version) ](fg:#7dcfff bg:#212736)]($style)'
+detect_extensions = ["gradle", "gradle.kts"]
+detect_files = ["build.gradle", "build.gradle.kts", "settings.gradle", "settings.gradle.kts", "gradlew"]
+detect_folders = ["gradle"]
+
+[maven]
+disabled = false
+symbol = "Maven"
+style = "bg:#212736"
+format = '[[ $symbol ($version) ](fg:#7dcfff bg:#212736)]($style)'
+detect_files = ["pom.xml"]
+detect_folders = [".mvn"]
 
 [rust]
 symbol = ""
@@ -80,6 +120,41 @@ disabled = false
 symbol = ""
 style = "bg:#212736"
 format = '[[ $symbol Docker ($context) ](fg:#7aa2f7 bg:#212736)]($style)'
+
+[aws]
+disabled = false
+force_display = false
+symbol = "☁"
+style = "bg:#212736"
+format = '[[ $symbol AWS ($profile)(\($region\)) ](fg:#e0af68 bg:#212736)]($style)'
+
+[aws.region_aliases]
+ap-northeast-2 = "kr"
+ap-northeast-1 = "jp"
+us-east-1 = "use1"
+us-west-2 = "usw2"
+
+[mise]
+disabled = false
+symbol = "mise "
+healthy_symbol = "ok"
+unhealthy_symbol = "fix"
+style = "bg:#212736"
+format = '[[ $symbol$health ](fg:#bb9af7 bg:#212736)]($style)'
+
+[sudo]
+disabled = false
+symbol = "sudo"
+style = "bg:#212736"
+format = '[[ $symbol ](fg:#f7768e bg:#212736)]($style)'
+
+[jobs]
+disabled = false
+symbol = "jobs "
+symbol_threshold = 1
+number_threshold = 2
+style = "bg:#1d2230"
+format = '[[ $symbol$number ](fg:#7dcfff bg:#1d2230)]($style)'
 
 [cmd_duration]
 min_time = 1000
@@ -106,3 +181,11 @@ format = '[ 👤 $user ]($style)'
 ssh_only = true
 style = "fg:#7dcfff bg:#769ff0"
 format = '[@$hostname ]($style)'
+
+[shell]
+disabled = false
+bash_indicator = "bash"
+zsh_indicator = "zsh"
+fish_indicator = "fish"
+style = "fg:#c0caf5 bg:#769ff0"
+format = '[$indicator ]($style)'

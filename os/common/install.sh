@@ -59,6 +59,9 @@ link_file "$PROJECT_ROOT/os/common/config/editors/lazyVim/.idea-lazy.vim" "$HOME
 # Ghostty
 link_file "$PROJECT_ROOT/os/common/config/ghostty/config.ghostty" "$HOME/.config/ghostty/config"
 
+# Starship
+link_file "$PROJECT_ROOT/os/common/config/system/starship/starship.toml" "$HOME/.config/starship.toml"
+
 # tmux
 link_file "$PROJECT_ROOT/os/common/config/tmux/.tmux.conf" "$HOME/.tmux.conf"
 install_tmux_plugin_manager
