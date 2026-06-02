@@ -41,10 +41,10 @@ truncation_length = 3
 truncation_symbol = "…/"
 
 [directory.substitutions]
-"Documents" = "📄 "
-"Downloads" = "📥 "
-"Music" = "🎵 "
-"Pictures" = "🖼️ "
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
 
 [git_branch]
 symbol = ""
@@ -71,7 +71,7 @@ detect_folders = ["node_modules"]
 [package]
 disabled = false
 display_private = true
-symbol = "pkg"
+symbol = "󰏗"
 style = "bg:#212736"
 format = '[[ $symbol ($version) ](fg:#c0caf5 bg:#212736)]($style)'
 
@@ -123,7 +123,7 @@ format = '[[ $symbol Docker ($context) ](fg:#7aa2f7 bg:#212736)]($style)'
 #[aws]
 #disabled = false
 #force_display = false
-#symbol = "☁"
+#symbol = ""
 #style = "bg:#212736"
 #format = '[[ $symbol AWS ($profile)(\($region\)) ](fg:#e0af68 bg:#212736)]($style)'
 #
@@ -135,21 +135,21 @@ format = '[[ $symbol Docker ($context) ](fg:#7aa2f7 bg:#212736)]($style)'
 
 [mise]
 disabled = false
-symbol = "mise "
-healthy_symbol = "ok"
-unhealthy_symbol = "fix"
+symbol = "󱁤"
+healthy_symbol = ""
+unhealthy_symbol = ""
 style = "bg:#212736"
-format = '[[ $symbol$health ](fg:#bb9af7 bg:#212736)]($style)'
+format = '[[ $symbol $health ](fg:#bb9af7 bg:#212736)]($style)'
 
 [sudo]
 disabled = false
-symbol = "sudo"
+symbol = "󰌾"
 style = "bg:#212736"
 format = '[[ $symbol ](fg:#f7768e bg:#212736)]($style)'
 
 [jobs]
 disabled = false
-symbol = "jobs "
+symbol = " "
 symbol_threshold = 1
 number_threshold = 2
 style = "bg:#1d2230"
@@ -158,23 +158,23 @@ format = '[[ $symbol$number ](fg:#7dcfff bg:#1d2230)]($style)'
 [cmd_duration]
 min_time = 1000
 style = "bg:#1d2230"
-format = '[[ ⏱ $duration ](fg:#e0af68 bg:#1d2230)]($style)'
+format = '[[  $duration ](fg:#e0af68 bg:#1d2230)]($style)'
 
 [time]
 disabled = false
 time_format = "%R"
 style = "bg:#1d2230"
-format = '[[ 🕒 $time ](fg:#a0a9cb bg:#1d2230)]($style)'
+format = '[[  $time ](fg:#a0a9cb bg:#1d2230)]($style)'
 
 [status]
 disabled = false
-symbol = "❌"
+symbol = ""
 format = '[$symbol $status ](bold fg:#f7768e)'
 
 [username]
 show_always = false
 style_user = "fg:#c0caf5 bg:#769ff0"
-format = '[ 👤 $user ]($style)'
+format = '[  $user ]($style)'
 
 [hostname]
 ssh_only = true
