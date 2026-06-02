@@ -25,7 +25,6 @@ $rust\
 $golang\
 $php\
 $docker_context\
-$aws\
 $mise\
 $sudo\
 [](fg:#212736 bg:#1d2230)\
@@ -77,7 +76,7 @@ style = "bg:#212736"
 format = '[[ $symbol ($version) ](fg:#c0caf5 bg:#212736)]($style)'
 
 [java]
-symbol = "☕"
+symbol = ""
 style = "bg:#212736"
 format = '[[ $symbol Java ($version) ](fg:#e0af68 bg:#212736)]($style)'
 detect_extensions = ["java", "class", "gradle", "jar", "clj", "cljs", "cljc"]
@@ -85,18 +84,18 @@ detect_files = ["pom.xml", "build.gradle", "build.gradle.kts", "settings.gradle"
 
 [gradle]
 disabled = false
-symbol = "Gradle"
+symbol = ""
 style = "bg:#212736"
-format = '[[ $symbol ($version) ](fg:#7dcfff bg:#212736)]($style)'
+format = '[[ $symbol Gradle ($version) ](fg:#7dcfff bg:#212736)]($style)'
 detect_extensions = ["gradle", "gradle.kts"]
 detect_files = ["build.gradle", "build.gradle.kts", "settings.gradle", "settings.gradle.kts", "gradlew"]
 detect_folders = ["gradle"]
 
 [maven]
 disabled = false
-symbol = "Maven"
+symbol = ""
 style = "bg:#212736"
-format = '[[ $symbol ($version) ](fg:#7dcfff bg:#212736)]($style)'
+format = '[[ $symbol Maven ($version) ](fg:#7dcfff bg:#212736)]($style)'
 detect_files = ["pom.xml"]
 detect_folders = [".mvn"]
 
@@ -121,18 +120,18 @@ symbol = ""
 style = "bg:#212736"
 format = '[[ $symbol Docker ($context) ](fg:#7aa2f7 bg:#212736)]($style)'
 
-[aws]
-disabled = false
-force_display = false
-symbol = "☁"
-style = "bg:#212736"
-format = '[[ $symbol AWS ($profile)(\($region\)) ](fg:#e0af68 bg:#212736)]($style)'
-
-[aws.region_aliases]
-ap-northeast-2 = "kr"
-ap-northeast-1 = "jp"
-us-east-1 = "use1"
-us-west-2 = "usw2"
+#[aws]
+#disabled = false
+#force_display = false
+#symbol = "☁"
+#style = "bg:#212736"
+#format = '[[ $symbol AWS ($profile)(\($region\)) ](fg:#e0af68 bg:#212736)]($style)'
+#
+#[aws.region_aliases]
+#ap-northeast-2 = "kr"
+#ap-northeast-1 = "jp"
+#us-east-1 = "use1"
+#us-west-2 = "usw2"
 
 [mise]
 disabled = false
@@ -189,3 +188,4 @@ zsh_indicator = "zsh"
 fish_indicator = "fish"
 style = "fg:#c0caf5 bg:#769ff0"
 format = '[$indicator ]($style)'
+
