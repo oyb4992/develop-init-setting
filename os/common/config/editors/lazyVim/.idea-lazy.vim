@@ -192,6 +192,7 @@ nmap <leader>bm <Action>(MoveEditorToOppositeTabGroup)
 " IntelliJ 액션 'Change Splitter Orientation' 호출
 nmap <leader>bc <Action>(ChangeSplitOrientation)
 " Escape 및 hlsearch 지우기
+nmap <esc> :nohlsearch<CR>
 nmap <leader>ur :nohlsearch<CR>
 " Keywordprg
 nmap <leader>K :help<space><C-r><C-w><CR>
@@ -296,7 +297,7 @@ nmap <leader>wm <Action>(ToggleDistractionFreeMode)
 " 마지막 탭
 nmap <leader><tab>l <Action>(StoreDefaultLayout)<Action>(ChangeToolWindowLayout)
 " 다른 탭 닫기
-nmap <leader><tab>o :<cr>
+nmap <leader><tab>o <Action>(StoreDefaultLayout)<Action>(ChangeToolWindowLayout)
 " 첫 번째 탭
 nmap <leader><tab>f <Action>(StoreDefaultLayout)<Action>(ChangeToolWindowLayout)
 " 새 탭
@@ -315,7 +316,7 @@ nmap <leader><tab>c <Action>(StoreDefaultLayout)<Action>(ChangeToolWindowLayout)
 " 정의로 이동
 nmap gd <Action>(GotoDeclaration)
 " 참조
-nmap gR <Action>(FindUsages)
+nmap gr <Action>(FindUsages)
 " 사용으로 바로 이동
 nmap gU <Action>(ShowUsages)
 " 구현으로 이동
@@ -671,6 +672,7 @@ let g:WhichKeyDesc_qq = "<leader>qq 종료"
 let g:WhichKeyDesc_minus = "<leader>- 아래 창 분할"
 let g:WhichKeyDesc_vbar = "<leader>| 오른쪽 창 분할"
 let g:WhichKeyDesc_C_n = "<leader><C-n> 모든 단어 선택"
+let g:WhichKeyDesc_esc = "<esc> 검색 강조 지우기"
 
 " ------------------------------------------------------------
 " Windows: <leader>w
@@ -706,6 +708,7 @@ let g:WhichKeyDesc_fE = "<leader>fE 프로젝트 창"
 let g:WhichKeyDesc_ff = "<leader>ff 파일 찾기"
 let g:WhichKeyDesc_fF = "<leader>fF 파일 찾기"
 let g:WhichKeyDesc_fg = "<leader>fg Git 파일 찾기"
+let g:WhichKeyDesc_fp = "<leader>fp 최근 프로젝트"
 let g:WhichKeyDesc_fr = "<leader>fr 최근 파일"
 let g:WhichKeyDesc_fR = "<leader>fR 최근 파일"
 
@@ -716,8 +719,8 @@ let g:WhichKeyDesc_gb = "<leader>gb Git Blame"
 let g:WhichKeyDesc_gB = "<leader>gB Git 로그"
 let g:WhichKeyDesc_gc = "<leader>gc Git 커밋/로그"
 let g:WhichKeyDesc_gf = "<leader>gf 현재 파일 히스토리"
-let g:WhichKeyDesc_gg = "<leader>gg 커밋 창"
-let g:WhichKeyDesc_gG = "<leader>gG 커밋 창"
+let g:WhichKeyDesc_gg = "<leader>gg Lazygit"
+let g:WhichKeyDesc_gG = "<leader>gG Lazygit 현재 디렉토리"
 let g:WhichKeyDesc_gl = "<leader>gl Git 로그"
 let g:WhichKeyDesc_gL = "<leader>gL Git 로그"
 let g:WhichKeyDesc_gs = "<leader>gs Git 상태/로그"
@@ -734,7 +737,6 @@ let g:WhichKeyDesc_cf = "<leader>cf 코드 포맷"
 let g:WhichKeyDesc_cl = "<leader>cl ESLint Fix"
 let g:WhichKeyDesc_cR = "<leader>cR 파일 이름 변경"
 let g:WhichKeyDesc_cr = "<leader>cr 이름 변경"
-let g:WhichKeyDesc_cs = "<leader>cs 파일 구조"
 
 " ------------------------------------------------------------
 " Buffers: <leader>b
@@ -842,14 +844,12 @@ let g:WhichKeyDesc_tab_square_left = "<leader><tab>[ 이전 탭"
 " ------------------------------------------------------------
 let g:WhichKeyDesc_xl = "<leader>xl 문제 창"
 let g:WhichKeyDesc_xq = "<leader>xq 문제 창"
-let g:WhichKeyDesc_xt = "<leader>xt Todo"
-let g:WhichKeyDesc_xT = "<leader>xT Todo/Fix/Fixme"
 
 " ------------------------------------------------------------
 " Non-leader mappings
 " ------------------------------------------------------------
 let g:WhichKeyDesc_gd = "gd 정의로 이동"
-let g:WhichKeyDesc_gR = "gR 참조 찾기"
+let g:WhichKeyDesc_gr = "gr 참조 찾기"
 let g:WhichKeyDesc_gU = "gU 사용처 보기"
 let g:WhichKeyDesc_gI = "gI 구현으로 이동"
 let g:WhichKeyDesc_gy = "gy 타입 정의로 이동"
