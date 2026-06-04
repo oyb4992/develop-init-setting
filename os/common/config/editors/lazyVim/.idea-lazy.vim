@@ -394,8 +394,8 @@ nmap <leader><space> <Action>(GotoFile)
 nmap <leader>, <Action>(Switcher)
 " Grep (루트 디렉토리)
 nmap <leader>/ <Action>(FindInPath)
-" 명령 기록
-nmap <leader>: :history<cr>
+" 명령 기록- 명령어 수행 불가
+"nmap <leader>: :history<cr>
 " 버퍼
 nmap <leader>fb <Action>(Switcher)
 " 구성 파일 찾기
@@ -416,8 +416,8 @@ nmap <leader>fp <Action>(ManageRecentProjects)
 nmap <leader>gc <Action>(Vcs.Show.Log)
 " 상태
 nmap <leader>gs <Action>(Vcs.Show.Log)
-" 레지스터
-nmap <leader>s" :registers<cr>
+" 레지스터- vim_peekaboo로 대체
+"nmap <leader>s" :registers<cr>
 " 자동 명령
 " nmap <leader>sa :echo '해당하는 매핑이 없습니다.'<cr>
 " 버퍼
