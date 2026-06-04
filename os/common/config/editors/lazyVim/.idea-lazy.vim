@@ -410,6 +410,8 @@ nmap <leader>fg <Action>(GotoFile)
 nmap <leader>fr <Action>(RecentFiles)
 " 최근 (현재 작업 디렉토리)
 nmap <leader>fR <Action>(RecentFiles)
+" 최근 프로젝트 관리창 열기
+nmap <leader>fp <Action>(ManageRecentProjects)
 " 커밋
 nmap <leader>gc <Action>(Vcs.Show.Log)
 " 상태
