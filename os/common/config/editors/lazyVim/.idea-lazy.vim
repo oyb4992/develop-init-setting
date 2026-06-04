@@ -110,6 +110,9 @@ set dial "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인
 
 let g:highlightedyank_highlight_duration = 200
 
+" 실수/충돌 가능성이 높은 것만 제외
+let g:anyobject_excluded = "anyDocument"
+
 let g:dial_include = "basic,numbers,dates,java,javascript" "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인 지원에 따라 설정 활성 유무 정할 것.
 " let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 " let g:qs_primary_color = '#ff0000'
@@ -248,9 +251,11 @@ nmap <leader>ub <Action>(QuickChangeScheme)
 " 인레이 힌트 토글
 " nmap <leader>uh :echo '인레이 힌트 토글에 해당하는 매핑이 없습니다.'<cr>
 " Lazygit (루트 디렉토리)
-nmap <leader>gg <Action>(ActivateCommitToolWindow)
+" nmap <leader>gg <Action>(ActivateCommitToolWindow)
+nmap <leader>gg <Action>(Lazygit.Toggle)
 " Lazygit (현재 작업 디렉토리)
-nmap <leader>gG <Action>(ActivateCommitToolWindow)
+" nmap <leader>gG <Action>(ActivateCommitToolWindow)
+nmap <leader>gG <Action>(Lazygit.ToggleCurrentDir)
 " Git Blame 줄
 nmap <leader>gb <Action>(Annotate)
 " Git Browse
