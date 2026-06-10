@@ -14,11 +14,12 @@
 | tmux config | `config/tmux/.tmux.conf` | Validate with tmux dry parse. |
 | Editor/Vim config | `config/editors/`, `config/zed/` | Shared editor integration and Zed Vim mode. |
 | Terminal/system config | `config/ghostty/`, `config/kitty/`, `config/system/` | Ghostty, Kitty, Starship, Fastfetch, MCP config. |
-| Fonts | `assets/fonts/` | Copied to `~/Library/Fonts` on macOS. |
+| Fonts | `assets/fonts/` | Copied to `~/Library/Fonts` on macOS and `~/.local/share/fonts` on Linux. |
 
 ## CONVENTIONS
 
 - `install.sh` symlinks most config into `$HOME`; preserve idempotency and parent-directory creation.
+- Linux desktop runs this installer from `os/linux/desktop/install.sh`; keep Linux font installation safe and guarded by `fc-cache` availability.
 - zsh module load order matters: `env`, `plugins`, `aliases`, `bindings`, `functions`, local overrides, Starship, tmux auto-start.
 - Keep private aliases, server names, tokens, and machine-specific values in `~/.zshrc.local`, not tracked files.
 - `git-wrapper.sh` is made executable by the installer before linking.

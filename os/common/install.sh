@@ -76,7 +76,13 @@ if [ "$(uname -s)" == "Darwin" ]; then
     FONT_DIR="$HOME/Library/Fonts"
     mkdir -p "$FONT_DIR"
     cp -fv "$PROJECT_ROOT/os/common/assets/fonts/"* "$FONT_DIR/"
+elif [ "$(uname -s)" == "Linux" ]; then
+    FONT_DIR="$HOME/.local/share/fonts"
+    mkdir -p "$FONT_DIR"
+    cp -fv "$PROJECT_ROOT/os/common/assets/fonts/"* "$FONT_DIR/"
+    if command -v fc-cache >/dev/null 2>&1; then
+        fc-cache -f "$FONT_DIR"
+    fi
 fi
-# Add logic for Linux font installation if needed
 
 echo "--- Common setup finished ---"
