@@ -1,0 +1,99 @@
+set $mod Mod1
+set $term sh -lc 'command -v ghostty >/dev/null 2>&1 && exec ghostty || exec kitty'
+set $menu wofi --show drun --allow-images
+set $browser google-chrome
+set $files sh -lc 'command -v nautilus >/dev/null 2>&1 && exec nautilus || exec thunar'
+set $screenshot grim -g "$(slurp)" - | swappy -f -
+set $ws_a A
+set $ws_b B
+set $ws_c C
+set $ws_d D
+set $ws_f F
+set $ws_i I
+set $ws_n N
+set $ws_t T
+set $ws_w W
+set $ws_z Z
+
+font pango:D2Coding 10
+
+exec mako
+exec waybar
+exec wl-paste --type text --watch cliphist store
+exec wl-paste --type image --watch cliphist store
+
+gaps inner 5
+gaps outer 5
+default_border pixel 2
+hide_edge_borders smart
+focus_follows_mouse yes
+mouse_warping output
+
+workspace $ws_a
+
+bindsym $mod+Return exec $term
+bindsym $mod+space exec $menu
+bindsym $mod+Ctrl+v exec cliphist list | wofi --dmenu | cliphist decode | wl-copy
+bindsym $mod+Ctrl+e exec $files
+bindsym $mod+Shift+s exec $screenshot
+bindsym $mod+Ctrl+q kill
+bindsym $mod+Shift+r reload
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+Ctrl+f fullscreen toggle
+bindsym $mod+Shift+0 balance
+
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+bindsym $mod+a workspace $ws_a
+bindsym $mod+b workspace $ws_b
+bindsym $mod+c workspace $ws_c
+bindsym $mod+d workspace $ws_d
+bindsym $mod+f workspace $ws_f
+bindsym $mod+i workspace $ws_i
+bindsym $mod+n workspace $ws_n
+bindsym $mod+t workspace $ws_t
+bindsym $mod+w workspace $ws_w
+bindsym $mod+z workspace $ws_z
+
+bindsym $mod+Shift+a move container to workspace $ws_a; workspace $ws_a
+bindsym $mod+Shift+b move container to workspace $ws_b; workspace $ws_b
+bindsym $mod+Shift+c move container to workspace $ws_c; workspace $ws_c
+bindsym $mod+Shift+d move container to workspace $ws_d; workspace $ws_d
+bindsym $mod+Shift+f move container to workspace $ws_f; workspace $ws_f
+bindsym $mod+Shift+i move container to workspace $ws_i; workspace $ws_i
+bindsym $mod+Shift+n move container to workspace $ws_n; workspace $ws_n
+bindsym $mod+Shift+t move container to workspace $ws_t; workspace $ws_t
+bindsym $mod+Shift+w move container to workspace $ws_w; workspace $ws_w
+bindsym $mod+Shift+z move container to workspace $ws_z; workspace $ws_z
+
+mode "resize" {
+    bindsym h resize shrink width 20px
+    bindsym j resize grow height 20px
+    bindsym k resize shrink height 20px
+    bindsym l resize grow width 20px
+    bindsym Left resize shrink width 20px
+    bindsym Down resize grow height 20px
+    bindsym Up resize shrink height 20px
+    bindsym Right resize grow width 20px
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+Ctrl+r mode "resize"
+
+input type:keyboard {
+    xkb_layout us,kr
+    xkb_options grp:alt_shift_toggle
+}
+
+output * bg #1e1e2e solid_color
+
+include /etc/sway/config.d/*

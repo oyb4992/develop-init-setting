@@ -1,0 +1,27 @@
+window {
+  background-color: #1e1e2e;
+  color: #cdd6f4;
+  font-family: D2Coding, Noto Sans CJK KR, sans-serif;
+  font-size: 14px;
+}
+
+#input {
+  margin: 12px;
+  padding: 8px;
+  border: 1px solid #89b4fa;
+  background-color: #11111b;
+  color: #cdd6f4;
+}
+
+#inner-box {
+  margin: 0 12px 12px;
+}
+
+#entry {
+  padding: 8px;
+}
+
+#entry:selected {
+  background-color: #89b4fa;
+  color: #11111b;
+}

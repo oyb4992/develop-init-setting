@@ -1,0 +1,9 @@
+com.google.Chrome
+dev.zed.Zed
+md.obsidian.Obsidian
+com.getpostman.Postman
+com.github.tchx84.Flatseal
+io.github.flattool.Warehouse
+org.gnome.Showtime
+org.gnome.World.PikaBackup
+org.telegram.desktop
