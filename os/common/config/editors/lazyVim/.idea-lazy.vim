@@ -604,18 +604,18 @@ nmap <leader>g<C-n> <Plug>AllOccurrences
 xmap <leader>g<C-n> <Plug>AllOccurrences
 
 " 현재 설정에 추가할 surround 단축키들
-nmap <leader>s' ysiw'
-nmap <leader>s" ysiw"
-nmap <leader>s( ysiw(
-nmap <leader>s{ ysiw{
-nmap <leader>s[ ysiw[
-nmap <leader>s` ysiw`
+nmap <leader>z' ysiw'
+nmap <leader>z" ysiw"
+nmap <leader>z( ysiw(
+nmap <leader>z{ ysiw{
+nmap <leader>z[ ysiw[
+nmap <leader>z` ysiw`
 
 " 줄 전체 감싸기
-nmap <leader>S' yss'
-nmap <leader>S" yss"
-nmap <leader>S( yss(
-nmap <leader>S{ yss{
+nmap <leader>Z' yss'
+nmap <leader>Z" yss"
+nmap <leader>Z( yss(
+nmap <leader>Z{ yss{
 
 " 경로/참조 복사
 " <leader>y 를 사용하여 복사 기능과 유사하게 매핑
@@ -645,7 +645,6 @@ let g:WhichKeyDesc_g = "<leader>g Git"
 let g:WhichKeyDesc_c = "<leader>c 코드/LSP"
 let g:WhichKeyDesc_b = "<leader>b 버퍼"
 let g:WhichKeyDesc_s = "<leader>s 검색/정보"
-let g:WhichKeyDesc_S = "<leader>S 줄 감싸기"
 let g:WhichKeyDesc_d = "<leader>d 디버그"
 let g:WhichKeyDesc_t = "<leader>t 테스트"
 let g:WhichKeyDesc_x = "<leader>x 문제/Todo"
@@ -656,9 +655,10 @@ let g:WhichKeyDesc_E = "<leader>E 현재 파일 프로젝트에서 선택"
 let g:WhichKeyDesc_K = "<leader>K 단어 도움말"
 let g:WhichKeyDesc_M = "<leader>M 마크"
 let g:WhichKeyDesc_y = "<leader>y 경로/참조 복사"
+let g:WhichKeyDesc_z = "<leader>z 단어 감싸기"
+let g:WhichKeyDesc_Z = "<leader>Z 줄 감싸기"
 let g:WhichKeyDesc_tab = "<leader><tab> 탭/레이아웃"
-let g:WhichKeyDesc_vi = "<leader>vi ideavimrc 열기"
-let g:WhichKeyDesc_vs = "<leader>vs ideavimrc 다시 로드"
+let g:WhichKeyDesc_v = "<leader>v ideavimrc 관리"
 
 " ------------------------------------------------------------
 " Common leader mappings
@@ -673,6 +673,12 @@ let g:WhichKeyDesc_minus = "<leader>- 아래 창 분할"
 let g:WhichKeyDesc_vbar = "<leader>| 오른쪽 창 분할"
 let g:WhichKeyDesc_C_n = "<leader><C-n> 모든 단어 선택"
 let g:WhichKeyDesc_esc = "<esc> 검색 강조 지우기"
+
+" ------------------------------------------------------------
+" IdeaVim: <leader>v
+" ------------------------------------------------------------
+let g:WhichKeyDesc_vi = "<leader>vi ideavimrc 열기"
+let g:WhichKeyDesc_vs = "<leader>vs ideavimrc 다시 로드"
 
 " ------------------------------------------------------------
 " Windows: <leader>w
@@ -758,7 +764,6 @@ let g:WhichKeyDesc_be = "<leader>be 프로젝트 창"
 " ------------------------------------------------------------
 " Search / Info: <leader>s
 " ------------------------------------------------------------
-let g:WhichKeyDesc_s_double_quote = '<leader>s" 단어를 "로 감싸기'
 let g:WhichKeyDesc_sb = "<leader>sb 버퍼 선택"
 let g:WhichKeyDesc_sc = "<leader>sc 명령 기록"
 let g:WhichKeyDesc_sC = "<leader>sC 액션 찾기"
@@ -784,16 +789,18 @@ let g:WhichKeyDesc_sW_visual = "<leader>sW 선택 검색"
 let g:WhichKeyDesc_st = "<leader>st Todo 추가"
 let g:WhichKeyDesc_snd = "<leader>snd 알림 지우기"
 
-" Surround shortcuts under <leader>s
-let g:WhichKeyDesc_s_single_quote = "<leader>s' 단어를 '로 감싸기"
-let g:WhichKeyDesc_s_paren = "<leader>s( 단어를 ()로 감싸기"
-let g:WhichKeyDesc_s_brace = "<leader>s{ 단어를 {}로 감싸기"
-let g:WhichKeyDesc_s_bracket = "<leader>s[ 단어를 []로 감싸기"
-let g:WhichKeyDesc_s_backtick = "<leader>s` 단어를 ``로 감싸기"
-let g:WhichKeyDesc_S_single_quote = "<leader>S' 줄을 '로 감싸기"
-let g:WhichKeyDesc_S_double_quote = '<leader>S" 줄을 "로 감싸기'
-let g:WhichKeyDesc_S_paren = "<leader>S( 줄을 ()로 감싸기"
-let g:WhichKeyDesc_S_brace = "<leader>S{ 줄을 {}로 감싸기"
+" Surround shortcuts under <leader>z
+let g:WhichKeyDesc_z_double_quote = '<leader>z" 단어를 "로 감싸기'
+let g:WhichKeyDesc_z_single_quote = "<leader>z' 단어를 '로 감싸기"
+let g:WhichKeyDesc_z_paren = "<leader>z( 단어를 ()로 감싸기"
+let g:WhichKeyDesc_z_brace = "<leader>z{ 단어를 {}로 감싸기"
+let g:WhichKeyDesc_z_bracket = "<leader>z[ 단어를 []로 감싸기"
+let g:WhichKeyDesc_z_backtick = "<leader>z` 단어를 ``로 감싸기"
+" Surround shortcuts under <leader>Z
+let g:WhichKeyDesc_Z_single_quote = "<leader>Z' 줄을 '로 감싸기"
+let g:WhichKeyDesc_Z_double_quote = '<leader>Z" 줄을 "로 감싸기'
+let g:WhichKeyDesc_Z_paren = "<leader>Z( 줄을 ()로 감싸기"
+let g:WhichKeyDesc_Z_brace = "<leader>Z{ 줄을 {}로 감싸기"
 
 " ------------------------------------------------------------
 " Debug: <leader>d
