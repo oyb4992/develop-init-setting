@@ -22,6 +22,15 @@ if command -v mise >/dev/null 2>&1; then
   export MISE_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/mise"
   eval "$(mise activate zsh)"
 fi
+# # nvm fallback 예시
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+#
+# # sdkman 사용 환경
+# if [ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]; then
+#   source "$HOME/.sdkman/bin/sdkman-init.sh"
+# fi
 
 # 3. FZF 기본 위젯 로드
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
