@@ -64,19 +64,19 @@ install_flatpak_packages() {
         return
     fi
 
-    echo "Configuring Flathub remote..."
-    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    echo "Configuring user Flathub remote..."
+    flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
     echo "Installing Flatpak desktop apps..."
     while IFS= read -r package || [[ -n "$package" ]]; do
         [[ -z "$package" || "$package" == \#* ]] && continue
-        flatpak install -y --noninteractive flathub "$package" || echo "WARN: Failed to install Flatpak package: $package"
+        flatpak --user install -y --noninteractive flathub "$package" || echo "WARN: Failed to install Flatpak package: $package"
     done < "$packages_file"
 }
 
 install_snap_packages() {
     local packages_file="$DESKTOP_DIR/packages/snap.txt"
-    local package
+    local package_line
 
     if [ ! -f "$packages_file" ]; then
         echo "WARN: Snap package list not found: $packages_file"
@@ -89,9 +89,10 @@ install_snap_packages() {
     fi
 
     echo "Installing Snap desktop apps..."
-    while IFS= read -r package || [[ -n "$package" ]]; do
-        [[ -z "$package" || "$package" == \#* ]] && continue
-        $SUDO snap install "$package" || echo "WARN: Failed to install Snap package: $package"
+    while IFS= read -r package_line || [[ -n "$package_line" ]]; do
+        [[ -z "$package_line" || "$package_line" == \#* ]] && continue
+        read -r -a snap_args <<< "$package_line"
+        $SUDO snap install "${snap_args[@]}" || echo "WARN: Failed to install Snap package: $package_line"
     done < "$packages_file"
 }
 
