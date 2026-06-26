@@ -1,6 +1,6 @@
 # Ubuntu Linux 환경
 
-Linux 설정은 기본 VPS 프로파일과 Ubuntu 26.04 GUI 데스크톱 프로파일로 나뉩니다. 기본값은 OpenClaw 운영용 개인 VPS를 위한 가벼운 터미널 설정이며, GUI 데스크톱은 명시적으로 선택할 때만 적용합니다.
+Linux 설정은 기본 VPS 설치 흐름과 Ubuntu 26.04 GUI 데스크톱 설치 흐름으로 나뉩니다. 기본값은 OpenClaw 운영용 개인 VPS를 위한 가벼운 터미널 설정이며, GUI 데스크톱은 명시적으로 선택할 때만 적용합니다.
 
 ## VPS 설치
 
@@ -17,15 +17,15 @@ LINUX_PROFILE=vps ./install.sh
 APPLY_SECURITY=1 CHANGE_SHELL=1 ./install.sh
 ```
 
-## Ubuntu 26.04 GUI 데스크톱 설치
+## Ubuntu 26.04 KDE Plasma 데스크톱 설치
 
-Sway 기반 Wayland 타일링 데스크톱은 별도 프로파일입니다. macOS의 AeroSpace/Raycast/상태바 흐름을 Sway/Wofi/Waybar 조합으로 옮깁니다.
+KDE Plasma 기반 Wayland 데스크톱 설치 흐름입니다. macOS의 공통 터미널/에디터 설정은 재사용하되, 런처와 패널, 알림, 스크린샷은 Plasma 기본 도구를 사용합니다.
 
 ```bash
 LINUX_PROFILE=desktop ./install.sh
 ```
 
-데스크톱 프로파일은 `os/common/install.sh`도 함께 실행해서 공통 zsh, tmux, Starship, 에디터 설정과 폰트를 재사용합니다. 자세한 내용은 `desktop/README.md`를 참고하세요.
+데스크톱 설치 흐름은 `os/common/install.sh`도 함께 실행해서 공통 zsh, tmux, Starship, 에디터 설정과 폰트를 재사용합니다. 자세한 내용은 `desktop/README.md`를 참고하세요.
 
 ## VPS 포함 도구
 
@@ -61,4 +61,4 @@ SSH daemon 설정은 자동으로 덮어쓰지 않습니다. 먼저 `config/ssh/
 
 ## 데스크톱 패키지 정책
 
-GUI 데스크톱은 APT를 기본으로 사용하고, 앱 성격에 따라 Flatpak과 Snap을 보조로 사용합니다. Ubuntu 26.04 패키지 availability가 설치 시점의 source에 따라 달라질 수 있으므로 apt 패키지는 현재 source에 없는 항목을 건너뛰고 경고만 출력합니다.
+KDE 데스크톱은 APT를 기본으로 사용하고, 앱 성격에 따라 Flatpak과 Snap을 보조로 사용합니다. Ubuntu 26.04 패키지 availability가 설치 시점의 source에 따라 달라질 수 있으므로 apt 패키지는 현재 source에 없는 항목을 건너뛰고 경고만 출력합니다.
