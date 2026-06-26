@@ -2,7 +2,7 @@
 
 ## OVERVIEW
 
-`os/` owns platform boundaries: shared dotfiles in `common`, automated macOS/Linux installers, a separate Ubuntu desktop profile, and manual Windows config storage.
+`os/` owns platform boundaries: shared dotfiles in `common`, automated macOS/Linux installers, a separate Ubuntu desktop install mode, and manual Windows config storage.
 
 ## STRUCTURE
 
@@ -10,7 +10,7 @@
 os/
 |-- common/     # reusable config linked by common installer
 |-- macos/      # Homebrew and macOS app configs
-|-- linux/      # Ubuntu/Debian VPS profile plus explicit desktop profile
+|-- linux/      # Ubuntu/Debian VPS setup plus explicit desktop install mode
 `-- windows/    # manual Windows files; no automated installer
 ```
 
@@ -27,7 +27,7 @@ os/
 ## CONVENTIONS
 
 - Keep reusable config in `common`; do not duplicate common zsh/tmux/editor settings in platform folders.
-- The root dispatcher is intentionally asymmetric: macOS runs `macos/install.sh` then `common/install.sh`; Linux defaults to `linux/install.sh`, while `LINUX_PROFILE=desktop` runs the desktop profile.
+- The root dispatcher is intentionally asymmetric: macOS runs `macos/install.sh` then `common/install.sh`; Linux defaults to `linux/install.sh`, while `LINUX_PROFILE=desktop` runs the desktop install mode.
 - Platform installers use Bash and should stay safe to rerun.
 - Any new platform side effect needs both installer output and README/AGENTS documentation.
 
@@ -35,7 +35,7 @@ os/
 
 - Do not add platform-specific app config to `common`.
 - Do not make Windows look automated unless `install.sh` really handles it.
-- Do not hide security, sudo, shell-change, desktop package-manager, or profile-specific side effects behind default behavior.
+- Do not hide security, sudo, shell-change, desktop package-manager, or install-mode-specific side effects behind default behavior.
 
 ## COMMANDS
 
@@ -45,5 +45,4 @@ zsh -n os/common/config/zsh/.zshrc
 zsh -n os/linux/config/zsh/.zshrc
 tmux source-file -n os/common/config/tmux/.tmux.conf
 tmux source-file -n os/linux/config/tmux/.tmux.conf
-sway --validate --config os/linux/desktop/config/sway/config
 ```

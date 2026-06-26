@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-echo "--- Starting Ubuntu desktop setup ---"
+echo "--- Starting Ubuntu KDE Plasma desktop setup ---"
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 DESKTOP_DIR=$SCRIPT_DIR
@@ -11,16 +11,6 @@ SUDO=sudo
 if [ "$(id -u)" -eq 0 ]; then
     SUDO=
 fi
-
-link_file() {
-    local source_path=$1
-    local target_path=$2
-    local target_dir
-
-    target_dir=$(dirname "$target_path")
-    mkdir -p "$target_dir"
-    ln -sfv "$source_path" "$target_path"
-}
 
 install_apt_packages() {
     local packages_file="$DESKTOP_DIR/packages/apt.txt"
@@ -38,7 +28,7 @@ install_apt_packages() {
         exit 1
     fi
 
-    echo "Installing Ubuntu desktop apt packages..."
+    echo "Installing Ubuntu KDE Plasma desktop apt packages..."
     $SUDO apt-get update
 
     while IFS= read -r package || [[ -n "$package" ]]; do
@@ -127,12 +117,7 @@ else
     echo "WARN: Common setup script not found, skipping."
 fi
 
-echo "Linking Ubuntu desktop configurations..."
-link_file "$DESKTOP_DIR/config/sway/config" "$HOME/.config/sway/config"
-link_file "$DESKTOP_DIR/config/waybar/config.json" "$HOME/.config/waybar/config.json"
-link_file "$DESKTOP_DIR/config/waybar/style.css" "$HOME/.config/waybar/style.css"
-link_file "$DESKTOP_DIR/config/wofi/config" "$HOME/.config/wofi/config"
-link_file "$DESKTOP_DIR/config/wofi/style.css" "$HOME/.config/wofi/style.css"
+echo "Skipping KDE Plasma config linking. Plasma stores user state in shared config files; keep shortcut and panel changes manual."
 
 install_flatpak_packages
 install_snap_packages
@@ -140,11 +125,11 @@ configure_shell
 
 echo ""
 echo "=========================================="
-echo "    Ubuntu Desktop Setup Complete!        "
+echo "    Ubuntu KDE Desktop Setup Complete!    "
 echo "=========================================="
 echo "Next steps:"
-echo "1. Log out and choose the Sway session from the display manager."
-echo "2. Press Alt+Enter for a terminal or Alt+Space for the wofi launcher."
-echo "3. Use Alt+h/j/k/l for focus and Alt+Shift+h/j/k/l to move windows."
+echo "1. Log out and choose the Plasma session from the display manager."
+echo "2. Use KRunner (Alt+Space by default) for app launching."
+echo "3. Review KDE shortcuts in System Settings if you want AeroSpace-style bindings."
 echo "4. Reboot if Snap, Flatpak, fonts, or session entries do not appear immediately."
 echo ""

@@ -70,7 +70,7 @@ case "$OS" in
                 ;;
             desktop)
                 if [ -f "$SCRIPT_DIR/os/linux/desktop/install.sh" ]; then
-                    echo "INFO: Running Ubuntu desktop setup script..."
+                    echo "INFO: Running Ubuntu KDE desktop setup script..."
                     bash "$SCRIPT_DIR/os/linux/desktop/install.sh"
                 else
                     echo "ERROR: Ubuntu desktop setup script not found." >&2
@@ -78,8 +78,8 @@ case "$OS" in
                 fi
                 ;;
             *)
-                echo "ERROR: Unsupported Linux profile: $LINUX_PROFILE" >&2
-                echo "INFO: Supported profiles: vps, desktop" >&2
+                echo "ERROR: Unsupported Linux install mode: $LINUX_PROFILE" >&2
+                echo "INFO: Supported install modes: vps, desktop" >&2
                 exit 1
                 ;;
         esac

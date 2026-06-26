@@ -16,7 +16,7 @@ develop-init-setting/
 |-- os/
 |   |-- common/             # reusable dotfiles/assets linked into $HOME
 |   |-- macos/              # Homebrew packages and macOS app configs
-|   |-- linux/              # Ubuntu/Debian VPS profile
+|   |-- linux/              # Ubuntu/Debian VPS setup
 |   `-- windows/            # manual-only Windows configs
 |-- services/n8n/           # local n8n compose service; data is runtime state
 |-- docs/                   # general notes
@@ -30,8 +30,8 @@ develop-init-setting/
 | Top-level bootstrap flow | `install.sh` | macOS runs macOS then common; Linux defaults to VPS, or desktop with `LINUX_PROFILE=desktop`; Windows is manual. |
 | Shared shell/editor/terminal config | `os/common/` | Symlinked dotfiles and copied font assets. Linux desktop also reuses this installer. |
 | macOS packages and app config | `os/macos/` | Homebrew, AeroSpace, Hammerspoon, Karabiner, PopClip, Raycast. |
-| Ubuntu VPS setup | `os/linux/` | apt packages, zsh/tmux profile, SSH hardening example, security gates. |
-| Ubuntu GUI desktop setup | `os/linux/desktop/` | Sway, Waybar, Wofi, Wayland clipboard/screenshot tools, Flatpak/Snap package lists. |
+| Ubuntu VPS setup | `os/linux/` | apt packages, zsh/tmux config, SSH hardening example, security gates. |
+| Ubuntu GUI desktop setup | `os/linux/desktop/` | KDE Plasma desktop packages, KDE portal, shared dotfiles, Flatpak/Snap package lists. |
 | Windows manual config | `os/windows/` | Not automated by `install.sh`. |
 | Local n8n service | `services/n8n/` | Compose and docs only; ignore data and local `.env`. |
 | General docs | `README.md`, `docs/` | Update README tree when structure changes. |
@@ -63,7 +63,7 @@ develop-init-setting/
 - Do not commit secrets, tokens, private `.env` files, runtime DBs, caches, or machine credentials.
 - Do not treat `services/n8n/data/` or n8n backups as source material.
 - Do not automate Windows setup unless the dispatcher and docs are updated together.
-- Do not apply firewall, shell, Homebrew, quarantine, desktop package-manager, or sudo side effects without documenting the env flag/profile and expected impact.
+- Do not apply firewall, shell, Homebrew, quarantine, desktop package-manager, or sudo side effects without documenting the env flag/install mode and expected impact.
 - Do not overwrite SSH daemon config automatically; `os/linux/config/ssh/sshd_config.example` is review material.
 
 ## COMMANDS
@@ -79,7 +79,6 @@ zsh -n os/linux/config/zsh/.zshrc
 tmux source-file -n os/common/config/tmux/.tmux.conf
 tmux source-file -n os/linux/config/tmux/.tmux.conf
 aerospace reload-config --dry-run
-sway --validate --config os/linux/desktop/config/sway/config
 docker compose -f services/n8n/docker-compose.yml up -d
 git clean -ndX
 ```
