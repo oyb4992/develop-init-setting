@@ -1,6 +1,14 @@
+# Browser and communication
+com.google.Chrome
+org.telegram.desktop
+
+# Editors and notes
 dev.zed.Zed
 md.obsidian.Obsidian
+
+# Development utilities
+me.iepure.devtoolbox
 com.github.tchx84.Flatseal
-io.github.flattool.Warehouse
-org.gnome.Showtime
-org.gnome.World.PikaBackup
+
+# Media
+org.nickvision.tubeconverter
