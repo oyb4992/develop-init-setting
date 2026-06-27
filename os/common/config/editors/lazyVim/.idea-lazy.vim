@@ -192,7 +192,6 @@ nmap <leader>bm <Action>(MoveEditorToOppositeTabGroup)
 " IntelliJ 액션 'Change Splitter Orientation' 호출
 nmap <leader>bc <Action>(ChangeSplitOrientation)
 " Escape 및 hlsearch 지우기
-nmap <esc> :nohlsearch<CR>
 nmap <leader>ur :nohlsearch<CR>
 " Keywordprg
 nmap <leader>K :help<space><C-r><C-w><CR>

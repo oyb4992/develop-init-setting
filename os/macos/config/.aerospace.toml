@@ -371,9 +371,9 @@ run = [
 if.app-id = "com.apple.mail"  # Mail
 run = "move-node-to-workspace --focus-follows-window C"  # 'C' 워크스페이스로 이동
 
-# [[on-window-detected]]
-# if.app-id = 'com.utmapp.UTM'                            # UTM (가상화)
-# run = 'move-node-to-workspace --focus-follows-window W' # 'W' 워크스페이스로 이동
+[[on-window-detected]]
+if.app-id = "com.utmapp.UTM"  # UTM (가상화)
+run = "move-node-to-workspace --focus-follows-window W"  # 'W' 워크스페이스로 이동
 
 # [[on-window-detected]]
 # if.app-id = 'com.vmware.fusion'                         # VMware Fusion (가상화)
