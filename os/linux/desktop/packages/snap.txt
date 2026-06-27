@@ -1,2 +1,5 @@
 # Terminal
 ghostty
+
+# Development utilities
+postman
