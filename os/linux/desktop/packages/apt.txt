@@ -32,7 +32,6 @@ brightnessctl
 playerctl
 fonts-noto-color-emoji
 fontconfig
-kitty
 flatpak
 snapd
 zsh
