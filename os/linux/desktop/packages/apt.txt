@@ -1,6 +1,8 @@
+# KDE Plasma desktop
 plasma-desktop
 plasma-workspace
 plasma-discover
+plasma-discover-backend-flatpak
 plasma-nm
 plasma-pa
 plasma-systemmonitor
@@ -15,26 +17,32 @@ kde-config-screenlocker
 dolphin
 konsole
 kate
-spectacle
+kde-spectacle
 ark
 okular
 gwenview
 kcalc
 kdeconnect
+kio-gdrive
+libreoffice
+haruna
+onedrive
+
+# Desktop integration
 wl-clipboard
 xdg-desktop-portal-gtk
 polkitd
 dbus-user-session
 network-manager
 bluedevil
-pavucontrol
 brightnessctl
 playerctl
 fonts-noto-color-emoji
 fontconfig
-kitty
 flatpak
 snapd
+
+# Shared shell and terminal tools
 zsh
 tmux
 neovim
@@ -51,13 +59,39 @@ bat
 btop
 duf
 ncdu
-htop
 httpie
 lnav
 tree
 eza
 zoxide
 starship
+
+# CLI and development tools mirrored from the macOS Brewfile
+aria2
+atuin
+cabextract
+chntpw
+genisoimage
+gh
+ghostscript
+git-filter-repo
+golang-docker-credential-helpers
+imagemagick
+lazygit
+lua5.4
+luarocks
+lynx
+pkgconf
+qemu-system-x86
+qemu-utils
+radare2
+rbenv
+shunit2
+tree-sitter-cli
+watchman
+wimtools
+
+# Language runtimes and containers
 python3
 python3-pip
 pipx
