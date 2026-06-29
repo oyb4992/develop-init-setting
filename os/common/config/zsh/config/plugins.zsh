@@ -78,7 +78,7 @@ zstyle ':fzf-tab:complete:*' fzf-preview '
     eza --icons=auto --group-directories-first --color=always "$realpath" 2>/dev/null || ls -la "$realpath"
   elif [[ -f "$realpath" ]]; then
     if file --mime "$realpath" | grep -q "text/"; then
-      bat --color=always --style=numbers --line-range=:200 "$realpath" 2>/dev/null || sed -n "1,200p" "$realpath"
+      ${BAT_COMMAND:-bat} --color=always --style=numbers --line-range=:200 "$realpath" 2>/dev/null || sed -n "1,200p" "$realpath"
     else
       file "$realpath"
     fi

@@ -1,0 +1,52 @@
+# ~/.config/ghostty/config
+
+# ─── Theme ────────────────────────────────
+theme = Atom One Dark
+
+# ─── Font ─────────────────────────────────
+font-family = "Hack Nerd Font Mono"
+font-family = "Noto Sans CJK KR"
+font-size = 14
+
+# 코드 가독성
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig
+
+# ─── Window ───────────────────────────────
+window-padding-x = 12
+window-padding-y = 10
+window-decoration = true
+
+# ─── Background ───────────────────────────
+background-opacity = 0.92
+background-blur = 20
+
+# ─── Cursor ───────────────────────────────
+cursor-style = block
+cursor-style-blink = false
+cursor-click-to-move = true
+
+# ─── Mouse ────────────────────────────────
+mouse-hide-while-typing = true
+
+# ─── Clipboard ────────────────────────────
+copy-on-select = clipboard
+clipboard-paste-protection = true
+
+# ─── Scrollback ───────────────────────────
+scrollback-limit = 50000000
+
+# ─── Shell Integration ────────────────────
+shell-integration = zsh
+shell-integration-features = no-cursor,sudo,title
+
+# ─── tmux / LazyVim 역할 분리 ─────────────
+# pane 분할/이동은 tmux, 탭/윈도우는 Ghostty가 담당
+keybind = ctrl+shift+t=new_tab
+keybind = ctrl+shift+w=close_surface
+
+# 빠른 터미널 및 프롬프트 이동
+keybind = ctrl+shift+j=jump_to_prompt:-1
+keybind = ctrl+shift+k=jump_to_prompt:1
+keybind = ctrl+shift+o=write_scrollback_file:open

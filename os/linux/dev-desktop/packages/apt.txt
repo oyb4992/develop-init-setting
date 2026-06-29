@@ -1,0 +1,61 @@
+# Existing Ubuntu/KDE desktop development tools only.
+# This list intentionally avoids KDE Plasma, display-manager, Flatpak, and Snap packages.
+
+# Desktop terminal integration
+wl-clipboard
+fontconfig
+
+# Shared shell and terminal tools
+zsh
+tmux
+neovim
+git
+curl
+wget
+ca-certificates
+rsync
+fzf
+ripgrep
+fd-find
+jq
+bat
+btop
+duf
+ncdu
+httpie
+lnav
+tree
+eza
+zoxide
+
+# CLI and development tools mirrored from the macOS Brewfile when available in Ubuntu 24.04 apt
+aria2
+cabextract
+chntpw
+genisoimage
+gh
+ghostscript
+git-filter-repo
+golang-docker-credential-helpers
+imagemagick
+lua5.4
+luarocks
+lynx
+pkgconf
+qemu-system-x86
+qemu-utils
+radare2
+rbenv
+shunit2
+tree-sitter-cli
+watchman
+wimtools
+
+# Language runtimes and containers
+python3
+python3-pip
+pipx
+nodejs
+npm
+docker.io
+docker-compose-v2

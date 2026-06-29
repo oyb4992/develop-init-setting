@@ -13,8 +13,8 @@ fi
 # [영상 반영] FZF + FD + BAT Advanced Key Bindings
 # ------------------------------------------------------------------------------
 # Ctrl + T : 현재 폴더 하위의 모든 소스코드를 프리뷰 창과 함께 실시간 매핑 탐색
-if command -v bat >/dev/null 2>&1; then
-  export FZF_CTRL_T_OPTS="--preview 'bat --color=always --line-range=:500 {} 2>/dev/null || eza --tree --level=1 --icons=auto --color=always {} 2>/dev/null || ls -la {}'"
+if [[ -n "${BAT_COMMAND:-}" ]]; then
+  export FZF_CTRL_T_OPTS="--preview '$BAT_COMMAND --color=always --line-range=:500 {} 2>/dev/null || eza --tree --level=1 --icons=auto --color=always {} 2>/dev/null || ls -la {}'"
   export FZF_ALT_C_OPTS="--preview 'eza --tree --level=2 --icons=auto --color=always {} 2>/dev/null || ls -la {}'"
 fi
 
