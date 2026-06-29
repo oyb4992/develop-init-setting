@@ -27,15 +27,17 @@ fi
 function fzf-view() {
   fzf --preview '[[ $(file --mime {}) =~ binary ]] &&
                  echo {} is a binary file ||
-                 (bat --color=always {} || cat {}) 2> /dev/null | head -500'
+                 (${BAT_COMMAND:-bat} --color=always {} || cat {}) 2> /dev/null | head -500'
 }
 
 # Brew Services FZF Helpers
 function bstart() {
+  command -v brew >/dev/null 2>&1 || { echo "brew not found"; return 1; }
   local service_to_start=$(brew services list | awk 'NR>1 {print $1}' | fzf)
   [[ -n "$service_to_start" ]] && brew services start "$service_to_start"
 }
 function bstop() {
+  command -v brew >/dev/null 2>&1 || { echo "brew not found"; return 1; }
   local service_to_stop=$(brew services list | grep started | awk '{print $1}' | fzf)
   [[ -n "$service_to_stop" ]] && brew services stop "$service_to_stop"
 }

@@ -77,9 +77,18 @@ case "$OS" in
                     exit 1
                 fi
                 ;;
+            dev-desktop)
+                if [ -f "$SCRIPT_DIR/os/linux/dev-desktop/install.sh" ]; then
+                    echo "INFO: Running Ubuntu desktop development setup script..."
+                    bash "$SCRIPT_DIR/os/linux/dev-desktop/install.sh"
+                else
+                    echo "ERROR: Ubuntu desktop development setup script not found." >&2
+                    exit 1
+                fi
+                ;;
             *)
                 echo "ERROR: Unsupported Linux install mode: $LINUX_PROFILE" >&2
-                echo "INFO: Supported install modes: vps, desktop" >&2
+                echo "INFO: Supported install modes: vps, desktop, dev-desktop" >&2
                 exit 1
                 ;;
         esac

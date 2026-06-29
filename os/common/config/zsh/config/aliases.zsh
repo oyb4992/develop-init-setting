@@ -1,5 +1,9 @@
 # 기존에 쓰시던 오리지널 별칭 데이터 전체 유지
-alias python="$HOMEBREW_PREFIX/bin/python3"
+if [[ -n "${HOMEBREW_PREFIX:-}" && -x "$HOMEBREW_PREFIX/bin/python3" ]]; then
+  alias python="$HOMEBREW_PREFIX/bin/python3"
+elif command -v python3 >/dev/null 2>&1; then
+  alias python='python3'
+fi
 alias vim='nvim'
 alias vi='nvim'
 alias cdh="cd $HOME"
@@ -7,17 +11,25 @@ alias cdp="cd $PROJECT_ROOT"
 alias cdd="cd $PROJECT_ROOT/dev-init-setting/"
 alias cdw="cd $PROJECT_ROOT/worktrees/"
 alias cl="clear"
-alias b-maint='brew update && brew upgrade && brew cleanup --prune=all && brew doctor'
+if command -v brew >/dev/null 2>&1; then
+  alias b-maint='brew update && brew upgrade && brew cleanup --prune=all && brew doctor'
+  alias bsl='brew services list'
+fi
 alias ncc='npm cache clean --force'
-alias kd='killall Dock'
-alias bsl='brew services list'
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  alias kd='killall Dock'
+fi
 alias vds="cd $PROJECT_ROOT/dev-init-setting && vim ."
 alias vt='vim ~/.tmux.conf'
-alias mc='mole clean --dry-run'
+if command -v mole >/dev/null 2>&1; then
+  alias mc='mole clean --dry-run'
+fi
 alias vzh="vim $HOME/.zshrc"
 alias szh="source $HOME/.zshrc"
-alias cs="colima start"
-alias ct="colima stop"
+if command -v colima >/dev/null 2>&1; then
+  alias cs="colima start"
+  alias ct="colima stop"
+fi
 alias gcgl="git config --global --list"
 
 # Git shortcuts: oh-my-zsh git plugin에서 자주 쓰는 정적 별칭만 가볍게 유지
@@ -175,6 +187,6 @@ if command -v eza >/dev/null 2>&1; then
   alias lt='eza -al --tree --level=2 --icons=auto --group-directories-first --git'
 fi
 
-if command -v bat >/dev/null 2>&1; then
-  alias cat='bat'
+if [[ -n "${BAT_COMMAND:-}" ]]; then
+  alias cat="$BAT_COMMAND"
 fi

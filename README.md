@@ -24,7 +24,13 @@ Ubuntu VPS에서 방화벽과 기본 쉘 변경까지 함께 적용하려면 다
 APPLY_SECURITY=1 CHANGE_SHELL=1 ./install.sh
 ```
 
-Ubuntu 26.04 GUI 데스크톱에서 KDE Plasma 환경을 설치하려면 Linux 데스크톱 설치 모드를 명시합니다.
+이미 KDE Plasma가 설치된 Ubuntu 24.04 데스크톱에서 개발 도구와 공통 dotfile만 적용하려면 개발 데스크톱 모드를 명시합니다.
+
+```bash
+LINUX_PROFILE=dev-desktop ./install.sh
+```
+
+KDE Plasma 환경 자체를 설치하거나 보강하려면 Linux 데스크톱 설치 모드를 명시합니다.
 
 ```bash
 LINUX_PROFILE=desktop ./install.sh
@@ -66,6 +72,7 @@ dev-init-setting/
 │   │   │   ├── ssh/
 │   │   │   ├── tmux/
 │   │   │   └── zsh/
+│   │   ├── dev-desktop/
 │   │   ├── desktop/
 │   │   ├── packages/
 │   │   ├── README.md
@@ -90,7 +97,8 @@ dev-init-setting/
 - `os/macos/config/karabiner/`: Karabiner-Elements 키 리매핑
 - `os/macos/config/raycast/`: Raycast 백업과 script command
 - `os/linux/`: OpenClaw 운영용 Ubuntu VPS zsh, tmux, apt 패키지, SSH hardening 예시
-- `os/linux/desktop/`: Ubuntu 26.04 GUI용 KDE Plasma, 공통 dotfile, Flatpak/Snap 패키지
+- `os/linux/dev-desktop/`: 기존 Ubuntu/KDE Plasma 데스크톱용 개발 도구와 공통 dotfile
+- `os/linux/desktop/`: KDE Plasma 데스크톱 구성, 공통 dotfile, Flatpak/Snap 패키지
 - `services/n8n/`: 로컬 n8n Docker Compose 환경
 
 ## 설치 후 확인
@@ -123,11 +131,11 @@ systemctl status fail2ban
 sudo ufw status
 ```
 
-Ubuntu 데스크톱 설치 모드에서는 다음을 확인합니다.
+Ubuntu 데스크톱 모드에서는 다음을 확인합니다.
 
 ```bash
 # 설치 스크립트 문법 확인
-bash -n os/linux/desktop/install.sh
+bash -n os/linux/dev-desktop/install.sh os/linux/desktop/install.sh
 ```
 
 ## 로컬 생성물 정리 기준

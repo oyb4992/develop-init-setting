@@ -1,6 +1,8 @@
-# Ubuntu 26.04 KDE Plasma 데스크톱 환경
+# Ubuntu KDE Plasma 데스크톱 환경
 
-Ubuntu 26.04 Desktop에서 KDE Plasma 기반 GUI 환경을 구성하는 설치 흐름입니다. 기존 `os/linux/install.sh`의 VPS 설정은 기본값으로 유지하고, GUI 데스크톱은 명시적으로 선택할 때만 적용합니다.
+Ubuntu Desktop에서 KDE Plasma 기반 GUI 환경을 구성하는 설치 흐름입니다. 기존 `os/linux/install.sh`의 VPS 설정은 기본값으로 유지하고, GUI 데스크톱 구성은 명시적으로 선택할 때만 적용합니다.
+
+이미 KDE Plasma가 설치된 환경에 개발 도구와 공통 dotfile만 적용하려면 이 모드 대신 `LINUX_PROFILE=dev-desktop ./install.sh`를 사용하세요.
 
 ## 설치
 
@@ -38,7 +40,7 @@ KDE는 단축키와 패널 상태를 여러 사용자 설정 파일에 저장하
 
 APT 패키지는 `packages/apt.txt`에서 현재 apt source에 있는 항목만 설치합니다. Flatpak은 Flathub를 `--if-not-exists`로 등록한 뒤 `packages/flatpak.txt`를 설치합니다. Snap은 `packages/snap.txt`를 순서대로 설치하되 실패한 앱은 경고만 출력합니다.
 
-Ubuntu 26.04 패키지 구성은 설치 시점의 source에 따라 달라질 수 있으므로, 설치 스크립트는 없는 패키지를 건너뛰고 경고를 남기는 방식으로 유지합니다.
+Ubuntu 패키지 구성은 설치 시점의 source에 따라 달라질 수 있으므로, 설치 스크립트는 없는 패키지를 건너뛰고 경고를 남기는 방식으로 유지합니다.
 
 기능이 겹치면 KDE 기본 앱을 우선합니다. 미디어 재생은 Haruna, 압축 파일은 Ark, Flatpak 관리는 Discover, 오디오는 Plasma 설정, 프로세스 모니터링은 Plasma System Monitor와 btop을 사용합니다.
 
@@ -64,7 +66,7 @@ md.obsidian.Obsidian
 | Keynote, Numbers, Pages | LibreOffice |
 | Chrome, Ghostty, Obsidian, Postman, Telegram, Zed | Linux용 동일 앱 |
 
-ChatGPT와 DeepL은 패키지 목록에 포함하지 않고 브라우저로 사용합니다. CloudMounter 기능이 추가로 필요하면 rclone을 수동 구성합니다. JetBrains Toolbox와 LM Studio는 이 설치기가 관리하지 않으므로 각 프로젝트의 공식 배포 파일로 수동 설치합니다. `ast-grep`, `bfg`, `grpcurl`, `mise`, `oci-cli`, `tectonic`, `uv`, `viu`, `websocat`, `yazi`는 Ubuntu 26.04 APT에 없어 각 프로젝트의 공식 설치 방법을 사용합니다. BetterTouchTool, Hammerspoon, Homerow, PopClip, LuLu 등 macOS 전용 앱은 포함하지 않습니다.
+ChatGPT와 DeepL은 패키지 목록에 포함하지 않고 브라우저로 사용합니다. CloudMounter 기능이 추가로 필요하면 rclone을 수동 구성합니다. JetBrains Toolbox와 LM Studio는 이 설치기가 관리하지 않으므로 각 프로젝트의 공식 배포 파일로 수동 설치합니다. `ast-grep`, `bfg`, `grpcurl`, `mise`, `oci-cli`, `tectonic`, `uv`, `viu`, `websocat`, `yazi`는 Ubuntu APT에 없을 수 있어 각 프로젝트의 공식 설치 방법을 사용합니다. BetterTouchTool, Hammerspoon, Homerow, PopClip, LuLu 등 macOS 전용 앱은 포함하지 않습니다.
 
 ## 설치 후 확인
 

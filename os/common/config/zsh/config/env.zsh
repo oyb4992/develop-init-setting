@@ -2,22 +2,48 @@
 typeset -U PATH
 
 # Essential & Base Environment PATH
-export HOMEBREW_PREFIX="/opt/homebrew"
-export PATH="$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin:$PATH"
+OS_NAME="$(uname -s)"
+
+if [[ "$OS_NAME" == "Darwin" ]]; then
+  export HOMEBREW_PREFIX="${HOMEBREW_PREFIX:-/opt/homebrew}"
+elif command -v brew >/dev/null 2>&1; then
+  export HOMEBREW_PREFIX="${HOMEBREW_PREFIX:-$(brew --prefix)}"
+else
+  export HOMEBREW_PREFIX="${HOMEBREW_PREFIX:-}"
+fi
+
+if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/bin" ]]; then
+  export PATH="$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin:$PATH"
+fi
+
 export LANG=en_US.UTF-8
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
 # Runtimes PATH
-export ANDROID_HOME="$HOME/Library/Android/sdk"
-export PATH="$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools"
+if [[ -z "${ANDROID_HOME:-}" ]]; then
+  if [[ "$OS_NAME" == "Darwin" ]]; then
+    export ANDROID_HOME="$HOME/Library/Android/sdk"
+  elif [[ -d "$HOME/Android/Sdk" ]]; then
+    export ANDROID_HOME="$HOME/Android/Sdk"
+  fi
+fi
+
+if [[ -n "${ANDROID_HOME:-}" ]]; then
+  export PATH="$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools"
+fi
+
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="$PATH:$HOME/.dotnet/tools"
-export DOTNET_ROOT="$HOMEBREW_PREFIX/opt/dotnet@8/libexec"
-export PATH="$HOMEBREW_PREFIX/opt/luajit/bin:$PATH"
+if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/opt/dotnet@8/libexec" ]]; then
+  export DOTNET_ROOT="$HOMEBREW_PREFIX/opt/dotnet@8/libexec"
+fi
+if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/opt/luajit/bin" ]]; then
+  export PATH="$HOMEBREW_PREFIX/opt/luajit/bin:$PATH"
+fi
 export PATH="$PATH:$HOME/.lmstudio/bin"
-export PROJECT_ROOT="$HOME/IdeaProjects/"
+export PROJECT_ROOT="${PROJECT_ROOT:-$HOME/IdeaProjects}"
 
 # [경량화 핵심] 강력한 Zsh 히스토리 세부 옵션
 export HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/zsh/history"
@@ -40,11 +66,25 @@ export ENHANCD_ENABLE_HOME=0
 export ATUIN_NOBIND="true"
 
 # [영상 추천] Man 페이지 가독성을 높여주는 bat 페이저 설정
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+if command -v bat >/dev/null 2>&1; then
+  export BAT_COMMAND="bat"
+elif command -v batcat >/dev/null 2>&1; then
+  export BAT_COMMAND="batcat"
+fi
+
+if [[ -n "${BAT_COMMAND:-}" ]]; then
+  export MANPAGER="sh -c 'col -bx | $BAT_COMMAND -l man -p'"
+fi
 
 # [영상 추천] FZF가 파일을 찾을 때 기본 find 대신 fd를 사용하도록 설정 (숨김 파일 포함, .git 제외)
 if command -v fd >/dev/null 2>&1; then
-  export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
+  export FD_COMMAND="fd"
+elif command -v fdfind >/dev/null 2>&1; then
+  export FD_COMMAND="fdfind"
+fi
+
+if [[ -n "${FD_COMMAND:-}" ]]; then
+  export FZF_DEFAULT_COMMAND="$FD_COMMAND --type f --strip-cwd-prefix --hidden --follow --exclude .git"
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-  export FZF_ALT_C_COMMAND='fd --type d --strip-cwd-prefix --hidden --follow --exclude .git'
+  export FZF_ALT_C_COMMAND="$FD_COMMAND --type d --strip-cwd-prefix --hidden --follow --exclude .git"
 fi

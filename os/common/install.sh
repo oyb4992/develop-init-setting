@@ -57,7 +57,11 @@ link_file "$PROJECT_ROOT/os/common/config/editors/lazyVim/.idea-lazy.vim" "$HOME
 link_file "$PROJECT_ROOT/os/common/config/editors/lazyVim/.idea-lazy.vim" "$HOME/.ideavimrc"
 
 # Ghostty
-link_file "$PROJECT_ROOT/os/common/config/ghostty/config.ghostty" "$HOME/.config/ghostty/config"
+GHOSTTY_CONFIG="$PROJECT_ROOT/os/common/config/ghostty/config.ghostty"
+if [ "$(uname -s)" = "Linux" ] && [ -f "$PROJECT_ROOT/os/common/config/ghostty/config.linux.ghostty" ]; then
+    GHOSTTY_CONFIG="$PROJECT_ROOT/os/common/config/ghostty/config.linux.ghostty"
+fi
+link_file "$GHOSTTY_CONFIG" "$HOME/.config/ghostty/config"
 
 # Starship
 link_file "$PROJECT_ROOT/os/common/config/system/starship/starship.toml" "$HOME/.config/starship.toml"
