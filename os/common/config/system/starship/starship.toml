@@ -1,12 +1,11 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 add_newline = false
-scan_timeout = 30
 command_timeout = 1000
 
 format = """
 [░▒▓](#a3aed2)\
-[  ](bg:#a3aed2 fg:#090c0c)\
+$os\
 [](bg:#769ff0 fg:#a3aed2)\
 $username\
 $hostname\
@@ -14,18 +13,17 @@ $shell\
 $directory\
 [](fg:#769ff0 bg:#394260)\
 $git_branch\
+$git_state\
 $git_status\
 [](fg:#394260 bg:#212736)\
 $nodejs\
 $package\
 $java\
 $gradle\
-$maven\
 $rust\
 $golang\
 $php\
 $docker_context\
-$mise\
 $sudo\
 [](fg:#212736 bg:#1d2230)\
 $jobs\
@@ -33,6 +31,11 @@ $cmd_duration\
 $time\
 [ ](fg:#1d2230)\
 \n$status$character"""
+
+[os]
+disabled = false
+style = "fg:#090c0c bg:#a3aed2"
+format = "[ $symbol]($style)"
 
 [directory]
 style = "fg:#e3e5e5 bg:#769ff0"
@@ -48,123 +51,84 @@ truncation_symbol = "…/"
 
 [git_branch]
 symbol = ""
-style = "bg:#394260"
-format = '[[ $symbol $branch ](fg:#7dcfff bg:#394260)]($style)'
+style = "fg:#7dcfff bg:#394260"
+format = "[ $symbol $branch ]($style)"
+
+[git_state]
+style = "fg:#e0af68 bg:#394260"
+format = "[ $state( $progress_current/$progress_total) ]($style)"
 
 [git_status]
-style = "bg:#394260"
-format = '[[ $all_status$ahead_behind ](fg:#f7768e bg:#394260)]($style)'
+style = "fg:#f7768e bg:#394260"
+format = "[ $all_status$ahead_behind ]($style)"
 
 [nodejs]
 symbol = ""
-style = "bg:#212736"
-format = '[[ $symbol Node ($version) ](fg:#9ece6a bg:#212736)]($style)'
-detect_extensions = ["js", "mjs", "cjs", "jsx", "ts", "mts", "cts", "tsx"]
-detect_files = ["package.json", ".node-version", ".nvmrc", "tsconfig.json", "vite.config.js", "vite.config.ts", "next.config.js", "next.config.ts"]
-detect_folders = ["node_modules"]
-
-# [bun]
-# symbol = ""
-# style = "bg:#212736"
-# format = '[[ $symbol Bun ($version) ](fg:#ff9e64 bg:#212736)]($style)'
+style = "fg:#9ece6a bg:#212736"
+format = "[ $symbol Node ($version) ]($style)"
 
 [package]
-disabled = false
 display_private = true
 symbol = "󰏗"
-style = "bg:#212736"
-format = '[[ $symbol ($version) ](fg:#c0caf5 bg:#212736)]($style)'
+style = "fg:#c0caf5 bg:#212736"
+format = "[ $symbol ($version) ]($style)"
 
 [java]
 symbol = ""
-style = "bg:#212736"
-format = '[[ $symbol Java ($version) ](fg:#e0af68 bg:#212736)]($style)'
-detect_extensions = ["java", "class", "gradle", "jar", "clj", "cljs", "cljc"]
-detect_files = ["pom.xml", "build.gradle", "build.gradle.kts", "settings.gradle", "settings.gradle.kts", "gradlew", "build.sbt", ".java-version", "deps.edn", "project.clj", "build.boot", ".sdkmanrc"]
+style = "fg:#e0af68 bg:#212736"
+format = "[ $symbol Java ($version) ]($style)"
+detect_extensions = ["java", "class", "gradle", "jar"]
+detect_files = ["build.gradle", "build.gradle.kts", "settings.gradle", "settings.gradle.kts", "gradlew", ".java-version", ".sdkmanrc"]
 
 [gradle]
-disabled = false
 symbol = ""
-style = "bg:#212736"
-format = '[[ $symbol Gradle ($version) ](fg:#7dcfff bg:#212736)]($style)'
+style = "fg:#7dcfff bg:#212736"
+format = "[ $symbol Gradle ($version) ]($style)"
 detect_extensions = ["gradle", "gradle.kts"]
 detect_files = ["build.gradle", "build.gradle.kts", "settings.gradle", "settings.gradle.kts", "gradlew"]
 detect_folders = ["gradle"]
 
-[maven]
-disabled = false
-symbol = ""
-style = "bg:#212736"
-format = '[[ $symbol Maven ($version) ](fg:#7dcfff bg:#212736)]($style)'
-detect_files = ["pom.xml"]
-detect_folders = [".mvn"]
-
 [rust]
 symbol = ""
-style = "bg:#212736"
-format = '[[ $symbol Rust ($version) ](fg:#f7768e bg:#212736)]($style)'
+style = "fg:#f7768e bg:#212736"
+format = "[ $symbol Rust ($version) ]($style)"
 
 [golang]
 symbol = ""
-style = "bg:#212736"
-format = '[[ $symbol Go ($version) ](fg:#7dcfff bg:#212736)]($style)'
+style = "fg:#7dcfff bg:#212736"
+format = "[ $symbol Go ($version) ]($style)"
 
 [php]
 symbol = ""
-style = "bg:#212736"
-format = '[[ $symbol PHP ($version) ](fg:#bb9af7 bg:#212736)]($style)'
+style = "fg:#bb9af7 bg:#212736"
+format = "[ $symbol PHP ($version) ]($style)"
 
 [docker_context]
-disabled = false
 symbol = ""
-style = "bg:#212736"
-format = '[[ $symbol Docker ($context) ](fg:#7aa2f7 bg:#212736)]($style)'
-
-#[aws]
-#disabled = false
-#force_display = false
-#symbol = ""
-#style = "bg:#212736"
-#format = '[[ $symbol AWS ($profile)(\($region\)) ](fg:#e0af68 bg:#212736)]($style)'
-#
-#[aws.region_aliases]
-#ap-northeast-2 = "kr"
-#ap-northeast-1 = "jp"
-#us-east-1 = "use1"
-#us-west-2 = "usw2"
-
-[mise]
-disabled = false
-symbol = "󱁤"
-healthy_symbol = ""
-unhealthy_symbol = ""
-style = "bg:#212736"
-format = '[[ $symbol $health ](fg:#bb9af7 bg:#212736)]($style)'
+style = "fg:#7aa2f7 bg:#212736"
+format = "[ $symbol Docker ($context) ]($style)"
 
 [sudo]
 disabled = false
 symbol = "󰌾"
-style = "bg:#212736"
-format = '[[ $symbol ](fg:#f7768e bg:#212736)]($style)'
+style = "fg:#f7768e bg:#212736"
+format = "[ $symbol ]($style)"
 
 [jobs]
-disabled = false
 symbol = " "
-symbol_threshold = 1
-number_threshold = 2
-style = "bg:#1d2230"
-format = '[[ $symbol$number ](fg:#7dcfff bg:#1d2230)]($style)'
+style = "fg:#7dcfff bg:#1d2230"
+format = "[ $symbol$number ]($style)"
 
 [cmd_duration]
 min_time = 1000
-style = "bg:#1d2230"
-format = '[[  $duration ](fg:#e0af68 bg:#1d2230)]($style)'
+style = "fg:#e0af68 bg:#1d2230"
+format = "[  $duration ]($style)"
 
 [time]
 disabled = false
 time_format = "%R"
-style = "bg:#1d2230"
-format = '[[  $time ](fg:#a0a9cb bg:#1d2230)]($style)'
+style = "fg:#a0a9cb bg:#1d2230"
+format = "[  $time ]($style)"
 
 [status]
 disabled = false
@@ -172,12 +136,10 @@ symbol = ""
 format = '[$symbol $status ](bold fg:#f7768e)'
 
 [username]
-show_always = false
 style_user = "fg:#c0caf5 bg:#769ff0"
 format = '[  $user ]($style)'
 
 [hostname]
-ssh_only = true
 style = "fg:#7dcfff bg:#769ff0"
 format = '[@$hostname ]($style)'
 
@@ -185,7 +147,5 @@ format = '[@$hostname ]($style)'
 disabled = false
 bash_indicator = "bash"
 zsh_indicator = "zsh"
-fish_indicator = "fish"
 style = "fg:#c0caf5 bg:#769ff0"
 format = '[$indicator ]($style)'
-
