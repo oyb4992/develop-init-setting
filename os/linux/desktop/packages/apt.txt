@@ -3,6 +3,7 @@ plasma-desktop
 plasma-workspace
 plasma-discover
 plasma-discover-backend-flatpak
+kpackagetool6
 plasma-nm
 plasma-pa
 plasma-systemmonitor

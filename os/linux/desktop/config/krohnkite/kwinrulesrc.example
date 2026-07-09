@@ -1,0 +1,98 @@
+# WARNING: Reference only. Never copy this file over ~/.config/kwinrulesrc.
+# The uppercase *_RESOURCE_CLASS and DESKTOP_*_UUID values are intentional edit sentinels.
+# Inspect local windows for their resource classes and inspect ~/.config/kwinrc for the
+# generated Id_1 through Id_10 desktop UUIDs. Merge only selected rules through:
+# System Settings > Window Management > Window Rules.
+
+[General]
+rules=route-ai-to-a,route-browser-to-b,route-communication-to-c,route-docs-to-d,route-files-to-f,route-ide-to-i,route-notes-to-n,route-terminal-to-t,route-vm-to-w,route-misc-to-z
+
+[route-ai-to-a]
+Description=Route selected AI app to workspace A
+Enabled=true
+desktops=DESKTOP_A_UUID
+desktopsrule=3
+wmclass=AI_RESOURCE_CLASS
+wmclasscomplete=false
+wmclassmatch=1
+
+[route-browser-to-b]
+Description=Route selected browser app to workspace B
+Enabled=true
+desktops=DESKTOP_B_UUID
+desktopsrule=3
+wmclass=BROWSER_RESOURCE_CLASS
+wmclasscomplete=false
+wmclassmatch=1
+
+[route-communication-to-c]
+Description=Route selected communication app to workspace C
+Enabled=true
+desktops=DESKTOP_C_UUID
+desktopsrule=3
+wmclass=COMMUNICATION_RESOURCE_CLASS
+wmclasscomplete=false
+wmclassmatch=1
+
+[route-docs-to-d]
+Description=Route selected documentation app to workspace D
+Enabled=true
+desktops=DESKTOP_D_UUID
+desktopsrule=3
+wmclass=DOCS_RESOURCE_CLASS
+wmclasscomplete=false
+wmclassmatch=1
+
+[route-files-to-f]
+Description=Route selected file manager to workspace F
+Enabled=true
+desktops=DESKTOP_F_UUID
+desktopsrule=3
+wmclass=FILES_RESOURCE_CLASS
+wmclasscomplete=false
+wmclassmatch=1
+
+[route-ide-to-i]
+Description=Route selected IDE to workspace I
+Enabled=true
+desktops=DESKTOP_I_UUID
+desktopsrule=3
+wmclass=IDE_RESOURCE_CLASS
+wmclasscomplete=false
+wmclassmatch=1
+
+[route-notes-to-n]
+Description=Route selected notes app to workspace N
+Enabled=true
+desktops=DESKTOP_N_UUID
+desktopsrule=3
+wmclass=NOTES_RESOURCE_CLASS
+wmclasscomplete=false
+wmclassmatch=1
+
+[route-terminal-to-t]
+Description=Route selected terminal app to workspace T
+Enabled=true
+desktops=DESKTOP_T_UUID
+desktopsrule=3
+wmclass=TERMINAL_RESOURCE_CLASS
+wmclasscomplete=false
+wmclassmatch=1
+
+[route-vm-to-w]
+Description=Route selected virtual machine app to workspace W
+Enabled=true
+desktops=DESKTOP_W_UUID
+desktopsrule=3
+wmclass=VM_RESOURCE_CLASS
+wmclasscomplete=false
+wmclassmatch=1
+
+[route-misc-to-z]
+Description=Route explicitly selected miscellaneous app to workspace Z (not a catch-all)
+Enabled=true
+desktops=DESKTOP_Z_UUID
+desktopsrule=3
+wmclass=MISC_RESOURCE_CLASS
+wmclasscomplete=false
+wmclassmatch=1
