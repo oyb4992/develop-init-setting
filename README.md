@@ -18,6 +18,31 @@ macOS에서 패키지만 먼저 설치하려면 다음을 실행합니다.
 brew bundle --file ./os/macos/packages/Brewfile
 ```
 
+## Docker MCP 설치 (macOS/Colima)
+
+이 저장소의 Brewfile은 Docker CLI와 Colima를 설치하지만, `docker mcp` CLI 플러그인은
+별도로 설치합니다. 먼저 설치 여부를 확인합니다.
+
+```bash
+docker mcp version
+```
+
+명령을 찾을 수 없으면 Docker MCP Gateway의 공식 소스를 빌드해 Docker CLI 플러그인
+경로(`~/.docker/cli-plugins/docker-mcp`)에 설치합니다.
+
+```bash
+brew install go
+git clone https://github.com/docker/mcp-gateway.git ~/src/docker-mcp-gateway
+cd ~/src/docker-mcp-gateway
+make docker-mcp
+
+docker mcp version
+```
+
+Docker Desktop 4.59 이상에서 MCP Toolkit을 활성화한 경우에는 플러그인이 이미 포함될 수
+있습니다. Colima처럼 Docker Desktop 없이 사용하거나 플러그인이 없을 때만 위 설치 절차를
+실행합니다.
+
 Ubuntu VPS에서 방화벽과 기본 쉘 변경까지 함께 적용하려면 다음처럼 실행합니다.
 
 ```bash
@@ -89,6 +114,8 @@ dev-init-setting/
 - `os/macos/config/hammerspoon/`: macOS 자동화 Lua 스크립트와 필요한 Spoon 패치
 - `os/macos/config/karabiner/`: Karabiner-Elements 키 리매핑
 - `os/macos/config/raycast/`: Raycast 백업과 script command
+- `os/macos/config/mcp/docker-gateway.sh`: Colima에서 GitHub와 Filesystem MCP를 제공하는 Docker MCP Gateway 실행 래퍼
+- `os/macos/config/docker/mcp/config.yaml`: Filesystem MCP의 접근 허용 경로 (`~/IdeaProjects`)
 - `os/linux/`: OpenClaw 운영용 Ubuntu VPS zsh, tmux, apt 패키지, SSH hardening 예시
 - `os/linux/desktop/`: Ubuntu 26.04 GUI용 KDE Plasma, 공통 dotfile, Flatpak/Snap 패키지
 - `services/n8n/`: 로컬 n8n Docker Compose 환경
@@ -107,6 +134,47 @@ tmux source-file -n os/common/config/tmux/.tmux.conf
 
 # AeroSpace 설정 확인
 aerospace reload-config --dry-run
+
+# Docker MCP Gateway (GitHub 토큰을 ~/.config/mcp/github.env에 설정한 뒤)
+~/.config/mcp/docker-gateway.sh --dry-run
+```
+
+Docker MCP Gateway는 macOS 설치 시 `~/.config/mcp/docker-gateway.sh`와
+`~/.docker/mcp/config.yaml`으로 링크됩니다. `github.env`는 추적하지 않으며,
+`GITHUB_PERSONAL_ACCESS_TOKEN`은 별도로 보관합니다. GitHub 카탈로그에는 쓰기 도구도
+표시되므로 Fine-grained PAT에는 필요한 최소 권한만 부여합니다. Filesystem MCP는
+`~/IdeaProjects`만 접근하도록 제한됩니다.
+
+### GitHub 인증 파일 만들기
+
+GitHub의 Fine-grained personal access token을 생성할 때 리소스 소유자와 접근할 저장소를
+제한하고, 필요한 읽기 권한만 선택합니다. 토큰을 셸 히스토리에 남기지 않도록 아래 명령으로
+숨김 입력받아 `github.env`를 만듭니다.
+
+```bash
+mkdir -p ~/.config/mcp
+chmod 700 ~/.config/mcp
+
+printf 'GitHub fine-grained PAT: '
+read -r -s github_pat
+printf '\n'
+printf 'GITHUB_PERSONAL_ACCESS_TOKEN=%s\n' "$github_pat" > ~/.config/mcp/github.env
+unset github_pat
+chmod 600 ~/.config/mcp/github.env
+```
+
+파일에는 다음 한 줄만 들어갑니다. 실제 토큰은 저장소, 스크린샷, 채팅에 공유하지 않습니다.
+
+```dotenv
+GITHUB_PERSONAL_ACCESS_TOKEN=github_pat_...
+```
+
+Gateway를 실행하기 전에는 변수 이름과 파일 권한만 확인합니다. 토큰 값 자체를 출력하지
+않습니다.
+
+```bash
+cut -d= -f1 ~/.config/mcp/github.env
+stat -f '%Sp %N' ~/.config/mcp/github.env
 ```
 
 Ubuntu VPS에서는 다음을 확인합니다.

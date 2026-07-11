@@ -17,7 +17,8 @@ macos/
 
 | Task | Location | Notes |
 | --- | --- | --- |
-| macOS bootstrap | `install.sh` | Installs Homebrew packages and links app config. |
+| macOS bootstrap | `install.sh` | Installs Homebrew packages and links app config, including the Docker MCP Gateway. |
+| Docker MCP Gateway | `config/mcp/docker-gateway.sh`, `config/docker/mcp/config.yaml` | Colima Gateway wrapper with GitHub and filesystem servers; filesystem access is limited to `~/IdeaProjects`. |
 | Homebrew packages | `packages/Brewfile` | Update with `brew bundle dump --force` when intentional. |
 | Quarantine cleanup list | `packages/apps.txt` | Used only with `REMOVE_QUARANTINE=1`. |
 | AeroSpace | `config/.aerospace.toml` | Validate with `aerospace reload-config --dry-run`. |
@@ -32,6 +33,7 @@ macos/
 - `REMOVE_QUARANTINE=1` is intentionally opt-in because it uses sudo and changes app metadata.
 - Preserve Korean filenames in Raycast commands unless there is a user-facing reason to rename them.
 - Hammerspoon modules are loaded from `init.lua`; keep module names and linked filenames consistent.
+- Keep MCP secrets in the untracked `~/.config/mcp/github.env`; never add a token to the repository.
 
 ## ANTI-PATTERNS
 

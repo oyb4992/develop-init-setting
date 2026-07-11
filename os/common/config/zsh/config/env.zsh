@@ -36,6 +36,8 @@ export ENHANCD_FILTER="fzf --height 40% --reverse --border"
 export ENHANCD_DOT_SHOW_FULLPATH=1
 export ENHANCD_ENABLE_HOME=0
 export ATUIN_NOBIND="true"
+export DOCKER_MCP_USE_CE=true
+export DOCKER_MCP_IN_CONTAINER=1
 
 # [영상 추천] Man 페이지 가독성을 높여주는 bat 페이저 설정
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"

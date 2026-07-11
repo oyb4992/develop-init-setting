@@ -65,6 +65,10 @@ echo "Linking macOS-specific configurations..."
 # AeroSpace
 link_file "$MACOS_DIR/config/.aerospace.toml" "$HOME/.aerospace.toml"
 
+chmod +x "$MACOS_DIR/config/mcp/docker-gateway.sh"
+link_file "$MACOS_DIR/config/mcp/docker-gateway.sh" "$HOME/.config/mcp/docker-gateway.sh"
+link_file "$MACOS_DIR/config/docker/mcp/config.yaml" "$HOME/.docker/mcp/config.yaml"
+
 # Hammerspoon
 mkdir -p "$HOME/.hammerspoon"
 for lua_file in "$MACOS_DIR"/config/hammerspoon/*.lua; do
