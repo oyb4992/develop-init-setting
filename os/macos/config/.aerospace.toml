@@ -1,4 +1,8 @@
 # AeroSpace aerospace.toml (통합 설정 반영)
+
+config-version = 2
+persistent-workspaces = ["A", "B", "C", "D", "F", "I", "N", "T", "W", "Z"]
+
 # 이 설정 파일의 복사본을 ~/.aerospace.toml 로 저장하세요.
 # 그 후, ~/.aerospace.toml 파일을 원하는 대로 편집할 수 있습니다.
 
