@@ -13,7 +13,7 @@
 | zsh modules | `config/zsh/config/*.zsh` | Linked individually by `install.sh`. |
 | tmux config | `config/tmux/.tmux.conf` | Validate with tmux dry parse. |
 | Editor/Vim config | `config/editors/`, `config/zed/` | Shared editor integration and Zed Vim mode. |
-| Terminal/system config | `config/ghostty/`, `config/kitty/`, `config/system/` | Ghostty, Kitty, Starship, Fastfetch, MCP config. |
+| Terminal/system config | `config/ghostty/`, `config/kitty/`, `config/system/` | Ghostty, Kitty, Starship, Fastfetch. |
 | Fonts | `assets/fonts/` | Copied to `~/Library/Fonts` on macOS and `~/.local/share/fonts` on Linux. |
 
 ## CONVENTIONS
