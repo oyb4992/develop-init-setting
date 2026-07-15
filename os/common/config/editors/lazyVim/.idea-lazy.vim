@@ -115,12 +115,12 @@ set vim-paragraph-motion
 " let g:anyobject_excluded = "anyDocument"
 set anyobject "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인 지원에 따라 설정 활성 유무 정할 것.
 set dial "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인 지원에 따라 설정 활성 유무 정할 것.
-set textobj-indent
 set exchange
 
 " Indentwise와 Abolish는 IdeaVim 확장이라 직접 감지할 수 없습니다.
 " mouse는 2.42.0+의 실제 옵션이므로 회사 환경(2.27.2)과 최신 환경을 구분하는 기준으로 사용합니다.
 if exists('&mouse')
+  set VimEverywhere "AceJump 인텔리제이 플러그인 필요
   set indentwise
   set abolish
 
