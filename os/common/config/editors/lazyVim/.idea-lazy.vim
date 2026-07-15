@@ -74,8 +74,11 @@ set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
 set colorcolumn=80
 set cursorline
 set breakindent
-" 아래 옵션 사용은 Vim CmdFloat 플러그인을 비활성화 해야함.
-set inccommand=nosplit
+" 회사 IntelliJ IDEA 2025.1.7.1(빌드 251.29188.43)은 IdeaVim 2.27.2까지만 호환됩니다.
+" IdeaVim에서는 exists('&옵션명')으로 옵션을 검사합니다. 사용 시 Vim CmdFloat 플러그인을 비활성화해야 합니다.
+if exists('&inccommand')
+  set inccommand=nosplit
+endif
 
 " Vim과 다른 Neovim 설정
 " https://neovim.io/doc/user/diff.html
@@ -110,18 +113,33 @@ set vim-paragraph-motion
 " set argtextobj "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인 지원에 따라 설정 활성 유무 정할 것.
 set anyobject "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인 지원에 따라 설정 활성 유무 정할 것.
 set dial "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인 지원에 따라 설정 활성 유무 정할 것.
-set indentwise
-set abolish
+" Indentwise와 Abolish는 IdeaVim 확장이라 직접 감지할 수 없습니다.
+" mouse는 2.42.0+의 실제 옵션이므로 회사 환경(2.27.2)과 최신 환경을 구분하는 기준으로 사용합니다.
+if exists('&mouse')
+  set indentwise
+  set abolish
 
-" Visual 모드에서 선택 영역의 case 변환
-xmap <leader>rs <Plug>(abolish-coerce-snake)
-xmap <leader>rm <Plug>(abolish-coerce-pascal)
-xmap <leader>rc <Plug>(abolish-coerce-camel)
-xmap <leader>ru <Plug>(abolish-coerce-upper_snake)
-xmap <leader>rk <Plug>(abolish-coerce-kebab)
-xmap <leader>r. <Plug>(abolish-coerce-dot)
-xmap <leader>r<Space> <Plug>(abolish-coerce-space)
-xmap <leader>rt <Plug>(abolish-coerce-title)
+  " Visual 모드에서 선택 영역의 case 변환
+  xmap <leader>rs <Plug>(abolish-coerce-snake)
+  xmap <leader>rm <Plug>(abolish-coerce-pascal)
+  xmap <leader>rc <Plug>(abolish-coerce-camel)
+  xmap <leader>ru <Plug>(abolish-coerce-upper_snake)
+  xmap <leader>rk <Plug>(abolish-coerce-kebab)
+  xmap <leader>r. <Plug>(abolish-coerce-dot)
+  xmap <leader>r<Space> <Plug>(abolish-coerce-space)
+  xmap <leader>rt <Plug>(abolish-coerce-title)
+else
+  " 회사 환경 대체: String Manipulation 플러그인이 설치되어 있어야 합니다.
+  xmap <leader>rs <Action>(StringManipulation.ToSnakeCase)
+  xmap <leader>rm <Action>(StringManipulation.ToPascalCase)
+  xmap <leader>rc <Action>(StringManipulation.ToCamelCase)
+  xmap <leader>ru <Action>(StringManipulation.ToScreamingSnakeCase)
+  xmap <leader>rk <Action>(StringManipulation.ToKebabCase)
+  " 아래 세 액션은 대상 case와 camelCase 사이를 토글합니다.
+  xmap <leader>r. <Action>(StringManipulation.ToDotStyleAction)
+  xmap <leader>r<Space> <Action>(osmedile.intellij.stringmanip.styles.ToCamelCaseOrToWordLowercaseAction)
+  xmap <leader>rt <Action>(osmedile.intellij.stringmanip.ToCamelCaseAction)
+endif
 
 let g:highlightedyank_highlight_duration = 200
 
