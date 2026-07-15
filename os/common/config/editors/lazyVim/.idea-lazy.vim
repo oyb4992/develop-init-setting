@@ -111,8 +111,13 @@ set vim-paragraph-motion
 " set textobj-entire "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인 지원에 따라 설정 활성 유무 정할 것.
 " set functiontextobj "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인 지원에 따라 설정 활성 유무 정할 것.
 " set argtextobj "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인 지원에 따라 설정 활성 유무 정할 것.
+" 실수/충돌 가능성이 높은 것만 제외
+" let g:anyobject_excluded = "anyDocument"
 set anyobject "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인 지원에 따라 설정 활성 유무 정할 것.
 set dial "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인 지원에 따라 설정 활성 유무 정할 것.
+set textobj-indent
+set exchange
+
 " Indentwise와 Abolish는 IdeaVim 확장이라 직접 감지할 수 없습니다.
 " mouse는 2.42.0+의 실제 옵션이므로 회사 환경(2.27.2)과 최신 환경을 구분하는 기준으로 사용합니다.
 if exists('&mouse')
@@ -142,9 +147,6 @@ else
 endif
 
 let g:highlightedyank_highlight_duration = 200
-
-" 실수/충돌 가능성이 높은 것만 제외
-let g:anyobject_excluded = "anyDocument"
 
 let g:dial_include = "basic,numbers,dates,java,javascript" "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인 지원에 따라 설정 활성 유무 정할 것.
 " let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
