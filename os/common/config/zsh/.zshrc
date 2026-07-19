@@ -51,10 +51,27 @@ if command -v starship >/dev/null 2>&1; then
   eval "$(starship init zsh)"
 fi
 
-# 8. Tmux Auto Start - 순수 터미널 에뮬레이터 세션만 감지하여 무한 루프 완벽 방어
-if command -v tmux &> /dev/null && \
+# 8. Tmux Auto Start (disabled)
+# if command -v tmux &> /dev/null && \
+#    [ -z "$TMUX" ] && \
+#    [ -z "${SKIP_TMUX_AUTO_START:-}" ] && \
+#    ! is_zed_terminal_session && \
+#    [ -z "${TERMINAL_EMULATOR}" ] && \
+#    [ "${TERM_PROGRAM}" != "vscode" ] && \
+#    [ "${TERM_PROGRAM}" != "IntelliJ" ] && \
+#    [ -z "${INTELLIJ_ENVIRONMENT_READER}" ] && \
+#    [[ "$TERM" != "screen"* ]] && \
+#    [[ "$TERM" != "tmux"* ]]; then
+#
+#   # main 세션이 이미 존재하면 연결(Attach), 없으면 신규 생성
+#   tmux attach-session -t main 2>/dev/null || tmux new-session -s main
+# fi
+
+# 9. Herdr Auto Start - 순수 터미널 에뮬레이터 세션만 감지하여 중첩 실행 방어
+if command -v herdr >/dev/null 2>&1 && \
+   [ -z "${HERDR_ENV:-}" ] && \
+   [ -z "${SKIP_HERDR_AUTO_START:-}" ] && \
    [ -z "$TMUX" ] && \
-   [ -z "${SKIP_TMUX_AUTO_START:-}" ] && \
    ! is_zed_terminal_session && \
    [ -z "${TERMINAL_EMULATOR}" ] && \
    [ "${TERM_PROGRAM}" != "vscode" ] && \
@@ -62,8 +79,6 @@ if command -v tmux &> /dev/null && \
    [ -z "${INTELLIJ_ENVIRONMENT_READER}" ] && \
    [[ "$TERM" != "screen"* ]] && \
    [[ "$TERM" != "tmux"* ]]; then
-
-  # main 세션이 이미 존재하면 연결(Attach), 없으면 신규 생성
-  tmux attach-session -t main 2>/dev/null || tmux new-session -s main
+  herdr
 fi
 # zprof #zsh쉘 로딩 디버깅 모니터링 종료
