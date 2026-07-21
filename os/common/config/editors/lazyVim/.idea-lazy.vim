@@ -74,6 +74,7 @@ set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
 set colorcolumn=80
 set cursorline
 set breakindent
+set visualbell
 " 회사 IntelliJ IDEA 2025.1.7.1(빌드 251.29188.43)은 IdeaVim 2.27.2까지만 호환됩니다.
 " IdeaVim에서는 exists('&옵션명')으로 옵션을 검사합니다. 사용 시 Vim CmdFloat 플러그인을 비활성화해야 합니다.
 if exists('&inccommand')
@@ -120,7 +121,7 @@ set exchange
 " Indentwise와 Abolish는 IdeaVim 확장이라 직접 감지할 수 없습니다.
 " mouse는 2.42.0+의 실제 옵션이므로 회사 환경(2.27.2)과 최신 환경을 구분하는 기준으로 사용합니다.
 if exists('&mouse')
-  set VimEverywhere "AceJump 인텔리제이 플러그인 필요
+  set VimEverywhere "AceJump 인텔리제이 플러그인 필요. Ctrl+Cmd+\로 호출
   set indentwise
   set abolish
 
@@ -326,22 +327,22 @@ nmap <leader>wd <Action>(CloseContent)
 " 최대화 토글
 nmap <leader>wm <Action>(ToggleDistractionFreeMode)
 
-" 탭은 저장된 레이아웃으로 처리됩니다.
+" IntelliJ 에디터 탭으로 처리됩니다.
 
-" 마지막 탭
-nmap <leader><tab>l <Action>(StoreDefaultLayout)<Action>(ChangeToolWindowLayout)
+" 이전에 사용한 에디터
+nmap <leader><tab>l <C-^>
 " 다른 탭 닫기
-nmap <leader><tab>o <Action>(StoreDefaultLayout)<Action>(ChangeToolWindowLayout)
+nmap <leader><tab>o <Action>(CloseAllEditorsButActive)
 " 첫 번째 탭
-nmap <leader><tab>f <Action>(StoreDefaultLayout)<Action>(ChangeToolWindowLayout)
+nmap <leader><tab>f 1gt
 " 새 탭
 nmap <leader><tab>n <Action>(StoreDefaultLayout)<Action>(StoreNewLayout)
 " 다음 탭
-nmap <leader><tab>] <Action>(StoreDefaultLayout)<Action>(ChangeToolWindowLayout)
+nmap <leader><tab>] <Action>(NextTab)
 " 이전 탭
-nmap <leader><tab>[ <Action>(StoreDefaultLayout)<Action>(ChangeToolWindowLayout)
+nmap <leader><tab>[ <Action>(PreviousTab)
 " 탭 닫기
-nmap <leader><tab>c <Action>(StoreDefaultLayout)<Action>(ChangeToolWindowLayout)
+nmap <leader><tab>c <Action>(CloseContent)
 
 " LSP 키 매핑
 
@@ -692,7 +693,7 @@ let g:WhichKeyDesc_y = "<leader>y 경로/참조 복사"
 let g:WhichKeyDesc_r = "<leader>r 선택 영역 case 변환"
 let g:WhichKeyDesc_z = "<leader>z 단어 감싸기"
 let g:WhichKeyDesc_Z = "<leader>Z 줄 감싸기"
-let g:WhichKeyDesc_tab = "<leader><tab> 탭/레이아웃"
+let g:WhichKeyDesc_tab = "<leader><tab> 에디터 탭"
 let g:WhichKeyDesc_v = "<leader>v ideavimrc 관리"
 
 " ------------------------------------------------------------
@@ -707,7 +708,7 @@ let g:WhichKeyDesc_qq = "<leader>qq 종료"
 let g:WhichKeyDesc_minus = "<leader>- 아래 창 분할"
 let g:WhichKeyDesc_vbar = "<leader>| 오른쪽 창 분할"
 let g:WhichKeyDesc_C_n = "<leader><C-n> 모든 단어 선택"
-let g:WhichKeyDesc_esc = "<esc> 검색 강조 지우기"
+let g:WhichKeyDesc_ur = "<leader>ur 검색 강조 지우기"
 
 " ------------------------------------------------------------
 " IdeaVim: <leader>v
@@ -885,13 +886,13 @@ let g:WhichKeyDesc_tw = "<leader>tw 테스트 감시 토글"
 " ------------------------------------------------------------
 " Tabs / Layouts: <leader><tab>
 " ------------------------------------------------------------
-let g:WhichKeyDesc_tabl = "<leader><tab>l 마지막 탭"
-let g:WhichKeyDesc_tabo = "<leader><tab>o 다른 탭 닫기"
-let g:WhichKeyDesc_tabf = "<leader><tab>f 첫 번째 탭"
+let g:WhichKeyDesc_tabl = "<leader><tab>l 이전에 사용한 에디터"
+let g:WhichKeyDesc_tabo = "<leader><tab>o 다른 에디터 탭 닫기"
+let g:WhichKeyDesc_tabf = "<leader><tab>f 첫 번째 에디터 탭"
 let g:WhichKeyDesc_tabn = "<leader><tab>n 새 탭"
-let g:WhichKeyDesc_tabc = "<leader><tab>c 탭 닫기"
-let g:WhichKeyDesc_tab_square_right = "<leader><tab>] 다음 탭"
-let g:WhichKeyDesc_tab_square_left = "<leader><tab>[ 이전 탭"
+let g:WhichKeyDesc_tabc = "<leader><tab>c 에디터 탭 닫기"
+let g:WhichKeyDesc_tab_square_right = "<leader><tab>] 다음 에디터 탭"
+let g:WhichKeyDesc_tab_square_left = "<leader><tab>[ 이전 에디터 탭"
 
 " ------------------------------------------------------------
 " Problems / Todo: <leader>x
