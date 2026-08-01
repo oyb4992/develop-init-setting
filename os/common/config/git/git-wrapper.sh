@@ -1,13 +1,6 @@
-#!/bin/zsh
+#!/usr/bin/env bash
 
-# =======================================================
-# .zshrc에 Git Wrapper 적용 (IntelliJ와 동일한 로직 공유)
-# =======================================================
-# alias git="$HOME/git-wrapper.sh"
-
-# 1. 실제 Git 경로 (터미널에서 'which git'으로 확인한 경로)
-# 보통 Mac은 /usr/bin/git 또는 /opt/homebrew/bin/git
-REAL_GIT="/opt/homebrew/bin/git"
+REAL_GIT=$(command -v git)
 
 # -----------------------------------------------------------
 # [설정] 보호하고 싶은 프로젝트의 루트 경로들을 적어주세요.

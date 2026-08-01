@@ -48,7 +48,13 @@ for zsh_config_file in "$PROJECT_ROOT"/os/common/config/zsh/config/*.zsh; do
     link_file "$zsh_config_file" "$HOME/.config/zsh/$(basename "$zsh_config_file")"
 done
 
-# Git wrapper used by .zshrc
+link_file "$PROJECT_ROOT/os/common/config/bash/.bashrc" "$HOME/.bashrc"
+link_file "$PROJECT_ROOT/os/common/config/bash/.bash_profile" "$HOME/.bash_profile"
+mkdir -p "$HOME/.config/bash"
+for bash_config_file in "$PROJECT_ROOT"/os/common/config/bash/config/*.bash; do
+    link_file "$bash_config_file" "$HOME/.config/bash/$(basename "$bash_config_file")"
+done
+
 chmod +x "$PROJECT_ROOT/os/common/config/git/git-wrapper.sh"
 link_file "$PROJECT_ROOT/os/common/config/git/git-wrapper.sh" "$HOME/git-wrapper.sh"
 

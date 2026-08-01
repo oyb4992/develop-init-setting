@@ -67,6 +67,7 @@ dev-init-setting/
 │   ├── common/
 │   │   ├── assets/
 │   │   ├── config/
+│   │   │   ├── bash/
 │   │   │   ├── editors/
 │   │   │   ├── ghostty/
 │   │   │   ├── git/
@@ -104,6 +105,8 @@ dev-init-setting/
 
 ## 주요 설정
 
+- `os/common/config/bash/.bashrc`: ble.sh, fzf, atuin, zoxide, Starship, 공통 alias/function 설정
+- `os/common/config/bash/.bashrc.local.example`: Bash용 로컬 전용 설정 예시
 - `os/common/config/zsh/.zshrc`: zsh, mise, 직접 로드하는 zsh 플러그인, fzf, atuin, tmux 자동 시작
 - `os/common/config/zsh/.zshrc.local.example`: 개인 서버 alias처럼 repo에 넣지 않을 로컬 전용 설정 예시
 - `os/common/config/tmux/.tmux.conf`: tmux pane, copy-mode, Catppuccin, plugin 설정
@@ -120,6 +123,19 @@ dev-init-setting/
 - `os/linux/desktop/`: Ubuntu 26.04 GUI용 KDE Plasma, 공통 dotfile, Flatpak/Snap 패키지
 - `services/n8n/`: 로컬 n8n Docker Compose 환경
 
+## Bash와 ble.sh
+
+공통 Bash 설정은 ble.sh가 `${XDG_DATA_HOME:-$HOME/.local/share}/blesh/ble.sh`에 설치되어 있으면 자동으로 로드합니다. zsh의 autosuggestions, syntax highlighting, history substring search, fzf-tab에 해당하는 기능은 중복 플러그인 없이 ble.sh가 담당합니다. fzf 키 바인딩과 완성도 ble.sh 공식 통합을 사용합니다.
+
+ble.sh가 아직 없다면 공식 nightly build를 기본 경로에 설치합니다.
+
+```bash
+curl -L https://github.com/akinomyoga/ble.sh/releases/download/nightly/ble-nightly.tar.xz | tar xJf -
+bash ble-nightly/ble.sh --install ~/.local/share
+```
+
+ble.sh 자체는 Bash 3 이상을 지원하지만 자동 제안까지 사용하려면 Bash 4 이상이 필요합니다.
+
 ## 설치 후 확인
 
 ```bash
@@ -127,6 +143,7 @@ dev-init-setting/
 brew doctor
 
 # 쉘 설정 문법 확인
+bash -n os/common/config/bash/.bashrc os/common/config/bash/config/*.bash
 zsh -n os/common/config/zsh/.zshrc
 
 # tmux 설정 문법 확인
@@ -236,6 +253,6 @@ git status --short --ignored
 
 - 공유 가능한 설정은 repo에 둡니다.
 - 개인 토큰, `.env`, 런타임 DB, 캐시, 가상환경은 commit하지 않습니다.
-- 개인 서버 접속 alias처럼 노출되면 곤란한 값은 `~/.zshrc.local`에 둡니다.
+- 개인 서버 접속 alias처럼 노출되면 곤란한 값은 Bash에서 `~/.bashrc.local`, zsh에서 `~/.zshrc.local`에 둡니다.
 - 설치 스크립트는 멱등적으로 유지합니다.
 - OS 공통 설정은 `os/common`, 플랫폼 전용 설정은 `os/macos` 또는 `os/windows`에 둡니다.

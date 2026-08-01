@@ -75,6 +75,8 @@ set colorcolumn=80
 set cursorline
 set breakindent
 set visualbell
+" IdeaVim 2.44 버전 이후
+set idearefactormode=keep
 " 회사 IntelliJ IDEA 2025.1.7.1(빌드 251.29188.43)은 IdeaVim 2.27.2까지만 호환됩니다.
 " IdeaVim에서는 exists('&옵션명')으로 옵션을 검사합니다. 사용 시 Vim CmdFloat 플러그인을 비활성화해야 합니다.
 if exists('&inccommand')
