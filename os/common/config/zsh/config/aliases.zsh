@@ -18,9 +18,10 @@ alias vzh="vim $HOME/.zshrc"
 alias szh="source $HOME/.zshrc"
 alias cs="colima start"
 alias ct="colima stop"
-alias gcgl="git config --global --list"
+alias ld="lazydocker"
 
 # Git shortcuts: oh-my-zsh git plugin에서 자주 쓰는 정적 별칭만 가볍게 유지
+alias lg="lazygit"
 alias g="git"
 alias ga="git add"
 alias gaa="git add --all"
