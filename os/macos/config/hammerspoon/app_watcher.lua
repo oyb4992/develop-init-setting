@@ -4,6 +4,7 @@
 -- ========================================
 local config = require("config")
 local CONFIG = config.CONFIG
+local inputSourceManager = require("input_source_manager")
 
 local appWatcher = {}
 
@@ -124,6 +125,8 @@ local builtinActions = {
 				hs.keycodes.setMethod("2-Set Korean")
 			end
 		end
+
+		hs.timer.doAfter(0.05, inputSourceManager.showCurrentSource)
 	end,
 }
 

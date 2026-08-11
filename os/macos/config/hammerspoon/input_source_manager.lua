@@ -4,6 +4,7 @@
 -- ========================================
 local config = require("config")
 local CONFIG = config.CONFIG
+local inputSourceIndicator = require("input_source_indicator")
 
 local inputSourceManager = {}
 
@@ -62,6 +63,8 @@ local function toggleInputSource()
 			hs.keycodes.setLayout("ABC")
 		end
 	end
+
+	hs.timer.doAfter(0.05, inputSourceIndicator.showCurrentSource)
 end
 
 -- Vim 스타일 내비게이션: Fn+HJKL → 방향키 (내장 키보드 한정)
@@ -127,6 +130,7 @@ local function handleKeyDown(event)
 
 				if currentLayout ~= englishLayout then
 					hs.keycodes.setLayout("ABC")
+					hs.timer.doAfter(0.05, inputSourceIndicator.showCurrentSource)
 				end
 				break
 			end
@@ -199,7 +203,10 @@ function inputSourceManager.stop()
 	if flagsEventTap then
 		flagsEventTap:stop()
 	end
+	inputSourceIndicator.stop()
 	print("⌨️ 입력 소스 관리자 중지됨")
 end
+
+inputSourceManager.showCurrentSource = inputSourceIndicator.showCurrentSource
 
 return inputSourceManager
