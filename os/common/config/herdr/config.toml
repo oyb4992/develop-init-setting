@@ -1,3 +1,18 @@
+# 1. Herdr Agent Skill
+#npx skills add herdrdev/herdr --skill herdr -g
+
+# 2. herdr-plus
+#herdr plugin install cloudmanic/herdr-plus
+
+# 3. herdr-lazygit
+#herdr plugin install Crokily/herdr-lazygit
+
+# 4. worktree-seed
+#herdr plugin install jlimas/herdr-worktree-seed
+
+# 5. reviewr
+#herdr plugin install persiyanov/herdr-reviewr
+
 [keys]
 detach = "prefix+d"
 reload_config = "prefix+r"
@@ -15,16 +30,66 @@ command = "yazi"
 width = "50%"
 height = "90%"
 
+#herdr-file-viewer 플러그인 설정
+[[keys.command]]
+key = "prefix+f"
+type = "plugin_action"
+command = "herdr-file-viewer.open-file-viewer"
+description = "open file viewer in split"
+
+# herdr-plus Projects
+[[keys.command]]
+key = "prefix+up"
+type = "plugin_action"
+command = "cloudmanic.herdr-plus.projects"
+description = "Projects"
+
+# herdr-plus Quick Actions
+[[keys.command]]
+key = "prefix+down"
+type = "plugin_action"
+command = "cloudmanic.herdr-plus.quick-actions"
+description = "Quick Actions"
+
+# LazyGit sidebar
+[[keys.command]]
+key = "prefix+g"
+type = "plugin_action"
+command = "herdr-lazygit.open"
+description = "Lazygit"
+
+# LazyGit tab
+[[keys.command]]
+key = "prefix+shift+g"
+type = "plugin_action"
+command = "herdr-lazygit.open-tab"
+description = "Lazygit Tab"
+
+# Reviewr
+[[keys.command]]
+key = "prefix+alt+r"
+type = "plugin_action"
+command = "persiyanov.reviewr.toggle"
+description = "Code Review"
+
 [ui]
 mouse_scroll_lines = 5
 show_agent_labels_on_pane_borders = true
-
 agent_panel_sort = "spaces"
+
 [ui.sidebar.agents]
 rows = [
-  ["state_icon", "workspace", "tab"],
-  ["terminal_title_stripped"],
-  ["agent"],
+  [
+    "state_icon",
+    "workspace",
+    "tab",
+  ],
+  [
+    "terminal_title_stripped",
+  ],
+  [
+    "agent",
+  ],
 ]
 
 [experimental]

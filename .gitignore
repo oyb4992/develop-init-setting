@@ -36,3 +36,4 @@ n8n-backup/
 backups/
 .codex/
 *.patch
+/graphify-out
