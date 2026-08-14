@@ -13,7 +13,7 @@
 | zsh modules | `config/zsh/config/*.zsh` | Linked individually by `install.sh`. |
 | tmux config | `config/tmux/.tmux.conf` | Validate with tmux dry parse. |
 | Editor/Vim config | `config/editors/`, `config/zed/` | Shared editor integration and Zed Vim mode. |
-| Terminal/system config | `config/ghostty/`, `config/kitty/`, `config/system/` | Ghostty, Kitty, Starship, Fastfetch. |
+| Terminal/system config | `config/ghostty/`, `config/system/` | Ghostty and Starship. |
 | Fonts | `assets/fonts/` | Copied to `~/Library/Fonts` on macOS and `~/.local/share/fonts` on Linux. |
 
 ## CONVENTIONS
@@ -33,7 +33,7 @@
 ## COMMANDS
 
 ```bash
-bash -n os/common/install.sh os/common/config/zsh/install.sh os/common/config/kitty/install.sh
+bash -n os/common/install.sh os/common/config/zsh/install.sh
 zsh -n os/common/config/zsh/.zshrc
 tmux source-file -n os/common/config/tmux/.tmux.conf
 ```

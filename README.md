@@ -77,7 +77,6 @@ dev-init-setting/
 │   │   │   ├── editors/
 │   │   │   ├── ghostty/
 │   │   │   ├── git/
-│   │   │   ├── kitty/
 │   │   │   ├── system/
 │   │   │   ├── tmux/
 │   │   │   ├── zed/
@@ -119,7 +118,7 @@ dev-init-setting/
 - `os/common/config/tmux/.tmux.conf`: tmux pane, copy-mode, Catppuccin, plugin 설정
 - `os/common/config/ghostty/config.ghostty`: Ghostty 테마, 폰트, keybind, shell integration
 - `os/common/config/zed/`: Zed Vim mode와 LazyVim 스타일 keymap
-- `os/common/config/editors/`: Vim/IdeaVim/VS Code 연동 설정
+- `os/common/config/editors/`: IdeaVim 설정
 - `os/macos/config/.aerospace.toml`: AeroSpace workspace, window rule, keybind 설정
 - `os/macos/config/hammerspoon/`: macOS 자동화 Lua 스크립트와 필요한 Spoon 패치
 - `os/macos/config/karabiner/`: Karabiner-Elements 키 리매핑
