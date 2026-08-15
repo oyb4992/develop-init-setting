@@ -76,6 +76,7 @@ description = "Code Review"
 mouse_scroll_lines = 5
 show_agent_labels_on_pane_borders = true
 agent_panel_sort = "spaces"
+sidebar_min_width = 26
 
 [ui.sidebar.agents]
 rows = [
@@ -90,6 +91,17 @@ rows = [
   [
     "agent",
   ],
+]
+
+[ui.sidebar.spaces]
+row_gap = 0
+rows = [
+  ["state_icon", "workspace"],
+  ["branch", "git_status"],
+  ["$sys_path", "$sys_zoom", "$sys_prefix"],
+  ["$sys_cpu", "$sys_mem", "$sys_batt"],
+  ["$sys_net", "$sys_disk"],
+  ["$sys_date", "$sys_time"],
 ]
 
 [experimental]
