@@ -20,6 +20,9 @@
 # 7. vim-herdr-navigation
 #herdr plugin install paulbkim-dev/vim-herdr-navigation --yes
 
+# 8. herdr-spreader
+#herdr plugin install yuk1ty/herdr-spreader --yes
+
 [keys]
 detach = "prefix+d"
 reload_config = "prefix+r"
