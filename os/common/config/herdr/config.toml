@@ -13,6 +13,10 @@
 # 5. reviewr
 #herdr plugin install persiyanov/herdr-reviewr
 
+# 6. herdr-browser (macOS only)
+# Ubuntu 서버에서는 원격 SSH 프레임 대역폭이 높으므로 설치하지 않는다.
+#herdr plugin install ogulcancelik/herdr-browser --yes
+
 [keys]
 detach = "prefix+d"
 reload_config = "prefix+r"
@@ -93,5 +97,6 @@ rows = [
 ]
 
 [experimental]
+kitty_graphics = true
 pane_history = true
 switch_ascii_input_source_in_prefix = true
