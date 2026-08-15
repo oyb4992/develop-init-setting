@@ -38,6 +38,12 @@ width = "50%"
 height = "90%"
 
 [[keys.command]]
+key = "prefix+b"
+type = "shell"
+command = '"${HERDR_BIN_PATH}" plugin pane open --plugin official.browser --entrypoint browser --placement split --direction right --focus'
+description = "open browser in right split"
+
+[[keys.command]]
 key = "ctrl+h"
 type = "plugin_action"
 command = "vim-herdr-navigation.left"
