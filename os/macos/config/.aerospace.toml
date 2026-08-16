@@ -17,7 +17,7 @@ after-login-command = []
 after-startup-command = [
   # JankyBorders는 이미 실행 중인 프로세스를 감지하는 기능이 내장되어 있어,
   # AeroSpace 재시작 시 두 번 실행되지 않습니다.
-  "exec-and-forget borders active_color=0xff00ff00 inactive_color=0xff494d64 width=5.0",
+  "exec-and-forget borders active_color=0xFFA020F0 inactive_color=0xFF414550 width=6.0 style=round hidpi=on",
 ]
 
 # 로그인 시 AeroSpace 시작
@@ -290,7 +290,7 @@ if.app-id = "com.google.Chrome"  # Google Chrome
 run = "move-node-to-workspace --focus-follows-window B"  # 'B' 워크스페이스로 이동
 
 [[on-window-detected]]
-if.app-id = "com.openai.atlas"  # ChatGPT Atlas
+if.app-id = "at.studio.AsideBrowser"  # Aside
 run = "move-node-to-workspace --focus-follows-window B"  # 'B' 워크스페이스로 이동
 
 [[on-window-detected]]
