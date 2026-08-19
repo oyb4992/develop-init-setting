@@ -1,3 +1,6 @@
+# Kiro CLI pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh"
+
 # zmodload zsh/zprof #zsh쉘 로딩 디버깅 모니터링 시작
 # 분할된 설정 파일들 순차적 소싱 (의존 관계 순서 준수)
 ZSH_CONFIG_DIR="$HOME/.config/zsh"
@@ -82,3 +85,7 @@ if command -v herdr >/dev/null 2>&1 && \
   herdr
 fi
 # zprof #zsh쉘 로딩 디버깅 모니터링 종료
+
+
+# Kiro CLI post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"

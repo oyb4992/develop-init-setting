@@ -65,7 +65,6 @@ set hls
 set ignorecase
 set smartcase
 set ideajoin
-set idearefactormode=keep
 set list
 set showcmd
 set showmode
