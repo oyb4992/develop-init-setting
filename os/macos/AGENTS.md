@@ -18,8 +18,8 @@ macos/
 | Task | Location | Notes |
 | --- | --- | --- |
 | macOS bootstrap | `install.sh` | Installs Homebrew packages and links app config, including the Docker MCP Gateway. |
-| Docker MCP setup | `config/mcp/`, `config/docker/mcp/config.yaml` | Colima Gateway wrapper plus the legacy MCP setup script; filesystem access is limited to `~/IdeaProjects`. |
-| Homebrew packages | `packages/Brewfile` | Update with `brew bundle dump --force` when intentional. |
+| Docker MCP setup | `config/mcp/`, `config/docker/mcp/config.yaml` | Colima Gateway wrapper plus a legacy setup script not invoked by the installer; filesystem access is limited to `~/IdeaProjects`. |
+| Homebrew packages | `packages/Brewfile` | Dump installed state to `/tmp`, selectively merge intentional changes, then validate with `brew bundle check --no-upgrade`. |
 | Quarantine cleanup list | `packages/apps.txt` | Used only with `REMOVE_QUARANTINE=1`. |
 | AeroSpace | `config/.aerospace.toml` | Validate with `aerospace reload-config --dry-run`. |
 | Hammerspoon | `config/hammerspoon/*.lua` | Installer links sibling Lua files and tracked Spoons. |
@@ -39,13 +39,33 @@ macos/
 
 - Do not commit untracked Hammerspoon Spoon installs; only tracked patched Spoons belong here.
 - Do not treat PopClip signature or bundled output as normal source without checking the extension format.
-- Do not add Homebrew changes without noting whether `Brewfile` was dumped or manually edited.
+- Do not dump Homebrew state directly over the tracked Brewfile; `--force` overwrites comments and intentional exclusions.
+- Do not add Homebrew changes without reviewing the temporary dump against Git history and current intent.
 - Do not run quarantine removal by default.
 
-## COMMANDS
+## VALIDATION COMMANDS
 
 ```bash
 bash -n os/macos/install.sh os/macos/config/karabiner/install.sh
-brew bundle --file ./os/macos/packages/Brewfile
+brew bundle check --file ./os/macos/packages/Brewfile --no-upgrade
 aerospace reload-config --dry-run
+```
+
+## BREWFILE REFRESH
+
+The temporary dump is comparison input, not a replacement file. Merge only intentional package changes.
+
+```bash
+brew bundle dump --file=/tmp/Brewfile.current --force --no-describe
+diff -u os/macos/packages/Brewfile /tmp/Brewfile.current || true
+brew bundle check --file ./os/macos/packages/Brewfile --no-upgrade
+```
+
+## MUTATING COMMANDS
+
+Run only when the user explicitly requests package installation or quarantine changes.
+
+```bash
+brew bundle --file ./os/macos/packages/Brewfile
+REMOVE_QUARANTINE=1 ./install.sh
 ```
