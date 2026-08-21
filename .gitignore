@@ -6,6 +6,7 @@
 .cursor/
 .env
 .env.example
+!services/n8n/.env.example
 .roo/
 .roomodes
 .taskmasterconfig
@@ -30,6 +31,8 @@ os/macos/config/hammerspoon/Spoons/
 .n8n/
 **/n8n/data/
 **/n8n_local_setup/data/
+services/n8n/dummy_home/*
+!services/n8n/dummy_home/.gitkeep
 *.sqlite
 database.sqlite*
 n8n-backup/
