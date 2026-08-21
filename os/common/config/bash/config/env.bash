@@ -21,8 +21,12 @@ fi
 path_prepend "$HOME/.local/bin"
 path_prepend "$HOME/.antigravity/antigravity/bin"
 
-export BUN_INSTALL="$HOME/.bun"
-path_prepend "$BUN_INSTALL/bin"
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  export PNPM_HOME="${PNPM_HOME:-$HOME/Library/pnpm}"
+else
+  export PNPM_HOME="${PNPM_HOME:-${XDG_DATA_HOME:-$HOME/.local/share}/pnpm}"
+fi
+path_prepend "$PNPM_HOME"
 path_append "$HOME/.dotnet/tools"
 if [[ -n "${HOMEBREW_PREFIX:-}" ]]; then
   if [[ -d "$HOMEBREW_PREFIX/opt/dotnet@8/libexec" ]]; then

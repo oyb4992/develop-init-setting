@@ -33,8 +33,12 @@ if [[ -n "${ANDROID_HOME:-}" ]]; then
   export PATH="$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools"
 fi
 
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+if [[ "$OS_NAME" == "Darwin" ]]; then
+  export PNPM_HOME="${PNPM_HOME:-$HOME/Library/pnpm}"
+else
+  export PNPM_HOME="${PNPM_HOME:-${XDG_DATA_HOME:-$HOME/.local/share}/pnpm}"
+fi
+export PATH="$PNPM_HOME:$PATH"
 export PATH="$PATH:$HOME/.dotnet/tools"
 if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/opt/dotnet@8/libexec" ]]; then
   export DOTNET_ROOT="$HOMEBREW_PREFIX/opt/dotnet@8/libexec"

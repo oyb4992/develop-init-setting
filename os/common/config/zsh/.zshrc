@@ -43,18 +43,15 @@ if command -v atuin >/dev/null 2>&1; then
   eval "$(atuin init zsh --disable-up-arrow --disable-ctrl-r)"
 fi
 
-# 5. Bun Completions
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
-
-# 6. Local Overrides
+# 5. Local Overrides
 [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
 
-# 7. Theme (Starship 프롬프트) - 외부 프레임워크 의존성 없이 순수 구동되어 완벽 작동
+# 6. Theme (Starship 프롬프트) - 외부 프레임워크 의존성 없이 순수 구동되어 완벽 작동
 if command -v starship >/dev/null 2>&1; then
   eval "$(starship init zsh)"
 fi
 
-# 8. Tmux Auto Start (disabled)
+# 7. Tmux Auto Start (disabled)
 # if command -v tmux &> /dev/null && \
 #    [ -z "$TMUX" ] && \
 #    [ -z "${SKIP_TMUX_AUTO_START:-}" ] && \
@@ -70,7 +67,7 @@ fi
 #   tmux attach-session -t main 2>/dev/null || tmux new-session -s main
 # fi
 
-# 9. Herdr Auto Start - 순수 터미널 에뮬레이터 세션만 감지하여 중첩 실행 방어
+# 8. Herdr Auto Start - 순수 터미널 에뮬레이터 세션만 감지하여 중첩 실행 방어
 if command -v herdr >/dev/null 2>&1 && \
    [ -z "${HERDR_ENV:-}" ] && \
    [ -z "${SKIP_HERDR_AUTO_START:-}" ] && \

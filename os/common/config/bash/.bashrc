@@ -17,6 +17,11 @@ if is_zed_terminal_session; then
   export VISUAL="zed --wait"
 fi
 
+if command -v mise >/dev/null 2>&1; then
+  export MISE_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/mise"
+  eval "$(mise activate bash)"
+fi
+
 if command -v atuin >/dev/null 2>&1; then
   eval "$(atuin init bash --disable-up-arrow --disable-ctrl-r)"
 fi
