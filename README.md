@@ -73,6 +73,7 @@ dev-init-setting/
 │   ├── common/
 │   │   ├── assets/
 │   │   ├── config/
+│   │   │   ├── agent-skills/
 │   │   │   ├── bash/
 │   │   │   ├── editors/
 │   │   │   ├── ghostty/
@@ -111,6 +112,7 @@ dev-init-setting/
 
 ## 주요 설정
 
+- `os/common/config/agent-skills/official-docs/`: Kiro/Codex 공용 공식 문서 조회 Skill 원본
 - `os/common/config/bash/.bashrc`: ble.sh, mise/pnpm, fzf, atuin, zoxide, Starship, 공통 alias/function 설정
 - `os/common/config/bash/.bashrc.local.example`: Bash용 로컬 전용 설정 예시
 - `os/common/config/zsh/.zshrc`: zsh, mise/pnpm, 직접 로드하는 zsh 플러그인, fzf, atuin, tmux 자동 시작
@@ -129,6 +131,24 @@ dev-init-setting/
 - `os/linux/dev-desktop/`: 기존 Ubuntu/KDE Plasma 데스크톱용 개발 도구와 공통 dotfile
 - `os/linux/desktop/`: KDE Plasma 데스크톱 구성, 공통 dotfile, Flatpak/Snap 패키지
 - `services/n8n/`: 로컬 n8n Docker Compose 환경
+
+## Agent Skill 설치 (Kiro/Codex)
+
+`official-docs`는 허용된 공식 사이트에서 프로젝트 버전에 맞는 문서를 직접 조회합니다.
+사용 전 `references/official-domains.txt`를 회사 네트워크 정책에 맞게 검토합니다.
+공통 설치 스크립트는 이 Skill을 자동 설치하지 않습니다.
+
+저장소 루트에서 필요한 Agent에만 수동으로 링크합니다.
+
+```bash
+# Kiro CLI
+mkdir -p "$HOME/.kiro/skills"
+ln -sfn "$PWD/os/common/config/agent-skills/official-docs" "$HOME/.kiro/skills/official-docs"
+
+# Codex
+mkdir -p "$HOME/.codex/skills"
+ln -sfn "$PWD/os/common/config/agent-skills/official-docs" "$HOME/.codex/skills/official-docs"
+```
 
 ## Bash와 ble.sh
 

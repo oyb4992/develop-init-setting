@@ -8,6 +8,7 @@
 
 | Task | Location | Notes |
 | --- | --- | --- |
+| Shared Agent Skills | `config/agent-skills/` | Portable Kiro/Codex skills; tracked here but installed manually. |
 | Shared install flow | `install.sh` | Links Bash, zsh, IdeaVim, Ghostty, Starship, tmux, and Zed config; installs fonts on macOS/Linux. |
 | Bash entrypoint | `config/bash/.bashrc`, `config/bash/.bash_profile` | Loads ble.sh without immediate attach, sources guarded modules, then calls `ble-attach` last. |
 | Bash modules | `config/bash/config/*.bash` | Linked individually by `install.sh`; local overrides belong in `~/.bashrc.local`. |
@@ -22,6 +23,7 @@
 ## CONVENTIONS
 
 - `install.sh` symlinks most config into `$HOME`; preserve idempotency and parent-directory creation.
+- Keep portable Agent Skills in `config/agent-skills/`; do not auto-install them without explicit opt-in.
 - Both Linux desktop profiles run this installer; keep Linux font installation safe and guarded by `fc-cache` availability.
 - Bash load order matters: ble.sh with `--attach=none`, modules, local overrides, Starship/zoxide/Herdr guards, then `ble-attach` last.
 - zsh load order matters: Kiro pre block, modules, runtime tools, local overrides, Starship, guarded Herdr auto-start, then Kiro post block. The tmux auto-start block is intentionally disabled.
@@ -43,4 +45,5 @@ bash -n os/common/install.sh os/common/config/bash/install.sh os/common/config/b
 zsh -n os/common/config/zsh/.zshrc
 tmux -L dev-init-common-check -f /dev/null new-session -d -s check \; source-file -n os/common/config/tmux/.tmux.conf \; kill-server
 if command -v herdr >/dev/null; then HERDR_CONFIG_PATH="$PWD/os/common/config/herdr/config.toml" herdr config check; fi
+PYTHONDONTWRITEBYTECODE=1 python3 os/common/config/agent-skills/official-docs/scripts/test_fetch_official.py
 ```

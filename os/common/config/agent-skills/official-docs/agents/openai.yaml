@@ -1,0 +1,4 @@
+interface:
+  display_name: "Official Docs"
+  short_description: "Fetch version-matched docs from approved official sites"
+  default_prompt: "Use $official-docs to verify this library question against version-matched official documentation."

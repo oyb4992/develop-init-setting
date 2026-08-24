@@ -1,0 +1,11 @@
+# One exact HTTPS hostname per line. Add a hostname only after company approval.
+# Paths and wildcards are intentionally unsupported.
+docs.spring.io
+docs.gradle.org
+docs.hibernate.org
+hibernate.org
+react.dev
+typescriptlang.org
+www.typescriptlang.org
+docs.oracle.com
+maven.apache.org
