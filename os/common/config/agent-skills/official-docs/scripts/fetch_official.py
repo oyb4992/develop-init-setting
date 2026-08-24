@@ -5,10 +5,11 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import html
 import json
+import math
 import os
 import re
+import stat
 import sys
 import tempfile
 import time
@@ -20,6 +21,15 @@ from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 DEFAULT_MAX_AGE = 86_400
 DEFAULT_MAX_BYTES = 5 * 1024 * 1024
+DEFAULT_MAX_CACHE_BYTES = 50 * 1024 * 1024
+SKILL_DIR = Path(__file__).resolve().parent.parent
+DEFAULT_ALLOWLIST = SKILL_DIR / "references" / "official-domains.txt"
+CACHE_KEY_PATTERN = re.compile(r"official-docs-[0-9a-f]{64}")
+CACHE_TEMP_PATTERN = re.compile(
+    r"official-docs-[0-9a-f]{64}\.(?:body|json)\.official-docs-v1\.\d+\.tmp"
+)
+CACHE_FORMAT = "official-docs-v1"
+TEMP_FILE_MAX_AGE = 3_600
 SENSITIVE_QUERY_KEYS = {
     "api_key",
     "apikey",
@@ -32,16 +42,10 @@ SENSITIVE_QUERY_KEYS = {
 
 
 def parse_args() -> argparse.Namespace:
-    skill_dir = Path(__file__).resolve().parent.parent
     parser = argparse.ArgumentParser(
         description="Fetch an allowlisted HTTPS documentation page as text."
     )
     parser.add_argument("url")
-    parser.add_argument(
-        "--allowlist",
-        type=Path,
-        default=skill_dir / "references" / "official-domains.txt",
-    )
     parser.add_argument("--cache-dir", type=Path)
     parser.add_argument("--max-age", type=int, default=DEFAULT_MAX_AGE)
     parser.add_argument("--max-bytes", type=int, default=DEFAULT_MAX_BYTES)
@@ -134,32 +138,51 @@ class TextExtractor(HTMLParser):
         "ul",
     }
     SKIP_TAGS = {"script", "style", "noscript", "svg"}
+    PREFORMATTED_TAGS = {"code", "pre"}
 
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
         self.parts: list[str] = []
+        self.preformatted: dict[str, str] = {}
+        self.preformatted_depth = 0
         self.skip_depth = 0
 
     def handle_starttag(self, tag: str, attrs) -> None:  # type: ignore[no-untyped-def]
         if tag in self.SKIP_TAGS:
             self.skip_depth += 1
-        elif not self.skip_depth and tag in self.BLOCK_TAGS:
-            self.parts.append("\n")
+        elif not self.skip_depth:
+            if tag in self.PREFORMATTED_TAGS:
+                self.preformatted_depth += 1
+            if tag in self.BLOCK_TAGS:
+                self.parts.append("\n")
 
     def handle_endtag(self, tag: str) -> None:
         if tag in self.SKIP_TAGS and self.skip_depth:
             self.skip_depth -= 1
-        elif not self.skip_depth and tag in self.BLOCK_TAGS:
-            self.parts.append("\n")
+        elif not self.skip_depth:
+            if tag in self.BLOCK_TAGS:
+                self.parts.append("\n")
+            if tag in self.PREFORMATTED_TAGS and self.preformatted_depth:
+                self.preformatted_depth -= 1
 
     def handle_data(self, data: str) -> None:
         if not self.skip_depth:
-            self.parts.append(data)
+            if self.preformatted_depth:
+                token = f"\x00official-docs-pre-{len(self.preformatted)}\x00"
+                self.preformatted[token] = data
+                self.parts.append(token)
+            else:
+                self.parts.append(data)
 
     def text(self) -> str:
-        joined = html.unescape("".join(self.parts))
-        lines = [re.sub(r"[ \t\f\v]+", " ", line).strip() for line in joined.splitlines()]
-        return "\n".join(line for line in lines if line)
+        lines = [
+            re.sub(r"[ \t\f\v]+", " ", line).strip()
+            for line in "".join(self.parts).splitlines()
+        ]
+        text = "\n".join(line for line in lines if line)
+        for token, data in self.preformatted.items():
+            text = text.replace(token, data)
+        return text
 
 
 def default_cache_dir() -> Path:
@@ -172,33 +195,161 @@ def default_cache_dir() -> Path:
     return Path.home() / ".cache" / "official-docs"
 
 
-def usable_cache_dir(requested: Path | None) -> Path:
-    primary = requested.expanduser() if requested else default_cache_dir()
+def cache_dir_if_writable(path: Path) -> Path | None:
     try:
-        primary.mkdir(parents=True, exist_ok=True)
-        return primary
+        path.mkdir(mode=0o700, parents=True, exist_ok=True)
+        info = path.lstat()
+        if not stat.S_ISDIR(info.st_mode) or path.is_symlink():
+            return None
+        getuid = getattr(os, "getuid", None)
+        if getuid and info.st_uid != getuid():
+            return None
+        if os.name != "nt" and info.st_mode & 0o022:
+            return None
+        with tempfile.NamedTemporaryFile(prefix=".write-test-", dir=path):
+            pass
+        return path
     except OSError:
-        fallback = Path(tempfile.gettempdir()) / "official-docs-cache"
-        fallback.mkdir(parents=True, exist_ok=True)
-        return fallback
+        return None
+
+
+def usable_cache_dir(requested: Path | None) -> Path | None:
+    primary = requested.expanduser() if requested else default_cache_dir()
+    usable = cache_dir_if_writable(primary)
+    if usable:
+        return usable
+
+    user_key = hashlib.sha256(str(Path.home()).encode("utf-8")).hexdigest()[:12]
+    fallback = Path(tempfile.gettempdir()) / f"official-docs-cache-{user_key}"
+    return cache_dir_if_writable(fallback)
 
 
 def cache_paths(cache_dir: Path, url: str) -> tuple[Path, Path]:
-    key = hashlib.sha256(url.encode("utf-8")).hexdigest()
+    key = "official-docs-" + hashlib.sha256(url.encode("utf-8")).hexdigest()
     return cache_dir / f"{key}.body", cache_dir / f"{key}.json"
 
 
 def read_cache(
-    body_path: Path, metadata_path: Path, max_age: int
+    body_path: Path, metadata_path: Path, max_age: int, max_bytes: int
 ) -> tuple[bytes, dict[str, object]] | None:
     try:
         metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
-        fetched_at = float(metadata["fetched_at"])
-        if time.time() - fetched_at > max_age:
+        if (
+            metadata["cache_format"] != CACHE_FORMAT
+            or metadata["cache_key"] != body_path.stem
+        ):
             return None
-        return body_path.read_bytes(), metadata
+        fetched_at = float(metadata["fetched_at"])
+        now = time.time()
+        if not math.isfinite(fetched_at) or fetched_at > now or now - fetched_at > max_age:
+            return None
+        with body_path.open("rb") as body_file:
+            body = body_file.read(max_bytes + 1)
+        if len(body) > max_bytes:
+            return None
+        expected_hash = str(metadata["body_sha256"])
+        if hashlib.sha256(body).hexdigest() != expected_hash:
+            return None
+        return body, metadata
     except (OSError, ValueError, KeyError, TypeError, json.JSONDecodeError):
         return None
+
+
+def write_cache(
+    body_path: Path,
+    metadata_path: Path,
+    body: bytes,
+    metadata: dict[str, object],
+) -> None:
+    stored_metadata = {
+        **metadata,
+        "body_sha256": hashlib.sha256(body).hexdigest(),
+        "cache_format": CACHE_FORMAT,
+        "cache_key": body_path.stem,
+    }
+    suffix = f".{CACHE_FORMAT}.{os.getpid()}.tmp"
+    body_temp = body_path.with_name(body_path.name + suffix)
+    metadata_temp = metadata_path.with_name(metadata_path.name + suffix)
+    try:
+        body_temp.write_bytes(body)
+        metadata_temp.write_text(json.dumps(stored_metadata, indent=2), encoding="utf-8")
+        os.replace(body_temp, body_path)
+        os.replace(metadata_temp, metadata_path)
+    finally:
+        for temp_path in (body_temp, metadata_temp):
+            try:
+                temp_path.unlink()
+            except OSError:
+                pass
+
+
+def prune_cache(cache_dir: Path, max_bytes: int = DEFAULT_MAX_CACHE_BYTES) -> None:
+    now = time.time()
+    for path in cache_dir.glob("*.tmp"):
+        if not CACHE_TEMP_PATTERN.fullmatch(path.name):
+            continue
+        try:
+            info = path.stat()
+            if now - info.st_mtime > TEMP_FILE_MAX_AGE:
+                path.unlink()
+        except OSError:
+            pass
+
+    keys = {
+        path.stem
+        for pattern in ("*.body", "*.json")
+        for path in cache_dir.glob(pattern)
+        if CACHE_KEY_PATTERN.fullmatch(path.stem)
+    }
+    entries: list[tuple[float, int, tuple[Path, ...]]] = []
+    for key in keys:
+        paths = (cache_dir / f"{key}.body", cache_dir / f"{key}.json")
+        existing = tuple(path for path in paths if path.exists())
+        try:
+            if len(existing) != 2:
+                modified = max(path.stat().st_mtime for path in existing)
+                if now - modified > TEMP_FILE_MAX_AGE:
+                    for path in existing:
+                        try:
+                            path.unlink()
+                        except OSError:
+                            pass
+                continue
+            metadata = json.loads(paths[1].read_text(encoding="utf-8"))
+            if (
+                metadata["cache_format"] != CACHE_FORMAT
+                or metadata["cache_key"] != key
+            ):
+                continue
+            size = sum(path.stat().st_size for path in existing)
+            modified = max(path.stat().st_mtime for path in existing)
+        except (OSError, ValueError, KeyError, TypeError, json.JSONDecodeError):
+            try:
+                modified = max(path.stat().st_mtime for path in existing)
+                if now - modified > TEMP_FILE_MAX_AGE:
+                    for path in paths:
+                        try:
+                            path.unlink()
+                        except OSError:
+                            pass
+            except (OSError, ValueError):
+                pass
+            continue
+        entries.append((modified, size, paths))
+
+    total = sum(size for _, size, _ in entries)
+    for _, size, paths in sorted(entries, key=lambda entry: entry[0]):
+        if total <= max_bytes:
+            break
+        removed = 0
+        for path in paths:
+            try:
+                path_size = path.stat().st_size
+                path.unlink()
+                removed += path_size
+            except OSError:
+                pass
+        total -= min(size, removed)
 
 
 def is_textual(content_type: str) -> bool:
@@ -269,22 +420,37 @@ def render(body: bytes, metadata: dict[str, object], raw: bool, source: str) -> 
 def main() -> int:
     args = parse_args()
     try:
-        allowed_hosts = load_allowlist(args.allowlist)
+        allowed_hosts = load_allowlist(DEFAULT_ALLOWLIST)
         validate_url(args.url, allowed_hosts)
         if args.max_age < 0 or args.max_bytes < 1:
             raise ValueError("max-age must be non-negative and max-bytes must be positive")
         cache_dir = usable_cache_dir(args.cache_dir)
-        body_path, metadata_path = cache_paths(cache_dir, args.url)
-
-        cached = None if args.refresh else read_cache(body_path, metadata_path, args.max_age)
+        if cache_dir:
+            prune_cache(cache_dir)
+            body_path, metadata_path = cache_paths(cache_dir, args.url)
+            cached = (
+                None
+                if args.refresh
+                else read_cache(body_path, metadata_path, args.max_age, args.max_bytes)
+            )
+        else:
+            body_path = metadata_path = None
+            cached = None
         if cached:
             body, metadata = cached
             validate_url(str(metadata.get("final_url", args.url)), allowed_hosts)
             source = "cache"
         else:
             body, metadata = fetch(args.url, allowed_hosts, args.max_bytes)
-            body_path.write_bytes(body)
-            metadata_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+            if cache_dir and body_path and metadata_path:
+                try:
+                    write_cache(body_path, metadata_path, body, metadata)
+                    prune_cache(cache_dir)
+                except OSError as exc:
+                    print(
+                        f"fetch_official: cache unavailable for this response: {exc}",
+                        file=sys.stderr,
+                    )
             source = "network"
 
         sys.stdout.write(render(body, metadata, args.raw, source))

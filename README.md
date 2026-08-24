@@ -142,12 +142,28 @@ dev-init-setting/
 
 ```bash
 # Kiro CLI
-mkdir -p "$HOME/.kiro/skills"
-ln -sfn "$PWD/os/common/config/agent-skills/official-docs" "$HOME/.kiro/skills/official-docs"
+OFFICIAL_DOCS_SOURCE="$PWD/os/common/config/agent-skills/official-docs"
+KIRO_SKILL_DIR="$HOME/.kiro/skills/official-docs"
+mkdir -p "$(dirname "$KIRO_SKILL_DIR")"
+if [ -e "$KIRO_SKILL_DIR" ] && [ ! -L "$KIRO_SKILL_DIR" ]; then
+  printf 'Refusing to replace existing directory: %s\nBack it up or remove it first.\n' "$KIRO_SKILL_DIR" >&2
+  false
+else
+  ln -sfn "$OFFICIAL_DOCS_SOURCE" "$KIRO_SKILL_DIR"
+fi
+```
 
+```bash
 # Codex
-mkdir -p "$HOME/.codex/skills"
-ln -sfn "$PWD/os/common/config/agent-skills/official-docs" "$HOME/.codex/skills/official-docs"
+OFFICIAL_DOCS_SOURCE="$PWD/os/common/config/agent-skills/official-docs"
+CODEX_SKILL_DIR="$HOME/.codex/skills/official-docs"
+mkdir -p "$(dirname "$CODEX_SKILL_DIR")"
+if [ -e "$CODEX_SKILL_DIR" ] && [ ! -L "$CODEX_SKILL_DIR" ]; then
+  printf 'Refusing to replace existing directory: %s\nBack it up or remove it first.\n' "$CODEX_SKILL_DIR" >&2
+  false
+else
+  ln -sfn "$OFFICIAL_DOCS_SOURCE" "$CODEX_SKILL_DIR"
+fi
 ```
 
 ## Bash와 ble.sh
