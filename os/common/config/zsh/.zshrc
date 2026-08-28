@@ -75,6 +75,7 @@ if command -v herdr >/dev/null 2>&1 && \
    ! is_zed_terminal_session && \
    [ -z "${TERMINAL_EMULATOR}" ] && \
    [ "${TERM_PROGRAM}" != "vscode" ] && \
+   [ "${TERM_PROGRAM}" != "Orca" ] && \
    [ "${TERM_PROGRAM}" != "IntelliJ" ] && \
    [ -z "${INTELLIJ_ENVIRONMENT_READER}" ] && \
    [[ "$TERM" != "screen"* ]] && \
