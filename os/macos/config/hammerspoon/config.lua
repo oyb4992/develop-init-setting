@@ -32,7 +32,7 @@ local CONFIG = {
 	},
 	INPUT_SOURCE = {
 		-- ESC 키로 영문 전환할 앱 리스트
-		TARGET_APPS = { "Code", "Obsidian", "IntelliJ IDEA", "Ghostty", "Zed" },
+		TARGET_APPS = { "Code", "Obsidian", "IntelliJ IDEA", "Ghostty", "Zed", "Orca" },
 		ENGLISH_LAYOUT_ID = "com.apple.keylayout.ABC",
 		KOREAN_LAYOUT_ID = "com.apple.inputmethod.Korean.2SetKorean", -- 두벌식 한글 (정확한 ID)
 		RIGHT_COMMAND_KEYCODE = 54,
