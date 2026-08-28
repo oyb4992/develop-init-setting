@@ -94,6 +94,8 @@ dev-init-setting/
 │       └── packages/
 └── services/
     └── n8n/
+        ├── docker-compose.yml
+        └── n8n-task-runners.json
 ```
 
 ## 주요 설정

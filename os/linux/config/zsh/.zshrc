@@ -52,6 +52,8 @@ zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path "$HOME/.zcompcache"
 compinit -d "$HOME/.zcompdump"
 
+[ -r /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
 if [ -x /usr/bin/dircolors ]; then
     test -r "$HOME/.dircolors" && eval "$(dircolors -b "$HOME/.dircolors")" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
@@ -81,11 +83,14 @@ alias cdh='cd "$HOME"'
 alias cdd='cd "$HOME/.openclaw/workspace/develop-init-setting"'
 alias cdn='cd "$HOME/.openclaw/workspace/develop-init-setting/services/n8n/"'
 alias dct='docker compose stop'
+alias dcp='docker compose pull'
 alias dcs='docker compose up -d'
 alias b-maint='brew update && brew upgrade && brew cleanup --prune=all && brew doctor'
 alias aptu='sudo apt update && sudo apt list --upgradable && sudo apt upgrade'
 alias ..='cd ..'
 alias ...='cd ../..'
+alias k='kiro-cli --v3'
+alias cx='codex'
 
 alias gs='git status --short --branch'
 alias gl='git log --oneline --graph --decorate -20'
@@ -105,7 +110,9 @@ alias ocps='cd "$OPENCLAW_DIR" && docker compose ps'
 alias oclogs='cd "$OPENCLAW_DIR" && docker compose logs -f --tail=200'
 alias ocrestart='cd "$OPENCLAW_DIR" && docker compose restart'
 alias ocdeploy='cd "$OPENCLAW_DIR" && git pull --ff-only && docker compose pull && docker compose up -d'
-alias octmux='tmux new-session -A -s openclaw -c "$OPENCLAW_DIR"'
+# alias octmux='tmux new-session -A -s openclaw -c "$OPENCLAW_DIR"'
+alias sthrd='herdr server stop'
+alias lg='lazygit'
 
 if command -v fzf >/dev/null 2>&1; then
     if [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
@@ -132,3 +139,9 @@ else
     zstyle ':vcs_info:git:*' formats ' (%b)'
     PROMPT='%F{green}%n@%m%f:%F{blue}%~%f%F{yellow}${vcs_info_msg_0_}%f %# '
 fi
+
+# OpenClaw Completion
+[ -f "/home/ubuntu/.openclaw/completions/openclaw.zsh" ] && source "/home/ubuntu/.openclaw/completions/openclaw.zsh"
+
+# Syntax highlighting must be loaded after all other Zsh plugins.
+[ -r /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

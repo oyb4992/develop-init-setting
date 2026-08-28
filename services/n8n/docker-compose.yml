@@ -2,8 +2,7 @@ services:
   n8n:
     user: "1001:1001"
     # 안정적인 운영을 위해 stable 버전 n8n 이미지 사용
-    # image: docker.n8n.io/n8nio/n8n:stable
-    image: docker.n8n.io/n8nio/n8n:2.23.2
+    image: docker.n8n.io/n8nio/n8n:stable
     container_name: n8n
     restart: unless-stopped
     ports:
@@ -20,11 +19,18 @@ services:
       N8N_HOST: localhost
       N8N_PORT: 5678
       N8N_PROTOCOL: http
-      WEBHOOK_URL: http://localhost:5678/
+      N8N_WEBHOOK_URL: http://localhost:5678/
       # 로컬에서 HTTP로 실행하므로 보안 쿠키를 비활성화합니다
       N8N_SECURE_COOKIE: "false"
       # n8n 내부 자격 증명을 암호화하는 키입니다. `.env` 파일에서 설정하세요
       N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY}
+      N8N_RUNNERS_MODE: external
+      N8N_RUNNERS_AUTH_TOKEN: ${N8N_RUNNERS_AUTH_TOKEN}
+      N8N_RUNNERS_BROKER_LISTEN_ADDRESS: 0.0.0.0
+      N8N_RUNNERS_TASK_TIMEOUT: "300"
+      N8N_UNVERIFIED_PACKAGES_ENABLED: "false"
+      N8N_COMPRESSION_NODE_MAX_DECOMPRESSED_SIZE_BYTES: "268435456"
+      N8N_COMPRESSION_NODE_MAX_ZIP_ENTRIES: "1000"
       # 실행 모드 설정 (단일 컨테이너에는 regular 모드가 적합합니다)
       EXECUTIONS_MODE: regular
       # 데이터베이스 크기가 무한히 커지는 것을 방지하기 위해 오래된 실행 데이터를 정리합니다
@@ -37,8 +43,6 @@ services:
       EXECUTIONS_DATA_SAVE_ON_ERROR: "all"
       # 플로우 테스트 시 유용한 수동 실행 데이터를 저장합니다
       EXECUTIONS_DATA_SAVE_MANUAL_EXECUTIONS: "true"
-      # Code 노드에서 fs 모듈 등 Node.js 기본 내장 모듈 사용 허용 (안전한 파일 I/O용)
-      NODE_FUNCTION_ALLOW_BUILTIN: "*"
       # 시작 시 SQLite 데이터베이스를 vacuum하여 공간을 회수합니다
       DB_SQLITE_VACUUM_ON_STARTUP: "true"
     volumes:
@@ -50,6 +54,25 @@ services:
       - /home/ubuntu/.openclaw/workspace/memory:/home/node/openclaw-memory
       - /home/ubuntu/.openclaw/workspace/integrations/n8n:/home/node/.n8n-files
 
-# 이 compose 파일은 SQLite를 사용하는 단일 컨테이너 구성의 n8n을 실행합니다.
-# `docker compose up -d` 명령을 실행하기 전에 `.env.example`을 `.env`로 복사하고
-# `N8N_ENCRYPTION_KEY` 값을 설정하십시오.
+  n8n-runner:
+    image: n8nio/runners:stable
+    container_name: n8n-runner
+    restart: unless-stopped
+    user: "1001:1001"
+    environment:
+      N8N_RUNNERS_TASK_BROKER_URI: http://n8n:5679
+      N8N_RUNNERS_AUTH_TOKEN: ${N8N_RUNNERS_AUTH_TOKEN}
+      N8N_RUNNERS_TASK_TIMEOUT: "300"
+      GENERIC_TIMEZONE: Asia/Seoul
+    volumes:
+      - ./n8n-task-runners.json:/etc/n8n-task-runners.json:ro
+      - /home/ubuntu/.openclaw/workspace/memory:/home/node/openclaw-memory
+      - /home/ubuntu/.openclaw/workspace/integrations/n8n:/home/node/.n8n-files
+    tmpfs:
+      - /home/runner:uid=1001,gid=1001,mode=0700
+    depends_on:
+      - n8n
+
+# 이 compose 파일은 SQLite 기반 n8n과 격리된 Code task runner를 실행합니다.
+# `docker compose up -d` 전에 `.env`에 `N8N_ENCRYPTION_KEY`와
+# `N8N_RUNNERS_AUTH_TOKEN`을 각각 별도 무작위 값으로 설정하십시오.
