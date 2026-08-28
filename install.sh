@@ -57,41 +57,13 @@ case "$OS" in
         fi
         ;;
     linux)
-        LINUX_PROFILE="${LINUX_PROFILE:-vps}"
-        case "$LINUX_PROFILE" in
-            vps)
-                if [ -f "$SCRIPT_DIR/os/linux/install.sh" ]; then
-                    echo "INFO: Running Linux VPS setup script..."
-                    bash "$SCRIPT_DIR/os/linux/install.sh"
-                else
-                    echo "ERROR: Linux VPS setup script not found." >&2
-                    exit 1
-                fi
-                ;;
-            desktop)
-                if [ -f "$SCRIPT_DIR/os/linux/desktop/install.sh" ]; then
-                    echo "INFO: Running Ubuntu KDE desktop setup script..."
-                    bash "$SCRIPT_DIR/os/linux/desktop/install.sh"
-                else
-                    echo "ERROR: Ubuntu desktop setup script not found." >&2
-                    exit 1
-                fi
-                ;;
-            dev-desktop)
-                if [ -f "$SCRIPT_DIR/os/linux/dev-desktop/install.sh" ]; then
-                    echo "INFO: Running Ubuntu desktop development setup script..."
-                    bash "$SCRIPT_DIR/os/linux/dev-desktop/install.sh"
-                else
-                    echo "ERROR: Ubuntu desktop development setup script not found." >&2
-                    exit 1
-                fi
-                ;;
-            *)
-                echo "ERROR: Unsupported Linux install mode: $LINUX_PROFILE" >&2
-                echo "INFO: Supported install modes: vps, desktop, dev-desktop" >&2
-                exit 1
-                ;;
-        esac
+        if [ -f "$SCRIPT_DIR/os/linux/install.sh" ]; then
+            echo "INFO: Running Linux VPS setup script..."
+            bash "$SCRIPT_DIR/os/linux/install.sh"
+        else
+            echo "ERROR: Linux VPS setup script not found." >&2
+            exit 1
+        fi
         ;;
 esac
 

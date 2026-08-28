@@ -2,7 +2,7 @@
 
 ## OVERVIEW
 
-`os/common/` contains cross-platform shell, editor, terminal, and font assets linked after macOS setup and by both Linux desktop profiles.
+`os/common/` contains cross-platform shell, editor, terminal, and font assets linked by the common installer.
 
 ## WHERE TO LOOK
 
@@ -24,7 +24,7 @@
 
 - `install.sh` symlinks most config into `$HOME`; preserve idempotency and parent-directory creation.
 - Keep portable Agent Skills in `config/agent-skills/`; do not auto-install them without explicit opt-in.
-- Both Linux desktop profiles run this installer; keep Linux font installation safe and guarded by `fc-cache` availability.
+- Keep Linux font installation safe and guarded by `fc-cache` availability.
 - Bash load order matters: ble.sh with `--attach=none`, modules, local overrides, Starship/zoxide/Herdr guards, then `ble-attach` last.
 - zsh load order matters: Kiro pre block, modules, runtime tools, local overrides, Starship, guarded Herdr auto-start, then Kiro post block. The tmux auto-start block is intentionally disabled.
 - Keep Kiro pre/post blocks at the top and bottom of `.zshrc`; Kiro updates rely on those boundaries.
