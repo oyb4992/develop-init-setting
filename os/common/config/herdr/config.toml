@@ -1,27 +1,17 @@
-# 1. Herdr Agent Skill
-#npx skills add herdrdev/herdr --skill herdr -g
+# Herdr Agent Skill
+# npx skills add herdrdev/herdr --skill herdr -g
 
-# 2. herdr-plus
-#herdr plugin install cloudmanic/herdr-plus
+# Herdr plugins (current local installation)
+# herdr plugin install cloudmanic/herdr-plus --yes
+# herdr plugin install Crokily/herdr-lazygit --yes
+# herdr plugin install jlimas/herdr-worktree-seed --yes
+# herdr plugin install persiyanov/herdr-reviewr --yes
+# herdr plugin install smarzban/herdr-file-viewer --yes
+# herdr plugin install paulbkim-dev/vim-herdr-navigation --yes
+# herdr plugin install yuk1ty/herdr-spreader --yes
+# herdr plugin install zenbu-labs/terminal-browser/herdr-plugin --yes
 
-# 3. herdr-lazygit
-#herdr plugin install Crokily/herdr-lazygit
-
-# 4. worktree-seed
-#herdr plugin install jlimas/herdr-worktree-seed
-
-# 5. reviewr
-#herdr plugin install persiyanov/herdr-reviewr
-
-# 6. herdr-browser (macOS only)
-# Ubuntu 서버에서는 원격 SSH 프레임 대역폭이 높으므로 설치하지 않는다.
-#herdr plugin install ogulcancelik/herdr-browser --yes
-
-# 7. vim-herdr-navigation
-#herdr plugin install paulbkim-dev/vim-herdr-navigation --yes
-
-# 8. herdr-spreader
-#herdr plugin install yuk1ty/herdr-spreader --yes
+onboarding = false
 
 [keys]
 detach = "prefix+d"
@@ -29,9 +19,43 @@ reload_config = "prefix+r"
 
 split_vertical = "prefix+|"
 resize_mode = "prefix+shift+r"
-
 # Prefix+Tab을 yazi에 양보
 cycle_pane_next = ""
+toggle_sidebar = "prefix+shift+b"
+goto = "prefix+ctrl+g"
+new_worktree = "prefix+shift+w"
+
+# ---------------------------------------------------------------------------
+# [단축키 충돌 참고]
+#
+# 아래 플러그인 단축키 때문에 Herdr 기본 단축키가 대체됨.
+# Herdr 0.7.1+에서는 두 동작이 충돌해서 동시에 실행되는 것이 아니라
+# 사용자 정의 키가 기본 바인딩을 대체함.
+#
+# prefix+b       -> Browser 플러그인이 사용
+#                   기본 기능: toggle_sidebar
+#
+# prefix+g       -> LazyGit이 사용
+#                   기본 기능: goto
+#
+# prefix+shift+g -> LazyGit Tab이 사용
+#                   기본 기능: new_worktree
+#
+# 기본 기능도 키보드로 사용하고 싶다면 아래와 같이 별도 키 할당을 권장.
+# 원하는 경우 주석 해제:
+#
+# toggle_sidebar = "prefix+shift+b"
+# goto = "prefix+alt+g"
+# new_worktree = "prefix+alt+w"
+#
+# 현재 사용 패턴에서 Herdr 자체 worktree 생성 기능을 자주 쓴다면
+# new_worktree만큼은 별도 키를 주는 것을 추천.
+# ---------------------------------------------------------------------------
+
+
+# ---------------------------------------------------------------------------
+# Yazi
+# ---------------------------------------------------------------------------
 
 [[keys.command]]
 key = "prefix+tab"
@@ -40,11 +64,27 @@ command = "yazi"
 width = "50%"
 height = "90%"
 
+
+# ---------------------------------------------------------------------------
+# Terminal Browser
+#
+# 주의:
+# prefix+b는 Herdr 기본 toggle_sidebar를 대체함.
+# sidebar 토글이 필요하면 위 [keys]의 toggle_sidebar 대체키 사용 권장.
+# ---------------------------------------------------------------------------
+
 [[keys.command]]
 key = "prefix+b"
-type = "shell"
-command = '"${HERDR_BIN_PATH}" plugin pane open --plugin official.browser --entrypoint browser --placement split --direction right --focus'
-description = "open browser in right split"
+type = "plugin_action"
+command = "zenbu-labs.terminal-browser.open-split"
+description = "open terminal browser in right split"
+
+# ---------------------------------------------------------------------------
+# vim-herdr-navigation
+#
+# Ctrl+h/j/k/l로 Vim/Neovim split과 Herdr pane 사이를 자연스럽게 이동.
+# 현재 설정 유지 권장.
+# ---------------------------------------------------------------------------
 
 [[keys.command]]
 key = "ctrl+h"
@@ -70,69 +110,226 @@ type = "plugin_action"
 command = "vim-herdr-navigation.right"
 description = "navigate right (vim/herdr)"
 
-#herdr-file-viewer 플러그인 설정
+
+# ---------------------------------------------------------------------------
+# herdr-file-viewer
+# ---------------------------------------------------------------------------
+
 [[keys.command]]
 key = "prefix+f"
 type = "plugin_action"
 command = "herdr-file-viewer.open-file-viewer"
 description = "open file viewer in split"
 
+
+# ---------------------------------------------------------------------------
 # herdr-plus Projects
+# ---------------------------------------------------------------------------
+
 [[keys.command]]
 key = "prefix+up"
 type = "plugin_action"
 command = "cloudmanic.herdr-plus.projects"
 description = "Projects"
 
+
+# ---------------------------------------------------------------------------
 # herdr-plus Quick Actions
+# ---------------------------------------------------------------------------
+
 [[keys.command]]
 key = "prefix+down"
 type = "plugin_action"
 command = "cloudmanic.herdr-plus.quick-actions"
 description = "Quick Actions"
 
+
+# ---------------------------------------------------------------------------
 # LazyGit sidebar
+#
+# 주의:
+# prefix+g는 Herdr 기본 goto를 대체함.
+# goto가 필요하다면 [keys]에서 별도 단축키를 할당.
+# ---------------------------------------------------------------------------
+
 [[keys.command]]
 key = "prefix+g"
 type = "plugin_action"
 command = "herdr-lazygit.open"
 description = "Lazygit"
 
+
+# ---------------------------------------------------------------------------
 # LazyGit tab
+#
+# 주의:
+# prefix+shift+g는 Herdr 기본 new_worktree를 대체함.
+# Herdr의 native worktree 생성을 사용한다면 별도 키 할당 권장.
+# ---------------------------------------------------------------------------
+
 [[keys.command]]
 key = "prefix+shift+g"
 type = "plugin_action"
 command = "herdr-lazygit.open-tab"
 description = "Lazygit Tab"
 
+
+# ---------------------------------------------------------------------------
 # Reviewr
+# ---------------------------------------------------------------------------
+
 [[keys.command]]
-key = "prefix+alt+r"
+key = "prefix+ctrl+r"
 type = "plugin_action"
 command = "persiyanov.reviewr.toggle"
 description = "Code Review"
 
+
+# ===========================================================================
+# UI
+# ===========================================================================
+
 [ui]
 mouse_scroll_lines = 5
 show_agent_labels_on_pane_borders = true
+
+# worktree / workspace 중심으로 여러 Agent를 관리하는 현재 사용법에는
+# "priority"보다 "spaces" 유지 추천.
 agent_panel_sort = "spaces"
 
+status_indicators = "symbols"
+
+# ---------------------------------------------------------------------------
+# [선택 사항]
+#
+# split을 많이 사용한다면 scrollbar 한 열을 회수할 수 있음.
+# pane_scrollbars = false
+#
+# Tab이 하나뿐인 경우 Tab bar를 숨겨 화면을 조금 더 확보.
+# hide_tab_bar_when_single_tab = true
+#
+# sidebar를 접었을 때 compact rail까지 완전히 숨기고 싶다면:
+# sidebar_collapsed_mode = "hidden"
+#
+# sidebar_collapsed_mode = "hidden"을 사용한다면
+# toggle_sidebar 단축키도 별도로 지정하는 것을 권장.
+# ---------------------------------------------------------------------------
+
+
+# ===========================================================================
+# Agent Sidebar
+# ===========================================================================
+
 [ui.sidebar.agents]
+
+# machine은 Herdr 0.9.x multi-machine 사용을 위해 추가.
+#
+# Local 머신에서는 "Local"을 숨기고,
+# 저장된 SSH 머신의 Agent일 때만 Ubuntu / VDI 등의 machine label을 표시.
+#
+# 예:
+#
+# Local:
+#   ● my-project · main
+#     Codex
+#
+# Ubuntu:
+#   ● Ubuntu · my-project · main
+#     Kiro
+#
+# 중요:
+# 단순히 pane 안에서 `ssh ubuntu`를 실행한 것은 remote machine으로
+# 인식되지 않음. `herdr machine add ...`로 등록된 머신이어야 함.
+
 rows = [
   [
     "state_icon",
+    { token = "machine", rules = [{ equals = "Local", hide = true }] },
     "workspace",
-    "tab",
+    "tab"
   ],
-  [
-    "terminal_title_stripped",
-  ],
-  [
-    "agent",
-  ],
+  ["terminal_title_stripped"],
+  ["agent"],
 ]
 
+
+# ===========================================================================
+# Experimental
+# ===========================================================================
+
 [experimental]
+
+# ---------------------------------------------------------------------------
+# Kitty graphics
+#
+# 기존 설정을 보존하기 위해 남겨둠.
+#
+# Herdr 0.9.0부터 graphics가 기본 활성화되었고
+# experimental.kitty_graphics는 호환 목적으로 여전히 허용됨.
+#
+# 따라서 현재 이 줄은 사실상 불필요.
+#
+# 정리하고 싶으면 아래 한 줄을 삭제해도 됨.
+# 명시적으로 제어하려면 [terminal] kitty_graphics 사용이 현재 방식.
+# ---------------------------------------------------------------------------
 kitty_graphics = true
+
+
+# ---------------------------------------------------------------------------
+# Pane history
+#
+# Herdr server가 재시작되어도 최근 pane 화면을 복원.
+#
+# 편리하므로 현재 값 유지.
+# 다만 회사 VDI에서 터미널 출력/소스/민감정보가 저장되는 것이
+# 부담스럽다면 false 사용 권장.
+# ---------------------------------------------------------------------------
 pane_history = true
+
+
+# ---------------------------------------------------------------------------
+# 한글 IME
+#
+# Prefix를 누른 동안 ASCII 입력 소스로 전환.
+# macOS에서 한글 상태로 Herdr 단축키를 사용할 때 특히 유용.
+# 현재 설정 유지 권장.
+# ---------------------------------------------------------------------------
 switch_ascii_input_source_in_prefix = true
+
+
+# ---------------------------------------------------------------------------
+# [선택 사항 - macOS 한글 IME]
+#
+# Codex/Kiro 같은 TUI가 hardware cursor를 숨겼을 때
+# 한글 IME 후보창 위치가 이상해지는 문제가 있다면 활성화.
+#
+# reveal_hidden_cursor_for_cjk_ime = true
+# cjk_ime_agents = ["codex", "kiro"]
+#
+# 현재 특별한 문제가 없다면 굳이 켤 필요 없음.
+# ---------------------------------------------------------------------------
+
+
+# ===========================================================================
+# Sound
+# ===========================================================================
+
+[ui.sound]
+enabled = false
+
+
+# ===========================================================================
+# Toast
+# ===========================================================================
+
+[ui.toast]
+delivery = "system"
+
+
+# ===========================================================================
+# Theme
+# ===========================================================================
+
+[theme]
+name = "tokyo-night"
+auto_switch = false
