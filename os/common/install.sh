@@ -61,6 +61,9 @@ link_file "$PROJECT_ROOT/os/common/config/git/git-wrapper.sh" "$HOME/git-wrapper
 # LazyVim-style IdeaVim config
 link_file "$PROJECT_ROOT/os/common/config/editors/lazyVim/.idea-lazy.vim" "$HOME/.idea-lazy.vim"
 link_file "$PROJECT_ROOT/os/common/config/editors/lazyVim/.idea-lazy.vim" "$HOME/.ideavimrc"
+for ideavim_config_file in "$PROJECT_ROOT"/os/common/config/editors/lazyVim/{common,intellij,webstorm,datagrip}.vim; do
+    link_file "$ideavim_config_file" "$HOME/.config/ideavim/$(basename "$ideavim_config_file")"
+done
 
 # Ghostty
 GHOSTTY_CONFIG="$PROJECT_ROOT/os/common/config/ghostty/config.ghostty"
