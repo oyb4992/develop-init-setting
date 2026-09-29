@@ -9,6 +9,14 @@ set inccommand=nosplit
 set VimEverywhere
 set indentwise
 set abolish
+set yankring
+set ideawindowjumps
+set textobj-line
+set visual-star-search
+
+" Show YankRing history.
+nmap <leader>s" :YRShow<CR>
+let g:WhichKeyDesc_s_double_quote = '<leader>s" 붙여넣기 기록'
 
 " Visual mode case conversion through IdeaVim Abolish.
 xmap <leader>rs <Plug>(abolish-coerce-snake)

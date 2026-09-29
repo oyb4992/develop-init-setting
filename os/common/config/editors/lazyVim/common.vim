@@ -6,7 +6,7 @@
 "  Which-Key
 "
 " 공통 설정에서 사용하는 IdeaVim 확장/에뮬레이션 옵션
-"  commentary, surround, matchit, highlightedyank, multiple-cursors, peekaboo
+"  commentary, surround, matchit, highlightedyank, multiple-cursors
 "  vim-paragraph-motion, anyobject, dial, exchange
 "
 " 추가 액션 의존성
@@ -91,7 +91,6 @@ set matchit
 set highlightedyank
 let g:multi_cursor_use_default_mapping = 0
 set multiple-cursors
-set peekaboo
 " set mini-ai "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인 지원에 따라 설정 활성 유무 정할 것.
 " set quickscope "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인 지원에 따라 설정 활성 유무 정할 것.
 set vim-paragraph-motion
@@ -400,8 +399,6 @@ nmap <leader>fp <Action>(ManageRecentProjects)
 nmap <leader>gc <Action>(Vcs.Show.Log)
 " 상태
 nmap <leader>gs <Action>(Vcs.Show.Log)
-" 레지스터- vim_peekaboo로 대체
-"nmap <leader>s" :registers<cr>
 " 자동 명령
 " nmap <leader>sa :echo '해당하는 매핑이 없습니다.'<cr>
 " 버퍼
