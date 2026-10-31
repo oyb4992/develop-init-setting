@@ -18,6 +18,9 @@ ZSH_CONFIG_DIR="$HOME/.config/zsh"
 if is_zed_terminal_session; then
   export EDITOR="zed --wait"
   export VISUAL="zed --wait"
+else
+  export EDITOR="nvim"
+  export VISUAL="nvim"
 fi
 
 # 2. Runtime Manager (Mise)
@@ -87,3 +90,5 @@ fi
 
 # Kiro CLI post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
+
+export PATH="$HOME/.local/bin:$PATH"

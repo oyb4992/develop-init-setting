@@ -31,7 +31,7 @@ alias ct="colima stop"
 alias ld="lazydocker"
 alias gcgl="git config --global --list"
 alias k="kiro-cli --v3"
-alias cx="codex"
+alias cx="TERM_PROGRAM=ghostty codex"
 
 # Git shortcuts: oh-my-zsh git plugin에서 자주 쓰는 정적 별칭만 가볍게 유지
 alias lg="lazygit"

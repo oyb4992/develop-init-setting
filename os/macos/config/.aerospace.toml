@@ -279,7 +279,7 @@ if.app-id = "com.google.Chrome"  # Google Chrome
 run = "move-node-to-workspace --focus-follows-window B"  # 'B' 워크스페이스로 이동
 
 [[on-window-detected]]
-if.app-id = "at.studio.AsideBrowser"  # Aside
+if.app-id = "com.citrolabs.ego.lite"  # Ego Lite
 run = "move-node-to-workspace --focus-follows-window B"  # 'B' 워크스페이스로 이동
 
 [[on-window-detected]]
