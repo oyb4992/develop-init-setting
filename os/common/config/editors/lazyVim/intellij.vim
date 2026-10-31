@@ -13,6 +13,18 @@ set yankring
 set ideawindowjumps
 set textobj-line
 set visual-star-search
+" visual-multi 활성화
+set visual-multi
+
+" 식별자 대소문자 구분
+let g:VM_case_setting = 'sensitive'
+
+" 1. visual-multi
+let g:VM_maps = {}
+
+" macOS Ctrl+Up/Down 충돌 방지
+let g:VM_maps['Add Cursor Down'] = '\\j'
+let g:VM_maps['Add Cursor Up']   = '\\k'
 
 " Show YankRing history.
 nmap <leader>s" :YRShow<CR>

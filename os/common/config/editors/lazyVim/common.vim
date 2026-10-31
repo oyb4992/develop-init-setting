@@ -89,8 +89,8 @@ set surround
 set which-key
 set matchit
 set highlightedyank
-let g:multi_cursor_use_default_mapping = 0
-set multiple-cursors
+" let g:multi_cursor_use_default_mapping = 0
+" set multiple-cursors
 " set mini-ai "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인 지원에 따라 설정 활성 유무 정할 것.
 " set quickscope "인텔리제이 버전에 따른 Vim AnyObject, Vim-flash 플러그인 지원에 따라 설정 활성 유무 정할 것.
 set vim-paragraph-motion
