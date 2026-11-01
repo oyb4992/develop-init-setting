@@ -73,6 +73,7 @@ fi
 # 8. Herdr Auto Start - 순수 터미널 에뮬레이터 세션만 감지하여 중첩 실행 방어
 if command -v herdr >/dev/null 2>&1 && \
    [ -z "${HERDR_ENV:-}" ] && \
+   [ -z "${HC_TERMINAL_ID:-}" ] && \
    [ -z "${SKIP_HERDR_AUTO_START:-}" ] && \
    [ -z "$TMUX" ] && \
    ! is_zed_terminal_session && \
