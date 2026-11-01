@@ -271,6 +271,12 @@ run = [
 ]
 
 [[on-window-detected]]
+if.app-id = "dev.herdr.app"  # herdr
+run = [
+  "move-node-to-workspace --focus-follows-window T",  # 'T' 워크스페이스로 이동
+]
+
+[[on-window-detected]]
 if.app-id = "com.apple.Safari"  # Safari
 run = "move-node-to-workspace --focus-follows-window B"  # 'B' 워크스페이스로 이동
 
