@@ -9,7 +9,6 @@
 # herdr plugin install smarzban/herdr-file-viewer --yes
 # herdr plugin install paulbkim-dev/vim-herdr-navigation --yes
 # herdr plugin install yuk1ty/herdr-spreader --yes
-# herdr plugin install zenbu-labs/terminal-browser/herdr-plugin --yes
 
 onboarding = false
 
@@ -31,9 +30,6 @@ new_worktree = "prefix+shift+w"
 # 아래 플러그인 단축키 때문에 Herdr 기본 단축키가 대체됨.
 # Herdr 0.7.1+에서는 두 동작이 충돌해서 동시에 실행되는 것이 아니라
 # 사용자 정의 키가 기본 바인딩을 대체함.
-#
-# prefix+b       -> Browser 플러그인이 사용
-#                   기본 기능: toggle_sidebar
 #
 # prefix+g       -> LazyGit이 사용
 #                   기본 기능: goto
@@ -57,6 +53,19 @@ new_worktree = "prefix+shift+w"
 # Yazi
 # ---------------------------------------------------------------------------
 
+# Worktrunk: switch/create with lifecycle hooks.
+[[keys.command]]
+key = "prefix+ctrl+w"
+type = "plugin_action"
+command = "worktrunk.open"
+description = "Worktrunk: switch / create from default branch"
+
+[[keys.command]]
+key = "prefix+alt+w"
+type = "plugin_action"
+command = "worktrunk.open-current"
+description = "Worktrunk: switch / create from current branch"
+
 [[keys.command]]
 key = "prefix+tab"
 type = "popup"
@@ -64,20 +73,6 @@ command = "yazi"
 width = "50%"
 height = "90%"
 
-
-# ---------------------------------------------------------------------------
-# Terminal Browser
-#
-# 주의:
-# prefix+b는 Herdr 기본 toggle_sidebar를 대체함.
-# sidebar 토글이 필요하면 위 [keys]의 toggle_sidebar 대체키 사용 권장.
-# ---------------------------------------------------------------------------
-
-[[keys.command]]
-key = "prefix+b"
-type = "plugin_action"
-command = "zenbu-labs.terminal-browser.open-split"
-description = "open terminal browser in right split"
 
 # ---------------------------------------------------------------------------
 # vim-herdr-navigation
