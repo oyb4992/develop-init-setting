@@ -40,3 +40,5 @@ backups/
 .codex/
 *.patch
 /graphify-out
+# Playwright CLI output (may contain credentials)
+.playwright-cli/
