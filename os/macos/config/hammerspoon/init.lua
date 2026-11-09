@@ -154,7 +154,7 @@ if CONFIG.FEATURES.POWER_AUTOMATION then
     print("- 수동 제어: Cmd+Ctrl+Alt+F")
 else
     print("☕ 카페인/BTT 자동화: 비활성화")
-    print("- 수동 제어: Cmd+Ctrl+Alt+F")
+    print("- 절전 방지는 Vorssaint에서 관리 (Ctrl+Option+Cmd+K)")
 end
 print("")
 print("⌨️ 입력 소스 자동화:")

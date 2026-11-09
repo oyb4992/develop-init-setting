@@ -68,7 +68,7 @@ local function formatSystemStatus(info)
 		"",
 		"🔋 전원: "
 			.. (info.powerMode == "battery" and "배터리 (" .. math.floor(info.batteryLevel) .. "%)" or "연결됨"),
-		"☕ 카페인: " .. (info.caffeineState and "✅ 활성화" or "❌ 비활성화"),
+		"☕ Hammerspoon 카페인: " .. (info.caffeineState and "✅ 활성화" or "❌ 비활성화"),
 		"🎮 BTT: " .. (info.bttRunning and "✅ 실행 중" or "❌ 종료됨"),
 		"",
 		"🖥️ 화면 개수: " .. info.screenCount,
@@ -80,6 +80,12 @@ end
 
 -- 시스템 자동화 규칙 설명 (주요 동작 방식)
 local function addAutomationRules(status)
+	if not CONFIG.FEATURES.POWER_AUTOMATION then
+		table.insert(status, "")
+		table.insert(status, "💡 절전 방지: Vorssaint에서 관리 (Ctrl+Option+Cmd+K)")
+		table.insert(status, "🎮 BTT 실행/종료: Hammerspoon 자동 제어 비활성화")
+		return status
+	end
 	local rules = {
 		"",
 		"💡 자동화 규칙:",

@@ -51,12 +51,14 @@ local function setupHotkeys()
 	hs.hotkey.bind({ "cmd", "ctrl", "alt" }, "s", "시스템 상태 확인", systemStatus.showSystemStatus)
 
 	-- 카페인 수동 토글
-	hs.hotkey.bind(
-		{ "cmd", "ctrl", "alt" },
-		"f",
-		"카페인 활성화/비활성화 토글 (화면 끄기 방지)",
-		powerManagement.toggleCaffeine
-	)
+	if CONFIG.FEATURES.POWER_AUTOMATION then
+		hs.hotkey.bind(
+			{ "cmd", "ctrl", "alt" },
+			"f",
+			"카페인 활성화/비활성화 토글 (화면 끄기 방지)",
+			powerManagement.toggleCaffeine
+		)
+	end
 
 	-- Spoon 단축키 설정
 	-- KSheet: 단축키 치트시트

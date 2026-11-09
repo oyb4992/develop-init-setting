@@ -3,7 +3,7 @@
 -- ========================================
 local CONFIG = {
 	FEATURES = {
-		POWER_AUTOMATION = true, -- 전원/뚜껑/잠자기 상태에 따라 카페인과 BTT 실행 상태를 자동 제어
+		POWER_AUTOMATION = false, -- 절전 방지는 Vorssaint에서 관리하고 BTT는 자체 실행 상태를 유지
 		INPUT_SOURCE = true, -- ESC/앱 활성화 시 영문 입력 전환, Right Cmd 한영 전환, Fn+HJKL/UIOP 내비게이션
 		APP_LAUNCHER = true, -- Hyper 키 조합으로 자주 쓰는 앱 실행
 		WINDOW_RESIZE = false, -- Hammerspoon 기반 창 크기/위치 조정 단축키
