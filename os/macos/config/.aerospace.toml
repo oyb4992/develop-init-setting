@@ -321,6 +321,10 @@ if.app-id = "com.openai.chat"  # ChatGPT
 run = "move-node-to-workspace --focus-follows-window A"  # 'A' 워크스페이스로 이동 (AI)
 
 [[on-window-detected]]
+if.app-id = "sh.paseo.desktop"  # Paseo
+run = "move-node-to-workspace --focus-follows-window A"  # 'A' 워크스페이스로 이동 (AI)
+
+[[on-window-detected]]
 if.app-id = "com.openai.codex"  # Codex
 run = "move-node-to-workspace --focus-follows-window A"  # 'A' 워크스페이스로 이동 (AI)
 
